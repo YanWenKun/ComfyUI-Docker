@@ -1,4 +1,5 @@
-木兰公共许可证, 第2版
+                    木兰公共许可证, 第2版
+
 木兰公共许可证， 第2版
 
 2021年5月 http://license.coscl.org.cn/MulanPubL-2.0
@@ -90,7 +91,7 @@ MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
 See the Mulan PubL v2 for more details.
 
 
-Mulan Public License，Version 2
+                    Mulan Public License，Version 2
 
 Mulan Public License，Version 2 (Mulan PubL v2)
 
@@ -169,11 +170,8 @@ How to apply the Mulan Public License，Version 2 (Mulan PubL v2), to your softw
 To apply the Mulan Public License，Version 2 to your work, for easy identification by recipients, you are suggested to complete following three steps:
 
 Fill in the blanks in following statement, including insert your software name, the year of the first publication of your software, and your name identified as the copyright owner;
-
 Create a file named “LICENSE” which contains the whole context of this License in the first directory of your software package;
-
 Attach the statement to the appropriate annotated syntax at the beginning of each source file.
-
 Copyright (c) [Year] [name of copyright holder]
 [Software Name] is licensed under Mulan PubL v2.
 You can use this software according to the terms and conditions of the Mulan PubL v2.
