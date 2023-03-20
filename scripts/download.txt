@@ -1,0 +1,64 @@
+https://huggingface.co/stabilityai/sd-vae-ft-mse-original/resolve/main/vae-ft-mse-840000-ema-pruned.safetensors
+  out=models/vae/vae-ft-mse-840000-ema-pruned.safetensors
+https://github.com/xinntao/Real-ESRGAN/releases/download/v0.1.0/RealESRGAN_x4plus.pth
+  out=models/upscale_models/RealESRGAN_x4plus.pth
+https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.2.4/RealESRGAN_x4plus_anime_6B.pth
+  out=models/upscale_models/RealESRGAN_x4plus_anime_6B.pth
+https://huggingface.co/sberbank-ai/Real-ESRGAN/resolve/main/RealESRGAN_x2.pth
+  out=models/upscale_models/RealESRGAN_x2.pth
+https://huggingface.co/sberbank-ai/Real-ESRGAN/resolve/main/RealESRGAN_x4.pth
+  out=models/upscale_models/RealESRGAN_x4.pth
+https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/t2iadapter_style-fp16.safetensors
+  out=models/style_models/t2iadapter_style-fp16.safetensors
+https://huggingface.co/datasets/gsdf/EasyNegative/resolve/main/EasyNegative.safetensors
+  out=models/embeddings/EasyNegative.safetensors
+https://civitai.com/api/download/models/5637
+  out=models/embeddings/ng_deepnegative_v1_75t.pt
+https://huggingface.co/openai/clip-vit-large-patch14/resolve/main/pytorch_model.bin
+  out=models/clip_vision/clip_vit14.bin
+https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/control_canny-fp16.safetensors
+  out=models/controlnet/control_canny-fp16.safetensors
+https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/control_depth-fp16.safetensors
+  out=models/controlnet/control_depth-fp16.safetensors
+https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/control_hed-fp16.safetensors
+  out=models/controlnet/control_hed-fp16.safetensors
+https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/control_mlsd-fp16.safetensors
+  out=models/controlnet/control_mlsd-fp16.safetensors
+https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/control_normal-fp16.safetensors
+  out=models/controlnet/control_normal-fp16.safetensors
+https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/control_openpose-fp16.safetensors
+  out=models/controlnet/control_openpose-fp16.safetensors
+https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/control_scribble-fp16.safetensors
+  out=models/controlnet/control_scribble-fp16.safetensors
+https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/control_seg-fp16.safetensors
+  out=models/controlnet/control_seg-fp16.safetensors
+https://huggingface.co/kohya-ss/ControlNet-diff-modules/resolve/main/diff_control_sd15_canny_fp16.safetensors
+  out=models/controlnet/diff_control_sd15_canny_fp16.safetensors
+https://huggingface.co/kohya-ss/ControlNet-diff-modules/resolve/main/diff_control_sd15_depth_fp16.safetensors
+  out=models/controlnet/diff_control_sd15_depth_fp16.safetensors
+https://huggingface.co/kohya-ss/ControlNet-diff-modules/resolve/main/diff_control_sd15_hed_fp16.safetensors
+  out=models/controlnet/diff_control_sd15_hed_fp16.safetensors
+https://huggingface.co/kohya-ss/ControlNet-diff-modules/resolve/main/diff_control_sd15_mlsd_fp16.safetensors
+  out=models/controlnet/diff_control_sd15_mlsd_fp16.safetensors
+https://huggingface.co/kohya-ss/ControlNet-diff-modules/resolve/main/diff_control_sd15_normal_fp16.safetensors
+  out=models/controlnet/diff_control_sd15_normal_fp16.safetensors
+https://huggingface.co/kohya-ss/ControlNet-diff-modules/resolve/main/diff_control_sd15_openpose_fp16.safetensors
+  out=models/controlnet/diff_control_sd15_openpose_fp16.safetensors
+https://huggingface.co/kohya-ss/ControlNet-diff-modules/resolve/main/diff_control_sd15_scribble_fp16.safetensors
+  out=models/controlnet/diff_control_sd15_scribble_fp16.safetensors
+https://huggingface.co/kohya-ss/ControlNet-diff-modules/resolve/main/diff_control_sd15_seg_fp16.safetensors
+  out=models/controlnet/diff_control_sd15_seg_fp16.safetensors
+https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/t2iadapter_canny-fp16.safetensors
+  out=models/controlnet/t2iadapter_canny-fp16.safetensors
+https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/t2iadapter_color-fp16.safetensors
+  out=models/controlnet/t2iadapter_color-fp16.safetensors
+https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/t2iadapter_depth-fp16.safetensors
+  out=models/controlnet/t2iadapter_depth-fp16.safetensors
+https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/t2iadapter_keypose-fp16.safetensors
+  out=models/controlnet/t2iadapter_keypose-fp16.safetensors
+https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/t2iadapter_openpose-fp16.safetensors
+  out=models/controlnet/t2iadapter_openpose-fp16.safetensors
+https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/t2iadapter_seg-fp16.safetensors
+  out=models/controlnet/t2iadapter_seg-fp16.safetensors
+https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/t2iadapter_sketch-fp16.safetensors
+  out=models/controlnet/t2iadapter_sketch-fp16.safetensors
