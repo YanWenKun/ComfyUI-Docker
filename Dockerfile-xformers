@@ -1,0 +1,47 @@
+################################################################################
+# Dockerfile that builds 'yanwk/comfyui-docker:xformers'.
+# Used for compiling xFormers.
+################################################################################
+
+FROM nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04 AS building
+
+RUN --mount=type=cache,target=/var/cache/apt \
+    set -eu \
+    && mkdir -p /root/wheels \
+    && apt update && apt upgrade -y && apt install -y \
+        python3.10 python3.10-dev python3-pip python-is-python3 \
+        git 
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install ninja wheel setuptools numpy \
+    && pip install --pre torch torchvision --force-reinstall \
+        --index-url https://download.pytorch.org/whl/nightly/cu118 
+
+# Compile-install xformers
+# Reduce build-targets to save time on compiling!
+# https://github.com/facebookresearch/xformers/blob/main/README.md#install-troubleshooting
+# https://arnon.dk/matching-sm-architectures-arch-and-gencode-for-various-nvidia-cards/
+
+# If targets "6.1", it takes ~5min to compile, on a Ryzen 1700 (8-Core) CPU.
+# If targets "6.1;7.5;8.0;8.6", it takes ~35min.
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install -r https://raw.githubusercontent.com/facebookresearch/xformers/main/requirements.txt
+
+WORKDIR /root
+RUN git clone --depth=1 --no-tags --recurse-submodules --shallow-submodules \
+        https://github.com/facebookresearch/xformers.git 
+
+ENV TORCH_CUDA_ARCH_LIST="6.1;7.5;8.0;8.6"
+
+WORKDIR /root/xformers
+RUN --mount=type=cache,target=/root/.cache/pip \
+    --mount=type=cache,target=/root/xformers/build \
+    --mount=type=cache,target=/root/xformers/dist \
+    python setup.py bdist_wheel -d /root/wheels
+
+# Save the result
+FROM alpine:latest AS saving
+
+LABEL maintainer="code@yanwk.fun"
+
+COPY --from=building /root/wheels /wheels
