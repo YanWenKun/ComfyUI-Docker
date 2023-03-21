@@ -11,7 +11,8 @@ RUN --mount=type=cache,target=/var/cache/zypp \
     set -eu \
     && zypper install --no-confirm \
         python310 python310-pip \
-        shadow git aria2 
+        shadow git aria2 \
+        Mesa-libGL1
 
 # Install PyTorch nightly
 RUN --mount=type=cache,target=/root/.cache/pip \
@@ -26,9 +27,14 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     pip install /root/wheels/*.whl \
     && rm -rf /root/wheels
 
-# All remaining deps 
+# Deps for main app
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install -r https://raw.githubusercontent.com/comfyanonymous/ComfyUI/master/requirements.txt
+
+# Deps for ControlNet Preprocessors
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install -r https://raw.githubusercontent.com/Fannovel16/comfy_controlnet_preprocessors/main/requirements.txt \
+    --extra-index-url https://download.pytorch.org/whl/nightly/cu118 
 
 # Fix for CuDNN
 WORKDIR /usr/lib64/python3.10/site-packages/torch/lib
