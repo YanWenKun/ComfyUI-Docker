@@ -1,0 +1,46 @@
+# Compose file for AMD GPU
+# WIP, may not work
+services:
+
+  file-chown:
+    container_name: file-chown
+    build:
+      context: .
+      dockerfile: Dockerfile-rocm
+    image: "yanwk/comfyui-docker:rocm"
+    user: "root"
+    volumes: 
+      - "./storage:/home/runner"
+    command: "chown -R runner:runner /home/runner"
+
+# Ref: https://hub.docker.com/r/rocm/pytorch
+# docker run --device=/dev/kfd --device=/dev/dri \
+#   --group-add=video --ipc=host --cap-add=SYS_PTRACE \
+#   --security-opt seccomp=unconfined
+
+  comfyui:
+    container_name: comfyui
+    depends_on:
+      file-chown:
+        condition: service_completed_successfully
+    build:
+      context: .
+      dockerfile: Dockerfile-rocm
+    image: "yanwk/comfyui-docker:rocm"
+    ports:
+      - "8188:8188"
+    volumes:
+      - "./storage:/home/runner"
+    environment:
+      - CLI_ARGS=--use-pytorch-cross-attention
+    devices:
+      - /dev/kfd
+      - /dev/dri
+    group_add:
+      - video
+    ipc: 
+      - host
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - seccomp:unconfined
