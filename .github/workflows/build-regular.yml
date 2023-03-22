@@ -1,0 +1,63 @@
+name: Publish all tags to Docker Hub
+
+on: 
+  workflow_dispatch: # Can be manually triggered
+  schedule: # Runs on every (3,8,13,18,23,28) day-of-month, 07:00 UTC
+    - cron: '0 7 3-31/5 * *'
+  push: 
+    branches: [ main ]
+    paths-ignore:
+      - 'docker-compose*.yml'
+      - 'README*'
+      - 'docs/**'
+      - 'storage/**'
+      - '.github/**'
+      - '!.github/workflows/build-regular.yml'
+
+
+jobs:
+
+  build-publish:
+    environment: Publish to Docker Hub
+    runs-on: ubuntu-latest
+
+    steps:
+      - 
+        name: Git checkout
+        uses: actions/checkout@v3
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      -
+        name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_ACCESSTOKEN }}
+      -
+        name: Build and push 'xformers'
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: Dockerfile-xformers
+          tags: yanwk/comfyui-boot:xformers
+          push: true
+      -
+        name: Build and push 'rocm'
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: Dockerfile-rocm
+          tags: yanwk/comfyui-boot:rocm
+          push: true
+      -
+        name: Build and push 'latest'
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: Dockerfile
+          tags: yanwk/comfyui-boot:latest
+          push: true
