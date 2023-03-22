@@ -1,0 +1,175 @@
+# Docker image for ComfyUI
+
+image::https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-regular.yml/badge.svg["GitHub Workflow Status"]
+
+image::docs/chart-concept.zh.svg["布局"]
+
+用于
+https://github.com/comfyanonymous/ComfyUI[ComfyUI]
+的
+https://hub.docker.com/r/yanwk/comfyui-boot[Docker 镜像] 。
+
+ComfyUI 是一个使用节点工作流的 Stable Diffusion 图形界面。
+
+
+## 工作流程
+
+1. 初次启动时，启动脚本会下载 ComfyUI、必要的模型以及一些扩展。
+2. 整个 ComfyUI 会保存在本地 (`./storage/ComfyUI`) 。
+3. 如果你已经有了现成的 ComfyUI 包，放在上述目录，启动脚本会跳过下载。
+4. 之后容器每次启动时，启动脚本会自动更新 ComfyUI 及其扩展。
+
+
+## 运行前提
+
+* NVIDIA 显卡， ≥6GB 显存
+** 4GB 方法见 <<q-n-a, Q & A>>
+** AMD 显卡见 <<rocm, ROCm>>
+
+* 安装好最新的 NVIDIA 显卡驱动，游戏驱动或 Studio 驱动均可。
+
+* 安装好 Docker
+** Windows 用户建议使用 https://www.docker.com/products/docker-desktop/[Docker Desktop] 并在安装时启用 WSL2，并 https://zhuanlan.zhihu.com/p/345645621[限制内存用量] 。
+** 下载过程可能需要科学上网，在 Docker 设置中可以找到代理设置。
+
+
+## 运行方法 - NVIDIA 显卡
+
+.方法 A 使用 `docker compose`
+[source,sh]
+----
+git clone https://github.com/YanWenKun/ComfyUI-Docker.git
+
+cd ComfyUI-Docker
+
+docker compose up --detach
+
+# 更新镜像（仅在 Python 组件版本过期时需要）
+git pull
+docker compose pull
+docker compose up --detach --remove-orphans
+docker image prune
+----
+
+.方法 B 使用 `docker run`
+[source,sh]
+----
+mkdir -p storage
+
+docker run -it \
+  --name comfyui \
+  --gpus all \
+  -p 8188:8188 \
+  -v "$(pwd)"/storage:/home/runner \
+  --env CLI_ARGS="" \
+  yanwk/comfyui-boot
+
+# 更新镜像（仅在 Python 组件版本过期时需要）
+docker rm comfyui
+docker pull yanwk/comfyui-boot
+# 接下来再运行一遍上述 'docker run' 即可
+----
+
+启动完成后，访问 http://localhost:8188/
+
+
+[[rocm]]
+## 运行方法 - AMD 显卡（尚在实验）
+
+.方法 C 使用 `docker compose`
+[source,sh]
+----
+git clone https://github.com/YanWenKun/ComfyUI-Docker.git
+
+cd ComfyUI-Docker
+
+docker compose -f docker-compose-rocm.yml up --detach
+
+# 更新镜像（仅在 Python 组件版本过期时需要）
+git pull
+docker compose -f docker-compose-rocm.yml pull
+docker compose -f docker-compose-rocm.yml up --detach --remove-orphans
+docker image prune
+----
+
+.方法 D 使用 `docker run`
+[source,sh]
+----
+mkdir -p storage
+
+docker run -it \
+  --name comfyui \
+  --gpus all \
+  -p 8188:8188 \
+  -v "$(pwd)"/storage:/home/runner \
+  --env CLI_ARGS="--use-pytorch-cross-attention" \
+  --device=/dev/kfd --device=/dev/dri \
+  --group-add=video --ipc=host --cap-add=SYS_PTRACE \
+  --security-opt seccomp=unconfined \
+  yanwk/comfyui-boot:rocm
+
+# 更新镜像（仅在 Python 组件版本过期时需要）
+docker rm comfyui
+docker pull yanwk/comfyui-boot:rocm
+# 接下来再运行一遍上述 'docker run' 即可
+----
+
+启动完成后，访问 http://localhost:8188/
+
+
+[[q-n-a]]
+## Q & A
+
+Q: 显存只有 4G 怎么办？ +
+A: 在启动参数 `CLI_ARGS` 中添加 `--lowvram` 。
+
+Q: 用了 `--lowvram` 还是显存不够 +
+A: 参数换成 `--novram` （直接用 CPU 内存）。
+
+Q: 能不能直接用 CPU 来跑？ +
+A: 在启动参数 `CLI_ARGS` 中添加 `--cpu` ，会很慢。
+
+更多 `CLI_ARGS` 参考 https://github.com/comfyanonymous/ComfyUI/blob/master/main.py[ComfyUI] 。
+
+
+## 一些方便 Debug 的命令
+
+.编译最新 xFormers 并指定编译到的 NVIDIA GPU 架构
+架构版本号参考 https://arnon.dk/matching-sm-architectures-arch-and-gencode-for-various-nvidia-cards/[Gencode 列表]
+[source,sh]
+----
+docker build --build-arg TORCH_CUDA_ARCH_LIST="6.0;6.1;6.2;7.0;7.2;7.5;8.0;8.6" -f Dockerfile-xformers -t yanwk/comfyui-boot:xformers .
+----
+
+.构建镜像，打印所有日志（不折叠）
+[source,sh]
+----
+docker build --progress=plain -f Dockerfile -t yanwk/comfyui-boot .
+----
+
+.运行一个一次性容器
+[source,sh]
+----
+docker run -it --rm --gpus all -p 8188:8188 \
+  -v "$(pwd)"/storage:/home/runner \
+  --env CLI_ARGS="" \
+  yanwk/comfyui-boot
+----
+
+.用 root 身份运行 bash
+[source,sh]
+----
+docker run -it --rm --gpus all \
+  -v "$(pwd)"/storage:/home/runner \
+  -p 8188:8188 \
+  -e CLI_ARGS="" \
+  --user root \
+  yanwk/comfyui-boot:latest /bin/bash
+----
+
+
+## 声明
+
+代码使用
+link:LICENSE[木兰公共许可证, 第2版] 。
+中英双语哦！

@@ -1,0 +1,175 @@
+# Docker image for ComfyUI
+
+image::https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-regular.yml/badge.svg["GitHub Workflow Status"]
+
+image::docs/chart-concept.svg["Concept Design"]
+
+*link:README.zh.adoc[>> 中文文档 <<]*
+
+This repo is for 
+https://hub.docker.com/r/yanwk/comfyui-boot[Docker images] 
+that runs 
+https://github.com/comfyanonymous/ComfyUI[ComfyUI] - 
+a Stable Diffusion GUI powering node-based workflow.
+
+
+## How it works
+
+1. At first start, a script will download latest ComfyUI, some custom nodes and models.
+2. The whole ComfyUI will be stored in a local folder (`./storage/ComfyUI`).
+3. If you already have a ComfyUI bundle, put it there so the start script will skip downloading.
+4. At every restart of the container, a script will update ComfyUI & its custom nodes.
+
+
+## Prerequisites
+
+* NVIDIA GPU with ≥6GB VRAM
+** For 4GB see <<q-n-a, Q & A>>.
+** For AMD GPU see <<rocm, ROCm>>.
+
+* Latest NVIDIA GPU Drivers, Both Game and Studio version will work.
+
+* Docker Installed
+** Windows user could use https://www.docker.com/products/docker-desktop/[Docker Desktop] with WSL2 enabled.
+
+
+## Usage - NVIDIA GPU
+
+.A. Using `docker compose`
+[source,sh]
+----
+git clone https://github.com/YanWenKun/ComfyUI-Docker.git
+
+cd ComfyUI-Docker
+
+docker compose up --detach
+
+# Update image (only when Python components is outdated)
+git pull
+docker compose pull
+docker compose up --detach --remove-orphans
+docker image prune
+----
+
+.B. Using `docker run`
+[source,sh]
+----
+mkdir -p storage
+
+docker run -it \
+  --name comfyui \
+  --gpus all \
+  -p 8188:8188 \
+  -v "$(pwd)"/storage:/home/runner \
+  --env CLI_ARGS="" \
+  yanwk/comfyui-boot
+
+# Update image (only when Python components is outdated)
+docker rm comfyui
+docker pull yanwk/comfyui-boot
+# Then re-run 'docker run' above again
+----
+
+Once the app is loaded, visit http://localhost:8188/
+
+
+[[rocm]]
+## Usage - AMD GPU (Experimental)
+
+.C. Using `docker compose`
+[source,sh]
+----
+git clone https://github.com/YanWenKun/ComfyUI-Docker.git
+
+cd ComfyUI-Docker
+
+docker compose -f docker-compose-rocm.yml up --detach
+
+# Update image (only when Python components is outdated)
+git pull
+docker compose -f docker-compose-rocm.yml pull
+docker compose -f docker-compose-rocm.yml up --detach --remove-orphans
+docker image prune
+----
+
+.D. Using `docker run`
+[source,sh]
+----
+mkdir -p storage
+
+docker run -it \
+  --name comfyui \
+  --gpus all \
+  -p 8188:8188 \
+  -v "$(pwd)"/storage:/home/runner \
+  --env CLI_ARGS="--use-pytorch-cross-attention" \
+  --device=/dev/kfd --device=/dev/dri \
+  --group-add=video --ipc=host --cap-add=SYS_PTRACE \
+  --security-opt seccomp=unconfined \
+  yanwk/comfyui-boot:rocm
+
+# Update image (only when Python components is outdated)
+docker rm comfyui
+docker pull yanwk/comfyui-boot:rocm
+# Then re-run 'docker run' above again
+----
+
+Once the app is loaded, visit http://localhost:8188/
+
+
+[[q-n-a]]
+## Q & A
+
+Q: My GPU has only 4GB VRAM +
+A: Add `--lowvram` to `CLI_ARGS`.
+
+Q: Adding `--lowvram` still out-of-memory +
+A: Use `--novram` instead. It will use CPU RAM.
+
+Q: How to run on CPU? +
+A: Add `--cpu` to `CLI_ARGS`. It's pretty slow.
+
+More `CLI_ARGS` available at https://github.com/comfyanonymous/ComfyUI/blob/master/main.py[ComfyUI].
+
+
+## Some commands for debugging
+
+.Compile latest xFormers, targeting specific NVIDIA architechtures.
+You may want to check https://arnon.dk/matching-sm-architectures-arch-and-gencode-for-various-nvidia-cards/[Gencode List].
+[source,sh]
+----
+docker build --build-arg TORCH_CUDA_ARCH_LIST="6.0;6.1;6.2;7.0;7.2;7.5;8.0;8.6" -f Dockerfile-xformers -t yanwk/comfyui-boot:xformers .
+----
+
+.Build the image, print all logs to STDOUT.
+[source,sh]
+----
+docker build --progress=plain -f Dockerfile -t yanwk/comfyui-boot .
+----
+
+.Run a one-time container
+[source,sh]
+----
+docker run -it --rm --gpus all -p 8188:8188 \
+  -v "$(pwd)"/storage:/home/runner \
+  --env CLI_ARGS="" \
+  yanwk/comfyui-boot
+----
+
+.Run into a root bash
+[source,sh]
+----
+docker run -it --rm --gpus all \
+  -v "$(pwd)"/storage:/home/runner \
+  -p 8188:8188 \
+  -e CLI_ARGS="" \
+  --user root \
+  yanwk/comfyui-boot:latest /bin/bash
+----
+
+
+## License
+
+link:LICENSE[Mulan Public License，Version 2]
+
+This open source license is written and valid both in Chinese and English, how good is that!

@@ -1,4 +1,4 @@
-name: Publish all tags to Docker Hub
+name: Publish to Docker Hub
 
 on: 
   workflow_dispatch: # Can be manually triggered
