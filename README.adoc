@@ -62,11 +62,11 @@ docker run -it \
   -p 8188:8188 \
   -v "$(pwd)"/storage:/home/runner \
   --env CLI_ARGS="" \
-  yanwk/comfyui-boot
+  yanwk/comfyui-boot:latest
 
 # Update image (only when Python components is outdated)
 docker rm comfyui
-docker pull yanwk/comfyui-boot
+docker pull yanwk/comfyui-boot:latest
 # Then re-run 'docker run' above again
 ----
 
@@ -138,13 +138,13 @@ More `CLI_ARGS` available at https://github.com/comfyanonymous/ComfyUI/blob/mast
 You may want to check https://arnon.dk/matching-sm-architectures-arch-and-gencode-for-various-nvidia-cards/[Gencode List].
 [source,sh]
 ----
-docker build --build-arg TORCH_CUDA_ARCH_LIST="6.0;6.1;6.2;7.0;7.2;7.5;8.0;8.6" -f Dockerfile-xformers -t yanwk/comfyui-boot:xformers .
+docker build . --build-arg TORCH_CUDA_ARCH_LIST="6.0;6.1;6.2;7.0;7.2;7.5;8.0;8.6" -f Dockerfile-xformers -t yanwk/comfyui-boot:xformers
 ----
 
 .Build the image, print all logs to STDOUT.
 [source,sh]
 ----
-docker build --progress=plain -f Dockerfile -t yanwk/comfyui-boot .
+docker build . --progress=plain -f Dockerfile -t yanwk/comfyui-boot:latest
 ----
 
 .Run a one-time container
@@ -153,7 +153,7 @@ docker build --progress=plain -f Dockerfile -t yanwk/comfyui-boot .
 docker run -it --rm --gpus all -p 8188:8188 \
   -v "$(pwd)"/storage:/home/runner \
   --env CLI_ARGS="" \
-  yanwk/comfyui-boot
+  yanwk/comfyui-boot:latest
 ----
 
 .Run into a root bash

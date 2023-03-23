@@ -62,11 +62,11 @@ docker run -it \
   -p 8188:8188 \
   -v "$(pwd)"/storage:/home/runner \
   --env CLI_ARGS="" \
-  yanwk/comfyui-boot
+  yanwk/comfyui-boot:latest
 
 # 更新镜像（仅在 Python 组件版本过期时需要）
 docker rm comfyui
-docker pull yanwk/comfyui-boot
+docker pull yanwk/comfyui-boot:latest
 # 接下来再运行一遍上述 'docker run' 即可
 ----
 
@@ -138,13 +138,13 @@ A: 在启动参数 `CLI_ARGS` 中添加 `--cpu` ，会很慢。
 架构版本号参考 https://arnon.dk/matching-sm-architectures-arch-and-gencode-for-various-nvidia-cards/[Gencode 列表]
 [source,sh]
 ----
-docker build --build-arg TORCH_CUDA_ARCH_LIST="6.0;6.1;6.2;7.0;7.2;7.5;8.0;8.6" -f Dockerfile-xformers -t yanwk/comfyui-boot:xformers .
+docker build . --build-arg TORCH_CUDA_ARCH_LIST="6.0;6.1;6.2;7.0;7.2;7.5;8.0;8.6" -f Dockerfile-xformers -t yanwk/comfyui-boot:xformers
 ----
 
 .构建镜像，打印所有日志（不折叠）
 [source,sh]
 ----
-docker build --progress=plain -f Dockerfile -t yanwk/comfyui-boot .
+docker build . --progress=plain -f Dockerfile -t yanwk/comfyui-boot:latest
 ----
 
 .运行一个一次性容器
@@ -153,7 +153,7 @@ docker build --progress=plain -f Dockerfile -t yanwk/comfyui-boot .
 docker run -it --rm --gpus all -p 8188:8188 \
   -v "$(pwd)"/storage:/home/runner \
   --env CLI_ARGS="" \
-  yanwk/comfyui-boot
+  yanwk/comfyui-boot:latest
 ----
 
 .用 root 身份运行 bash
