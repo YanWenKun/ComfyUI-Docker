@@ -32,6 +32,8 @@ RUN git clone --depth=1 --no-tags --recurse-submodules --shallow-submodules \
         https://github.com/facebookresearch/xformers.git 
 
 ARG TORCH_CUDA_ARCH_LIST="6.1;7.5;8.0;8.6"
+# Limit max concurrent build jobs
+ARG MAX_JOBS
 
 WORKDIR /root/xformers
 RUN --mount=type=cache,target=/root/.cache/pip \
