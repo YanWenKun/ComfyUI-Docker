@@ -129,7 +129,8 @@ A: Use `--novram` instead. It will use CPU RAM.
 Q: How to run on CPU? +
 A: Add `--cpu` to `CLI_ARGS`. It's pretty slow.
 
-More `CLI_ARGS` available at https://github.com/comfyanonymous/ComfyUI/blob/master/main.py[ComfyUI].
+More `CLI_ARGS` available at 
+https://github.com/comfyanonymous/ComfyUI/blob/master/comfy/cli_args.py[ComfyUI].
 
 
 ## Some commands for debugging

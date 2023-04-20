@@ -129,7 +129,8 @@ A: 参数换成 `--novram` （直接用 CPU 内存）。
 Q: 能不能直接用 CPU 来跑？ +
 A: 在启动参数 `CLI_ARGS` 中添加 `--cpu` ，会很慢。
 
-更多 `CLI_ARGS` 参考 https://github.com/comfyanonymous/ComfyUI/blob/master/main.py[ComfyUI] 。
+更多 `CLI_ARGS` 参考 
+https://github.com/comfyanonymous/ComfyUI/blob/master/comfy/cli_args.py[ComfyUI] 。
 
 
 ## 一些方便 Debug 的命令
