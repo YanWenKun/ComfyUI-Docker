@@ -5,7 +5,7 @@ set -e
 cd /home/runner
 
 # Install ComfyUI or update it.
-if [ ! -f "/home/runner/ComfyUI/main.py" ] ; then
+if [ ! -f "/home/runner/.download-complete" ] ; then
     chmod +x /home/scripts/download.sh
     bash /home/scripts/download.sh
 else
