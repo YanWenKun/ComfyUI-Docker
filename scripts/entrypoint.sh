@@ -22,4 +22,4 @@ echo "########################################"
 
 cd /home/runner/ComfyUI
 
-python3 main.py --listen --port 8188 ${CLI_ARGS}
+python3.10 main.py --listen --port 8188 ${CLI_ARGS}
