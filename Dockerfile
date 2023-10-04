@@ -20,12 +20,9 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     && pip install --pre torch torchvision \
         --index-url https://download.pytorch.org/whl/nightly/cu118 
 
-# Install xFormers from wheel file we just compiled
-COPY --from=yanwk/comfyui-boot:xformers /wheels /root/wheels
-
+# Install pre-release xFormers
 RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install /root/wheels/*.whl \
-    && rm -rf /root/wheels
+    pip install --pre xformers
 
 # Deps for main app
 RUN --mount=type=cache,target=/root/.cache/pip \
