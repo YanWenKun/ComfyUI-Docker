@@ -11,11 +11,11 @@ git clone --depth=1 --no-tags --recurse-submodules --shallow-submodules \
     https://github.com/comfyanonymous/ComfyUI.git \
     || (cd /home/runner/ComfyUI && git pull)
 
-# Controlnet Preprocessor nodes by Fannovel16
+# ControlNet Auxiliary Preprocessors by Fannovel16
 cd /home/runner/ComfyUI/custom_nodes
 git clone --depth=1 --no-tags --recurse-submodules --shallow-submodules \
-    https://github.com/Fannovel16/comfy_controlnet_preprocessors \
-    || (cd /home/runner/ComfyUI/custom_nodes/comfy_controlnet_preprocessors && git pull)
+    https://github.com/Fannovel16/comfyui_controlnet_aux.git \
+    || (cd /home/runner/ComfyUI/custom_nodes/comfyui_controlnet_aux && git pull)
 
 cd /home/runner/ComfyUI
 aria2c --allow-overwrite=false --auto-file-renaming=false --continue=true \

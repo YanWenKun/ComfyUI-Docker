@@ -11,24 +11,24 @@ LABEL maintainer="code@yanwk.fun"
 RUN --mount=type=cache,target=/var/cache/zypp \
     set -eu \
     && zypper install --no-confirm \
-        python310 python310-pip \
+        python311 python311-pip \
+        python311-wheel python311-setuptools python311-numpy \
         shadow git aria2 \
         Mesa-libGL1
 
 # Install PyTorch nightly
 RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install wheel setuptools numpy \
-    && pip install --pre torch torchvision \
-        --index-url https://download.pytorch.org/whl/nightly/rocm5.4.2
+    pip install --break-system-packages --pre torch torchvision \
+        --index-url https://download.pytorch.org/whl/nightly/rocm5.7
 
 # Deps for main app
 RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install -r https://raw.githubusercontent.com/comfyanonymous/ComfyUI/master/requirements.txt
+    pip install --break-system-packages -r https://raw.githubusercontent.com/comfyanonymous/ComfyUI/master/requirements.txt
 
-# Deps for ControlNet Preprocessors
+# Deps for ControlNet Auxiliary Preprocessors
 RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install -r https://raw.githubusercontent.com/Fannovel16/comfy_controlnet_preprocessors/main/requirements.txt \
-    --extra-index-url https://download.pytorch.org/whl/nightly/rocm5.4.2
+    pip install --break-system-packages -r https://raw.githubusercontent.com/Fannovel16/comfyui_controlnet_aux/main/requirements.txt \
+    --extra-index-url https://download.pytorch.org/whl/nightly/rocm5.7
 
 # Create a low-privilege user.
 RUN printf 'CREATE_MAIL_SPOOL=no' > /etc/default/useradd \

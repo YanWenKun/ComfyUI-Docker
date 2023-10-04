@@ -10,33 +10,33 @@ LABEL maintainer="code@yanwk.fun"
 RUN --mount=type=cache,target=/var/cache/zypp \
     set -eu \
     && zypper install --no-confirm \
-        python310 python310-pip \
+        python311 python311-pip \
+        python311-wheel python311-setuptools python311-numpy \
         shadow git aria2 \
         Mesa-libGL1
 
 # Install PyTorch nightly
 RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install wheel setuptools numpy \
-    && pip install --pre torch torchvision \
-        --index-url https://download.pytorch.org/whl/nightly/cu118 
+    pip install --break-system-packages --pre torch torchvision \
+        --index-url https://download.pytorch.org/whl/nightly/cu121 
 
 # Install pre-release xFormers
 RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install --pre xformers
+    pip install --break-system-packages --pre xformers
 
 # Deps for main app
 RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install -r https://raw.githubusercontent.com/comfyanonymous/ComfyUI/master/requirements.txt
+    pip install --break-system-packages -r https://raw.githubusercontent.com/comfyanonymous/ComfyUI/master/requirements.txt
 
-# Deps for ControlNet Preprocessors
+# Deps for ControlNet Auxiliary Preprocessors
 RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install -r https://raw.githubusercontent.com/Fannovel16/comfy_controlnet_preprocessors/main/requirements.txt \
-    --extra-index-url https://download.pytorch.org/whl/nightly/cu118 
+    pip install --break-system-packages -r https://raw.githubusercontent.com/Fannovel16/comfyui_controlnet_aux/main/requirements.txt \
+    --extra-index-url https://download.pytorch.org/whl/nightly/cu121 
 
 # Fix for CuDNN
-WORKDIR /usr/lib64/python3.10/site-packages/torch/lib
-RUN ln -s libnvrtc-672ee683.so.11.2 libnvrtc.so 
-ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/lib64/python3.10/site-packages/torch/lib"
+WORKDIR /usr/lib64/python3.11/site-packages/torch/lib
+RUN ln -s libnvrtc-b51b459d.so.12 libnvrtc.so 
+ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/lib64/python3.11/site-packages/torch/lib"
 
 # Create a low-privilege user.
 RUN printf 'CREATE_MAIL_SPOOL=no' > /etc/default/useradd \
