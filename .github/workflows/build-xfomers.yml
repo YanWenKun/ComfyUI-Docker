@@ -2,8 +2,8 @@ name: Publish 'xformers' to Docker Hub
 
 on: 
   workflow_dispatch: # Can be manually triggered
-  # schedule: # Runs on every Sunday, 09:00 UTC
-  #   - cron: '0 9 * * 0'
+  schedule: # Runs on every Sunday, 09:00 UTC
+    - cron: '0 9 * * 0'
 
 jobs:
 
@@ -14,12 +14,8 @@ jobs:
       - name: Maximize build disk space
         uses: easimon/maximize-build-space@master
         with:
-          root-reserve-mb: 512
-          swap-size-mb: 512
-          remove-dotnet: 'true'
+          overprovision-lvm: 'true'
           remove-android: 'true'
-          remove-haskell: 'true'
-          remove-codeql: 'true'
       - 
         name: Git checkout
         uses: actions/checkout@v3
