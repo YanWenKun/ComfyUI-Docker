@@ -21,6 +21,15 @@ jobs:
     environment: Publish to Docker Hub
     runs-on: ubuntu-latest
     steps:
+      - name: Maximize build disk space
+        uses: easimon/maximize-build-space@master
+        with:
+          root-reserve-mb: 512
+          swap-size-mb: 512
+          remove-dotnet: 'true'
+          remove-android: 'true'
+          remove-haskell: 'true'
+          remove-codeql: 'true'
       - 
         name: Git checkout
         uses: actions/checkout@v3
