@@ -2,8 +2,8 @@ name: Publish 'xformers' to Docker Hub
 
 on: 
   workflow_dispatch: # Can be manually triggered
-  schedule: # Runs on every Sunday, 09:00 UTC
-    - cron: '0 9 * * 0'
+  # schedule: # Runs on every Sunday, 09:00 UTC
+  #   - cron: '0 9 * * 0'
 
 jobs:
 
