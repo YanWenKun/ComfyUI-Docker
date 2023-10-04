@@ -15,27 +15,28 @@ RUN --mount=type=cache,target=/var/cache/zypp \
         shadow git aria2 \
         Mesa-libGL1
 
-# Install PyTorch nightly
+# Install PyTorch (stable version)
 RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install --break-system-packages --pre torch torchvision \
-        --index-url https://download.pytorch.org/whl/nightly/cu121 
+    pip install --break-system-packages \
+        torch torchvision --index-url https://download.pytorch.org/whl/cu118
 
-# Install pre-release xFormers
+# Install xFormers (stable version)
 RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install --break-system-packages --pre xformers
+    pip install --break-system-packages \
+        xformers
 
 # Deps for main app
 RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install --break-system-packages -r https://raw.githubusercontent.com/comfyanonymous/ComfyUI/master/requirements.txt
+    pip install --break-system-packages \
+        -r https://raw.githubusercontent.com/comfyanonymous/ComfyUI/master/requirements.txt
 
 # Deps for ControlNet Auxiliary Preprocessors
 RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install --break-system-packages -r https://raw.githubusercontent.com/Fannovel16/comfyui_controlnet_aux/main/requirements.txt \
-    --extra-index-url https://download.pytorch.org/whl/nightly/cu121 
+    pip install --break-system-packages \
+        -r https://raw.githubusercontent.com/Fannovel16/comfyui_controlnet_aux/main/requirements.txt \
+        --extra-index-url https://download.pytorch.org/whl/cu118
 
 # Fix for CuDNN
-WORKDIR /usr/lib64/python3.11/site-packages/torch/lib
-RUN ln -s libnvrtc-b51b459d.so.12 libnvrtc.so 
 ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/lib64/python3.11/site-packages/torch/lib"
 
 # Create a low-privilege user.
