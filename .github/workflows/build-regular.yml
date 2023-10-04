@@ -24,9 +24,8 @@ jobs:
       - name: Maximize build disk space
         uses: easimon/maximize-build-space@master
         with:
+          temp-reserve-mb: 10240
           remove-android: 'true'
-          remove-haskell: 'true'
-          remove-codeql: 'true'
       - 
         name: Git checkout
         uses: actions/checkout@v3
