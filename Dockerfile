@@ -15,15 +15,10 @@ RUN --mount=type=cache,target=/var/cache/zypp \
         shadow git aria2 \
         Mesa-libGL1
 
-# Install PyTorch (stable version)
+# Install xFormers (dev version, will install PyTorch as well)
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --break-system-packages \
-        torch torchvision --index-url https://download.pytorch.org/whl/cu118
-
-# Install xFormers (stable version)
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install --break-system-packages \
-        xformers
+        --pre -U xformers
 
 # Deps for main app
 RUN --mount=type=cache,target=/root/.cache/pip \
