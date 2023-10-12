@@ -39,6 +39,6 @@ jobs:
           file: Dockerfile-xformers
           # Build slowly but do not crash on GitHub CI.
           build-args: |
-            MAX_JOBS=1
+            MAX_JOBS=2
           tags: yanwk/comfyui-boot:xformers
           push: true
