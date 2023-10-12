@@ -55,6 +55,11 @@ jobs:
     environment: Publish to Docker Hub
     runs-on: ubuntu-latest
     steps:
+      - name: Maximize build disk space
+        uses: easimon/maximize-build-space@master
+        with:
+          overprovision-lvm: 'true'
+          remove-android: 'true'
       - 
         name: Git checkout
         uses: actions/checkout@v3
