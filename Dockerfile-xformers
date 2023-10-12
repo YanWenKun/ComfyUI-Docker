@@ -3,20 +3,20 @@
 # Used for compiling xFormers.
 ################################################################################
 
-FROM nvidia/cuda:12.1.1-devel-ubi9 AS building
+FROM yanwk/sd-webui-base:dev-env AS building
 
-RUN --mount=type=cache,target=/var/cache/dnf \
+RUN --mount=type=cache,target=/var/cache/zypp \
     set -eu \
     && mkdir -p /root/wheels \
-    && dnf upgrade -y \
-    && dnf install -y \
-        python3.11-devel python3.11-pip \
-        git 
+    && zypper update -y \
+    && zypper install -y \
+        python311-wheel python311-setuptools python311-numpy
 
 RUN --mount=type=cache,target=/root/.cache/pip \
-    pip3.11 install ninja wheel setuptools numpy \
-    && pip3.11 install --pre torch torchvision --force-reinstall \
-        --index-url https://download.pytorch.org/whl/nightly/cu121 
+    pip install --break-system-packages \
+        --pre torch torchvision torchaudio \
+        --force-reinstall \
+        --index-url https://download.pytorch.org/whl/nightly/cu121
 
 # Compile-install xformers
 # Reduce build-targets to save time on compiling!
@@ -26,7 +26,8 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # If targets "6.1", it takes ~5min to compile, on a Ryzen 1700 (8-Core) CPU.
 # If targets "6.1;7.5;8.0;8.6", it takes ~35min.
 RUN --mount=type=cache,target=/root/.cache/pip \
-    pip3.11 install -r https://raw.githubusercontent.com/facebookresearch/xformers/main/requirements.txt
+    pip install --break-system-packages \
+        -r https://raw.githubusercontent.com/facebookresearch/xformers/main/requirements.txt
 
 WORKDIR /root
 RUN git clone --depth=1 --no-tags --recurse-submodules --shallow-submodules \
@@ -42,7 +43,7 @@ WORKDIR /root/xformers
 RUN --mount=type=cache,target=/root/.cache/pip \
     --mount=type=cache,target=/root/xformers/build \
     --mount=type=cache,target=/root/xformers/dist \
-    python3.11 setup.py bdist_wheel -d /root/wheels
+    python3 setup.py bdist_wheel -d /root/wheels
 
 # Save the result
 FROM alpine:latest AS saving
