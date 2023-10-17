@@ -18,7 +18,7 @@ a Stable Diffusion GUI powering node-based workflow.
 1. At first start, a script will download latest ComfyUI, some custom nodes and models.
 2. The whole ComfyUI will be stored in a local folder (`./storage/ComfyUI`).
 3. If you already have a ComfyUI bundle, put it there and make an empty file (`./storage/ComfyUI/.download-complete`) so the start script will skip downloading.
-4. At every restart of the container, a script will update ComfyUI & its custom nodes.
+4. You can update ComfyUI & its custom nodes via ComfyUI-Manager (in ComfyUI web page).
 
 
 ## Prerequisites

@@ -17,7 +17,7 @@ ComfyUI 是一个使用节点工作流的 Stable Diffusion 图形界面。
 1. 初次启动时，启动脚本会下载 ComfyUI、必要的模型以及一些扩展。
 2. 整个 ComfyUI 会保存在本地 (`./storage/ComfyUI`) 。
 3. 如果你已经有了现成的 ComfyUI 包，放在上述目录，并新建一个空白文件 (`./storage/ComfyUI/.download-complete`)，启动脚本会跳过下载。
-4. 之后容器每次启动时，启动脚本会自动更新 ComfyUI 及其扩展。
+4. 使用 ComfyUI-Manager 即可更新组件、安装模型（在 ComfyUI 页面中找到“Manager”）。
 
 
 ## 运行前提
