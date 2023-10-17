@@ -21,10 +21,12 @@ https://huggingface.co/datasets/gsdf/EasyNegative/resolve/main/EasyNegative.safe
 https://civitai.com/api/download/models/5637
   out=models/embeddings/ng_deepnegative_v1_75t.pt
 
-# CLIP
+# CLIP Vision
 
 https://huggingface.co/openai/clip-vit-large-patch14/resolve/main/pytorch_model.bin
   out=models/clip_vision/clip_vit14.bin
+https://huggingface.co/stabilityai/control-lora/resolve/main/revision/clip_vision_g.safetensors
+  out=models/clip_vision/clip_vision_g.safetensors
 
 # ControlNet
 
@@ -61,3 +63,14 @@ https://huggingface.co/kohya-ss/ControlNet-diff-modules/resolve/main/diff_contro
   out=models/controlnet/diff_control_sd15_scribble_fp16.safetensors
 https://huggingface.co/kohya-ss/ControlNet-diff-modules/resolve/main/diff_control_sd15_seg_fp16.safetensors
   out=models/controlnet/diff_control_sd15_seg_fp16.safetensors
+
+# Control-LoRA
+
+https://huggingface.co/stabilityai/control-lora/resolve/main/control-LoRAs-rank256/control-lora-canny-rank256.safetensors
+  out=models/controlnet/control-lora-canny-rank256.safetensors
+https://huggingface.co/stabilityai/control-lora/resolve/main/control-LoRAs-rank256/control-lora-depth-rank256.safetensors
+  out=models/controlnet/control-lora-depth-rank256.safetensors
+https://huggingface.co/stabilityai/control-lora/resolve/main/control-LoRAs-rank256/control-lora-recolor-rank256.safetensors
+  out=models/controlnet/control-lora-recolor-rank256.safetensors
+https://huggingface.co/stabilityai/control-lora/resolve/main/control-LoRAs-rank256/control-lora-sketch-rank256.safetensors
+  out=models/controlnet/control-lora-sketch-rank256.safetensors
