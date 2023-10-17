@@ -19,7 +19,7 @@ RUN --mount=type=cache,target=/var/cache/zypp \
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --break-system-packages \
         --pre -U xformers \
-        --index-url https://download.pytorch.org/whl/cu118 \
+        --index-url https://download.pytorch.org/whl/cu121 \
         --extra-index-url https://pypi.org/simple
 
 # Deps for main app
