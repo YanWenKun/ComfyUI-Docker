@@ -13,7 +13,7 @@ RUN --mount=type=cache,target=/var/cache/zypp \
         python311 python311-pip \
         python311-wheel python311-setuptools python311-numpy \
         shadow git aria2 \
-        Mesa-libGL1
+        Mesa-libGL1 libgthread-2_0-0
 
 # Install xFormers (dev version, will install PyTorch as well)
 RUN --mount=type=cache,target=/root/.cache/pip \
