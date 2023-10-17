@@ -28,6 +28,8 @@ services:
       - "./storage:/home/runner"
     environment:
       - CLI_ARGS=
+    security_opt:
+      - "label=type:nvidia_container_t"
     deploy:
       resources:
         reservations:
