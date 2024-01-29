@@ -18,7 +18,7 @@ https://huggingface.co/sberbank-ai/Real-ESRGAN/resolve/main/RealESRGAN_x4.pth
 
 https://huggingface.co/datasets/gsdf/EasyNegative/resolve/main/EasyNegative.safetensors
   out=models/embeddings/easynegative.safetensors
-https://civitai.com/api/download/models/5637
+https://huggingface.co/lenML/DeepNegative/resolve/main/NG_DeepNegative_V1_75T.pt
   out=models/embeddings/ng_deepnegative_v1_75t.pt
 
 # CLIP Vision
