@@ -10,7 +10,7 @@ LABEL maintainer="code@yanwk.fun"
 RUN --mount=type=cache,target=/var/cache/zypp \
     set -eu \
     && zypper install --no-confirm \
-        python311 python311-pip \
+        python311 python311-pip python311-devel \
         python311-wheel python311-setuptools python311-numpy \
         shadow git aria2 \
         Mesa-libGL1 libgthread-2_0-0 \
