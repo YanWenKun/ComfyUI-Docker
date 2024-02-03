@@ -38,8 +38,7 @@ services:
       - /dev/dri
     group_add:
       - video
-    ipc: 
-      - host
+    ipc: host
     cap_add:
       - SYS_PTRACE
     security_opt:
