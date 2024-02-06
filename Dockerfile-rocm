@@ -11,10 +11,13 @@ LABEL maintainer="code@yanwk.fun"
 RUN --mount=type=cache,target=/var/cache/zypp \
     set -eu \
     && zypper install --no-confirm \
-        python311 python311-pip python311-devel \
+        python311 python311-pip \
         python311-wheel python311-setuptools python311-numpy \
+        python311-devel python311-Cython \
+        gcc-c++ cmake \
         shadow git aria2 \
-        Mesa-libGL1
+        Mesa-libGL1 libgthread-2_0-0 \
+    && rm /usr/lib64/python3.11/EXTERNALLY-MANAGED
 
 # Install PyTorch nightly
 RUN --mount=type=cache,target=/root/.cache/pip \
@@ -23,12 +26,19 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 
 # Deps for main app
 RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install --break-system-packages -r https://raw.githubusercontent.com/comfyanonymous/ComfyUI/master/requirements.txt
+    pip install --break-system-packages \
+        -r https://raw.githubusercontent.com/comfyanonymous/ComfyUI/master/requirements.txt
 
 # Deps for ControlNet Auxiliary Preprocessors
 RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install --break-system-packages -r https://raw.githubusercontent.com/Fannovel16/comfyui_controlnet_aux/main/requirements.txt \
-    --extra-index-url https://download.pytorch.org/whl/nightly/rocm5.7
+    pip install --break-system-packages \
+        -r https://raw.githubusercontent.com/Fannovel16/comfyui_controlnet_aux/main/requirements.txt \
+        --extra-index-url https://download.pytorch.org/whl/nightly/rocm5.7
+
+# Deps for ComfyUI InstantID
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install --break-system-packages \
+        -r https://raw.githubusercontent.com/ZHO-ZHO-ZHO/ComfyUI-InstantID/main/requirements.txt
 
 # Create a low-privilege user.
 RUN printf 'CREATE_MAIL_SPOOL=no' > /etc/default/useradd \
