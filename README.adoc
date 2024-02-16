@@ -76,6 +76,8 @@ Once the app is loaded, visit http://localhost:8188/
 [[rocm]]
 ## Usage - AMD GPU (Experimental)
 
+NOTE: If you are using WSL2 with AMD/Intel GPU, consider *link:docs/wsl-directml.adoc[Run ComfyUI on WSL2 with DirectML]*
+
 .C. Using `docker compose`
 [source,sh]
 ----

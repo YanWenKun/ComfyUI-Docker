@@ -1,0 +1,89 @@
+# Run ComfyUI on WSL2 with DirectML
+
+* Works with AMD/Intel GPU
+
+* Better update WSL first: https://apps.microsoft.com/detail/9P9TQF7MRM4R
+** Or run powershell: `wsl --update`
+
+* Using WSL2 openSUSE Tumbleweed: https://apps.microsoft.com/detail/9MSSK2ZXXN11
+
+## 1. Install base packages
+```sh
+sudo zypper install --no-confirm \
+    python310 python310-pip \
+    python310-wheel python310-setuptools python310-numpy \
+    git aria2 \
+    Mesa-libGL1 libgthread-2_0-0 
+```
+
+### (optional) Install packages for ComfyUI InstantID
+```sh
+sudo zypper install --no-confirm \
+    python310-devel python310-Cython \
+    gcc-c++ cmake
+```
+
+### (optional) Set proxy if needed
+```sh
+sudo pip3.10 config set global.proxy http://host.docker.internal:1081
+
+sudo pip3.10 install --upgrade pip
+```
+
+## 2. Install Torch-DirectML (with PyTorch)
+```sh
+sudo pip3.10 install --break-system-packages \
+    torch-directml \
+    --index-url https://download.pytorch.org/whl/cpu \
+    --extra-index-url https://pypi.org/simple
+```
+
+## 3. Install deps for ComfyUI
+```sh
+sudo pip3.10 install --break-system-packages \
+    -r https://raw.githubusercontent.com/comfyanonymous/ComfyUI/master/requirements.txt \
+    -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/requirements.txt
+```
+
+### (optional) Install deps for ControlNet Auxiliary Preprocessors
+```sh
+sudo pip3.10 install --break-system-packages \
+    -r https://raw.githubusercontent.com/Fannovel16/comfyui_controlnet_aux/main/requirements.txt \
+    --extra-index-url https://download.pytorch.org/whl/cpu
+```
+
+### (optional) Install deps for ComfyUI InstantID
+```sh
+sudo pip3.10 install --break-system-packages \
+    -r https://raw.githubusercontent.com/ZHO-ZHO-ZHO/ComfyUI-InstantID/main/requirements.txt
+```
+
+## 4. Download ComfyUI
+```sh
+git clone --depth=1 --no-tags --recurse-submodules --shallow-submodules \
+    https://github.com/comfyanonymous/ComfyUI.git
+```
+
+## 5. Download ComfyUI Manager
+```sh
+cd custom_nodes
+git clone --depth=1 --no-tags --recurse-submodules --shallow-submodules \
+    https://github.com/ltdrdata/ComfyUI-Manager.git
+cd ..
+```
+
+### (optional) Download Models
+```sh
+aria2c https://raw.githubusercontent.com/YanWenKun/ComfyUI-Docker/main/scripts/download.txt
+aria2c --allow-overwrite=false --auto-file-renaming=false --continue=true \
+    --max-connection-per-server=5 --input-file=download.txt
+```
+
+## 6. Run ComfyUI
+```sh
+python3.10 main.py --listen --port 8188 --directml
+```
+
+TIP: For <4G VRAM, add arg: --lowvram
+
+NOTE: More CLI args: https://github.com/comfyanonymous/ComfyUI/blob/master/comfy/cli_args.py

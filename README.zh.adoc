@@ -76,6 +76,8 @@ docker pull yanwk/comfyui-boot:latest
 [[rocm]]
 ## 运行方法 - AMD 显卡（尚在实验）
 
+NOTE: AMD/Intel GPU + Win11 可以考虑： *link:docs/wsl-directml.zh.adoc[在 WSL2 环境下通过 DirectML 运行 ComfyUI]*
+
 .方法 C 使用 `docker compose`
 [source,sh]
 ----
