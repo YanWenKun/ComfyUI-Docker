@@ -25,20 +25,17 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         --index-url https://download.pytorch.org/whl/cu121 \
         --extra-index-url https://pypi.org/simple
 
-# Deps for main app
+# Deps for:
+# ComfyUI
+# ComfyUI Manager
+# ComfyUI InstantID
+# ControlNet Auxiliary Preprocessors
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --break-system-packages \
-        -r https://raw.githubusercontent.com/comfyanonymous/ComfyUI/master/requirements.txt
-
-# Deps for ControlNet Auxiliary Preprocessors
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install --break-system-packages \
+        -r https://raw.githubusercontent.com/comfyanonymous/ComfyUI/master/requirements.txt \
+        -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/requirements.txt \
+        -r https://raw.githubusercontent.com/ZHO-ZHO-ZHO/ComfyUI-InstantID/main/requirements.txt \
         -r https://raw.githubusercontent.com/Fannovel16/comfyui_controlnet_aux/main/requirements.txt
-
-# Deps for ComfyUI InstantID
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install --break-system-packages \
-        -r https://raw.githubusercontent.com/ZHO-ZHO-ZHO/ComfyUI-InstantID/main/requirements.txt
 
 # Fix for libs (.so files)
 ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/lib64/python3.11/site-packages/torch/lib"

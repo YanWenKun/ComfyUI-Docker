@@ -21,24 +21,22 @@ RUN --mount=type=cache,target=/var/cache/zypp \
 
 # Install PyTorch nightly
 RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install --break-system-packages --pre torch torchvision \
+    pip install --break-system-packages \
+        --pre torch torchvision \
         --index-url https://download.pytorch.org/whl/nightly/rocm6.0
 
-# Deps for main app
+# Deps for:
+# ComfyUI
+# ComfyUI Manager
+# ComfyUI InstantID
+# ControlNet Auxiliary Preprocessors
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --break-system-packages \
-        -r https://raw.githubusercontent.com/comfyanonymous/ComfyUI/master/requirements.txt
-
-# Deps for ControlNet Auxiliary Preprocessors
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install --break-system-packages \
+        -r https://raw.githubusercontent.com/comfyanonymous/ComfyUI/master/requirements.txt \
+        -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/requirements.txt \
+        -r https://raw.githubusercontent.com/ZHO-ZHO-ZHO/ComfyUI-InstantID/main/requirements.txt \
         -r https://raw.githubusercontent.com/Fannovel16/comfyui_controlnet_aux/main/requirements.txt \
         --extra-index-url https://download.pytorch.org/whl/nightly/rocm6.0
-
-# Deps for ComfyUI InstantID
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install --break-system-packages \
-        -r https://raw.githubusercontent.com/ZHO-ZHO-ZHO/ComfyUI-InstantID/main/requirements.txt
 
 # Create a low-privilege user.
 RUN printf 'CREATE_MAIL_SPOOL=no' > /etc/default/useradd \
