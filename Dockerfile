@@ -56,5 +56,6 @@ USER runner:runner
 VOLUME /home/runner
 WORKDIR /home/runner
 EXPOSE 8188
+ENV PATH="${PATH}:/home/runner/.local/bin"
 ENV CLI_ARGS=""
 CMD ["bash","/home/scripts/entrypoint.sh"]

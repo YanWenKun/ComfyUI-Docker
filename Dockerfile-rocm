@@ -51,5 +51,6 @@ USER runner:runner
 VOLUME /home/runner
 WORKDIR /home/runner
 EXPOSE 8188
+ENV PATH="${PATH}:/home/runner/.local/bin"
 ENV CLI_ARGS="--use-pytorch-cross-attention"
 CMD ["bash","/home/scripts/entrypoint.sh"]
