@@ -70,3 +70,14 @@ https://huggingface.co/stabilityai/control-lora/resolve/main/control-LoRAs-rank1
   out=models/controlnet/control-lora-recolor-rank128.safetensors
 https://huggingface.co/stabilityai/control-lora/resolve/main/control-LoRAs-rank128/control-lora-sketch-rank128-metadata.safetensors
   out=models/controlnet/control-lora-sketch-rank128-metadata.safetensors
+
+# Stable Cascade
+
+https://huggingface.co/stabilityai/stable-cascade/resolve/main/stage_a.safetensors
+  out=models/vae/Stable-Cascade/stage_a.safetensors
+https://huggingface.co/stabilityai/stable-cascade/resolve/main/stage_b_lite.safetensors
+  out=models/unet/Stable-Cascade/stage_b_lite.safetensors
+https://huggingface.co/stabilityai/stable-cascade/resolve/main/stage_c_lite.safetensors
+  out=models/unet/Stable-Cascade/stage_c_lite.safetensors
+https://huggingface.co/stabilityai/stable-cascade/resolve/main/text_encoder/model.safetensors
+  out=models/clip/Stable-Cascade/model.safetensors
