@@ -5,14 +5,14 @@ https://huggingface.co/stabilityai/sd-vae-ft-mse-original/resolve/main/vae-ft-ms
 
 # Upscale
 
-https://github.com/xinntao/Real-ESRGAN/releases/download/v0.1.0/RealESRGAN_x4plus.pth
-  out=models/upscale_models/RealESRGAN_x4plus.pth
-https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.2.4/RealESRGAN_x4plus_anime_6B.pth
-  out=models/upscale_models/RealESRGAN_x4plus_anime_6B.pth
 https://huggingface.co/sberbank-ai/Real-ESRGAN/resolve/main/RealESRGAN_x2.pth
   out=models/upscale_models/RealESRGAN_x2.pth
 https://huggingface.co/sberbank-ai/Real-ESRGAN/resolve/main/RealESRGAN_x4.pth
   out=models/upscale_models/RealESRGAN_x4.pth
+https://huggingface.co/Kim2091/AnimeSharp/resolve/main/4x-AnimeSharp.pth
+  out=models/upscale_models/4x-AnimeSharp.pth
+https://huggingface.co/Kim2091/UltraSharp/resolve/main/4x-UltraSharp.pth
+  out=models/upscale_models/4x-UltraSharp.pth
 
 # Embeddings
 
@@ -29,48 +29,44 @@ https://huggingface.co/stabilityai/control-lora/resolve/main/revision/clip_visio
   out=models/clip_vision/clip_vision_g.safetensors
 
 # ControlNet
+# More models: https://huggingface.co/lllyasviel/sd_control_collection
 
-https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/control_canny-fp16.safetensors
-  out=models/controlnet/control_canny-fp16.safetensors
-https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/control_depth-fp16.safetensors
-  out=models/controlnet/control_depth-fp16.safetensors
-https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/control_hed-fp16.safetensors
-  out=models/controlnet/control_hed-fp16.safetensors
-https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/control_mlsd-fp16.safetensors
-  out=models/controlnet/control_mlsd-fp16.safetensors
-https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/control_normal-fp16.safetensors
-  out=models/controlnet/control_normal-fp16.safetensors
-https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/control_openpose-fp16.safetensors
-  out=models/controlnet/control_openpose-fp16.safetensors
-https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/control_scribble-fp16.safetensors
-  out=models/controlnet/control_scribble-fp16.safetensors
-https://huggingface.co/webui/ControlNet-modules-safetensors/resolve/main/control_seg-fp16.safetensors
-  out=models/controlnet/control_seg-fp16.safetensors
-
-https://huggingface.co/kohya-ss/ControlNet-diff-modules/resolve/main/diff_control_sd15_canny_fp16.safetensors
-  out=models/controlnet/diff_control_sd15_canny_fp16.safetensors
-https://huggingface.co/kohya-ss/ControlNet-diff-modules/resolve/main/diff_control_sd15_depth_fp16.safetensors
-  out=models/controlnet/diff_control_sd15_depth_fp16.safetensors
-https://huggingface.co/kohya-ss/ControlNet-diff-modules/resolve/main/diff_control_sd15_hed_fp16.safetensors
-  out=models/controlnet/diff_control_sd15_hed_fp16.safetensors
-https://huggingface.co/kohya-ss/ControlNet-diff-modules/resolve/main/diff_control_sd15_mlsd_fp16.safetensors
-  out=models/controlnet/diff_control_sd15_mlsd_fp16.safetensors
-https://huggingface.co/kohya-ss/ControlNet-diff-modules/resolve/main/diff_control_sd15_normal_fp16.safetensors
-  out=models/controlnet/diff_control_sd15_normal_fp16.safetensors
-https://huggingface.co/kohya-ss/ControlNet-diff-modules/resolve/main/diff_control_sd15_openpose_fp16.safetensors
-  out=models/controlnet/diff_control_sd15_openpose_fp16.safetensors
-https://huggingface.co/kohya-ss/ControlNet-diff-modules/resolve/main/diff_control_sd15_scribble_fp16.safetensors
-  out=models/controlnet/diff_control_sd15_scribble_fp16.safetensors
-https://huggingface.co/kohya-ss/ControlNet-diff-modules/resolve/main/diff_control_sd15_seg_fp16.safetensors
-  out=models/controlnet/diff_control_sd15_seg_fp16.safetensors
+https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11e_sd15_ip2p.pth
+  out=models/controlnet/control_v11e_sd15_ip2p.pth
+https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11e_sd15_shuffle.pth
+  out=models/controlnet/control_v11e_sd15_shuffle.pth
+https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11f1e_sd15_tile.pth
+  out=models/controlnet/control_v11f1e_sd15_tile.pth
+https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11f1p_sd15_depth.pth
+  out=models/controlnet/control_v11f1p_sd15_depth.pth
+https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_canny.pth
+  out=models/controlnet/control_v11p_sd15_canny.pth
+https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_inpaint.pth
+  out=models/controlnet/control_v11p_sd15_inpaint.pth
+https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_lineart.pth
+  out=models/controlnet/control_v11p_sd15_lineart.pth
+https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_mlsd.pth
+  out=models/controlnet/control_v11p_sd15_mlsd.pth
+https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_normalbae.pth
+  out=models/controlnet/control_v11p_sd15_normalbae.pth
+https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_openpose.pth
+  out=models/controlnet/control_v11p_sd15_openpose.pth
+https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_scribble.pth
+  out=models/controlnet/control_v11p_sd15_scribble.pth
+https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_seg.pth
+  out=models/controlnet/control_v11p_sd15_seg.pth
+https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_softedge.pth
+  out=models/controlnet/control_v11p_sd15_softedge.pth
+https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15s2_lineart_anime.pth
+  out=models/controlnet/control_v11p_sd15s2_lineart_anime.pth
 
 # Control-LoRA
 
-https://huggingface.co/stabilityai/control-lora/resolve/main/control-LoRAs-rank256/control-lora-canny-rank256.safetensors
-  out=models/controlnet/control-lora-canny-rank256.safetensors
-https://huggingface.co/stabilityai/control-lora/resolve/main/control-LoRAs-rank256/control-lora-depth-rank256.safetensors
-  out=models/controlnet/control-lora-depth-rank256.safetensors
-https://huggingface.co/stabilityai/control-lora/resolve/main/control-LoRAs-rank256/control-lora-recolor-rank256.safetensors
-  out=models/controlnet/control-lora-recolor-rank256.safetensors
-https://huggingface.co/stabilityai/control-lora/resolve/main/control-LoRAs-rank256/control-lora-sketch-rank256.safetensors
-  out=models/controlnet/control-lora-sketch-rank256.safetensors
+https://huggingface.co/stabilityai/control-lora/resolve/main/control-LoRAs-rank128/control-lora-canny-rank128.safetensors
+  out=models/controlnet/control-lora-canny-rank128.safetensors
+https://huggingface.co/stabilityai/control-lora/resolve/main/control-LoRAs-rank128/control-lora-depth-rank128.safetensors
+  out=models/controlnet/control-lora-depth-rank128.safetensors
+https://huggingface.co/stabilityai/control-lora/resolve/main/control-LoRAs-rank128/control-lora-recolor-rank128.safetensors
+  out=models/controlnet/control-lora-recolor-rank128.safetensors
+https://huggingface.co/stabilityai/control-lora/resolve/main/control-LoRAs-rank128/control-lora-sketch-rank128-metadata.safetensors
+  out=models/controlnet/control-lora-sketch-rank128-metadata.safetensors
