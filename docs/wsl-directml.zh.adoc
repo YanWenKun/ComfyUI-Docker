@@ -3,12 +3,19 @@
 * AMD/Intel GPU 均可
 ** 经测试在 4800H 的核显上能跑（比纯 CPU 快，比 Linux 下 ROCm 慢）
 
+* 建议使用 Windows 11
+
 * 建议先更新 WSL2 内核: https://apps.microsoft.com/detail/9P9TQF7MRM4R
 ** 或运行 powershell: `wsl --update`
 
 * 本文使用 WSL2 openSUSE Tumbleweed: https://apps.microsoft.com/detail/9MSSK2ZXXN11
+** 在微软商店安装后，在开始菜单中找到 openSUSE Tumbleweed 并打开，按提示完成初始配置即可
+** 也可以运行 powershell 命令安装: `wsl --install openSUSE-Tumbleweed`
 
 ## 1. 安装基础包
+
+NOTE: 因为 DirectML 支持版本所限，使用 Python 3.10
+
 ```sh
 sudo zypper install --no-confirm \
     python310 python310-pip \
@@ -25,11 +32,15 @@ sudo zypper install --no-confirm \
 ```
 
 ### (可选) 设置代理
+.PIP 代理
 ```sh
 sudo pip3.10 config set global.proxy http://host.docker.internal:1081
 
 sudo pip3.10 install --upgrade pip
+```
 
+.临时系统代理
+```sh
 export HTTP_PROXY=http://host.docker.internal:1081
 export HTTPS_PROXY=$HTTP_PROXY
 export http_proxy=$HTTP_PROXY

@@ -14,6 +14,7 @@ services:
     command: "chown -R runner:runner /home/runner"
 
 # Ref: https://hub.docker.com/r/rocm/pytorch
+# Ref: https://rocm.docs.amd.com/projects/install-on-linux/en/latest/how-to/docker.html
 # docker run --device=/dev/kfd --device=/dev/dri \
 #   --group-add=video --ipc=host --cap-add=SYS_PTRACE \
 #   --security-opt seccomp=unconfined

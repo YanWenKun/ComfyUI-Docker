@@ -2,12 +2,19 @@
 
 * Works with AMD/Intel GPU
 
-* Better update WSL first: https://apps.microsoft.com/detail/9P9TQF7MRM4R
+* Recommend using Windows 11
+
+* Recommend updating WSL2 kernel first: https://apps.microsoft.com/detail/9P9TQF7MRM4R
 ** Or run powershell: `wsl --update`
 
 * Using WSL2 openSUSE Tumbleweed: https://apps.microsoft.com/detail/9MSSK2ZXXN11
+** After install, find openSUSE Tumbleweed in Start Menu, follow the guide to configure the Linux user.
+** Or just run powershell: `wsl --install openSUSE-Tumbleweed`
 
 ## 1. Install base packages
+
+NOTE: Using Python 3.10 because of DirectML support
+
 ```sh
 sudo zypper install --no-confirm \
     python310 python310-pip \
@@ -24,10 +31,22 @@ sudo zypper install --no-confirm \
 ```
 
 ### (optional) Set proxy if needed
+.PIP proxy
 ```sh
 sudo pip3.10 config set global.proxy http://host.docker.internal:1081
 
 sudo pip3.10 install --upgrade pip
+```
+
+.Temporary system proxy
+```sh
+export HTTP_PROXY=http://host.docker.internal:1081
+export HTTPS_PROXY=$HTTP_PROXY
+export http_proxy=$HTTP_PROXY
+export https_proxy=$HTTP_PROXY
+export NO_PROXY="localhost,*.local,*.internal,[::1],fd00::/7,
+10.0.0.0/8,127.0.0.0/8,169.254.0.0/16,172.16.0.0/12,192.168.0.0/16"
+export no_proxy=$NO_PROXY
 ```
 
 ## 2. Install Torch-DirectML (with PyTorch)
