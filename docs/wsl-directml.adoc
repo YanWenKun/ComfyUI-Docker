@@ -81,6 +81,7 @@ sudo pip3.10 install --break-system-packages \
 ```sh
 git clone --depth=1 --no-tags --recurse-submodules --shallow-submodules \
     https://github.com/comfyanonymous/ComfyUI.git
+cd ComfyUI
 ```
 
 ## 5. Download ComfyUI Manager
