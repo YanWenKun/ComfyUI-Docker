@@ -5,10 +5,10 @@ https://huggingface.co/stabilityai/sd-vae-ft-mse-original/resolve/main/vae-ft-ms
 
 # Upscale
 
-https://huggingface.co/sberbank-ai/Real-ESRGAN/resolve/main/RealESRGAN_x2.pth
-  out=models/upscale_models/RealESRGAN_x2.pth
-https://huggingface.co/sberbank-ai/Real-ESRGAN/resolve/main/RealESRGAN_x4.pth
-  out=models/upscale_models/RealESRGAN_x4.pth
+https://github.com/xinntao/Real-ESRGAN/releases/download/v0.1.0/RealESRGAN_x4plus.pth
+  out=models/upscale_models/RealESRGAN_x4plus.pth
+https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.2.4/RealESRGAN_x4plus_anime_6B.pth
+  out=models/upscale_models/RealESRGAN_x4plus_anime_6B.pth
 https://huggingface.co/Kim2091/AnimeSharp/resolve/main/4x-AnimeSharp.pth
   out=models/upscale_models/4x-AnimeSharp.pth
 https://huggingface.co/Kim2091/UltraSharp/resolve/main/4x-UltraSharp.pth
@@ -72,12 +72,13 @@ https://huggingface.co/stabilityai/control-lora/resolve/main/control-LoRAs-rank1
   out=models/controlnet/control-lora-sketch-rank128-metadata.safetensors
 
 # Stable Cascade
-
+https://huggingface.co/stabilityai/stable-cascade/resolve/main/comfyui_checkpoints/stable_cascade_stage_c.safetensors
+  out=models/checkpoints/Stable-Cascade/stable_cascade_stage_c.safetensors
+https://huggingface.co/stabilityai/stable-cascade/resolve/main/comfyui_checkpoints/stable_cascade_stage_b.safetensors
+  out=models/checkpoints/Stable-Cascade/stable_cascade_stage_b.safetensors
 https://huggingface.co/stabilityai/stable-cascade/resolve/main/stage_a.safetensors
   out=models/vae/Stable-Cascade/stage_a.safetensors
-https://huggingface.co/stabilityai/stable-cascade/resolve/main/stage_b_lite.safetensors
-  out=models/unet/Stable-Cascade/stage_b_lite.safetensors
-https://huggingface.co/stabilityai/stable-cascade/resolve/main/stage_c_lite.safetensors
-  out=models/unet/Stable-Cascade/stage_c_lite.safetensors
+https://huggingface.co/stabilityai/stable-cascade/resolve/main/effnet_encoder.safetensors
+  out=models/vae/Stable-Cascade/effnet_encoder.safetensors
 https://huggingface.co/stabilityai/stable-cascade/resolve/main/text_encoder/model.safetensors
   out=models/clip/Stable-Cascade/model.safetensors
