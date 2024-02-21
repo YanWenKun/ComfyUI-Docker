@@ -138,13 +138,6 @@ https://github.com/comfyanonymous/ComfyUI/blob/master/comfy/cli_args.py[ComfyUI]
 
 ## 一些方便 Debug 的命令
 
-.编译最新 xFormers 并指定编译到的 NVIDIA GPU 架构
-架构版本号参考 https://arnon.dk/matching-sm-architectures-arch-and-gencode-for-various-nvidia-cards/[Gencode 列表]
-[source,sh]
-----
-docker build . --build-arg TORCH_CUDA_ARCH_LIST="6.0;6.1;6.2;7.0;7.2;7.5;8.0;8.6" -f Dockerfile-xformers -t yanwk/comfyui-boot:xformers
-----
-
 .构建镜像，打印所有日志（不折叠）
 [source,sh]
 ----

@@ -138,13 +138,6 @@ https://github.com/comfyanonymous/ComfyUI/blob/master/comfy/cli_args.py[ComfyUI]
 
 ## Some commands for debugging
 
-.Compile latest xFormers, targeting specific NVIDIA architechtures.
-You may want to check https://arnon.dk/matching-sm-architectures-arch-and-gencode-for-various-nvidia-cards/[Gencode List].
-[source,sh]
-----
-docker build . --build-arg TORCH_CUDA_ARCH_LIST="6.0;6.1;6.2;7.0;7.2;7.5;8.0;8.6" -f Dockerfile-xformers -t yanwk/comfyui-boot:xformers
-----
-
 .Build the image, print all logs to STDOUT.
 [source,sh]
 ----
