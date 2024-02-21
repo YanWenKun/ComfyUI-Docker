@@ -28,6 +28,7 @@ a Stable Diffusion GUI powering node-based workflow.
 ** For AMD GPU see <<rocm, ROCm>>.
 
 * Latest NVIDIA GPU Drivers, Both Game and Studio version will work.
+** Only install drivers on your host OS. You don't need to install drivers inside containers.
 
 * Docker Installed
 ** Windows user could use https://www.docker.com/products/docker-desktop/[Docker Desktop] with WSL2 enabled.

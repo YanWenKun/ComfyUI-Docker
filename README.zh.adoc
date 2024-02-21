@@ -27,6 +27,7 @@ ComfyUI 是一个使用节点工作流的 Stable Diffusion 图形界面。
 ** AMD 显卡见 <<rocm, ROCm>>
 
 * 安装好最新的 NVIDIA 显卡驱动，游戏驱动或 Studio 驱动均可。
+** 只需要在宿主系统中安装驱动即可，容器中不需要再安装驱动。
 
 * 安装好 Docker
 ** Windows 用户建议使用 https://www.docker.com/products/docker-desktop/[Docker Desktop] 并在安装时启用 WSL2，并 https://zhuanlan.zhihu.com/p/345645621[限制内存用量] 。

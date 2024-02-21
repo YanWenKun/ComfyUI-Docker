@@ -1,5 +1,8 @@
 # Compose file for AMD GPU
-# WIP, may not work
+
+# If not working, try DirectML instead:
+# https://github.com/YanWenKun/ComfyUI-Docker/blob/main/docs/wsl-directml.adoc
+
 services:
 
   file-chown:
