@@ -1,4 +1,5 @@
 # Stable Cascade
+
 https://huggingface.co/stabilityai/stable-cascade/resolve/main/comfyui_checkpoints/stable_cascade_stage_c.safetensors
   out=models/checkpoints/stable_cascade_stage_c.safetensors
 https://huggingface.co/stabilityai/stable-cascade/resolve/main/comfyui_checkpoints/stable_cascade_stage_b.safetensors
@@ -29,10 +30,12 @@ https://huggingface.co/lenML/DeepNegative/resolve/main/NG_DeepNegative_V1_75T.pt
 
 # CLIP Vision
 
-https://huggingface.co/openai/clip-vit-large-patch14/resolve/main/pytorch_model.bin
-  out=models/clip_vision/clip_vit14.bin
+https://huggingface.co/openai/clip-vit-large-patch14/resolve/main/model.safetensors
+  out=models/clip_vision/clip_vit14.safetensors
 https://huggingface.co/stabilityai/control-lora/resolve/main/revision/clip_vision_g.safetensors
-  out=models/clip_vision/clip_vision_g.safetensors
+  out=models/clip_vision/control-lora-clip_vision_g.safetensors
+https://huggingface.co/stabilityai/stable-diffusion-2-1-unclip-small/resolve/main/image_encoder/model.safetensors
+  out=models/clip_vision/stable-diffusion-2-1-unclip-small.safetensors
 
 # ControlNet
 # More models: https://huggingface.co/lllyasviel/sd_control_collection
@@ -68,11 +71,11 @@ https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15
 
 # Control-LoRA
 
-https://huggingface.co/stabilityai/control-lora/resolve/main/control-LoRAs-rank128/control-lora-canny-rank128.safetensors
-  out=models/controlnet/control-lora-canny-rank128.safetensors
-https://huggingface.co/stabilityai/control-lora/resolve/main/control-LoRAs-rank128/control-lora-depth-rank128.safetensors
-  out=models/controlnet/control-lora-depth-rank128.safetensors
-https://huggingface.co/stabilityai/control-lora/resolve/main/control-LoRAs-rank128/control-lora-recolor-rank128.safetensors
-  out=models/controlnet/control-lora-recolor-rank128.safetensors
-https://huggingface.co/stabilityai/control-lora/resolve/main/control-LoRAs-rank128/control-lora-sketch-rank128-metadata.safetensors
-  out=models/controlnet/control-lora-sketch-rank128-metadata.safetensors
+https://huggingface.co/stabilityai/control-lora/resolve/main/control-LoRAs-rank256/control-lora-canny-rank256.safetensors
+  out=models/controlnet/control-lora-canny-rank256.safetensors
+https://huggingface.co/stabilityai/control-lora/resolve/main/control-LoRAs-rank256/control-lora-depth-rank256.safetensors
+  out=models/controlnet/control-lora-depth-rank256.safetensors
+https://huggingface.co/stabilityai/control-lora/resolve/main/control-LoRAs-rank256/control-lora-recolor-rank256.safetensors
+  out=models/controlnet/control-lora-recolor-rank256.safetensors
+https://huggingface.co/stabilityai/control-lora/resolve/main/control-LoRAs-rank256/control-lora-sketch-rank256.safetensors
+  out=models/controlnet/control-lora-sketch-rank256.safetensors
