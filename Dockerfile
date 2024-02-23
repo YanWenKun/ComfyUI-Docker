@@ -25,9 +25,8 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         --index-url https://download.pytorch.org/whl/cu121 \
         --extra-index-url https://pypi.org/simple
 
-# Deps for:
-# ComfyUI
-# InstantID, ControlNet Auxiliary Preprocessors
+# Dependencies for: ComfyUI,
+# InstantID, ControlNet Auxiliary Preprocessors,
 # ComfyUI-Manager, Inspire-Pack, Impact-Pack, "Essentials", Efficiency Nodes, Crystools
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --break-system-packages \

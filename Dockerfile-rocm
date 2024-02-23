@@ -25,9 +25,8 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         --pre torch torchvision \
         --index-url https://download.pytorch.org/whl/nightly/rocm6.0
 
-# Deps for:
-# ComfyUI
-# InstantID, ControlNet Auxiliary Preprocessors
+# Dependencies for: ComfyUI,
+# InstantID, ControlNet Auxiliary Preprocessors,
 # ComfyUI-Manager, Inspire-Pack, Impact-Pack, "Essentials", Efficiency Nodes, Crystools
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --break-system-packages \

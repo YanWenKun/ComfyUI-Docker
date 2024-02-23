@@ -147,7 +147,8 @@ docker build . --progress=plain -f Dockerfile -t yanwk/comfyui-boot:latest
 .运行一个一次性容器
 [source,sh]
 ----
-docker run -it --rm --gpus all -p 8188:8188 \
+docker run -it --rm \
+  --gpus all -p 8188:8188 \
   -v "$(pwd)"/storage:/home/runner \
   --env CLI_ARGS="" \
   yanwk/comfyui-boot:latest
@@ -156,9 +157,9 @@ docker run -it --rm --gpus all -p 8188:8188 \
 .用 root 身份运行 bash
 [source,sh]
 ----
-docker run -it --rm --gpus all \
+docker run -it --rm \
+  --gpus all -p 8188:8188 \
   -v "$(pwd)"/storage:/home/runner \
-  -p 8188:8188 \
   -e CLI_ARGS="" \
   --user root \
   yanwk/comfyui-boot:latest /bin/bash
