@@ -19,6 +19,10 @@ RUN --mount=type=cache,target=/var/cache/zypp \
         Mesa-libGL1 libgthread-2_0-0 \
     && rm /usr/lib64/python3.11/EXTERNALLY-MANAGED
 
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install --break-system-packages \
+	    --upgrade pip
+
 # Install PyTorch nightly
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --break-system-packages \

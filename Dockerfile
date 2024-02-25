@@ -21,6 +21,10 @@ RUN --mount=type=cache,target=/var/cache/zypp \
 # Install xFormers (dev version, will install PyTorch as well)
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --break-system-packages \
+	    --upgrade pip
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install --break-system-packages \
         --pre -U xformers \
         --index-url https://download.pytorch.org/whl/cu121 \
         --extra-index-url https://pypi.org/simple
