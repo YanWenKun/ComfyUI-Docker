@@ -18,14 +18,23 @@ RUN --mount=type=cache,target=/var/cache/zypp \
         Mesa-libGL1 libgthread-2_0-0 \
     && rm /usr/lib64/python3.11/EXTERNALLY-MANAGED
 
-# Install xFormers (dev version, will install PyTorch as well)
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --break-system-packages \
 	    --upgrade pip
 
+# Install xFormers (stable version, will specify PyTorch version)
+# and Torchvision + Torchaudio (will downgrade to match xFormers' PyTorch version)
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --break-system-packages \
-        --pre -U xformers \
+        xformers torchvision torchaudio \
+        --index-url https://download.pytorch.org/whl/cu121 \
+        --extra-index-url https://pypi.org/simple
+
+# Upgrade xFormers to dev version
+# (While keeping most dependencies using stable version)
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install --break-system-packages \
+        --pre --upgrade xformers \
         --index-url https://download.pytorch.org/whl/cu121 \
         --extra-index-url https://pypi.org/simple
 
