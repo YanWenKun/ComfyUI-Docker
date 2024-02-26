@@ -20,7 +20,7 @@ RUN --mount=type=cache,target=/var/cache/zypp \
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --break-system-packages \
-	    --upgrade pip
+        --upgrade pip
 
 # Install xFormers (stable version, will specify PyTorch version)
 # and Torchvision + Torchaudio (will downgrade to match xFormers' PyTorch version)

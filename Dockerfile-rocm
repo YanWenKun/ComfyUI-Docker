@@ -21,7 +21,7 @@ RUN --mount=type=cache,target=/var/cache/zypp \
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --break-system-packages \
-	    --upgrade pip
+        --upgrade pip
 
 # Install PyTorch nightly
 RUN --mount=type=cache,target=/root/.cache/pip \

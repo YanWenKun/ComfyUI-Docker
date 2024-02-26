@@ -53,7 +53,7 @@ export no_proxy=$NO_PROXY
 ## 2. 安装 Torch-DirectML (及其所需版本的 PyTorch)
 ```sh
 sudo pip3.10 install --break-system-packages \
-    torch-directml \
+    torch-directml torchvision torchaudio \
     --index-url https://download.pytorch.org/whl/cpu \
     --extra-index-url https://pypi.org/simple
 ```
