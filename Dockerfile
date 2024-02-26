@@ -58,6 +58,7 @@ ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/lib64/python3.11/site-packages/torc
 ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/lib/python3.11/site-packages/nvidia/cufft/lib"
 ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/lib/python3.11/site-packages/nvidia/cuda_runtime/lib"
 ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/lib/python3.11/site-packages/nvidia/cuda_cupti/lib"
+ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/lib/python3.11/site-packages/nvidia/cudnn/lib"
 
 # Create a low-privilege user.
 RUN printf 'CREATE_MAIL_SPOOL=no' > /etc/default/useradd \
