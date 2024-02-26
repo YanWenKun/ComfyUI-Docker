@@ -38,6 +38,16 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         --index-url https://download.pytorch.org/whl/cu121 \
         --extra-index-url https://pypi.org/simple
 
+# Install ONNX Runtime(ORT) for CUDA 12.x
+# ORT is used by DWPose from controlnet_aux. But current PyPI version of ORT only supports CUDA 11.8.
+# This fix should be removed when ORT finished upgrade.
+# https://onnxruntime.ai/docs/install/
+# https://github.com/Fannovel16/comfyui_controlnet_aux/issues/75
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install --break-system-packages \
+        onnxruntime-gpu \
+        --extra-index-url https://aiinfra.pkgs.visualstudio.com/PublicPackages/_packaging/onnxruntime-cuda-12/pypi/simple/
+
 # Dependencies for: ComfyUI,
 # InstantID, ControlNet Auxiliary Preprocessors,
 # ComfyUI-Manager, Inspire-Pack, Impact-Pack, "Essentials", Efficiency Nodes, Crystools
