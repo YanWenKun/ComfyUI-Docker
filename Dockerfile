@@ -31,7 +31,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         --extra-index-url https://pypi.org/simple
 
 # Upgrade xFormers to dev version
-# (While keeping most dependencies using stable version)
+# (While keeping most dependencies at stable version)
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --break-system-packages \
         --pre --upgrade xformers \
@@ -39,10 +39,10 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         --extra-index-url https://pypi.org/simple
 
 # Install ONNX Runtime(ORT) for CUDA 12.x
-# ORT is used by DWPose from controlnet_aux. But current PyPI version of ORT only supports CUDA 11.8.
-# This fix should be removed when ORT finished upgrade.
-# https://onnxruntime.ai/docs/install/
-# https://github.com/Fannovel16/comfyui_controlnet_aux/issues/75
+# ORT is used by DWPose by controlnet_aux. But current ORT release on PyPI only supports CUDA 11.8.
+# This fix should be removed once ORT done upgrade.
+# Ref: https://onnxruntime.ai/docs/install/
+# Ref: https://github.com/Fannovel16/comfyui_controlnet_aux/issues/75
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --break-system-packages \
         onnxruntime-gpu \
@@ -82,8 +82,8 @@ ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\
 :/usr/lib/python3.11/site-packages/nvidia/nvjitlink/lib\
 :/usr/lib/python3.11/site-packages/nvidia/nvtx/lib"
 
-# Create a low-privilege user.
-RUN printf 'CREATE_MAIL_SPOOL=no' > /etc/default/useradd \
+# Create a low-privilege user
+RUN printf 'CREATE_MAIL_SPOOL=no' >> /etc/default/useradd \
     && mkdir -p /home/runner /home/scripts \
     && groupadd runner \
     && useradd runner -g runner -d /home/runner \

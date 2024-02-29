@@ -45,7 +45,7 @@ cd ComfyUI-Docker
 
 docker compose up --detach
 
-# Update image (only when Python components is outdated)
+# Update image (only when Python components are outdated)
 git pull
 docker compose pull
 docker compose up --detach --remove-orphans
@@ -65,7 +65,7 @@ docker run -it \
   --env CLI_ARGS="" \
   yanwk/comfyui-boot:latest
 
-# Update image (only when Python components is outdated)
+# Update image (only when Python components are outdated)
 docker rm comfyui
 docker pull yanwk/comfyui-boot:latest
 # Then re-run 'docker run' above again
@@ -88,7 +88,7 @@ cd ComfyUI-Docker
 
 docker compose -f docker-compose-rocm.yml up --detach
 
-# Update image (only when Python components is outdated)
+# Update image (only when Python components are outdated)
 git pull
 docker compose -f docker-compose-rocm.yml pull
 docker compose -f docker-compose-rocm.yml up --detach --remove-orphans
@@ -111,7 +111,7 @@ docker run -it \
   --security-opt seccomp=unconfined \
   yanwk/comfyui-boot:rocm
 
-# Update image (only when Python components is outdated)
+# Update image (only when Python components are outdated)
 docker rm comfyui
 docker pull yanwk/comfyui-boot:rocm
 # Then re-run 'docker run' above again

@@ -6,7 +6,7 @@
 
 **[中文文档在 GITHUB 上](https://github.com/YanWenKun/ComfyUI-Docker/blob/main/README.zh.adoc)**
 
-Docker image for [ComfyUI](https://github.com/comfyanonymous/ComfyUI) - a Stable Diffusion GUI powering node-based workflow.
+Docker images for [ComfyUI](https://github.com/comfyanonymous/ComfyUI) - a Stable Diffusion GUI powering node-based workflow.
 
 ## Usage - NVIDIA GPU
 
@@ -17,7 +17,7 @@ cd ComfyUI-Docker
 
 docker compose up --detach
 
-# Update image (only when Python components is outdated)
+# Update image (only when Python components are outdated)
 git pull
 docker compose pull
 docker compose up --detach --remove-orphans
@@ -33,7 +33,7 @@ cd ComfyUI-Docker
 
 docker compose -f docker-compose-rocm.yml up --detach
 
-# Update image (only when Python components is outdated)
+# Update image (only when Python components are outdated)
 git pull
 docker compose -f docker-compose-rocm.yml pull
 docker compose -f docker-compose-rocm.yml up --detach --remove-orphans
