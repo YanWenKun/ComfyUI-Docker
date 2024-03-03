@@ -51,6 +51,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # Dependencies for: ComfyUI,
 # InstantID, ControlNet Auxiliary Preprocessors,
 # ComfyUI-Manager, Inspire-Pack, Impact-Pack, "Essentials", Efficiency Nodes, Crystools
+# smZNodes(compel, lark)
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --break-system-packages \
         -r https://raw.githubusercontent.com/comfyanonymous/ComfyUI/master/requirements.txt \
@@ -59,9 +60,11 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/requirements.txt \
         -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Inspire-Pack/main/requirements.txt \
         -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Impact-Pack/Main/requirements.txt \
+        -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Impact-Subpack/main/requirements.txt \
         -r https://raw.githubusercontent.com/cubiq/ComfyUI_essentials/main/requirements.txt \
         -r https://raw.githubusercontent.com/jags111/efficiency-nodes-comfyui/main/requirements.txt \
-        -r https://raw.githubusercontent.com/crystian/ComfyUI-Crystools/main/requirements.txt
+        -r https://raw.githubusercontent.com/crystian/ComfyUI-Crystools/main/requirements.txt \
+        compel lark
 
 # Fix for libs (.so files)
 ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\
