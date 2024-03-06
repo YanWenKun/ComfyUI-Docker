@@ -28,6 +28,6 @@ echo "########################################"
 
 export PATH="${PATH}:/home/runner/.local/bin"
 
-cd /home/runner/ComfyUI
+cd /home/runner
 
-python3 main.py --listen --port 8188 ${CLI_ARGS}
+python3 ./ComfyUI/main.py --listen --port 8188 ${CLI_ARGS}
