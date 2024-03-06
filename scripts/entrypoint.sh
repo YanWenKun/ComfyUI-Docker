@@ -10,6 +10,18 @@ if [ ! -f "/home/runner/.download-complete" ] ; then
     bash /home/scripts/download.sh
 fi ;
 
+if [ -f "/home/runner/scripts/pre-start.sh" ]; then
+    echo "########################################"
+    echo "Checking for pre-start script..."
+    echo "########################################"
+    
+    chmod +x /home/runner/scripts/pre-start.sh
+    bash /home/runner/scripts/pre-start.sh
+else
+    echo "No pre-start script found. Skipping."
+fi
+
+
 echo "########################################"
 echo "Starting ComfyUI..."
 echo "########################################"
