@@ -27,8 +27,9 @@ a Stable Diffusion GUI powering node-based workflow.
 ** For 4GB see <<q-n-a, Q & A>>.
 ** For AMD GPU see <<rocm, ROCm>>.
 
-* Latest NVIDIA GPU Drivers, Both Game and Studio version will work.
-** Only install drivers on your host OS. You don't need to install drivers inside containers.
+* Latest NVIDIA GPU driver
+** Either Game or Studio edition will work.
+** You don't need to install drivers inside containers. Just make sure it's working on your host OS.
 
 * Docker Installed
 ** Windows user could use https://www.docker.com/products/docker-desktop/[Docker Desktop] with WSL2 enabled.
@@ -138,7 +139,7 @@ https://github.com/comfyanonymous/ComfyUI/blob/master/comfy/cli_args.py[ComfyUI]
 
 ## Some commands for debugging
 
-.Build the image, print all logs to STDOUT.
+.Build the image, print all logs to STDOUT
 [source,sh]
 ----
 docker build . --progress=plain -f Dockerfile -t yanwk/comfyui-boot:latest
@@ -149,7 +150,7 @@ docker build . --progress=plain -f Dockerfile -t yanwk/comfyui-boot:latest
 ----
 docker run -it --rm \
   --gpus all -p 8188:8188 \
-  -v "$(pwd)"/storage:/home/runner \
+  --volume "$(pwd)"/storage:/home/runner \
   --env CLI_ARGS="" \
   yanwk/comfyui-boot:latest
 ----
@@ -159,11 +160,19 @@ docker run -it --rm \
 ----
 docker run -it --rm \
   --gpus all -p 8188:8188 \
-  -v "$(pwd)"/storage:/home/runner \
-  -e CLI_ARGS="" \
+  --volume "$(pwd)"/storage:/home/runner \
+  --env CLI_ARGS="" \
   --user root \
   yanwk/comfyui-boot:latest /bin/bash
 ----
+
+### Pre-start script
+
+You can create your own pre-start script at
+----
+./storage/scripts/pre-start.sh
+----
+It will run before ComfyUI starts, handy for debugging.
 
 
 ## License

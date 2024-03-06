@@ -2,24 +2,25 @@
 
 set -e
 
+# Install ComfyUI
 cd /home/runner
-
-# Install ComfyUI.
 if [ ! -f "/home/runner/.download-complete" ] ; then
     chmod +x /home/scripts/download.sh
     bash /home/scripts/download.sh
 fi ;
 
-if [ -f "/home/runner/scripts/pre-start.sh" ]; then
+# Run user's pre-start script
+cd /home/runner
+if [ -f "/home/runner/scripts/pre-start.sh" ] ; then
     echo "########################################"
-    echo "Checking for pre-start script..."
+    echo "Running pre-start script..."
     echo "########################################"
-    
+
     chmod +x /home/runner/scripts/pre-start.sh
     bash /home/runner/scripts/pre-start.sh
 else
     echo "No pre-start script found. Skipping."
-fi
+fi ;
 
 
 echo "########################################"

@@ -26,7 +26,8 @@ ComfyUI 是一个使用节点工作流的 Stable Diffusion 图形界面。
 ** 4GB 方法见 <<q-n-a, Q & A>>
 ** AMD 显卡见 <<rocm, ROCm>>
 
-* 安装好最新的 NVIDIA 显卡驱动，游戏驱动或 Studio 驱动均可。
+* 安装好最新的 NVIDIA 显卡驱动
+** 游戏驱动或 Studio 驱动均可。
 ** 只需要在宿主系统中安装驱动即可，容器中不需要再安装驱动。
 
 * 安装好 Docker
@@ -149,7 +150,7 @@ docker build . --progress=plain -f Dockerfile -t yanwk/comfyui-boot:latest
 ----
 docker run -it --rm \
   --gpus all -p 8188:8188 \
-  -v "$(pwd)"/storage:/home/runner \
+  --volume "$(pwd)"/storage:/home/runner \
   --env CLI_ARGS="" \
   yanwk/comfyui-boot:latest
 ----
@@ -159,10 +160,17 @@ docker run -it --rm \
 ----
 docker run -it --rm \
   --gpus all -p 8188:8188 \
-  -v "$(pwd)"/storage:/home/runner \
-  -e CLI_ARGS="" \
+  --volume "$(pwd)"/storage:/home/runner \
+  --env CLI_ARGS="" \
   --user root \
   yanwk/comfyui-boot:latest /bin/bash
+----
+
+### 预启动脚本
+
+如果需要在 ComfyUI 启动前执行脚本，可以创建这个文件：
+----
+./storage/scripts/pre-start.sh
 ----
 
 
