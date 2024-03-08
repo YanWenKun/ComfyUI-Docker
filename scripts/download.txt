@@ -9,6 +9,10 @@ https://huggingface.co/stabilityai/stable-cascade/resolve/main/comfyui_checkpoin
 
 https://huggingface.co/stabilityai/sd-vae-ft-mse-original/resolve/main/vae-ft-mse-840000-ema-pruned.safetensors
   out=models/vae/vae-ft-mse-840000-ema-pruned.safetensors
+https://huggingface.co/madebyollin/taesd/resolve/main/taesd_decoder.safetensors
+  out=models/vae_approx/taesd_decoder.safetensors
+https://huggingface.co/madebyollin/taesdxl/resolve/main/taesdxl_decoder.safetensors
+  out=models/vae_approx/taesdxl_decoder.safetensors
 
 # Upscale
 
