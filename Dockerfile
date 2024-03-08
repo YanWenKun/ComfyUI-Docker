@@ -50,7 +50,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 
 # Dependencies for: ComfyUI,
 # InstantID, ControlNet Auxiliary Preprocessors,
-# ComfyUI-Manager, Inspire-Pack, Impact-Pack, "Essentials", Efficiency Nodes, Crystools
+# ComfyUI-Manager, Inspire-Pack, Impact-Pack, "Essentials", Efficiency Nodes, Crystools,
 # smZNodes(compel, lark)
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --break-system-packages \

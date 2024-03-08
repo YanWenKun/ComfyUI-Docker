@@ -6,6 +6,12 @@ https://huggingface.co/stabilityai/stable-cascade/resolve/main/comfyui_checkpoin
 https://huggingface.co/stabilityai/stable-cascade/resolve/main/comfyui_checkpoints/stable_cascade_stage_b.safetensors
   dir=models/checkpoints
   out=stable_cascade_stage_b.safetensors
+https://huggingface.co/stabilityai/stable-cascade/resolve/main/controlnet/canny.safetensors
+  dir=models/controlnet
+  out=stable_cascade_canny.safetensors
+https://huggingface.co/stabilityai/stable-cascade/resolve/main/controlnet/inpainting.safetensors
+  dir=models/controlnet
+  out=stable_cascade_inpainting.safetensors
 
 # VAE
 
@@ -55,7 +61,7 @@ https://huggingface.co/stabilityai/stable-diffusion-2-1-unclip-small/resolve/mai
   dir=models/clip_vision
   out=stable-diffusion-2-1-unclip-small.safetensors
 
-# ControlNet
+# ControlNet v1.1
 # More models: https://huggingface.co/lllyasviel/sd_control_collection
 
 https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11e_sd15_ip2p.pth
