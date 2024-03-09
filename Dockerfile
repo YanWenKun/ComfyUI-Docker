@@ -22,21 +22,27 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --break-system-packages \
         --upgrade pip
 
-# Install xFormers (stable version, will specify PyTorch version)
-# and Torchvision + Torchaudio (will downgrade to match xFormers' PyTorch version)
+# Install PyTorch
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --break-system-packages \
-        xformers torchvision torchaudio \
+        torch torchvision torchaudio \
         --index-url https://download.pytorch.org/whl/cu121 \
         --extra-index-url https://pypi.org/simple
 
-# Upgrade xFormers to dev version
-# (While keeping most dependencies at stable version)
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install --break-system-packages \
-        --pre --upgrade xformers \
-        --index-url https://download.pytorch.org/whl/cu121 \
-        --extra-index-url https://pypi.org/simple
+# For anyone who want to use xFormers, uncomment code block below, and comment "PyTorch" part above.
+# This code block will be removed in future.
+## Install xFormers (stable version, will specify PyTorch version),
+## and Torchvision + Torchaudio (will downgrade to match xFormers' PyTorch version).
+## Then upgrade xFormers to dev version, while keeping most dependencies at stable version.
+# RUN --mount=type=cache,target=/root/.cache/pip \
+#     pip install --break-system-packages \
+#         xformers torchvision torchaudio \
+#         --index-url https://download.pytorch.org/whl/cu121 \
+#         --extra-index-url https://pypi.org/simple \
+#     && pip install --break-system-packages \
+#         --pre --upgrade xformers \
+#         --index-url https://download.pytorch.org/whl/cu121 \
+#         --extra-index-url https://pypi.org/simple
 
 # Install ONNX Runtime(ORT) for CUDA 12.x
 # ORT is used by DWPose by controlnet_aux. But current ORT release on PyPI only supports CUDA 11.8.
