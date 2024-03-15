@@ -10,17 +10,18 @@ LABEL maintainer="code@yanwk.fun"
 # Note: GCC for InsightFace, FFmpeg for video
 RUN --mount=type=cache,target=/var/cache/zypp \
     set -eu \
-    && zypper install --no-confirm --details \
+    && zypper install --no-confirm \
         python311 python311-pip python311-wheel python311-setuptools \
         python311-devel python311-Cython gcc-c++ cmake \
         python311-av python311-ffmpeg-python python311-numpy ffmpeg \
+        google-noto-sans-fonts google-noto-sans-cjk-fonts google-noto-coloremoji-fonts \
         shadow git aria2 \
         Mesa-libGL1 libgthread-2_0-0 \
     && rm /usr/lib64/python3.11/EXTERNALLY-MANAGED
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --break-system-packages \
-        --upgrade pip
+        --upgrade pip wheel setuptools Cython numpy
 
 # Install PyTorch
 RUN --mount=type=cache,target=/root/.cache/pip \
