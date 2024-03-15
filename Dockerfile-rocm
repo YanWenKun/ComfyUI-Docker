@@ -26,12 +26,12 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # Install PyTorch nightly
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --break-system-packages \
-        --pre torch torchvision \
+        --pre torch torchvision torchaudio \
         --index-url https://download.pytorch.org/whl/nightly/rocm6.0
 
 # Dependencies for: ComfyUI,
 # InstantID, ControlNet Auxiliary Preprocessors,
-# ComfyUI-Manager, Inspire-Pack, Impact-Pack, "Essentials", Efficiency Nodes, Crystools
+# ComfyUI-Manager, Inspire-Pack, Impact-Pack, "Essentials", Efficiency Nodes, Crystools,
 # smZNodes(compel, lark)
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --break-system-packages \
