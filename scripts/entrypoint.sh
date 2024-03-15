@@ -17,7 +17,7 @@ if [ -f "/home/runner/scripts/pre-start.sh" ] ; then
     echo "########################################"
 
     chmod +x /home/runner/scripts/pre-start.sh
-    bash /home/runner/scripts/pre-start.sh
+    source /home/runner/scripts/pre-start.sh
 else
     echo "No pre-start script found. Skipping."
 fi ;
