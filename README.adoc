@@ -207,7 +207,8 @@ The rootless way. Inside the pod, Podman will mount volume as root, the program 
 tee storage/run.sh >/dev/null <<'EOF'
 #!/bin/bash
 set -e
-ln -sf  /root  /home/runner
+ln -sf  /root/.*  /home/runner
+ln -sf  /root/*  /home/runner
 cd /root
 if [ ! -f "/root/bin/activate" ] ; then
     python3 -m venv --system-site-packages .
@@ -228,6 +229,7 @@ podman run -it --rm \
   -p 8188:8188 \
   -v "$(pwd)"/storage:/root \
   --user root \
+  --workdir /root \
   -e CLI_ARGS="" \
   yanwk/comfyui-boot /bin/bash /root/run.sh
 ----
