@@ -28,7 +28,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --break-system-packages \
         xformers torchvision torchaudio \
         --index-url https://download.pytorch.org/whl/cu121 \
-        --extra-index-url https://pypi.org/simple \
+        --extra-index-url https://pypi.org/simple
 
 # Upgrade xFormers to dev version, while keeping most deps at stable version.
 RUN --mount=type=cache,target=/root/.cache/pip \
