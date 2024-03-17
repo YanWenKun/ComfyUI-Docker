@@ -34,7 +34,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: Dockerfile-dev
+          file: docs/Dockerfile-dev
           tags: yanwk/comfyui-boot:dev
           push: true
 
