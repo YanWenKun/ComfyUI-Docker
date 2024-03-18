@@ -248,7 +248,7 @@ podman run -it --rm \
 ====
 Note that most dependencies are bundled in the image, you don't need to manually install them. +
 (Except https://pypi.org/project/imageio-ffmpeg/[imageio-ffmpeg]
-which uses FFmpeg4. The image came with latest FFmpeg6 or newer.)
+which uses FFmpeg4. The image came with FFmpeg6 or newer.)
 
 [source,sh]
 ----
@@ -284,7 +284,7 @@ https://github.com/WASasquatch/was-node-suite-comfyui[WAS Node Suite],
 because it has some deps version
 https://github.com/WASasquatch/was-node-suite-comfyui/blob/main/requirements.txt[fixed],
 and is not under active development. +
-However, this image's script only install one custom node (ComfyUI-Manager). In a new deployment, you can safely install WAS NS via ComfyUI-Manager. If anything conflicts, just delete unwanted custom nodes and `.local` folder, and update/try fix/reinstall custom nodes in ComfyUI-Manager.
+However, the image's script only install one custom node (ComfyUI-Manager). In a new deployment, you can safely install WAS NS via ComfyUI-Manager. If anything conflicts, just delete unwanted custom nodes and `.local` folder, and update/try fix/reinstall custom nodes in ComfyUI-Manager.
 ====
 
 

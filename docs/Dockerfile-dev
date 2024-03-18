@@ -30,23 +30,12 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         --index-url https://download.pytorch.org/whl/cu121 \
         --extra-index-url https://pypi.org/simple
 
-# Upgrade xFormers to dev version, while keeping most deps at stable version.
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install --break-system-packages \
-        --pre --upgrade xformers \
-        --index-url https://download.pytorch.org/whl/cu121 \
-        --extra-index-url https://pypi.org/simple
-
-# Install ONNX Runtime(ORT) for CUDA 12.x
-# ORT is used by DWPose by controlnet_aux. But current ORT release on PyPI only supports CUDA 11.8.
-# This fix should be removed once ORT done upgrade.
-# Ref: https://onnxruntime.ai/docs/install/
-# Ref: https://github.com/Fannovel16/comfyui_controlnet_aux/issues/75
+# Handle some deps first
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --break-system-packages \
         onnxruntime onnxruntime-gpu \
-        --index-url https://aiinfra.pkgs.visualstudio.com/PublicPackages/_packaging/onnxruntime-cuda-12/pypi/simple/ \
-        --extra-index-url https://pypi.org/simple
+        transformers ultralytics \
+        python-ffmpeg
 
 # Dependencies for: ComfyUI,
 # InstantID, ControlNet Auxiliary Preprocessors, Frame Interpolation,
