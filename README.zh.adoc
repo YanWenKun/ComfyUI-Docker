@@ -134,6 +134,9 @@ A: 参数换成 `--novram` （直接用 CPU 内存）。
 Q: 能不能直接用 CPU 来跑？ +
 A: 在启动参数 `CLI_ARGS` 中添加 `--cpu` ，会很慢。
 
+Q: 我不想用 xFormers，如何使用 PyTorch 原生交叉注意力机制？ +
+A: 在启动参数 `CLI_ARGS` 中添加 `--use-pytorch-cross-attention` 。在 WSL2 上可能速度／显存占用表现更佳，但在 Linux 宿主机上会明显更慢。
+
 更多 `CLI_ARGS` 参考 
 https://github.com/comfyanonymous/ComfyUI/blob/master/comfy/cli_args.py[ComfyUI] 。
 
@@ -170,20 +173,21 @@ docker run -it --rm \
 
 ### 使用 Podman 运行
 
-Podman 默认是 root-less 的，不需要 sudo，这也 
-https://www.tutorialworks.com/podman-rootless-volumes/[给挂载目录带来了限制] 
-。Podman 默认挂载文件为 root 身份，而想要挂载为容器内非 root 用户，
-https://docs.podman.io/en/latest/markdown/podman-run.1.html#mount-type-type-type-specific-option[Podman 提供的选项]
-则会把主机上的文件给 chown 掉，变成和容器内一样的 uid 和 gid，这可算不上好操作。
+Podman 默认是 root-less 的，不需要 sudo，这也给挂载目录 
+https://www.tutorialworks.com/podman-rootless-volumes/[带来了限制] 。 +
+Podman 默认挂载文件为 root 身份，而想要在容器内挂载为非 root 用户，Podman 提供的
+https://docs.podman.io/en/latest/markdown/podman-run.1.html#mount-type-type-type-specific-option[选项]
+则会对主机上的文件执行 `chown`，变成和容器内一样的 uid 和 gid，给文件管理带来混乱。
 
-这里推荐两种方式绕过：
+这里推荐两种不同的方式绕过：
 
 #### 1. 像 Docker 一样 "root-ful"
 
 .展开细节
 [%collapsible]
 ====
-简单直接的方式，用 "sudo" 来运行 Podman 就是 rootful 了，剩下的基本和 Docker 一样，就是记得后续操作也要用 "sudo"。
+简单直接的方式，用 `sudo` 来运行 Podman 就是 rootful 了，使用体验基本和 Docker 一样，就是记得后续操作也要用 "sudo"。 +
+此外镜像文件也是下载到 root 用户名下，而非当前 Linux 用户。
 
 [source,sh]
 ----
@@ -203,18 +207,18 @@ sudo podman run -it --rm \
 .展开细节
 [%collapsible]
 ====
-保持 rootless 风格，容器内文件挂载为 root，程序也以 root 执行。而在主机一侧看来，文件还是本来的用户所有权，也不需要 sudo。
+保持 rootless 风格，不需要 sudo。容器内文件挂载为 root，程序也以 root 执行。而在宿主机一侧看来，文件还是本来的用户所有权。
 
-.初次创建脚本 run.sh
+.创建启动脚本 run.sh
 [source,sh]
 ----
-tee storage/run.sh >/dev/null <<'EOF'
+tee ./storage/run.sh >/dev/null <<'EOF'
 #!/bin/bash
 set -e
 ln -sf  /root/.*  /home/runner
 ln -sf  /root/*  /home/runner
 cd /root
-if [ ! -f "/root/bin/activate" ] ; then
+if [ ! -f "/root/bin/python3.11" ] ; then
     python3 -m venv --system-site-packages .
 fi ;
 source /root/bin/activate
@@ -223,7 +227,7 @@ source /home/scripts/entrypoint.sh
 EOF
 ----
 
-.运行启动
+.启动容器
 [source,sh]
 ----
 podman run -it --rm \
@@ -235,44 +239,57 @@ podman run -it --rm \
   --user root \
   --workdir /root \
   -e CLI_ARGS="" \
-  yanwk/comfyui-boot /bin/bash /root/run.sh
+  yanwk/comfyui-boot:latest \
+  /bin/bash /root/run.sh
 ----
 ====
 
 
 ### 一些自定义节点
 
-.安装一大堆节点，也许能帮你节省点时间
+.以下命令会安装一些常用节点，也许能帮你节省点时间
 [%collapsible]
 ====
+镜像里已经安装好了绝大部分依赖项，不需要手动安装。 +
+（除了 https://pypi.org/project/imageio-ffmpeg/[imageio-ffmpeg]，
+该包使用 FFmpeg4，而镜像里安装了 FFmpeg6 或更新版本）
+
 [source,sh]
 ----
 cd ComfyUI/custom_nodes/
 
 gcs='git clone --depth=1 --no-tags --recurse-submodules --shallow-submodules'
 
+$gcs https://github.com/bash-j/mikey_nodes.git
+$gcs https://github.com/chrisgoringe/cg-use-everywhere.git
+$gcs https://github.com/crystian/ComfyUI-Crystools.git
+$gcs https://github.com/cubiq/ComfyUI_essentials.git
+$gcs https://github.com/cubiq/ComfyUI_IPAdapter_plus.git
+$gcs https://github.com/Fannovel16/comfyui_controlnet_aux.git
+$gcs https://github.com/Fannovel16/ComfyUI-Frame-Interpolation.git
+$gcs https://github.com/FizzleDorf/ComfyUI_FizzNodes.git
+$gcs https://github.com/jags111/efficiency-nodes-comfyui.git
 $gcs https://github.com/Kosinkadink/ComfyUI-Advanced-ControlNet.git
 $gcs https://github.com/Kosinkadink/ComfyUI-AnimateDiff-Evolved.git
 $gcs https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git
-$gcs https://github.com/FizzleDorf/ComfyUI_FizzNodes.git
-$gcs https://github.com/ZHO-ZHO-ZHO/ComfyUI-InstantID.git
-$gcs https://github.com/Fannovel16/comfyui_controlnet_aux.git
 $gcs https://github.com/ltdrdata/ComfyUI-Impact-Pack.git
 $gcs https://github.com/ltdrdata/ComfyUI-Inspire-Pack.git
-$gcs https://github.com/shiimizu/ComfyUI_smZNodes.git
-$gcs https://github.com/crystian/ComfyUI-Crystools.git
-$gcs https://github.com/jags111/efficiency-nodes-comfyui.git
-$gcs https://github.com/cubiq/ComfyUI_essentials.git
-$gcs https://github.com/chrisgoringe/cg-use-everywhere.git
 $gcs https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git
 $gcs https://github.com/pythongosssss/ComfyUI-WD14-Tagger.git
-$gcs https://github.com/bash-j/mikey_nodes.git
-$gcs https://github.com/twri/sdxl_prompt_styler.git
 $gcs https://github.com/rgthree/rgthree-comfy.git
-$gcs https://github.com/Fannovel16/ComfyUI-Frame-Interpolation.git
-$gcs https://github.com/cubiq/ComfyUI_IPAdapter_plus.git
+$gcs https://github.com/shiimizu/ComfyUI_smZNodes.git
 $gcs https://github.com/SLAPaper/ComfyUI-Image-Selector.git
+$gcs https://github.com/twri/sdxl_prompt_styler.git
+$gcs https://github.com/ZHO-ZHO-ZHO/ComfyUI-InstantID.git
 ----
+
+此外，本镜像并未提供
+https://github.com/WASasquatch/was-node-suite-comfyui[WAS Node Suite]
+所需依赖项，因为其部分
+https://github.com/WASasquatch/was-node-suite-comfyui/blob/main/requirements.txt[版本固定]，
+而且已不再活跃开发。 +
+但是通过 ComfyUI-Manager 正常安装不受影响。本镜像的脚本只安装 ComfyUI-Manager 这一个自定义节点，在全新部署的情况下，使用 ComfyUI-Manager 安装 WAS NS 不会有版本冲突。 +
+如果不同节点间出现冲突，尝试在 `custom_nodes` 下删除对应节点，并删除 `.local` 目录，然后在 ComfyUI-Manager 中更新／尝试修复／重新安装对应节点。
 ====
 
 
