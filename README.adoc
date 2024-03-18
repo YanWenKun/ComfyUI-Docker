@@ -1,6 +1,8 @@
 # Docker image for ComfyUI
 
-image::https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-regular.yml/badge.svg["GitHub Workflow Status"]
+image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-latest.yml/badge.svg["GitHub Workflow Status"]
+image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-rocm.yml/badge.svg["GitHub Workflow Status"]
+image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-dev.yml/badge.svg["GitHub Workflow Status"]
 
 image::docs/chart-concept.svg["Concept Design"]
 
@@ -104,7 +106,6 @@ mkdir -p storage
 
 docker run -it \
   --name comfyui \
-  --gpus all \
   -p 8188:8188 \
   -v "$(pwd)"/storage:/home/runner \
   --env CLI_ARGS="--use-pytorch-cross-attention" \

@@ -1,6 +1,7 @@
 # ComfyUI
 
-[![GitHub Workflow Status](https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-regular.yml/badge.svg)](https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-regular.yml)
+[![GitHub Workflow Status](https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-latest.yml/badge.svg)](https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-latest.yml)
+[![GitHub Workflow Status](https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-rocm.yml/badge.svg)](https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-rocm.yml)
 
 **[CHECK THE GITHUB REPO](https://github.com/YanWenKun/ComfyUI-Docker)**
 
@@ -11,33 +12,31 @@ Docker images for [ComfyUI](https://github.com/comfyanonymous/ComfyUI) - a Stabl
 ## Usage - NVIDIA GPU
 
 ```sh
-git clone https://github.com/YanWenKun/ComfyUI-Docker.git
+mkdir -p storage
 
-cd ComfyUI-Docker
-
-docker compose up --detach
-
-# Update image (only when Python components are outdated)
-git pull
-docker compose pull
-docker compose up --detach --remove-orphans
-docker image prune
+docker run -it --rm \
+  --name comfyui \
+  --gpus all \
+  -p 8188:8188 \
+  -v "$(pwd)"/storage:/home/runner \
+  -e CLI_ARGS="" \
+  yanwk/comfyui-boot:latest
 ```
 
 ## Usage - AMD GPU (Experimental)
 
 ```sh
-git clone https://github.com/YanWenKun/ComfyUI-Docker.git
+mkdir -p storage
 
-cd ComfyUI-Docker
-
-docker compose -f docker-compose-rocm.yml up --detach
-
-# Update image (only when Python components are outdated)
-git pull
-docker compose -f docker-compose-rocm.yml pull
-docker compose -f docker-compose-rocm.yml up --detach --remove-orphans
-docker image prune
+docker run -it --rm \
+  --name comfyui \
+  -p 8188:8188 \
+  -v "$(pwd)"/storage:/home/runner \
+  -e CLI_ARGS="--use-pytorch-cross-attention" \
+  --device=/dev/kfd --device=/dev/dri \
+  --group-add=video --ipc=host --cap-add=SYS_PTRACE \
+  --security-opt seccomp=unconfined \
+  yanwk/comfyui-boot:rocm
 ```
 
 ## More

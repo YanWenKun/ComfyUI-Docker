@@ -1,11 +1,24 @@
-name: Publish "dev" tag to Docker Hub
+name: Publish "latest" tag to Docker Hub
 
 on: 
   workflow_dispatch: # Can be manually triggered
+  schedule: # Runs on every Monday, 07:00 UTC
+    - cron: '0 7 * * 1'
+  push: 
+    branches: [ main ]
+    paths-ignore:
+      - 'docker-compose*.yml'
+      - 'Dockerfile-rocm'
+      - 'README*'
+      - 'docs/**'
+      - 'storage/**'
+      - '.github/**'
+      - '!.github/workflows/build-regular.yml'
+
 
 jobs:
 
-  build-publish-dev:
+  build-publish-latest:
     environment: Publish to Docker Hub
     runs-on: ubuntu-latest
     steps:
@@ -30,11 +43,10 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_ACCESSTOKEN }}
       -
-        name: Build and push 'dev'
+        name: Build and push 'latest'
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: docs/Dockerfile-dev
-          tags: yanwk/comfyui-boot:dev
+          file: Dockerfile
+          tags: yanwk/comfyui-boot:latest
           push: true
-

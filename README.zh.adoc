@@ -1,15 +1,16 @@
-# Docker image for ComfyUI
+# 用于 ComfyUI 的 Docker 镜像
 
-image::https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-regular.yml/badge.svg["GitHub Workflow Status"]
+image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-latest.yml/badge.svg["GitHub Workflow Status"]
+image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-rocm.yml/badge.svg["GitHub Workflow Status"]
+image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-dev.yml/badge.svg["GitHub Workflow Status"]
 
 image::docs/chart-concept.zh.svg["布局"]
 
-用于
 https://github.com/comfyanonymous/ComfyUI[ComfyUI]
-的
-https://hub.docker.com/r/yanwk/comfyui-boot[Docker 镜像] 。
-
-ComfyUI 是一个使用节点工作流的 Stable Diffusion 图形界面。
+是一个使用节点工作流的 Stable Diffusion 图形界面。 +
+本仓库所构建的
+https://hub.docker.com/r/yanwk/comfyui-boot[Docker 镜像]
+包含其依赖项，及下载／启动脚本。
 
 
 ## 工作流程
@@ -104,7 +105,6 @@ mkdir -p storage
 
 docker run -it \
   --name comfyui \
-  --gpus all \
   -p 8188:8188 \
   -v "$(pwd)"/storage:/home/runner \
   --env CLI_ARGS="--use-pytorch-cross-attention" \
