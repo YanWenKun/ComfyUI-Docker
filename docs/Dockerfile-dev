@@ -16,7 +16,7 @@ RUN --mount=type=cache,target=/var/cache/zypp \
         google-noto-sans-fonts google-noto-sans-cjk-fonts google-noto-coloremoji-fonts \
         shadow git aria2 \
         Mesa-libGL1 libgthread-2_0-0 \
-        fish \
+        fish vim \
     && rm /usr/lib64/python3.11/EXTERNALLY-MANAGED
 
 RUN --mount=type=cache,target=/root/.cache/pip \
@@ -59,6 +59,20 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         -r https://raw.githubusercontent.com/crystian/ComfyUI-Crystools/main/requirements.txt \
         -r https://raw.githubusercontent.com/FizzleDorf/ComfyUI_FizzNodes/main/requirements.txt \
         compel lark
+
+# Fix ONNX Runtime missing CUDA provider. Then fix MediaPipe's dep.
+# Re-install ONNX Runtime(ORT) for CUDA 12.x
+# ORT is used by DWPose by controlnet_aux. But current ORT release on PyPI only supports CUDA 11.8.
+# This fix should be removed once ORT done upgrade.
+# Ref: https://onnxruntime.ai/docs/install/
+# Ref: https://github.com/Fannovel16/comfyui_controlnet_aux/issues/75
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install --break-system-packages \
+        --force-reinstall onnxruntime-gpu \
+        --index-url https://aiinfra.pkgs.visualstudio.com/PublicPackages/_packaging/onnxruntime-cuda-12/pypi/simple/ \
+        --extra-index-url https://pypi.org/simple \
+    && pip install --break-system-packages \
+        mediapipe
 
 # Fix for libs (.so files)
 ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\
