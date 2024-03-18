@@ -31,24 +31,6 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         --index-url https://download.pytorch.org/whl/cu121 \
         --extra-index-url https://pypi.org/simple
 
-# Upgrade xFormers to dev version, while keeping most deps at stable version.
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install --break-system-packages \
-        --pre --upgrade xformers \
-        --index-url https://download.pytorch.org/whl/cu121 \
-        --extra-index-url https://pypi.org/simple
-
-# Install ONNX Runtime(ORT) for CUDA 12.x
-# ORT is used by DWPose by controlnet_aux. But current ORT release on PyPI only supports CUDA 11.8.
-# This fix should be removed once ORT done upgrade.
-# Ref: https://onnxruntime.ai/docs/install/
-# Ref: https://github.com/Fannovel16/comfyui_controlnet_aux/issues/75
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install --break-system-packages \
-        onnxruntime onnxruntime-gpu \
-        --index-url https://aiinfra.pkgs.visualstudio.com/PublicPackages/_packaging/onnxruntime-cuda-12/pypi/simple/ \
-        --extra-index-url https://pypi.org/simple
-
 # Dependencies for: ComfyUI,
 # InstantID, ControlNet Auxiliary Preprocessors, Frame Interpolation,
 # ComfyUI-Manager, Inspire-Pack, Impact-Pack, "Essentials", Face Analysis,
@@ -69,7 +51,17 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         -r https://raw.githubusercontent.com/jags111/efficiency-nodes-comfyui/main/requirements.txt \
         -r https://raw.githubusercontent.com/crystian/ComfyUI-Crystools/main/requirements.txt \
         -r https://raw.githubusercontent.com/FizzleDorf/ComfyUI_FizzNodes/main/requirements.txt \
-        compel lark
+        compel lark \
+        python-ffmpeg
+
+# Fix missing CUDA provider for ONNX Runtime. Then fix deps for MediaPipe (it requires Protobuf <4).
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install --break-system-packages \
+        --force-reinstall onnxruntime-gpu \
+        --index-url https://aiinfra.pkgs.visualstudio.com/PublicPackages/_packaging/onnxruntime-cuda-12/pypi/simple/ \
+        --extra-index-url https://pypi.org/simple \
+    && pip install --break-system-packages \
+        mediapipe
 
 # Fix for libs (.so files)
 ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\
