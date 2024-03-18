@@ -1,4 +1,4 @@
-name: Publish "rocm" tag to Docker Hub
+name: Publish 'rocm' to Docker Hub
 
 on: 
   workflow_dispatch: # Can be manually triggered

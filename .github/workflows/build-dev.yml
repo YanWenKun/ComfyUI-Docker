@@ -1,4 +1,4 @@
-name: Publish "dev" tag to Docker Hub
+name: Publish 'dev' to Docker Hub
 
 on: 
   workflow_dispatch: # Can be manually triggered

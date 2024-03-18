@@ -1,4 +1,4 @@
-name: Publish "latest" tag to Docker Hub
+name: Publish 'latest' to Docker Hub
 
 on: 
   workflow_dispatch: # Can be manually triggered
