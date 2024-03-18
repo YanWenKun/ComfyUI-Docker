@@ -12,6 +12,9 @@ https://huggingface.co/stabilityai/stable-cascade/resolve/main/controlnet/canny.
 https://huggingface.co/stabilityai/stable-cascade/resolve/main/controlnet/inpainting.safetensors
   dir=models/controlnet
   out=stable_cascade_inpainting.safetensors
+https://huggingface.co/stabilityai/stable-cascade/resolve/main/controlnet/super_resolution.safetensors
+  dir=models/controlnet
+  out=stable_cascade_super_resolution.safetensors
 
 # VAE
 
@@ -39,6 +42,12 @@ https://huggingface.co/Kim2091/AnimeSharp/resolve/main/4x-AnimeSharp.pth
 https://huggingface.co/Kim2091/UltraSharp/resolve/main/4x-UltraSharp.pth
   dir=models/upscale_models
   out=4x-UltraSharp.pth
+https://huggingface.co/gemasai/4x_NMKD-Siax_200k/resolve/main/4x_NMKD-Siax_200k.pth
+  dir=models/upscale_models
+  out=4x_NMKD-Siax_200k.pth
+https://huggingface.co/uwg/upscaler/resolve/main/ESRGAN/8x_NMKD-Superscale_150000_G.pth
+  dir=models/upscale_models
+  out=8x_NMKD-Superscale_150000_G.pth
 
 # Embeddings
 
@@ -57,8 +66,11 @@ https://huggingface.co/openai/clip-vit-large-patch14/resolve/main/model.safetens
 https://huggingface.co/stabilityai/control-lora/resolve/main/revision/clip_vision_g.safetensors
   dir=models/clip_vision
   out=control-lora-clip_vision_g.safetensors
+
+# unCLIP
+
 https://huggingface.co/stabilityai/stable-diffusion-2-1-unclip-small/resolve/main/image_encoder/model.safetensors
-  dir=models/clip_vision
+  dir=models/checkpoints
   out=stable-diffusion-2-1-unclip-small.safetensors
 
 # ControlNet v1.1
