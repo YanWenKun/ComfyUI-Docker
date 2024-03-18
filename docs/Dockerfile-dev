@@ -16,6 +16,7 @@ RUN --mount=type=cache,target=/var/cache/zypp \
         google-noto-sans-fonts google-noto-sans-cjk-fonts google-noto-coloremoji-fonts \
         shadow git aria2 \
         Mesa-libGL1 libgthread-2_0-0 \
+        fish \
     && rm /usr/lib64/python3.11/EXTERNALLY-MANAGED
 
 RUN --mount=type=cache,target=/root/.cache/pip \
@@ -34,7 +35,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --break-system-packages \
         onnxruntime onnxruntime-gpu \
-        transformers ultralytics \
+        accelerate pandas transformers ultralytics \
         python-ffmpeg
 
 # Dependencies for: ComfyUI,
