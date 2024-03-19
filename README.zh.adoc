@@ -209,25 +209,6 @@ sudo podman run -it --rm \
 ====
 保持 rootless 风格，不需要 sudo。容器内文件挂载为 root，程序也以 root 执行。而在宿主机一侧看来，文件还是本来的用户所有权。
 
-.创建启动脚本 run.sh
-[source,sh]
-----
-tee ./storage/run.sh >/dev/null <<'EOF'
-#!/bin/bash
-set -e
-ln -sf  /root/.*  /home/runner
-ln -sf  /root/*  /home/runner
-cd /root
-if [ ! -f "/root/bin/python3.11" ] ; then
-    python3 -m venv --system-site-packages .
-fi ;
-source /root/bin/activate
-chmod +x /home/scripts/entrypoint.sh
-source /home/scripts/entrypoint.sh
-EOF
-----
-
-.启动容器
 [source,sh]
 ----
 podman run -it --rm \
@@ -240,7 +221,7 @@ podman run -it --rm \
   --workdir /root \
   -e CLI_ARGS="" \
   yanwk/comfyui-boot:latest \
-  /bin/bash /root/run.sh
+  /bin/bash /home/scripts/root-wrapper.sh
 ----
 ====
 

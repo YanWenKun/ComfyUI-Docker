@@ -184,7 +184,7 @@ I recommend two different ways to workaround:
 [%collapsible]
 ====
 The straightforward way. By adding `sudo` you go from rootless to rootful. And everything else would be the same as using Docker. +
-Note that Podman will download images to root, not current user.
+Note that Podman will download images to root, not the user.
 
 [source,sh]
 ----
@@ -206,25 +206,6 @@ sudo podman run -it --rm \
 ====
 The rootless way, no sudo needed. Inside the pod, Podman will mount volume as root, scripts will run as root. And from the host side, we see files keep their original ownership.
 
-.Create run.sh
-[source,sh]
-----
-tee ./storage/run.sh >/dev/null <<'EOF'
-#!/bin/bash
-set -e
-ln -sf  /root/.*  /home/runner
-ln -sf  /root/*  /home/runner
-cd /root
-if [ ! -f "/root/bin/python3.11" ] ; then
-    python3 -m venv --system-site-packages .
-fi ;
-source /root/bin/activate
-chmod +x /home/scripts/entrypoint.sh
-source /home/scripts/entrypoint.sh
-EOF
-----
-
-.Run
 [source,sh]
 ----
 podman run -it --rm \
@@ -237,7 +218,7 @@ podman run -it --rm \
   --workdir /root \
   -e CLI_ARGS="" \
   yanwk/comfyui-boot:latest \
-  /bin/bash /root/run.sh
+  /bin/bash /home/scripts/root-wrapper.sh
 ----
 ====
 
