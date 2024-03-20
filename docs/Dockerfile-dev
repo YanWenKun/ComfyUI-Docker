@@ -12,7 +12,7 @@ RUN --mount=type=cache,target=/var/cache/zypp \
     && zypper install --no-confirm \
         python311 python311-pip python311-wheel python311-setuptools \
         python311-devel python311-Cython gcc-c++ cmake \
-        python311-av python311-ffmpeg-python python311-numpy ffmpeg \
+        python311-imageio-ffmpeg python311-numpy \
         google-noto-sans-fonts google-noto-sans-cjk-fonts google-noto-coloremoji-fonts \
         shadow git aria2 \
         Mesa-libGL1 libgthread-2_0-0 \
@@ -30,13 +30,6 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         xformers torchvision torchaudio \
         --index-url https://download.pytorch.org/whl/cu121 \
         --extra-index-url https://pypi.org/simple
-
-# Handle some deps first
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install --break-system-packages \
-        onnxruntime onnxruntime-gpu \
-        accelerate pandas transformers ultralytics \
-        python-ffmpeg
 
 # Dependencies for: ComfyUI,
 # InstantID, ControlNet Auxiliary Preprocessors, Frame Interpolation,
