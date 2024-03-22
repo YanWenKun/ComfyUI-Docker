@@ -2,6 +2,11 @@ name: Publish 'dev' to Docker Hub
 
 on: 
   workflow_dispatch: # Can be manually triggered
+  push: 
+    branches: [ main ]
+    paths-ignore:
+      - '**'
+      - '!docs/Dockerfile-dev'
 
 jobs:
 
