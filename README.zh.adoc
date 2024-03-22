@@ -2,7 +2,6 @@
 
 image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-latest.yml/badge.svg["GitHub Workflow Status"]
 image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-rocm.yml/badge.svg["GitHub Workflow Status"]
-image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-dev.yml/badge.svg["GitHub Workflow Status"]
 
 image::docs/chart-concept.zh.svg["布局"]
 
@@ -191,6 +190,8 @@ https://docs.podman.io/en/latest/markdown/podman-run.1.html#mount-type-type-type
 
 [source,sh]
 ----
+mkdir -p storage
+
 sudo podman run -it --rm \
   --name comfyui-rootful \
   --device nvidia.com/gpu=all \
@@ -198,7 +199,7 @@ sudo podman run -it --rm \
   -p 8188:8188 \
   -v "$(pwd)"/storage:/home/runner \
   -e CLI_ARGS="" \
-  yanwk/comfyui-boot
+  docker.io/yanwk/comfyui-boot
 ----
 ====
 
@@ -211,6 +212,8 @@ sudo podman run -it --rm \
 
 [source,sh]
 ----
+mkdir -p storage
+
 podman run -it --rm \
   --name comfyui-rootless \
   --device nvidia.com/gpu=all \
@@ -220,7 +223,7 @@ podman run -it --rm \
   --user root \
   --workdir /root \
   -e CLI_ARGS="" \
-  yanwk/comfyui-boot:latest \
+  docker.io/yanwk/comfyui-boot:latest \
   /bin/bash /home/scripts/root-wrapper.sh
 ----
 ====
@@ -269,8 +272,8 @@ https://github.com/WASasquatch/was-node-suite-comfyui[WAS Node Suite]
 所需依赖项，因为其部分
 https://github.com/WASasquatch/was-node-suite-comfyui/blob/main/requirements.txt[版本固定]，
 而且已不再活跃开发。 +
-但是通过 ComfyUI-Manager 正常安装不受影响。本镜像的脚本只安装 ComfyUI-Manager 这一个自定义节点，在全新部署的情况下，使用 ComfyUI-Manager 安装 WAS NS 不会有版本冲突。 +
-如果不同节点间出现冲突，尝试在 `custom_nodes` 下删除对应节点，并删除 `.local` 目录，然后在 ComfyUI-Manager 中更新／尝试修复／重新安装对应节点。
+但是通过 ComfyUI-Manager 正常安装不受影响，本镜像的脚本只安装 ComfyUI-Manager 这一个自定义节点。在全新部署的情况下，使用 ComfyUI-Manager 安装 WAS NS 不会有版本冲突。 +
+如果不同节点间出现冲突，尝试在 `custom_nodes` 下删除对应节点，并删除 `.local` （或 `local`）目录，然后在 ComfyUI-Manager 中更新／尝试修复／重新安装对应节点。
 ====
 
 
