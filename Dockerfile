@@ -10,10 +10,13 @@ LABEL maintainer="code@yanwk.fun"
 # Note: GCC for InsightFace, FFmpeg for video
 RUN --mount=type=cache,target=/var/cache/zypp \
     set -eu \
-    && zypper install --no-confirm \
+    && zypper addrepo --check --refresh --priority 90 \
+        'https://ftp.gwdg.de/pub/linux/misc/packman/suse/openSUSE_Tumbleweed/Essentials/' packman-essentials \
+    && zypper --gpg-auto-import-keys \
+            install --no-confirm \
         python311 python311-pip python311-wheel python311-setuptools \
         python311-devel python311-Cython gcc-c++ cmake \
-        python311-av python311-ffmpeg-python python311-numpy ffmpeg \
+        python311-ffmpeg-python python311-numpy ffmpeg x264 x265 \
         google-noto-sans-fonts google-noto-sans-cjk-fonts google-noto-coloremoji-fonts \
         shadow git aria2 \
         Mesa-libGL1 libgthread-2_0-0 \
