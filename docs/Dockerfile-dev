@@ -9,7 +9,7 @@ LABEL maintainer="code@yanwk.fun"
 # Note: GCC for InsightFace, FFmpeg for video
 RUN --mount=type=cache,target=/var/cache/zypp \
     set -eu \
-    && zypper addrepo --check --refresh \
+    && zypper addrepo --check --refresh --priority 90 \
         'https://ftp.gwdg.de/pub/linux/misc/packman/suse/openSUSE_Tumbleweed/Essentials/' packman-essentials \
     && zypper --gpg-auto-import-keys \
             install --no-confirm \
