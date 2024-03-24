@@ -10,7 +10,7 @@ ln -sf  /root/*  /home/runner
 cd /root
 
 if [ ! -f "/root/bin/python3.11" ] ; then
-    python3 -m venv --system-site-packages --upgrade-deps .
+    python3 -m venv --system-site-packages .
 fi ;
 source /root/bin/activate
 
