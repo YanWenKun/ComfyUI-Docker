@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "########################################"
-echo "Downloading ComfyUI & components..."
+echo "[INFO] Downloading ComfyUI & Manager..."
 echo "########################################"
 
 set -euxo pipefail
@@ -17,6 +17,10 @@ cd /home/runner/ComfyUI/custom_nodes
 git clone --depth=1 --no-tags --recurse-submodules --shallow-submodules \
     https://github.com/ltdrdata/ComfyUI-Manager.git \
     || (cd /home/runner/ComfyUI/custom_nodes/ComfyUI-Manager && git pull)
+
+echo "########################################"
+echo "[INFO] Downloading Models..."
+echo "########################################"
 
 # Models
 cd /home/runner/ComfyUI

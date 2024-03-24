@@ -273,7 +273,7 @@ However, the image's script only install one custom node (ComfyUI-Manager). You 
 ====
 
 
-### Pre-start script
+### Pre-start scripts
 
 You can create your own pre-start script at
 ----
@@ -281,6 +281,10 @@ You can create your own pre-start script at
 ----
 It will run before ComfyUI starts, handy for debugging.
 
+Also, if you need to setup proxy, this script will start before `pre-start` and `download` :
+----
+./storage/scripts/set-proxy.sh
+----
 
 ## License
 
