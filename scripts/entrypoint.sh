@@ -28,6 +28,7 @@ echo "Starting ComfyUI..."
 echo "########################################"
 
 export PATH="${PATH}:/home/runner/.local/bin"
+export PYTHONPYCACHEPREFIX="/home/runner/.cache/pycache"
 
 cd /home/runner
 
