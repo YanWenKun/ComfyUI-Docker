@@ -34,35 +34,44 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         --index-url https://download.pytorch.org/whl/cu121 \
         --extra-index-url https://pypi.org/simple
 
-# Dependencies for: ComfyUI,
-# InstantID, ControlNet Auxiliary Preprocessors, Frame Interpolation,
-# ComfyUI-Manager, Inspire-Pack, Impact-Pack, "Essentials", Face Analysis,
-# Efficiency Nodes, Crystools, FizzNodes, smZNodes(compel, lark)
+# Dependencies with few extra:
+# 'cupy-cuda12x' for Frame Interpolation
+# 'compel lark' for smZNodes
+# 'torchdiffeq' for DepthFM
+# 'fairscale' for APISR
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --break-system-packages \
         -r https://raw.githubusercontent.com/comfyanonymous/ComfyUI/master/requirements.txt \
-        -r https://raw.githubusercontent.com/ZHO-ZHO-ZHO/ComfyUI-InstantID/main/requirements.txt \
+        -r https://raw.githubusercontent.com/crystian/ComfyUI-Crystools/main/requirements.txt \
+        -r https://raw.githubusercontent.com/cubiq/ComfyUI_essentials/main/requirements.txt \
+        -r https://raw.githubusercontent.com/cubiq/ComfyUI_FaceAnalysis/main/requirements.txt \
         -r https://raw.githubusercontent.com/Fannovel16/comfyui_controlnet_aux/main/requirements.txt \
         -r https://raw.githubusercontent.com/Fannovel16/ComfyUI-Frame-Interpolation/main/requirements-no-cupy.txt \
         cupy-cuda12x \
-        -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/requirements.txt \
-        -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Inspire-Pack/main/requirements.txt \
+        -r https://raw.githubusercontent.com/FizzleDorf/ComfyUI_FizzNodes/main/requirements.txt \
+        -r https://raw.githubusercontent.com/jags111/efficiency-nodes-comfyui/main/requirements.txt \
+        -r https://raw.githubusercontent.com/kijai/ComfyUI-KJNodes/main/requirements.txt \
         -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Impact-Pack/Main/requirements.txt \
         -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Impact-Subpack/main/requirements.txt \
-        -r https://raw.githubusercontent.com/cubiq/ComfyUI_essentials/main/requirements.txt \
-        -r https://raw.githubusercontent.com/cubiq/ComfyUI_FaceAnalysis/main/requirements.txt \
-        -r https://raw.githubusercontent.com/jags111/efficiency-nodes-comfyui/main/requirements.txt \
-        -r https://raw.githubusercontent.com/crystian/ComfyUI-Crystools/main/requirements.txt \
-        -r https://raw.githubusercontent.com/FizzleDorf/ComfyUI_FizzNodes/main/requirements.txt \
-        compel lark \
+        -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Inspire-Pack/main/requirements.txt \
+        -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/requirements.txt \
+        -r https://raw.githubusercontent.com/MrForExample/ComfyUI-3D-Pack/main/requirements.txt \
+        -r https://raw.githubusercontent.com/storyicon/comfyui_segment_anything/main/requirements.txt \
+        -r https://raw.githubusercontent.com/ZHO-ZHO-ZHO/ComfyUI-InstantID/main/requirements.txt \
+        compel lark torchdiffeq fairscale \
         python-ffmpeg
 
-# Fix ONNX Runtime missing CUDA provider. Then fix MediaPipe's dep.
-# Re-install ONNX Runtime(ORT) for CUDA 12.x
-# ORT is used by DWPose by controlnet_aux. But current ORT release on PyPI only supports CUDA 11.8.
-# This fix should be removed once ORT done upgrade.
-# Ref: https://onnxruntime.ai/docs/install/
-# Ref: https://github.com/Fannovel16/comfyui_controlnet_aux/issues/75
+# Additional step for ComfyUI-3D-Pack
+RUN --mount=type=cache,target=/root/.cache/pip \
+    git clone --depth=1 --no-tags --recurse-submodules --shallow-submodules \
+        https://github.com/MrForExample/ComfyUI-3D-Pack.git \
+        /tmp/ComfyUI-3D-Pack \
+    && pip install --break-system-packages \
+        -r /tmp/ComfyUI-3D-Pack/requirements_post.txt
+
+# 1. Fix ONNX Runtime "missing CUDA provider". Also add support for CUDA 12.1.
+#    Ref: https://onnxruntime.ai/docs/install/
+# 2. Fix MediaPipe's broken dep(protobuf<4).
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --break-system-packages \
         --force-reinstall onnxruntime-gpu \
