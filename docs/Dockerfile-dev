@@ -66,8 +66,10 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     git clone --depth=1 --no-tags --recurse-submodules --shallow-submodules \
         https://github.com/MrForExample/ComfyUI-3D-Pack.git \
         /tmp/ComfyUI-3D-Pack \
+    && cd /tmp/ComfyUI-3D-Pack \
     && pip install --break-system-packages \
-        -r /tmp/ComfyUI-3D-Pack/requirements_post.txt
+        -r /tmp/ComfyUI-3D-Pack/requirements_post.txt \
+    && cd
 
 # 1. Fix ONNX Runtime "missing CUDA provider". Also add support for CUDA 12.1.
 #    Ref: https://onnxruntime.ai/docs/install/
