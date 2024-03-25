@@ -183,7 +183,8 @@ I recommend two different ways to workaround:
 [%collapsible]
 ====
 The straightforward way. By adding `sudo` you go from rootless to rootful. And everything else would be the same as using Docker. +
-Note that Podman will download images to root, not the user.
+Note that sudo Podman will download images to root space. If you already downloaded the image in current user, you can local-copy it: +
+`sudo podman image scp username@localhost::docker.io/yanwk/comfyui-boot:latest`
 
 [source,sh]
 ----

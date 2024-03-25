@@ -186,7 +186,8 @@ https://docs.podman.io/en/latest/markdown/podman-run.1.html#mount-type-type-type
 [%collapsible]
 ====
 简单直接的方式，用 `sudo` 来运行 Podman 就是 rootful 了，使用体验基本和 Docker 一样，就是记得后续操作也要用 "sudo"。 +
-此外镜像文件也是下载到 root 用户名下，而非当前 Linux 用户。
+此外镜像文件也是下载到 root 用户名下。如果已经用当前 Linux 用户下载了镜像，可以本地复制： +
+`sudo podman image scp username@localhost::docker.io/yanwk/comfyui-boot:latest`
 
 [source,sh]
 ----
