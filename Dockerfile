@@ -37,7 +37,8 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # Dependencies for: ComfyUI,
 # InstantID, ControlNet Auxiliary Preprocessors, Frame Interpolation,
 # ComfyUI-Manager, Inspire-Pack, Impact-Pack, "Essentials", Face Analysis,
-# Efficiency Nodes, Crystools, FizzNodes, smZNodes(compel, lark)
+# Efficiency Nodes, Crystools, FizzNodes, smZNodes(compel, lark),
+# DepthFM(torchdiffeq), APISR(fairscale)
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --break-system-packages \
         -r https://raw.githubusercontent.com/comfyanonymous/ComfyUI/master/requirements.txt \
@@ -54,7 +55,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         -r https://raw.githubusercontent.com/jags111/efficiency-nodes-comfyui/main/requirements.txt \
         -r https://raw.githubusercontent.com/crystian/ComfyUI-Crystools/main/requirements.txt \
         -r https://raw.githubusercontent.com/FizzleDorf/ComfyUI_FizzNodes/main/requirements.txt \
-        compel lark \
+        compel lark torchdiffeq fairscale \
         python-ffmpeg
 
 # Fix missing CUDA provider for ONNX Runtime. Then fix deps for MediaPipe (it requires Protobuf <4).
