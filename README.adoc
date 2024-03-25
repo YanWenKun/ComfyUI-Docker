@@ -225,6 +225,18 @@ podman run -it --rm \
 ----
 ====
 
+### Clean up cache files
+
+If having issues when updating, try clean cache. +
+Usually this is not needed. Some custom nodes use `huggingface_hub` to download models and store them in `.cache`.
+
+[source,sh]
+----
+docker exec -it --workdir /home/runner  comfyui \
+  rm -rf .cache/ .config/ .local/ .nv/ bin/ include/ lib/ lib64 pyvenv.cfg
+
+docker restart comfyui
+----
 
 ### Some custom nodes
 

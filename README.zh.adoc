@@ -228,6 +228,17 @@ podman run -it --rm \
 ----
 ====
 
+### 清理缓存文件
+
+如果在升级时遇到奇怪问题，可以尝试清理缓存文件。平时不需要清理，避免反复下载一些文件（尤其一些节点用 `huggingface_hub` 下载模型，会存在 `.cache` 中）。
+
+[source,sh]
+----
+docker exec -it --workdir /home/runner  comfyui \
+  rm -rf .cache/ .config/ .local/ .nv/ bin/ include/ lib/ lib64 pyvenv.cfg
+
+docker restart comfyui
+----
 
 ### 一些自定义节点
 
