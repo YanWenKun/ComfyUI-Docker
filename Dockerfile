@@ -34,27 +34,32 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         --index-url https://download.pytorch.org/whl/cu121 \
         --extra-index-url https://pypi.org/simple
 
-# Dependencies with few hand-pick:
+# Dependencies for frequently-used
+# (Do this firstly so PIP won't solving too many deps at one time)
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install --break-system-packages \
+        -r https://raw.githubusercontent.com/comfyanonymous/ComfyUI/master/requirements.txt \
+        -r https://raw.githubusercontent.com/crystian/ComfyUI-Crystools/main/requirements.txt \
+        -r https://raw.githubusercontent.com/cubiq/ComfyUI_essentials/main/requirements.txt \
+        -r https://raw.githubusercontent.com/Fannovel16/comfyui_controlnet_aux/main/requirements.txt \
+        -r https://raw.githubusercontent.com/jags111/efficiency-nodes-comfyui/main/requirements.txt \
+        -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Impact-Pack/Main/requirements.txt \
+        -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Impact-Subpack/main/requirements.txt \
+        -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Inspire-Pack/main/requirements.txt \
+        -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/requirements.txt
+
+# Dependencies for more, with few hand-pick:
 # 'cupy-cuda12x' for Frame Interpolation
 # 'compel lark' for smZNodes
 # 'torchdiffeq' for DepthFM
 # 'fairscale' for APISR
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --break-system-packages \
-        -r https://raw.githubusercontent.com/comfyanonymous/ComfyUI/master/requirements.txt \
-        -r https://raw.githubusercontent.com/crystian/ComfyUI-Crystools/main/requirements.txt \
-        -r https://raw.githubusercontent.com/cubiq/ComfyUI_essentials/main/requirements.txt \
         -r https://raw.githubusercontent.com/cubiq/ComfyUI_FaceAnalysis/main/requirements.txt \
-        -r https://raw.githubusercontent.com/Fannovel16/comfyui_controlnet_aux/main/requirements.txt \
         -r https://raw.githubusercontent.com/Fannovel16/ComfyUI-Frame-Interpolation/main/requirements-no-cupy.txt \
         cupy-cuda12x \
         -r https://raw.githubusercontent.com/FizzleDorf/ComfyUI_FizzNodes/main/requirements.txt \
-        -r https://raw.githubusercontent.com/jags111/efficiency-nodes-comfyui/main/requirements.txt \
         -r https://raw.githubusercontent.com/kijai/ComfyUI-KJNodes/main/requirements.txt \
-        -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Impact-Pack/Main/requirements.txt \
-        -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Impact-Subpack/main/requirements.txt \
-        -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Inspire-Pack/main/requirements.txt \
-        -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/requirements.txt \
         -r https://raw.githubusercontent.com/melMass/comfy_mtb/main/requirements.txt \
         -r https://raw.githubusercontent.com/MrForExample/ComfyUI-3D-Pack/main/requirements.txt \
         -r https://raw.githubusercontent.com/storyicon/comfyui_segment_anything/main/requirements.txt \
