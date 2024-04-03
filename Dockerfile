@@ -17,6 +17,7 @@ RUN --mount=type=cache,target=/var/cache/zypp \
         python311 python311-pip python311-wheel python311-setuptools \
         python311-devel python311-Cython gcc-c++ cmake \
         python311-ffmpeg-python python311-numpy ffmpeg x264 x265 \
+        python311-dbm \
         google-noto-sans-fonts google-noto-sans-cjk-fonts google-noto-coloremoji-fonts \
         shadow git aria2 \
         Mesa-libGL1 libgthread-2_0-0 \
