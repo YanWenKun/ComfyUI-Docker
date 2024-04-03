@@ -29,14 +29,17 @@ docker run -it --rm \
 mkdir -p storage
 
 docker run -it --rm \
-  --name comfyui \
-  -p 8188:8188 \
-  -v "$(pwd)"/storage:/home/runner \
-  -e CLI_ARGS="--use-pytorch-cross-attention" \
+  --name comfyui-root \
   --device=/dev/kfd --device=/dev/dri \
   --group-add=video --ipc=host --cap-add=SYS_PTRACE \
   --security-opt seccomp=unconfined \
-  yanwk/comfyui-boot:rocm
+  --security-opt label=disable \
+  -p 8188:8188 \
+  --env CLI_ARGS="--use-pytorch-cross-attention" \
+  --user root --workdir /root \
+  -v "$(pwd)"/storage:/root \
+  yanwk/comfyui-boot:rocm \
+  /bin/bash /home/scripts/root-wrapper.sh
 ```
 
 ## More

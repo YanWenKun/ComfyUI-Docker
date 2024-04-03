@@ -2,9 +2,10 @@
 
 image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-latest.yml/badge.svg["GitHub Workflow Status"]
 image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-rocm.yml/badge.svg["GitHub Workflow Status"]
-*link:README.zh.adoc[＞💡中文说明点我💡＜]*
 
 image::docs/chart-concept.svg["Concept Design"]
+
+*link:README.zh.adoc[＞💡中文说明点我💡＜]*
 
 This repo is for 
 https://hub.docker.com/r/yanwk/comfyui-boot[Docker images] 
@@ -103,25 +104,23 @@ docker compose -f docker-compose-rocm.yml up --detach --remove-orphans
 docker image prune
 ----
 
-.D. Using `docker run`
+.D. Using `docker run` (as root)
 [source,sh]
 ----
 mkdir -p storage
 
-docker run -it \
-  --name comfyui \
-  -p 8188:8188 \
-  -v "$(pwd)"/storage:/home/runner \
-  --env CLI_ARGS="--use-pytorch-cross-attention" \
+docker run -it --rm \
+  --name comfyui-root \
   --device=/dev/kfd --device=/dev/dri \
   --group-add=video --ipc=host --cap-add=SYS_PTRACE \
   --security-opt seccomp=unconfined \
-  yanwk/comfyui-boot:rocm
-
-# Update image (only when Python components are outdated)
-docker rm comfyui
-docker pull yanwk/comfyui-boot:rocm
-# Then re-run 'docker run' above again
+  --security-opt label=disable \
+  -p 8188:8188 \
+  --env CLI_ARGS="--use-pytorch-cross-attention" \
+  --user root --workdir /root \
+  -v "$(pwd)"/storage:/root \
+  yanwk/comfyui-boot:rocm \
+  /bin/bash /home/scripts/root-wrapper.sh
 ----
 
 Once the app is loaded, visit http://localhost:8188/

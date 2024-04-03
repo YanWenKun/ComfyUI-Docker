@@ -102,25 +102,23 @@ docker compose -f docker-compose-rocm.yml up --detach --remove-orphans
 docker image prune
 ----
 
-.方法 D 使用 `docker run`
+.方法 D 使用 `docker run`（root 身份）
 [source,sh]
 ----
 mkdir -p storage
 
-docker run -it \
-  --name comfyui \
-  -p 8188:8188 \
-  -v "$(pwd)"/storage:/home/runner \
-  --env CLI_ARGS="--use-pytorch-cross-attention" \
+docker run -it --rm \
+  --name comfyui-root \
   --device=/dev/kfd --device=/dev/dri \
   --group-add=video --ipc=host --cap-add=SYS_PTRACE \
   --security-opt seccomp=unconfined \
-  yanwk/comfyui-boot:rocm
-
-# 更新镜像（仅在 Python 组件版本过期时需要）
-docker rm comfyui
-docker pull yanwk/comfyui-boot:rocm
-# 接下来再运行一遍上述 'docker run' 即可
+  --security-opt label=disable \
+  -p 8188:8188 \
+  --env CLI_ARGS="--use-pytorch-cross-attention" \
+  --user root --workdir /root \
+  -v "$(pwd)"/storage:/root \
+  yanwk/comfyui-boot:rocm \
+  /bin/bash /home/scripts/root-wrapper.sh
 ----
 
 启动完成后，访问 http://localhost:8188/

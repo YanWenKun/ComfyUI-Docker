@@ -48,3 +48,4 @@ services:
       - SYS_PTRACE
     security_opt:
       - seccomp:unconfined
+      - label:disable
