@@ -36,7 +36,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         --extra-index-url https://pypi.org/simple
 
 # Dependencies for frequently-used
-# (Do this firstly so PIP won't solving too many deps at one time)
+# (Do this firstly so PIP won't be solving too many deps at one time)
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --break-system-packages \
         -r https://raw.githubusercontent.com/comfyanonymous/ComfyUI/master/requirements.txt \
@@ -57,6 +57,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --break-system-packages \
         -r https://raw.githubusercontent.com/cubiq/ComfyUI_FaceAnalysis/main/requirements.txt \
+        -r https://raw.githubusercontent.com/cubiq/ComfyUI_InstantID/main/requirements.txt \
         -r https://raw.githubusercontent.com/Fannovel16/ComfyUI-Frame-Interpolation/main/requirements-no-cupy.txt \
         cupy-cuda12x \
         -r https://raw.githubusercontent.com/FizzleDorf/ComfyUI_FizzNodes/main/requirements.txt \

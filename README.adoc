@@ -2,10 +2,9 @@
 
 image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-latest.yml/badge.svg["GitHub Workflow Status"]
 image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-rocm.yml/badge.svg["GitHub Workflow Status"]
+*link:README.zh.adoc[＞💡中文说明点我💡＜]*
 
 image::docs/chart-concept.svg["Concept Design"]
-
-*link:README.zh.adoc[>> 中文文档 <<]*
 
 This repo is for 
 https://hub.docker.com/r/yanwk/comfyui-boot[Docker images] 
@@ -254,27 +253,33 @@ cd ComfyUI/custom_nodes/
 
 gcs='git clone --depth=1 --no-tags --recurse-submodules --shallow-submodules'
 
+$gcs https://github.com/AIGODLIKE/AIGODLIKE-ComfyUI-Translation.git
 $gcs https://github.com/bash-j/mikey_nodes.git
 $gcs https://github.com/chrisgoringe/cg-use-everywhere.git
+$gcs https://github.com/11cafe/comfyui-workspace-manager.git
 $gcs https://github.com/crystian/ComfyUI-Crystools.git
 $gcs https://github.com/cubiq/ComfyUI_essentials.git
+$gcs https://github.com/cubiq/ComfyUI_InstantID.git
 $gcs https://github.com/cubiq/ComfyUI_IPAdapter_plus.git
 $gcs https://github.com/Fannovel16/comfyui_controlnet_aux.git
 $gcs https://github.com/Fannovel16/ComfyUI-Frame-Interpolation.git
 $gcs https://github.com/FizzleDorf/ComfyUI_FizzNodes.git
+$gcs https://github.com/florestefano1975/comfyui-portrait-master.git
+$gcs https://github.com/Gourieff/comfyui-reactor-node.git
+$gcs https://github.com/huchenlei/ComfyUI-layerdiffuse.git
 $gcs https://github.com/jags111/efficiency-nodes-comfyui.git
 $gcs https://github.com/Kosinkadink/ComfyUI-Advanced-ControlNet.git
 $gcs https://github.com/Kosinkadink/ComfyUI-AnimateDiff-Evolved.git
 $gcs https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git
 $gcs https://github.com/ltdrdata/ComfyUI-Impact-Pack.git
 $gcs https://github.com/ltdrdata/ComfyUI-Inspire-Pack.git
+$gcs https://github.com/mcmonkeyprojects/sd-dynamic-thresholding.git
 $gcs https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git
 $gcs https://github.com/pythongosssss/ComfyUI-WD14-Tagger.git
 $gcs https://github.com/rgthree/rgthree-comfy.git
 $gcs https://github.com/shiimizu/ComfyUI_smZNodes.git
 $gcs https://github.com/SLAPaper/ComfyUI-Image-Selector.git
 $gcs https://github.com/twri/sdxl_prompt_styler.git
-$gcs https://github.com/ZHO-ZHO-ZHO/ComfyUI-InstantID.git
 ----
 
 Another note is this image doesn't bundled deps for
