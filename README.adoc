@@ -79,7 +79,13 @@ Once the app is loaded, visit http://localhost:8188/
 [[rocm]]
 ## Usage - AMD GPU (Experimental)
 
-NOTE: If you are using WSL2 with AMD/Intel GPU, consider *link:docs/wsl-directml.adoc[Run ComfyUI on WSL2 with DirectML]*
+NOTE: Recommend AMD users to run ComfyUI on Windows with ZLUDA. Running on Linux needs some experience.
+
+NOTE: If you are using WSL2 with AMD/Intel GPU, consider *link:docs/wsl-directml.adoc[Run ComfyUI on WSL2 with DirectML]*.
+
+NOTE: On Linux hosts, install
+https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/install-radeon.html[Radeon software for Linux with ROCm]
+first.
 
 .C. Using `docker compose`
 [source,sh]

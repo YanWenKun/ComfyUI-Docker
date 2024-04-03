@@ -23,6 +23,7 @@ services:
 #   --security-opt seccomp=unconfined
 
   comfyui:
+    init: true
     container_name: comfyui
     depends_on:
       file-chown:

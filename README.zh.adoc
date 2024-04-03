@@ -79,7 +79,12 @@ docker pull yanwk/comfyui-boot:latest
 [[rocm]]
 ## 运行方法 - AMD 显卡（尚在实验）
 
-NOTE: AMD/Intel GPU + Win11 可以考虑： *link:docs/wsl-directml.zh.adoc[在 WSL2 环境下通过 DirectML 运行 ComfyUI]*
+NOTE: 推荐 AMD 用户使用 Win11 + ZLUDA 方式运行，安装 AMD HIP SDK 并使用常见整合包运行即可（不要开启 xFormers），初次运行会花 15 分钟左右来编译代码，之后就和 CUDA 体验差不多了。不推荐缺乏经验的用户折腾 Linux 下的 ROCm。
+
+NOTE: WSL2 + AMD/Intel GPU 可以考虑： *link:docs/wsl-directml.zh.adoc[在 WSL2 环境下通过 DirectML 运行 ComfyUI]*。
+
+NOTE: Linux 宿主机需要安装
+https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/install-radeon.html[Radeon software for Linux with ROCm] 以让 Docker 支持 GPU，各发行版可能安装方式不同。
 
 .方法 C 使用 `docker compose`
 [source,sh]
