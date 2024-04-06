@@ -3,9 +3,9 @@
 image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-latest.yml/badge.svg["GitHub Workflow Status"]
 image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-rocm.yml/badge.svg["GitHub Workflow Status"]
 
-image::docs/chart-concept.svg["Concept Design"]
-
 *link:README.zh.adoc[＞💡中文说明点我💡＜]*
+
+image::docs/chart-concept.svg["Concept Design"]
 
 This repo is for 
 https://hub.docker.com/r/yanwk/comfyui-boot[Docker images] 
@@ -145,7 +145,138 @@ More `CLI_ARGS` available at
 https://github.com/comfyanonymous/ComfyUI/blob/master/comfy/cli_args.py[ComfyUI].
 
 
-## Some commands for debugging
+## Add some custom nodes
+
+.Install a bunch of custom nodes that may save your  time
+[%collapsible]
+====
+Note that most dependencies are bundled in the image, you don't need to manually install them.
+
+[source,sh]
+----
+cd ComfyUI/custom_nodes/
+
+gcs='git clone --depth=1 --no-tags --recurse-submodules --shallow-submodules'
+
+$gcs https://github.com/AIGODLIKE/AIGODLIKE-ComfyUI-Translation.git
+$gcs https://github.com/bash-j/mikey_nodes.git
+$gcs https://github.com/chrisgoringe/cg-use-everywhere.git
+$gcs https://github.com/11cafe/comfyui-workspace-manager.git
+$gcs https://github.com/crystian/ComfyUI-Crystools.git
+$gcs https://github.com/crystian/ComfyUI-Crystools-save.git
+$gcs https://github.com/cubiq/ComfyUI_essentials.git
+$gcs https://github.com/cubiq/ComfyUI_FaceAnalysis.git
+$gcs https://github.com/cubiq/ComfyUI_InstantID.git
+$gcs https://github.com/cubiq/ComfyUI_IPAdapter_plus.git
+$gcs https://github.com/Fannovel16/comfyui_controlnet_aux.git
+$gcs https://github.com/Fannovel16/ComfyUI-Frame-Interpolation.git
+$gcs https://github.com/FizzleDorf/ComfyUI_FizzNodes.git
+$gcs https://github.com/florestefano1975/comfyui-portrait-master.git
+$gcs https://github.com/Gourieff/comfyui-reactor-node.git
+$gcs https://github.com/huchenlei/ComfyUI-layerdiffuse.git
+$gcs https://github.com/jags111/efficiency-nodes-comfyui.git
+$gcs https://github.com/kijai/ComfyUI-KJNodes.git
+$gcs https://github.com/Kosinkadink/ComfyUI-Advanced-ControlNet.git
+$gcs https://github.com/Kosinkadink/ComfyUI-AnimateDiff-Evolved.git
+$gcs https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git
+$gcs https://github.com/ltdrdata/ComfyUI-Impact-Pack.git
+$gcs https://github.com/ltdrdata/ComfyUI-Inspire-Pack.git
+$gcs https://github.com/mcmonkeyprojects/sd-dynamic-thresholding.git
+$gcs https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git
+$gcs https://github.com/pythongosssss/ComfyUI-WD14-Tagger.git
+$gcs https://github.com/rgthree/rgthree-comfy.git
+$gcs https://github.com/shiimizu/ComfyUI_smZNodes.git
+$gcs https://github.com/SLAPaper/ComfyUI-Image-Selector.git
+$gcs https://github.com/storyicon/comfyui_segment_anything.git
+$gcs https://github.com/twri/sdxl_prompt_styler.git
+
+# Some “heavy” nodes that may increase startup time
+$gcs https://github.com/melMass/comfy_mtb.git
+$gcs https://github.com/MrForExample/ComfyUI-3D-Pack.git
+$gcs https://github.com/MrForExample/ComfyUI-AnimateAnyone-Evolved.git
+----
+
+Another note is this image doesn't bundled deps for
+https://github.com/WASasquatch/was-node-suite-comfyui[WAS Node Suite],
+because it has some deps version
+https://github.com/WASasquatch/was-node-suite-comfyui/blob/main/requirements.txt[fixed],
+and is not under active development. +
+However, the image's script only install one custom node (ComfyUI-Manager). You can safely install WAS NS via ComfyUI-Manager in a new deployment. If anything conflicts, just delete unwanted custom nodes and `.local` (or `local`) folder, and update/try-fix/reinstall custom nodes in ComfyUI-Manager.
+====
+
+
+## Pre-start scripts
+
+You can create your own pre-start script at
+----
+./storage/scripts/pre-start.sh
+----
+It will run before ComfyUI starts, handy for debugging.
+
+Also, if you need to setup proxy, this script will start before `pre-start` and `download` :
+----
+./storage/scripts/set-proxy.sh
+----
+
+
+## Run with Podman
+
+Podman is root-less by default. And https://www.tutorialworks.com/podman-rootless-volumes/[it's tricky] to bind-mount volume as non-root user inside rootless container. 
+https://docs.podman.io/en/latest/markdown/podman-run.1.html#mount-type-type-type-specific-option[Options] provided by Podman will chown files on host space, which probably is undesirable.
+
+I recommend two different ways to workaround:
+
+### 1. Go "root-ful" just like Docker
+
+.Expand details
+[%collapsible]
+====
+The straightforward way. By adding `sudo` you go from rootless to rootful. And everything else would be the same as using Docker. +
+Note that sudo Podman will download images to root space. If you already downloaded the image in current user, you can local-copy it: +
+`sudo podman image scp username@localhost::docker.io/yanwk/comfyui-boot:latest`
+
+[source,sh]
+----
+mkdir -p storage
+
+sudo podman run -it --rm \
+  --name comfyui-rootful \
+  --device nvidia.com/gpu=all \
+  --security-opt label=disable \
+  -p 8188:8188 \
+  -v "$(pwd)"/storage:/home/runner \
+  -e CLI_ARGS="" \
+  docker.io/yanwk/comfyui-boot
+----
+====
+
+### 2. Run as root inside container
+
+.Expand details
+[%collapsible]
+====
+The rootless way, no sudo needed. Inside the pod, Podman will mount volume as root, scripts will run as root. And from the host side, we see files keep their original ownership.
+
+[source,sh]
+----
+mkdir -p storage
+
+podman run -it --rm \
+  --name comfyui-rootless \
+  --device nvidia.com/gpu=all \
+  --security-opt label=disable \
+  -p 8188:8188 \
+  -v "$(pwd)"/storage:/root \
+  --user root \
+  --workdir /root \
+  -e CLI_ARGS="" \
+  docker.io/yanwk/comfyui-boot:latest \
+  /bin/bash /home/scripts/root-wrapper.sh
+----
+====
+
+
+## Debugging
 
 .Build the image, print all logs to STDOUT
 [source,sh]
@@ -174,67 +305,9 @@ docker run -it --rm \
   yanwk/comfyui-boot:latest /bin/bash
 ----
 
-### Run with Podman
-
-Podman is root-less by default. And https://www.tutorialworks.com/podman-rootless-volumes/[it's tricky] to bind-mount volume as non-root user inside rootless container. 
-https://docs.podman.io/en/latest/markdown/podman-run.1.html#mount-type-type-type-specific-option[Options] provided by Podman will chown files on host space, which probably is undesirable.
-
-I recommend two different ways to workaround:
-
-#### 1. Go "root-ful" just like Docker
-
-.Expand details
-[%collapsible]
-====
-The straightforward way. By adding `sudo` you go from rootless to rootful. And everything else would be the same as using Docker. +
-Note that sudo Podman will download images to root space. If you already downloaded the image in current user, you can local-copy it: +
-`sudo podman image scp username@localhost::docker.io/yanwk/comfyui-boot:latest`
-
-[source,sh]
-----
-mkdir -p storage
-
-sudo podman run -it --rm \
-  --name comfyui-rootful \
-  --device nvidia.com/gpu=all \
-  --security-opt label=disable \
-  -p 8188:8188 \
-  -v "$(pwd)"/storage:/home/runner \
-  -e CLI_ARGS="" \
-  docker.io/yanwk/comfyui-boot
-----
-====
-
-#### 2. Run as root inside container
-
-.Expand details
-[%collapsible]
-====
-The rootless way, no sudo needed. Inside the pod, Podman will mount volume as root, scripts will run as root. And from the host side, we see files keep their original ownership.
-
-[source,sh]
-----
-mkdir -p storage
-
-podman run -it --rm \
-  --name comfyui-rootless \
-  --device nvidia.com/gpu=all \
-  --security-opt label=disable \
-  -p 8188:8188 \
-  -v "$(pwd)"/storage:/root \
-  --user root \
-  --workdir /root \
-  -e CLI_ARGS="" \
-  docker.io/yanwk/comfyui-boot:latest \
-  /bin/bash /home/scripts/root-wrapper.sh
-----
-====
-
-### Clean up cache files
-
+.Clean up cache files
 If having issues when updating, try clean cache. +
 Usually this is not needed. Some custom nodes use `huggingface_hub` to download models and store them in `.cache`.
-
 [source,sh]
 ----
 docker exec -it --workdir /home/runner  comfyui \
@@ -243,71 +316,6 @@ docker exec -it --workdir /home/runner  comfyui \
 docker restart comfyui
 ----
 
-### Some custom nodes
-
-.Install a bunch of custom nodes that may save you some time
-[%collapsible]
-====
-Note that most dependencies are bundled in the image, you don't need to manually install them. +
-(Except https://pypi.org/project/imageio-ffmpeg/[imageio-ffmpeg]
-which uses FFmpeg4. The image came with FFmpeg6 or newer.)
-
-[source,sh]
-----
-cd ComfyUI/custom_nodes/
-
-gcs='git clone --depth=1 --no-tags --recurse-submodules --shallow-submodules'
-
-$gcs https://github.com/AIGODLIKE/AIGODLIKE-ComfyUI-Translation.git
-$gcs https://github.com/bash-j/mikey_nodes.git
-$gcs https://github.com/chrisgoringe/cg-use-everywhere.git
-$gcs https://github.com/11cafe/comfyui-workspace-manager.git
-$gcs https://github.com/crystian/ComfyUI-Crystools.git
-$gcs https://github.com/cubiq/ComfyUI_essentials.git
-$gcs https://github.com/cubiq/ComfyUI_InstantID.git
-$gcs https://github.com/cubiq/ComfyUI_IPAdapter_plus.git
-$gcs https://github.com/Fannovel16/comfyui_controlnet_aux.git
-$gcs https://github.com/Fannovel16/ComfyUI-Frame-Interpolation.git
-$gcs https://github.com/FizzleDorf/ComfyUI_FizzNodes.git
-$gcs https://github.com/florestefano1975/comfyui-portrait-master.git
-$gcs https://github.com/Gourieff/comfyui-reactor-node.git
-$gcs https://github.com/huchenlei/ComfyUI-layerdiffuse.git
-$gcs https://github.com/jags111/efficiency-nodes-comfyui.git
-$gcs https://github.com/Kosinkadink/ComfyUI-Advanced-ControlNet.git
-$gcs https://github.com/Kosinkadink/ComfyUI-AnimateDiff-Evolved.git
-$gcs https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git
-$gcs https://github.com/ltdrdata/ComfyUI-Impact-Pack.git
-$gcs https://github.com/ltdrdata/ComfyUI-Inspire-Pack.git
-$gcs https://github.com/mcmonkeyprojects/sd-dynamic-thresholding.git
-$gcs https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git
-$gcs https://github.com/pythongosssss/ComfyUI-WD14-Tagger.git
-$gcs https://github.com/rgthree/rgthree-comfy.git
-$gcs https://github.com/shiimizu/ComfyUI_smZNodes.git
-$gcs https://github.com/SLAPaper/ComfyUI-Image-Selector.git
-$gcs https://github.com/twri/sdxl_prompt_styler.git
-----
-
-Another note is this image doesn't bundled deps for
-https://github.com/WASasquatch/was-node-suite-comfyui[WAS Node Suite],
-because it has some deps version
-https://github.com/WASasquatch/was-node-suite-comfyui/blob/main/requirements.txt[fixed],
-and is not under active development. +
-However, the image's script only install one custom node (ComfyUI-Manager). You can safely install WAS NS via ComfyUI-Manager in a new deployment. If anything conflicts, just delete unwanted custom nodes and `.local` (or `local`) folder, and update/try-fix/reinstall custom nodes in ComfyUI-Manager.
-====
-
-
-### Pre-start scripts
-
-You can create your own pre-start script at
-----
-./storage/scripts/pre-start.sh
-----
-It will run before ComfyUI starts, handy for debugging.
-
-Also, if you need to setup proxy, this script will start before `pre-start` and `download` :
-----
-./storage/scripts/set-proxy.sh
-----
 
 ## License
 

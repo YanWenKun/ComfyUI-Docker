@@ -8,8 +8,9 @@ FROM opensuse/tumbleweed:latest
 
 LABEL maintainer="code@yanwk.fun"
 
-# Note: GCC for InsightFace, FFmpeg for video
-# 'half' for ORT on ROCm
+# Note: GCC for InsightFace, 
+#       FFmpeg for video (pip[imageio-ffmpeg] will use system FFmpeg instead of bundled),
+#       'half' for ORT on ROCm
 RUN --mount=type=cache,target=/var/cache/zypp \
     set -eu \
     && zypper addrepo --check --refresh --priority 90 \

@@ -7,7 +7,8 @@ FROM opensuse/tumbleweed:latest
 
 LABEL maintainer="code@yanwk.fun"
 
-# Note: GCC for InsightFace, FFmpeg for video
+# Note: GCC for InsightFace, 
+#       FFmpeg for video (pip[imageio-ffmpeg] will use system FFmpeg instead of bundled)
 RUN --mount=type=cache,target=/var/cache/zypp \
     set -eu \
     && zypper addrepo --check --refresh --priority 90 \

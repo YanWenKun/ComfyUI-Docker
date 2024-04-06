@@ -143,115 +143,12 @@ A: 在启动参数 `CLI_ARGS` 中添加 `--use-pytorch-cross-attention` 。在 W
 https://github.com/comfyanonymous/ComfyUI/blob/master/comfy/cli_args.py[ComfyUI] 。
 
 
-## 一些方便 Debug 的命令
-
-.构建镜像，打印所有日志（不折叠）
-[source,sh]
-----
-docker build . --progress=plain -f Dockerfile -t yanwk/comfyui-boot:latest
-----
-
-.运行一个一次性容器
-[source,sh]
-----
-docker run -it --rm \
-  --gpus all -p 8188:8188 \
-  --volume "$(pwd)"/storage:/home/runner \
-  --env CLI_ARGS="" \
-  yanwk/comfyui-boot:latest
-----
-
-.用 root 身份运行 bash
-[source,sh]
-----
-docker run -it --rm \
-  --gpus all -p 8188:8188 \
-  --volume "$(pwd)"/storage:/home/runner \
-  --env CLI_ARGS="" \
-  --user root \
-  yanwk/comfyui-boot:latest /bin/bash
-----
-
-
-### 使用 Podman 运行
-
-Podman 默认是 root-less 的，不需要 sudo，这也给挂载目录 
-https://www.tutorialworks.com/podman-rootless-volumes/[带来了限制] 。 +
-Podman 默认挂载文件为 root 身份，而想要在容器内挂载为非 root 用户，Podman 提供的
-https://docs.podman.io/en/latest/markdown/podman-run.1.html#mount-type-type-type-specific-option[选项]
-则会对主机上的文件执行 `chown`，变成和容器内一样的 uid 和 gid，给文件管理带来混乱。
-
-这里推荐两种不同的方式绕过：
-
-#### 1. 像 Docker 一样 "root-ful"
-
-.展开细节
-[%collapsible]
-====
-简单直接的方式，用 `sudo` 来运行 Podman 就是 rootful 了，使用体验基本和 Docker 一样，就是记得后续操作也要用 "sudo"。 +
-此外镜像文件也是下载到 root 用户名下。如果已经用当前 Linux 用户下载了镜像，可以本地复制： +
-`sudo podman image scp username@localhost::docker.io/yanwk/comfyui-boot:latest`
-
-[source,sh]
-----
-mkdir -p storage
-
-sudo podman run -it --rm \
-  --name comfyui-rootful \
-  --device nvidia.com/gpu=all \
-  --security-opt label=disable \
-  -p 8188:8188 \
-  -v "$(pwd)"/storage:/home/runner \
-  -e CLI_ARGS="" \
-  docker.io/yanwk/comfyui-boot
-----
-====
-
-#### 2. 在容器内改为 root 运行
-
-.展开细节
-[%collapsible]
-====
-保持 rootless 风格，不需要 sudo。容器内文件挂载为 root，程序也以 root 执行。而在宿主机一侧看来，文件还是本来的用户所有权。
-
-[source,sh]
-----
-mkdir -p storage
-
-podman run -it --rm \
-  --name comfyui-rootless \
-  --device nvidia.com/gpu=all \
-  --security-opt label=disable \
-  -p 8188:8188 \
-  -v "$(pwd)"/storage:/root \
-  --user root \
-  --workdir /root \
-  -e CLI_ARGS="" \
-  docker.io/yanwk/comfyui-boot:latest \
-  /bin/bash /home/scripts/root-wrapper.sh
-----
-====
-
-### 清理缓存文件
-
-如果在升级时遇到奇怪问题，可以尝试清理缓存文件。平时不需要清理，避免反复下载一些文件（尤其一些节点用 `huggingface_hub` 下载模型，会存在 `.cache` 中）。
-
-[source,sh]
-----
-docker exec -it --workdir /home/runner  comfyui \
-  rm -rf .cache/ .config/ .local/ .nv/ bin/ include/ lib/ lib64 pyvenv.cfg
-
-docker restart comfyui
-----
-
-### 一些自定义节点
+## 一些自定义节点
 
 .以下命令会安装一些常用节点，也许能帮你节省点时间
 [%collapsible]
 ====
-镜像里已经安装好了绝大部分依赖项，不需要手动安装。 +
-（除了 https://pypi.org/project/imageio-ffmpeg/[imageio-ffmpeg]，
-该包使用 FFmpeg4，而镜像里安装了 FFmpeg6 或更新版本）
+镜像里已经安装好了绝大部分依赖项，不需要手动安装。
 
 [source,sh]
 ----
@@ -264,7 +161,9 @@ $gcs https://github.com/bash-j/mikey_nodes.git
 $gcs https://github.com/chrisgoringe/cg-use-everywhere.git
 $gcs https://github.com/11cafe/comfyui-workspace-manager.git
 $gcs https://github.com/crystian/ComfyUI-Crystools.git
+$gcs https://github.com/crystian/ComfyUI-Crystools-save.git
 $gcs https://github.com/cubiq/ComfyUI_essentials.git
+$gcs https://github.com/cubiq/ComfyUI_FaceAnalysis.git
 $gcs https://github.com/cubiq/ComfyUI_InstantID.git
 $gcs https://github.com/cubiq/ComfyUI_IPAdapter_plus.git
 $gcs https://github.com/Fannovel16/comfyui_controlnet_aux.git
@@ -274,6 +173,7 @@ $gcs https://github.com/florestefano1975/comfyui-portrait-master.git
 $gcs https://github.com/Gourieff/comfyui-reactor-node.git
 $gcs https://github.com/huchenlei/ComfyUI-layerdiffuse.git
 $gcs https://github.com/jags111/efficiency-nodes-comfyui.git
+$gcs https://github.com/kijai/ComfyUI-KJNodes.git
 $gcs https://github.com/Kosinkadink/ComfyUI-Advanced-ControlNet.git
 $gcs https://github.com/Kosinkadink/ComfyUI-AnimateDiff-Evolved.git
 $gcs https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git
@@ -285,7 +185,13 @@ $gcs https://github.com/pythongosssss/ComfyUI-WD14-Tagger.git
 $gcs https://github.com/rgthree/rgthree-comfy.git
 $gcs https://github.com/shiimizu/ComfyUI_smZNodes.git
 $gcs https://github.com/SLAPaper/ComfyUI-Image-Selector.git
+$gcs https://github.com/storyicon/comfyui_segment_anything.git
 $gcs https://github.com/twri/sdxl_prompt_styler.git
+
+# 一些比较“重型”的节点，可能影响启动速度
+$gcs https://github.com/melMass/comfy_mtb.git
+$gcs https://github.com/MrForExample/ComfyUI-3D-Pack.git
+$gcs https://github.com/MrForExample/ComfyUI-AnimateAnyone-Evolved.git
 ----
 
 此外，本镜像并未提供
@@ -298,7 +204,7 @@ https://github.com/WASasquatch/was-node-suite-comfyui/blob/main/requirements.txt
 ====
 
 
-### 预启动脚本
+## 预启动脚本
 
 如果需要在 ComfyUI 启动前执行脚本，可以创建这个文件：
 ----
@@ -330,6 +236,107 @@ export no_proxy=$NO_PROXY
 echo "[INFO] Proxy set to $HTTP_PROXY"
 ----
 ====
+
+
+## 使用 Podman 运行
+
+Podman 默认是 root-less 的，不需要 sudo，这也给挂载目录 
+https://www.tutorialworks.com/podman-rootless-volumes/[带来了限制] 。 +
+Podman 默认挂载文件为 root 身份，而想要在容器内挂载为非 root 用户，Podman 提供的
+https://docs.podman.io/en/latest/markdown/podman-run.1.html#mount-type-type-type-specific-option[选项]
+则会对主机上的文件执行 `chown`，变成和容器内一样的 uid 和 gid，给文件管理带来混乱。
+
+这里推荐两种不同的方式绕过：
+
+### 1. 像 Docker 一样 "root-ful"
+
+.展开细节
+[%collapsible]
+====
+简单直接的方式，用 `sudo` 来运行 Podman 就是 rootful 了，使用体验基本和 Docker 一样，就是记得后续操作也要用 "sudo"。 +
+此外镜像文件也是下载到 root 用户名下。如果已经用当前 Linux 用户下载了镜像，可以本地复制： +
+`sudo podman image scp username@localhost::docker.io/yanwk/comfyui-boot:latest`
+
+[source,sh]
+----
+mkdir -p storage
+
+sudo podman run -it --rm \
+  --name comfyui-rootful \
+  --device nvidia.com/gpu=all \
+  --security-opt label=disable \
+  -p 8188:8188 \
+  -v "$(pwd)"/storage:/home/runner \
+  -e CLI_ARGS="" \
+  docker.io/yanwk/comfyui-boot
+----
+====
+
+### 2. 在容器内改为 root 运行
+
+.展开细节
+[%collapsible]
+====
+保持 rootless 风格，不需要 sudo。容器内文件挂载为 root，程序也以 root 执行。而在宿主机一侧看来，文件还是本来的用户所有权。
+
+[source,sh]
+----
+mkdir -p storage
+
+podman run -it --rm \
+  --name comfyui-rootless \
+  --device nvidia.com/gpu=all \
+  --security-opt label=disable \
+  -p 8188:8188 \
+  -v "$(pwd)"/storage:/root \
+  --user root \
+  --workdir /root \
+  -e CLI_ARGS="" \
+  docker.io/yanwk/comfyui-boot:latest \
+  /bin/bash /home/scripts/root-wrapper.sh
+----
+====
+
+
+## 一些方便 Debug 的命令
+
+.构建镜像，打印所有日志（不折叠）
+[source,sh]
+----
+docker build . --progress=plain -f Dockerfile -t yanwk/comfyui-boot:latest
+----
+
+.运行一个一次性容器
+[source,sh]
+----
+docker run -it --rm \
+  --gpus all -p 8188:8188 \
+  --volume "$(pwd)"/storage:/home/runner \
+  --env CLI_ARGS="" \
+  yanwk/comfyui-boot:latest
+----
+
+.用 root 身份运行 bash
+[source,sh]
+----
+docker run -it --rm \
+  --gpus all -p 8188:8188 \
+  --volume "$(pwd)"/storage:/home/runner \
+  --env CLI_ARGS="" \
+  --user root \
+  yanwk/comfyui-boot:latest /bin/bash
+----
+
+.清理缓存文件
+如果在升级时遇到奇怪问题，可以尝试清理缓存文件。平时不需要清理，避免反复下载一些文件（尤其一些节点用 `huggingface_hub` 下载模型，会存在 `.cache` 中）。
+[source,sh]
+----
+docker exec -it --workdir /home/runner  comfyui \
+  rm -rf .cache/ .config/ .local/ .nv/ bin/ include/ lib/ lib64 pyvenv.cfg
+
+docker restart comfyui
+----
+
 
 ## 声明
 
