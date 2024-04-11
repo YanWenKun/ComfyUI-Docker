@@ -1,0 +1,62 @@
+# 你发现了 MEGAPAK！
+
+`megapak` 是一个大而全的 Docker 镜像，包含：
+
+* 开发组件：
+** CUDA dev (12.1)
+** Python dev (3.11)
+** GCC C++ (12)
+** OpenCV-devel
+** CMake, Ninja...
+
+* 工具：
+** Vim, Fish, fd...
+
+并且会：
+
+* 安装更多自定义节点
+
+* 下载更多模型文件
+
+此外，如果你在考虑攒一个自己的、面向 ComfyUI 生态的开发环境，这个镜像会是个不错的起点。
+
+## 提示
+
+`megapak` 镜像的设计理念和 `latest` 差不多，但有一个显著差异：
+
+* 容器内用户为 'root'
+
+以便于 rootless 式部署运行。
+
+## 用法
+
+.使用 Docker
+[source,sh]
+----
+mkdir -p storage
+
+docker run -it --rm \
+  --name comfyui-mega \
+  --gpus all \
+  -p 8188:8188 \
+  -v "$(pwd)"/storage:/root \
+  -e CLI_ARGS="" \
+  yanwk/comfyui-boot:megapak
+----
+
+.使用 Podman
+[source,sh]
+----
+mkdir -p storage
+
+podman run -it --rm \
+  --name comfyui-mega \
+  --device nvidia.com/gpu=all \
+  --security-opt label=disable \
+  -p 8188:8188 \
+  -v "$(pwd)"/storage:/root \
+  -e CLI_ARGS="" \
+  docker.io/yanwk/comfyui-boot:megapak
+----
+
+个人推荐使用一次性容器 (`--rm`) 来保持环境整洁、配置清晰。

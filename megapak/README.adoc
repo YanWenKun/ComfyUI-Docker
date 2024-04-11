@@ -1,0 +1,64 @@
+# You've found MEGAPAK!
+
+*link:README.zh.adoc[中文说明]*
+
+`megapak` is a big all-in-one Docker image that has:
+
+* Dev kits:
+** CUDA dev kit (12.1)
+** Python dev package (3.11)
+** GCC C++ (12)
+** OpenCV-devel
+** CMake, Ninja...
+
+* Tools:
+** Vim, Fish, fd...
+
+And will:
+
+* Install more Custom Nodes
+
+* Download more models
+
+Also, if you'd like to build your own development environment for ComfyUI ecosystem, this image would be a good starting point.
+
+## Note
+
+The design of `megapak` is similar to the `latest` tag, as well as the usage. With one key difference:
+
+* The user within container is now 'root'.
+
+This makes rootless deploy easier.
+
+## Usage
+
+.Run with Docker
+[source,sh]
+----
+mkdir -p storage
+
+docker run -it --rm \
+  --name comfyui-mega \
+  --gpus all \
+  -p 8188:8188 \
+  -v "$(pwd)"/storage:/root \
+  -e CLI_ARGS="" \
+  yanwk/comfyui-boot:megapak
+----
+
+.Run with Podman
+[source,sh]
+----
+mkdir -p storage
+
+podman run -it --rm \
+  --name comfyui-mega \
+  --device nvidia.com/gpu=all \
+  --security-opt label=disable \
+  -p 8188:8188 \
+  -v "$(pwd)"/storage:/root \
+  -e CLI_ARGS="" \
+  docker.io/yanwk/comfyui-boot:megapak
+----
+
+Recommend running ephemeral containers (`--rm`) to keep everything clean and visible.
