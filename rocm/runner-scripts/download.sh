@@ -1,18 +1,19 @@
 #!/bin/bash
 
-set -euxo pipefail
+set -euo pipefail
 
+# Regex that matches REPO_NAME
+# First from pattern [https://example.com/xyz/REPO_NAME.git] or [git@example.com:xyz/REPO_NAME.git]
+# Second from pattern [http(s)://example.com/xyz/REPO_NAME]
+# They all extract REPO_NAME to BASH_REMATCH[2]
 function clone_or_pull () {
-    # Regex matches REPO_NAME 
-    # from pattern https://example.com/xyz/REPO_NAME.git
-    # Or git@example.com:xyz/REPO_NAME.git
-    if [[ $1 =~ ^(.*[/:])(.*)(\.git)$ ]]; then
-        echo "${BASH_REMATCH[2]}"
-        git clone --depth=1 --no-tags --recurse-submodules --shallow-submodules \
-            "$1" \
-        || git -C "${BASH_REMATCH[2]}" pull --ff-only
+    if [[ $1 =~ ^(.*[/:])(.*)(\.git)$ ]] || [[ $1 =~ ^(http.*\/)(.*)$ ]]; then
+        echo "${BASH_REMATCH[2]}" ;
+        git clone --depth=1 --no-tags --recurse-submodules --shallow-submodules "$1" \
+            || git -C "${BASH_REMATCH[2]}" pull --ff-only ;
     else
-        echo "[ERROR] Invalid Git Repo URL"
+        echo "[ERROR] Invalid URL: $1" ;
+        return 1 ;
     fi ;
 }
 
