@@ -1,0 +1,50 @@
+# 基于 AMD GPU + ROCm 运行 ComfyUI
+
+## 提醒： WSL2
+
+如果你在用 WSL2 + AMD/Intel GPU， 可以考虑：
+link:../docs/wsl-directml.zh.adoc[在 WSL2 环境下通过 DirectML 运行 ComfyUI]。
+该方法比纯 CPU 快，比 Linux 下的 ROCm 慢，且支持的 GPU 型号更多（甚至核显也能跑）。
+
+## 准备工作
+
+* 确保 Linux 宿主机上正确安装了
+https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/install-radeon.html[Radeon software for Linux with ROCm]。
+
+## 运行
+
+.使用 Docker
+[source,sh]
+----
+mkdir -p storage
+
+docker run -it --rm \
+  --name comfyui-rocm \
+  --device=/dev/kfd --device=/dev/dri \
+  --group-add=video --ipc=host --cap-add=SYS_PTRACE \
+  --security-opt seccomp=unconfined \
+  --security-opt label=disable \
+  -p 8188:8188 \
+  -v "$(pwd)"/storage:/root \
+  -e CLI_ARGS="" \
+  yanwk/comfyui-boot:rocm
+----
+
+.使用 Podman
+[source,sh]
+----
+mkdir -p storage
+
+podman run -it --rm \
+  --name comfyui-rocm \
+  --device=/dev/kfd --device=/dev/dri \
+  --group-add=video --ipc=host --cap-add=SYS_PTRACE \
+  --security-opt seccomp=unconfined \
+  --security-opt label=disable \
+  -p 8188:8188 \
+  -v "$(pwd)"/storage:/root \
+  -e CLI_ARGS="" \
+  docker.io/yanwk/comfyui-boot:rocm
+----
+
+启动完成后，访问 http://localhost:8188/

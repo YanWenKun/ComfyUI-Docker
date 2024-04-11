@@ -1,0 +1,51 @@
+# Run ComfyUI with ROCm on AMD GPU
+
+## In case of WSL2
+
+If you are using WSL2 with AMD/Intel GPU, try 
+link:../docs/wsl-directml.adoc[Run ComfyUI on WSL2 with DirectML]. 
+It's slower than ROCm but still faster than CPU, and even works on an APU.
+
+## Prepare
+
+* Make sure
+https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/install-radeon.html[Radeon software for Linux with ROCm]
+is installed on your Linux host.
+
+## Run
+
+.Run with Docker
+[source,sh]
+----
+mkdir -p storage
+
+docker run -it --rm \
+  --name comfyui-rocm \
+  --device=/dev/kfd --device=/dev/dri \
+  --group-add=video --ipc=host --cap-add=SYS_PTRACE \
+  --security-opt seccomp=unconfined \
+  --security-opt label=disable \
+  -p 8188:8188 \
+  -v "$(pwd)"/storage:/root \
+  -e CLI_ARGS="" \
+  yanwk/comfyui-boot:rocm
+----
+
+.Run with Podman
+[source,sh]
+----
+mkdir -p storage
+
+podman run -it --rm \
+  --name comfyui-rocm \
+  --device=/dev/kfd --device=/dev/dri \
+  --group-add=video --ipc=host --cap-add=SYS_PTRACE \
+  --security-opt seccomp=unconfined \
+  --security-opt label=disable \
+  -p 8188:8188 \
+  -v "$(pwd)"/storage:/root \
+  -e CLI_ARGS="" \
+  docker.io/yanwk/comfyui-boot:rocm
+----
+
+Once the app is loaded, visit http://localhost:8188/

@@ -94,5 +94,5 @@ USER root
 VOLUME /root
 WORKDIR /root
 EXPOSE 8188
-ENV CLI_ARGS="--use-pytorch-cross-attention"
+ENV CLI_ARGS=""
 CMD ["bash","/runner-scripts/entrypoint.sh"]
