@@ -5,6 +5,7 @@ set -e
 # Run user's set-proxy script
 cd /root
 if [ ! -f "/root/user-scripts/set-proxy.sh" ] ; then
+    mkdir -p /root/user-scripts
     cp /runner-scripts/set-proxy.sh.example /root/user-scripts/set-proxy.sh
 else
     echo "[INFO] Running set-proxy script..."
@@ -23,6 +24,7 @@ fi ;
 # Run user's pre-start script
 cd /root
 if [ ! -f "/root/user-scripts/pre-start.sh" ] ; then
+    mkdir -p /root/user-scripts
     cp /runner-scripts/pre-start.sh.example /root/user-scripts/pre-start.sh
 else
     echo "[INFO] Running pre-start script..."

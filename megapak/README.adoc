@@ -28,7 +28,9 @@ The design of `megapak` is similar to the `latest` tag, as well as the usage. Wi
 
 * The user within container is now 'root'.
 
-This makes rootless deploy easier.
+This makes rootless deploy on Linux easier.
+
+For WSL2 users, recommend using a Docker volume or a WSL2 directory for file storage, rather than bind-mount a directory from Windows(NTFS) filesystem - which would perform I/O slower, and have dubious ownership.
 
 ## Usage
 

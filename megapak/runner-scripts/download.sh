@@ -9,8 +9,10 @@ set -euo pipefail
 function clone_or_pull () {
     if [[ $1 =~ ^(.*[/:])(.*)(\.git)$ ]] || [[ $1 =~ ^(http.*\/)(.*)$ ]]; then
         echo "${BASH_REMATCH[2]}" ;
-        git clone --depth=1 --no-tags --recurse-submodules --shallow-submodules "$1" \
-            || git -C "${BASH_REMATCH[2]}" pull --ff-only ;
+        set +e ;
+            git clone --depth=1 --no-tags --recurse-submodules --shallow-submodules "$1" \
+                || git -C "${BASH_REMATCH[2]}" pull --ff-only ;
+        set -e ;
     else
         echo "[ERROR] Invalid URL: $1" ;
         return 1 ;
