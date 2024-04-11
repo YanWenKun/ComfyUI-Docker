@@ -1,16 +1,21 @@
-name: Publish 'dev' to Docker Hub
+name: Publish 'megapak' to Docker Hub
 
 on: 
   workflow_dispatch: # Can be manually triggered
+  schedule: # Runs on every Monday, 07:00 UTC
+    - cron: '0 7 * * 1'
   push: 
-    branches: [ dev ]
+    branches: [ main ]
     paths-ignore:
       - '**'
-      - '!Dockerfile'
+      - '!megapak/Dockerfile'
+      - '!megapak/builder-scripts/**'
+      - '!megapak/runner-scripts/**'
+      - '!.github/workflows/build-megapak.yml'
 
 jobs:
 
-  build-publish-dev:
+  build-publish-megapak:
     environment: Publish to Docker Hub
     runs-on: ubuntu-latest
     steps:
@@ -35,10 +40,10 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_ACCESSTOKEN }}
       -
-        name: Build and push 'dev'
+        name: Build and push 'megapak'
         uses: docker/build-push-action@v5
         with:
-          context: .
-          file: Dockerfile
-          tags: yanwk/comfyui-boot:dev
+          context: ./megapak
+          file: ./megapak/Dockerfile
+          tags: yanwk/comfyui-boot:megapak
           push: true

@@ -10,6 +10,7 @@ on:
       - 'docker-compose*.yml'
       - 'README*'
       - 'docs/**'
+      - 'megapak/**'
       - 'rocm/**'
       - 'storage/**'
       - '.github/**'
