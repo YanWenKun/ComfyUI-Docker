@@ -3,10 +3,10 @@ name: Publish 'dev' to Docker Hub
 on: 
   workflow_dispatch: # Can be manually triggered
   push: 
-    branches: [ main ]
+    branches: [ dev ]
     paths-ignore:
       - '**'
-      - '!docs/Dockerfile-dev'
+      - '!Dockerfile'
 
 jobs:
 
@@ -42,4 +42,3 @@ jobs:
           file: docs/Dockerfile-dev
           tags: yanwk/comfyui-boot:dev
           push: true
-
