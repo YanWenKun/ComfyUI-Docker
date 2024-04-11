@@ -58,7 +58,8 @@ ENV PATH="${PATH}:/usr/local/cuda-12.1/bin" \
 RUN --mount=type=cache,target=/var/cache/zypp \
     zypper addrepo --check --refresh --priority 90 \
         'https://ftp.gwdg.de/pub/linux/misc/packman/suse/openSUSE_Tumbleweed/Essentials/' packman-essentials \
-    && zypper --non-interactive install \
+    && zypper --gpg-auto-import-keys \
+        install --no-confirm --auto-agree-with-licenses \
 python311-devel \
 python311-pip \
 python311-wheel \
@@ -109,7 +110,8 @@ google-noto-coloremoji-fonts \
 
 # Fix for GCC12 (required for compiling CUDA 12.1-related code)
 RUN --mount=type=cache,target=/var/cache/zypp \
-    zypper --non-interactive install \
+    zypper --gpg-auto-import-keys \
+        install --no-confirm --auto-agree-with-licenses \
 gcc12 \
 gcc12-c++ \
 cpp12 \
