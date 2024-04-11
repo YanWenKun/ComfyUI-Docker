@@ -1,6 +1,6 @@
 # 基于 AMD GPU + ROCm 运行 ComfyUI
 
-## 提醒： WSL2
+## 提醒： WSL2 用户
 
 如果你在用 WSL2 + AMD/Intel GPU， 可以考虑：
 link:../docs/wsl-directml.zh.adoc[在 WSL2 环境下通过 DirectML 运行 ComfyUI]。

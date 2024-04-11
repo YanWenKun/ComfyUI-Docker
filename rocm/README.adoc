@@ -1,5 +1,7 @@
 # Run ComfyUI with ROCm on AMD GPU
 
+*link:README.zh.adoc[中文说明]*
+
 ## In case of WSL2
 
 If you are using WSL2 with AMD/Intel GPU, try 
