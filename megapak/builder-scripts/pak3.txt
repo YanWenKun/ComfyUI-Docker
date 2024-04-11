@@ -1,0 +1,31 @@
+# 'cupy-cuda12x' for Frame Interpolation
+# 'compel lark' for smZNodes
+# 'torchdiffeq' for DepthFM
+# 'fairscale' for APISR
+accelerate
+compel
+cupy-cuda12x
+diffusers
+fairscale
+ftfy
+imageio
+joblib
+kornia
+lark
+matplotlib
+onnxruntime
+opencv-contrib-python-headless
+opencv-python-headless
+pandas
+pilgram
+pillow
+pygit2
+python-ffmpeg
+regex
+scikit-image
+scikit-learn
+scipy
+timm
+torchdiffeq
+torchmetrics
+transformers
