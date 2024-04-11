@@ -11,6 +11,3 @@ insightface
 gradio
 gradio-client
 git+https://github.com/openai/CLIP.git
-git+https://github.com/WASasquatch/cstr
-git+https://github.com/WASasquatch/ffmpy.git
-git+https://github.com/WASasquatch/img2texture.git
