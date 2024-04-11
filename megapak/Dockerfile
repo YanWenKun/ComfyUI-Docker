@@ -8,9 +8,7 @@ FROM opensuse/tumbleweed:latest
 
 LABEL maintainer="code@yanwk.fun"
 
-WORKDIR /root
-
-RUN set -euxo pipefail
+RUN set -eu
 
 ################################################################################
 # NVIDIA CUDA devel
@@ -43,8 +41,7 @@ cuda-nvtx-12-1 \
 libcublas-12-1 \
 libcublas-devel-12-1 \
 libnpp-12-1 \
-libnpp-devel-12-1 \
-    && env
+libnpp-devel-12-1
 
 ENV PATH="${PATH}:/usr/local/cuda-12.1/bin" \
     LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/local/cuda-12.1/lib64" \
@@ -52,8 +49,8 @@ ENV PATH="${PATH}:/usr/local/cuda-12.1/bin" \
     CUDA_HOME="/usr/local/cuda-12.1"
 
 ################################################################################
-# Python, GCC and tools
-# Since this image is so big, here we use openSUSE-verified PIP packages for compatibility.
+# Python and tools
+# Since this image is so big, we use openSUSE-verified PIP packages for compatibility.
 
 RUN --mount=type=cache,target=/var/cache/zypp \
     zypper addrepo --check --refresh --priority 90 \
@@ -108,7 +105,10 @@ google-noto-sans-cjk-fonts \
 google-noto-coloremoji-fonts \
     && rm /usr/lib64/python3.11/EXTERNALLY-MANAGED
 
-# Fix for GCC12 (required for compiling CUDA 12.1-related code)
+################################################################################
+# GCC 12 
+# Required for compiling CUDA 12.1-related code.
+
 RUN --mount=type=cache,target=/var/cache/zypp \
     zypper --gpg-auto-import-keys \
         install --no-confirm --auto-agree-with-licenses \
