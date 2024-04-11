@@ -1,0 +1,66 @@
+# Checkpoints
+
+https://huggingface.co/playgroundai/playground-v2.5-1024px-aesthetic/resolve/main/playground-v2.5-1024px-aesthetic.fp16.safetensors
+  dir=models/checkpoints
+  out=playground-v2.5-1024px-aesthetic.fp16.safetensors
+
+# VAE
+
+https://huggingface.co/stabilityai/sd-vae-ft-mse-original/resolve/main/vae-ft-mse-840000-ema-pruned.safetensors
+  dir=models/vae
+  out=vae-ft-mse-840000-ema-pruned.safetensors
+https://huggingface.co/madebyollin/taesd/resolve/main/taesd_decoder.safetensors
+  dir=models/vae_approx
+  out=taesd_decoder.safetensors
+https://huggingface.co/madebyollin/taesdxl/resolve/main/taesdxl_decoder.safetensors
+  dir=models/vae_approx
+  out=taesdxl_decoder.safetensors
+
+# Upscale
+
+https://github.com/xinntao/Real-ESRGAN/releases/download/v0.1.0/RealESRGAN_x4plus.pth
+  dir=models/upscale_models
+  out=RealESRGAN_x4plus.pth
+https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.2.4/RealESRGAN_x4plus_anime_6B.pth
+  dir=models/upscale_models
+  out=RealESRGAN_x4plus_anime_6B.pth
+https://huggingface.co/Kim2091/AnimeSharp/resolve/main/4x-AnimeSharp.pth
+  dir=models/upscale_models
+  out=4x-AnimeSharp.pth
+https://huggingface.co/Kim2091/UltraSharp/resolve/main/4x-UltraSharp.pth
+  dir=models/upscale_models
+  out=4x-UltraSharp.pth
+https://huggingface.co/gemasai/4x_NMKD-Siax_200k/resolve/main/4x_NMKD-Siax_200k.pth
+  dir=models/upscale_models
+  out=4x_NMKD-Siax_200k.pth
+https://huggingface.co/uwg/upscaler/resolve/main/ESRGAN/8x_NMKD-Superscale_150000_G.pth
+  dir=models/upscale_models
+  out=8x_NMKD-Superscale_150000_G.pth
+
+# Embeddings
+
+https://huggingface.co/datasets/gsdf/EasyNegative/resolve/main/EasyNegative.safetensors
+  dir=models/embeddings
+  out=easynegative.safetensors
+https://huggingface.co/lenML/DeepNegative/resolve/main/NG_DeepNegative_V1_75T.pt
+  dir=models/embeddings
+  out=ng_deepnegative_v1_75t.pt
+
+# CLIP Vision
+
+https://huggingface.co/openai/clip-vit-large-patch14/resolve/main/model.safetensors
+  dir=models/clip_vision
+  out=clip_vit14.safetensors
+
+# ControlNet v1.1
+# More models: https://huggingface.co/lllyasviel/sd_control_collection
+
+https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11f1p_sd15_depth.pth
+  dir=models/controlnet
+  out=control_v11f1p_sd15_depth.pth
+https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_canny.pth
+  dir=models/controlnet
+  out=control_v11p_sd15_canny.pth
+https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_openpose.pth
+  dir=models/controlnet
+  out=control_v11p_sd15_openpose.pth

@@ -81,20 +81,18 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         --force-reinstall \
         https://repo.radeon.com/rocm/manylinux/rocm-rel-6.0.2/onnxruntime_rocm-inference-1.17.0-cp310-cp310-linux_x86_64.whl \
     && pip install --break-system-packages \
-        mediapipe
+        mediapipe \
+    && pip list
 
-# Create a low-privilege user.
-RUN printf 'CREATE_MAIL_SPOOL=no' > /etc/default/useradd \
-    && mkdir -p /home/runner /home/scripts \
-    && groupadd runner \
-    && useradd runner -g runner -d /home/runner \
-    && chown runner:runner /home/runner /home/scripts
+RUN env \
+    && du -ah /root \
+    && rm -rf /root/* /root/.*
 
-COPY --chown=runner:runner scripts/. /home/scripts/
+COPY runner-scripts/.  /runner-scripts/
 
-USER runner:runner
-VOLUME /home/runner
-WORKDIR /home/runner
+USER root
+VOLUME /root
+WORKDIR /root
 EXPOSE 8188
 ENV CLI_ARGS="--use-pytorch-cross-attention"
-CMD ["bash","/home/scripts/entrypoint.sh"]
+CMD ["bash","/runner-scripts/entrypoint.sh"]

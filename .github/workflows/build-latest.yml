@@ -8,12 +8,12 @@ on:
     branches: [ main ]
     paths-ignore:
       - 'docker-compose*.yml'
-      - 'Dockerfile-rocm'
       - 'README*'
       - 'docs/**'
+      - 'rocm/**'
       - 'storage/**'
       - '.github/**'
-      - '!.github/workflows/build-regular.yml'
+      - '!.github/workflows/build-latest.yml'
 
 
 jobs:

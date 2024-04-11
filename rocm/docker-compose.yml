@@ -5,37 +5,20 @@
 
 services:
 
-  file-chown:
-    container_name: file-chown
-    build:
-      context: .
-      dockerfile: Dockerfile-rocm
-    image: "yanwk/comfyui-boot:rocm"
-    user: "root"
-    volumes: 
-      - "./storage:/home/runner"
-    command: "chown -R runner:runner /home/runner"
-
 # Ref: https://hub.docker.com/r/rocm/pytorch
 # Ref: https://rocm.docs.amd.com/projects/install-on-linux/en/latest/how-to/docker.html
-# docker run --device=/dev/kfd --device=/dev/dri \
-#   --group-add=video --ipc=host --cap-add=SYS_PTRACE \
-#   --security-opt seccomp=unconfined
 
   comfyui:
     init: true
-    container_name: comfyui
-    depends_on:
-      file-chown:
-        condition: service_completed_successfully
+    container_name: comfyui-rocm
     build:
       context: .
-      dockerfile: Dockerfile-rocm
+      dockerfile: Dockerfile
     image: "yanwk/comfyui-boot:rocm"
     ports:
       - "8188:8188"
     volumes:
-      - "./storage:/home/runner"
+      - "./storage:/root"
     environment:
       - CLI_ARGS=--use-pytorch-cross-attention
     devices:

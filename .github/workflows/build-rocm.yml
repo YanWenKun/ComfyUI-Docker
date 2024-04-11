@@ -7,13 +7,10 @@ on:
   push: 
     branches: [ main ]
     paths-ignore:
-      - 'docker-compose*.yml'
-      - 'Dockerfile'
-      - 'README*'
-      - 'docs/**'
-      - 'storage/**'
-      - '.github/**'
-      - '!.github/workflows/build-regular.yml'
+      - '**'
+      - '!rocm/Dockerfile'
+      - '!rocm/runner-scripts/**'
+      - '!.github/workflows/build-rocm.yml'
 
 
 jobs:
@@ -46,7 +43,7 @@ jobs:
         name: Build and push 'rocm'
         uses: docker/build-push-action@v5
         with:
-          context: .
-          file: Dockerfile-rocm
+          context: ./rocm
+          file: ./rocm/Dockerfile
           tags: yanwk/comfyui-boot:rocm
           push: true
