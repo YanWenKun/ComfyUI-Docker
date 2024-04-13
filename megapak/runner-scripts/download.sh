@@ -81,6 +81,8 @@ clone_or_pull https://github.com/MrForExample/ComfyUI-3D-Pack.git
 clone_or_pull https://github.com/pythongosssss/ComfyUI-WD14-Tagger.git
 clone_or_pull https://github.com/SLAPaper/ComfyUI-Image-Selector.git
 
+# WAS NS' deps were not fully installed, but it can still run, and have most features enabled
+clone_or_pull https://github.com/WASasquatch/was-node-suite-comfyui.git
 
 echo "########################################"
 echo "[INFO] Downloading Models..."

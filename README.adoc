@@ -250,6 +250,7 @@ podman run -it --rm \
 
 ### 3. Use link:megapak/README.adoc[megapak] image
 
+This image was built for rootless.
 
 ## Debugging
 

@@ -74,14 +74,14 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # Additional deps for ComfyUI-3D-Pack (prebuilt by me)
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --break-system-packages \
-        https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v1/diff_gaussian_rasterization-0.0.0-cp311-cp311-linux_x86_64.whl \
-        https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v1/kiui-0.2.7-py3-none-any.whl \
-        https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v1/nvdiffrast-0.3.1-py3-none-any.whl \
-        https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v1/pointnet2_ops-3.0.0-cp311-cp311-linux_x86_64.whl \
-        https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v1/pytorch3d-0.7.6-cp311-cp311-linux_x86_64.whl \
-        https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v1/simple_knn-0.0.0-cp311-cp311-linux_x86_64.whl \
-        https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v1/torchmcubes-0.1.0-cp311-cp311-linux_x86_64.whl \
-        https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v1/torch_scatter-2.1.2-cp311-cp311-linux_x86_64.whl
+        https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v2/diff_gaussian_rasterization-0.0.0-cp311-cp311-linux_x86_64.whl \
+        https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v2/kiui-0.2.7-py3-none-any.whl \
+        https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v2/nvdiffrast-0.3.1-py3-none-any.whl \
+        https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v2/pointnet2_ops-3.0.0-cp311-cp311-linux_x86_64.whl \
+        https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v2/pytorch3d-0.7.6-cp311-cp311-linux_x86_64.whl \
+        https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v2/simple_knn-0.0.0-cp311-cp311-linux_x86_64.whl \
+        https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v2/torch_scatter-2.1.2-cp311-cp311-linux_x86_64.whl \
+        https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v2/torchmcubes-0.1.0-cp311-cp311-linux_x86_64.whl
 
 # 1. Fix ONNX Runtime "missing CUDA provider". Also add support for CUDA 12.1.
 #    Ref: https://onnxruntime.ai/docs/install/

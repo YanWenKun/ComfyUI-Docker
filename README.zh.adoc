@@ -272,6 +272,7 @@ podman run -it --rm \
 
 ### 3. 改用 link:megapak/README.zh.adoc[megapak] 镜像
 
+该镜像一开始就为 rootless 而设计。
 
 ## 一些方便 Debug 的命令
 
