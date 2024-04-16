@@ -94,16 +94,16 @@ See link:rocm/README.adoc[ROCm].
 ## Q & A
 
 Q: My GPU has only 4GB VRAM +
-A: Add `--lowvram` to `CLI_ARGS`.
+A: Add `--lowvram` to *CLI_ARGS*.
 
-Q: Adding `--lowvram` still out-of-memory +
+Q: Adding __--lowvram__ still out-of-memory +
 A: Use `--novram` instead. It will use CPU RAM.
 
 Q: How to run on CPU? +
-A: Add `--cpu` to `CLI_ARGS`. It's pretty slow.
+A: Add `--cpu` to *CLI_ARGS*. It's pretty slow.
 
 Q: I don't want to use xFormers, how to use PyTorch's Cross Attention? +
-A: Add `--use-pytorch-cross-attention` to `CLI_ARGS`. It may perform well on WSL2, but significantly slower on Linux hosts.
+A: Add `--use-pytorch-cross-attention` to *CLI_ARGS*. It may perform well on WSL2, but significantly slower on Linux hosts.
 
 More `CLI_ARGS` available at 
 https://github.com/comfyanonymous/ComfyUI/blob/master/comfy/cli_args.py[ComfyUI].
@@ -132,11 +132,13 @@ $gcs https://github.com/crystian/ComfyUI-Crystools.git
 $gcs https://github.com/bash-j/mikey_nodes.git
 $gcs https://github.com/chrisgoringe/cg-use-everywhere.git
 $gcs https://github.com/cubiq/ComfyUI_essentials.git
+$gcs https://github.com/Derfuu/Derfuu_ComfyUI_ModdedNodes.git
 $gcs https://github.com/jags111/efficiency-nodes-comfyui.git
 $gcs https://github.com/kijai/ComfyUI-KJNodes.git
 $gcs https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git
 $gcs https://github.com/rgthree/rgthree-comfy.git
 $gcs https://github.com/shiimizu/ComfyUI_smZNodes.git
+$gcs https://github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes.git
 
 # Control
 $gcs https://github.com/cubiq/ComfyUI_InstantID.git
@@ -165,6 +167,7 @@ $gcs https://github.com/cubiq/ComfyUI_FaceAnalysis.git
 $gcs https://github.com/MrForExample/ComfyUI-3D-Pack.git
 $gcs https://github.com/pythongosssss/ComfyUI-WD14-Tagger.git
 $gcs https://github.com/SLAPaper/ComfyUI-Image-Selector.git
+$gcs https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git
 ----
 
 Another note is this image doesn't bundled deps for
@@ -252,7 +255,8 @@ podman run -it --rm \
 
 This image was built for rootless.
 
-## Debugging
+
+## Some commands for debugging
 
 .Build the image, print all logs to STDOUT
 [source,sh]
@@ -282,8 +286,11 @@ docker run -it --rm \
 ----
 
 .Clean up cache files
-If having issues when updating, try clean cache. +
-Usually this is not needed. Some custom nodes use `huggingface_hub` to download models and store them in `.cache`.
+Usually this is not needed. 
+Some custom nodes will use `huggingface_hub` to download models and store them in `.cache`.
+You may need to download them again after cleaning cache. +
+But if having issues when updating, it may worth a try:
+
 [source,sh]
 ----
 docker exec -it --workdir /home/runner  comfyui \

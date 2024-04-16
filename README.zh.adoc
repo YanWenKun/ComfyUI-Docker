@@ -131,11 +131,13 @@ $gcs https://github.com/crystian/ComfyUI-Crystools.git
 $gcs https://github.com/bash-j/mikey_nodes.git
 $gcs https://github.com/chrisgoringe/cg-use-everywhere.git
 $gcs https://github.com/cubiq/ComfyUI_essentials.git
+$gcs https://github.com/Derfuu/Derfuu_ComfyUI_ModdedNodes.git
 $gcs https://github.com/jags111/efficiency-nodes-comfyui.git
 $gcs https://github.com/kijai/ComfyUI-KJNodes.git
 $gcs https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git
 $gcs https://github.com/rgthree/rgthree-comfy.git
 $gcs https://github.com/shiimizu/ComfyUI_smZNodes.git
+$gcs https://github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes.git
 
 # 控制
 $gcs https://github.com/cubiq/ComfyUI_InstantID.git
@@ -164,6 +166,7 @@ $gcs https://github.com/cubiq/ComfyUI_FaceAnalysis.git
 $gcs https://github.com/MrForExample/ComfyUI-3D-Pack.git
 $gcs https://github.com/pythongosssss/ComfyUI-WD14-Tagger.git
 $gcs https://github.com/SLAPaper/ComfyUI-Image-Selector.git
+$gcs https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git
 ----
 
 此外，本镜像并未提供
