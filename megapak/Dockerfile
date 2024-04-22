@@ -62,6 +62,7 @@ python311-pip \
 python311-wheel \
 python311-setuptools \
 python311-Cython \
+python311-py-build-cmake \
 python311-aiohttp \
 python311-dbm \
 python311-ffmpeg-python \
@@ -88,7 +89,6 @@ python311-tqdm \
 Mesa-libGL1 \
 libgthread-2_0-0 \
 make \
-cmake \
 ninja \
 git \
 aria2 \
@@ -103,7 +103,8 @@ x265 \
 google-noto-sans-fonts \
 google-noto-sans-cjk-fonts \
 google-noto-coloremoji-fonts \
-    && rm /usr/lib64/python3.11/EXTERNALLY-MANAGED
+    && rm /usr/lib64/python3.11/EXTERNALLY-MANAGED \
+    && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11 100
 
 ################################################################################
 # GCC 12 

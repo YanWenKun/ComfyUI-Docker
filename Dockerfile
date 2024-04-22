@@ -7,8 +7,9 @@ FROM opensuse/tumbleweed:latest
 
 LABEL maintainer="code@yanwk.fun"
 
-# Note: GCC for InsightFace, 
-#       FFmpeg for video (pip[imageio-ffmpeg] will use system FFmpeg instead of bundled)
+# Note: GCC for InsightFace;
+#       FFmpeg for video (pip[imageio-ffmpeg] will use system FFmpeg instead of bundled).
+# Note: CMake may use different version of Python. Using 'update-alternatives' to ensure default version.
 RUN --mount=type=cache,target=/var/cache/zypp \
     set -eu \
     && zypper addrepo --check --refresh --priority 90 \
@@ -16,14 +17,15 @@ RUN --mount=type=cache,target=/var/cache/zypp \
     && zypper --gpg-auto-import-keys \
             install --no-confirm \
         python311 python311-pip python311-wheel python311-setuptools \
-        python311-devel python311-Cython gcc-c++ cmake \
+        python311-devel python311-Cython gcc-c++ python311-py-build-cmake \
         python311-numpy python311-opencv \
         python311-ffmpeg-python ffmpeg x264 x265 \
         python311-dbm \
         google-noto-sans-fonts google-noto-sans-cjk-fonts google-noto-coloremoji-fonts \
         shadow git aria2 \
         Mesa-libGL1 libgthread-2_0-0 \
-    && rm /usr/lib64/python3.11/EXTERNALLY-MANAGED
+    && rm /usr/lib64/python3.11/EXTERNALLY-MANAGED \
+    && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11 100
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --break-system-packages \

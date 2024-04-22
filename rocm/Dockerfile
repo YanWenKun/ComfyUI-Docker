@@ -8,9 +8,10 @@ FROM opensuse/tumbleweed:latest
 
 LABEL maintainer="code@yanwk.fun"
 
-# Note: GCC for InsightFace, 
-#       FFmpeg for video (pip[imageio-ffmpeg] will use system FFmpeg instead of bundled),
-#       'half' for ORT on ROCm
+# Note: GCC for InsightFace;
+#       FFmpeg for video (pip[imageio-ffmpeg] will use system FFmpeg instead of bundled);
+#       'half' for ORT on ROCm.
+# Note: CMake may use different version of Python. Using 'update-alternatives' to ensure default version.
 RUN --mount=type=cache,target=/var/cache/zypp \
     set -eu \
     && zypper addrepo --check --refresh --priority 90 \
@@ -18,7 +19,7 @@ RUN --mount=type=cache,target=/var/cache/zypp \
     && zypper --gpg-auto-import-keys \
             install --no-confirm \
         python310 python310-pip python310-wheel python310-setuptools \
-        python310-devel python310-Cython gcc-c++ cmake \
+        python310-devel python310-Cython gcc-c++ python310-py-build-cmake \
         python310-numpy python310-opencv \
         python310-ffmpeg-python ffmpeg x264 x265 \
         python310-dbm \
@@ -26,7 +27,8 @@ RUN --mount=type=cache,target=/var/cache/zypp \
         google-noto-sans-fonts google-noto-sans-cjk-fonts google-noto-coloremoji-fonts \
         shadow git aria2 \
         Mesa-libGL1 libgthread-2_0-0 \
-    && rm -f /usr/lib64/python3.10/EXTERNALLY-MANAGED
+    && rm -f /usr/lib64/python3.10/EXTERNALLY-MANAGED \
+    && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.10 10
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --break-system-packages \
@@ -83,9 +85,6 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     && pip install --break-system-packages \
         mediapipe \
     && pip list
-
-# Everything is built with Python 3.10 but SuSE default is now 3.11. Switch back
-RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.10 10
 
 RUN du -ah /root \
     && rm -rf /root/* /root/.*
