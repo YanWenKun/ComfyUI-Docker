@@ -84,6 +84,9 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         mediapipe \
     && pip list
 
+# Everything is built with Python 3.10 but SuSE default is now 3.11. Switch back
+RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.10 10
+
 RUN du -ah /root \
     && rm -rf /root/* /root/.*
 
