@@ -38,9 +38,9 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/install-pytorch.html
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --break-system-packages \
-        https://repo.radeon.com/rocm/manylinux/rocm-rel-6.0.2/torch-2.1.2%2Brocm6.0-cp310-cp310-linux_x86_64.whl \
-        https://repo.radeon.com/rocm/manylinux/rocm-rel-6.0.2/torchvision-0.16.1%2Brocm6.0-cp310-cp310-linux_x86_64.whl \
-        --extra-index-url  https://download.pytorch.org/whl/nightly/rocm6.0
+        https://repo.radeon.com/rocm/manylinux/rocm-rel-6.1/torch-2.1.2%2Brocm6.1-cp310-cp310-linux_x86_64.whl \
+        https://repo.radeon.com/rocm/manylinux/rocm-rel-6.1/torchvision-0.16.1%2Brocm6.1-cp310-cp310-linux_x86_64.whl \
+        --extra-index-url  https://download.pytorch.org/whl/nightly/rocm6.1
 
 # Dependencies for frequently-used
 # (Do this firstly so PIP won't be solving too many deps at one time)
@@ -55,7 +55,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Impact-Subpack/main/requirements.txt \
         -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Inspire-Pack/main/requirements.txt \
         -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/requirements.txt \
-        --extra-index-url https://download.pytorch.org/whl/nightly/rocm6.0
+        --extra-index-url https://download.pytorch.org/whl/nightly/rocm6.1
 
 # Dependencies for more, with few hand-pick:
 # 'compel lark' for smZNodes
@@ -73,7 +73,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         -r https://raw.githubusercontent.com/ZHO-ZHO-ZHO/ComfyUI-InstantID/main/requirements.txt \
         compel lark torchdiffeq fairscale \
         python-ffmpeg \
-        --extra-index-url https://download.pytorch.org/whl/nightly/rocm6.0
+        --extra-index-url https://download.pytorch.org/whl/nightly/rocm6.1
 
 # 1. Force-Reinstall ONNX for ROCm
 #    Ref: https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/install-onnx.html
@@ -81,7 +81,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --break-system-packages \
         --force-reinstall \
-        https://repo.radeon.com/rocm/manylinux/rocm-rel-6.0.2/onnxruntime_rocm-inference-1.17.0-cp310-cp310-linux_x86_64.whl \
+        https://repo.radeon.com/rocm/manylinux/rocm-rel-6.1/onnxruntime_rocm-inference-1.17.0-cp310-cp310-linux_x86_64.whl \
     && pip install --break-system-packages \
         mediapipe \
     && pip list
