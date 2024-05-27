@@ -40,6 +40,8 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --break-system-packages \
         https://repo.radeon.com/rocm/manylinux/rocm-rel-6.1/torch-2.1.2%2Brocm6.1-cp310-cp310-linux_x86_64.whl \
         https://repo.radeon.com/rocm/manylinux/rocm-rel-6.1/torchvision-0.16.1%2Brocm6.1-cp310-cp310-linux_x86_64.whl \
+        https://repo.radeon.com/rocm/manylinux/rocm-rel-6.1/pytorch_triton_rocm-2.1.0%2Brocm6.1.4d510c3a44-cp310-cp310-linux_x86_64.whl \
+        https://repo.radeon.com/rocm/manylinux/rocm-rel-6.1/tensorflow_rocm-2.15.0-cp310-cp310-manylinux2014_x86_64.whl \
         --extra-index-url  https://download.pytorch.org/whl/nightly/rocm6.1
 
 # Dependencies for frequently-used
