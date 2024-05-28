@@ -87,7 +87,8 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         mediapipe \
     && pip list
 
-RUN du -ah /root \
+RUN df -h \
+    && du -ah /root \
     && rm -rf /root/* /root/.*
 
 COPY runner-scripts/.  /runner-scripts/
