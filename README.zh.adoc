@@ -32,11 +32,15 @@ https://hub.docker.com/r/yanwk/comfyui-boot[Docker 镜像]
 ** 只需要在宿主系统中安装驱动即可，容器中不需要再安装驱动。
 
 * 安装好 Docker
-** Linux 用户可能需要安装 https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html[NVIDIA Container Toolkit] （使得容器可以访问宿主机的 GPU）。
 ** Windows 用户建议使用 https://www.docker.com/products/docker-desktop/[Docker Desktop] 并在安装时启用 WSL2，并 https://zhuanlan.zhihu.com/p/345645621[限制内存用量] 。
-** 下载过程可能需要科学上网，在 Docker 设置中可以找到代理设置。
+** Linux 用户可能需要安装 https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html[NVIDIA Container Toolkit] （使得容器可以访问宿主机的 GPU）。
 ** Podman 用户参见： <<podman, 使用 Podman 运行>>。
 
+
+* 科学上网
+** 访问 GitHub（下载自定义节点）与 HuggingFace、Civitai（下载模型）大概率需要科学上网，访问 PyPI（安装依赖项）也可能需要加速。
+** Docker Desktop 用户可在设置中找到“代理”（Settings - Resources - Proxies）选项页。
+** Linux 用户可以使用 <<pre-start, 预启动脚本>>。
 
 ## 运行方法 - NVIDIA 显卡
 
@@ -108,6 +112,50 @@ A: 在启动参数 `CLI_ARGS` 中添加 `--use-pytorch-cross-attention` 。在 W
 https://github.com/comfyanonymous/ComfyUI/blob/master/comfy/cli_args.py[ComfyUI] 。
 
 
+[[pre-start]]
+## 预启动脚本
+
+如果需要在 ComfyUI 启动前执行脚本，可以创建这个文件：
+----
+./storage/scripts/pre-start.sh
+----
+
+### 网络代理脚本
+
+如果你需要单独设置代理，可以创建这个文件，它会在 `pre-start` 和 `download` 之前运行:
+----
+./storage/scripts/set-proxy.sh
+----
+
+.参考脚本内容：
+[%collapsible]
+====
+提示：在容器内，不能直接通过 127.0.0.1 访问宿主机，需要走（虚拟）局域网，而容器平台一般都贴心绑定好了宿主机的 IP 地址-主机名：
+
+* 在 Docker 中是 `host.docker.internal`
+* 在 Podman 中是 `host.containers.internal`
+
+[source,sh]
+----
+#!/bin/bash
+set -eu
+export HTTP_PROXY=http://host.docker.internal:1081
+export HTTPS_PROXY=$HTTP_PROXY
+export http_proxy=$HTTP_PROXY
+export https_proxy=$HTTP_PROXY
+export NO_PROXY="localhost,*.local,*.internal,[::1],fd00::/7,
+10.0.0.0/8,127.0.0.0/8,169.254.0.0/16,172.16.0.0/12,192.168.0.0/16,
+10.*,127.*,169.254.*,172.16.*,172.17.*,172.18.*,172.19.*,172.20.*,
+172.21.*,172.22.*,172.23.*,172.24.*,172.25.*,172.26.*,172.27.*,
+172.28.*,172.29.*,172.30.*,172.31.*,172.32.*,192.168.*,
+*.cn,ghproxy.com,*.ghproxy.com,ghproxy.org,*.ghproxy.org,
+gh-proxy.com,*.gh-proxy.com,ghproxy.net,*.ghproxy.net"
+export no_proxy=$NO_PROXY
+echo "[INFO] 代理设置为 $HTTP_PROXY"
+----
+====
+
+
 ## 一些自定义节点
 
 .以下命令会安装一些常用节点，也许能帮你节省点时间
@@ -176,40 +224,6 @@ https://github.com/WASasquatch/was-node-suite-comfyui/blob/main/requirements.txt
 而且已不再活跃开发。 +
 但是通过 ComfyUI-Manager 正常安装不受影响，本镜像的脚本只安装 ComfyUI-Manager 这一个自定义节点。在全新部署的情况下，使用 ComfyUI-Manager 安装 WAS NS 不会有版本冲突。 +
 如果不同节点间出现冲突，尝试在 `custom_nodes` 下删除对应节点，并删除 `.local` （或 `local`）目录，然后在 ComfyUI-Manager 中更新／尝试修复／重新安装对应节点。
-====
-
-
-## 预启动脚本
-
-如果需要在 ComfyUI 启动前执行脚本，可以创建这个文件：
-----
-./storage/scripts/pre-start.sh
-----
-
-如果你需要单独设置代理，可以创建这个文件，它会在 `pre-start` 和 `download` 之前运行:
-----
-./storage/scripts/set-proxy.sh
-----
-
-.参考文本：
-[%collapsible]
-====
-[source,sh]
-----
-export HTTP_PROXY=http://host.docker.internal:1081
-export HTTPS_PROXY=$HTTP_PROXY
-export http_proxy=$HTTP_PROXY
-export https_proxy=$HTTP_PROXY
-export NO_PROXY="localhost,*.local,*.internal,[::1],fd00::/7,
-10.0.0.0/8,127.0.0.0/8,169.254.0.0/16,172.16.0.0/12,192.168.0.0/16,
-10.*,127.*,169.254.*,172.16.*,172.17.*,172.18.*,172.19.*,172.20.*,
-172.21.*,172.22.*,172.23.*,172.24.*,172.25.*,172.26.*,172.27.*,
-172.28.*,172.29.*,172.30.*,172.31.*,172.32.*,192.168.*,
-*.cn,ghproxy.com,*.ghproxy.com,ghproxy.org,*.ghproxy.org,
-gh-proxy.com,*.gh-proxy.com,ghproxy.net,*.ghproxy.net"
-export no_proxy=$NO_PROXY
-echo "[INFO] Proxy set to $HTTP_PROXY"
-----
 ====
 
 
