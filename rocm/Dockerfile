@@ -35,18 +35,24 @@ RUN --mount=type=cache,target=/var/cache/zypp \
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --break-system-packages \
-        --upgrade pip wheel setuptools Cython numpy
+        --upgrade pip wheel setuptools
 
 RUN df -h
 
-# Install PyTorch from AMD repo
-# https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/install-pytorch.html
+# Install PyTorch && ONNX from AMD repo
+# https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/native_linux/install-pytorch.html
+# https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/native_linux/install-onnx.html
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --break-system-packages \
-        https://repo.radeon.com/rocm/manylinux/rocm-rel-6.1/torch-2.1.2%2Brocm6.1-cp310-cp310-linux_x86_64.whl \
-        https://repo.radeon.com/rocm/manylinux/rocm-rel-6.1/torchvision-0.16.1%2Brocm6.1-cp310-cp310-linux_x86_64.whl \
-        https://repo.radeon.com/rocm/manylinux/rocm-rel-6.1/pytorch_triton_rocm-2.1.0%2Brocm6.1.4d510c3a44-cp310-cp310-linux_x86_64.whl \
+        https://repo.radeon.com/rocm/manylinux/rocm-rel-6.1.3/torch-2.1.2%2Brocm6.1.3-cp310-cp310-linux_x86_64.whl \
+        https://repo.radeon.com/rocm/manylinux/rocm-rel-6.1.3/torchvision-0.16.1%2Brocm6.1.3-cp310-cp310-linux_x86_64.whl \
+        https://repo.radeon.com/rocm/manylinux/rocm-rel-6.1.3/pytorch_triton_rocm-2.1.0%2Brocm6.1.3.4d510c3a44-cp310-cp310-linux_x86_64.whl \
+        https://repo.radeon.com/rocm/manylinux/rocm-rel-6.1.3/onnxruntime_rocm-1.17.0-cp310-cp310-linux_x86_64.whl \
         --extra-index-url  https://download.pytorch.org/whl/nightly/rocm6.1
+
+# Save some disk space for GitHub CI
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip cache purge
 
 RUN df -h
 
@@ -83,14 +89,9 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         python-ffmpeg \
         --extra-index-url https://download.pytorch.org/whl/nightly/rocm6.1
 
-# 1. Force-Reinstall ONNX for ROCm
-#    Ref: https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/install-onnx.html
-# 2. Fix MediaPipe's broken dep (protobuf<4).
+# Fix MediaPipe's broken dep (protobuf<4).
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --break-system-packages \
-        --force-reinstall \
-        https://repo.radeon.com/rocm/manylinux/rocm-rel-6.1/onnxruntime_rocm-inference-1.17.0-cp310-cp310-linux_x86_64.whl \
-    && pip install --break-system-packages \
         mediapipe \
     && pip list
 
