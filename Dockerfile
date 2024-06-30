@@ -27,9 +27,10 @@ RUN --mount=type=cache,target=/var/cache/zypp \
     && rm /usr/lib64/python3.11/EXTERNALLY-MANAGED \
     && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11 100
 
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install --break-system-packages \
-        --upgrade pip wheel setuptools Cython numpy
+# Using Zypper's stable version here instead of the latest.
+# RUN --mount=type=cache,target=/root/.cache/pip \
+#     pip install --break-system-packages \
+#         --upgrade pip wheel setuptools Cython numpy
 
 # Install xFormers (stable version, will specify PyTorch version),
 # and Torchvision + Torchaudio (will downgrade to match xFormers' PyTorch version).
@@ -90,7 +91,8 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # 2. Fix MediaPipe's broken dep (protobuf<4).
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --break-system-packages \
-        --force-reinstall onnxruntime-gpu \
+        --upgrade onnxruntime-gpu \
+        --upgrade-strategy eager \
         --index-url https://aiinfra.pkgs.visualstudio.com/PublicPackages/_packaging/onnxruntime-cuda-12/pypi/simple/ \
         --extra-index-url https://pypi.org/simple \
     && pip install --break-system-packages \
