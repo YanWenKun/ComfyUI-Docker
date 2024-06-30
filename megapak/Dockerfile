@@ -135,7 +135,7 @@ cpp12 \
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip list \
     && pip install \
-        --upgrade pip wheel setuptools Cython numpy \
+        --upgrade pip wheel setuptools \
     && pip install \
         xformers torchvision torchaudio \
         --index-url https://download.pytorch.org/whl/cu121 \
@@ -172,8 +172,10 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         -r /builder-scripts/pak5.txt \
     && pip install \
         -r /builder-scripts/pak7.txt \
-    && pip install \
-        --force-reinstall onnxruntime-gpu \
+    && pip uninstall --break-system-packages --yes \
+        onnxruntime-gpu \
+    && pip install --break-system-packages \
+        onnxruntime-gpu \
         --index-url https://aiinfra.pkgs.visualstudio.com/PublicPackages/_packaging/onnxruntime-cuda-12/pypi/simple/ \
         --extra-index-url https://pypi.org/simple \
     && pip install \
