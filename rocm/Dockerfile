@@ -8,6 +8,9 @@ FROM opensuse/tumbleweed:latest
 
 LABEL maintainer="code@yanwk.fun"
 
+# Check disk space for debugging GitHub CI.
+RUN df -h
+
 # Note: GCC for InsightFace;
 #       FFmpeg for video (pip[imageio-ffmpeg] will use system FFmpeg instead of bundled);
 #       'half' for ORT on ROCm.
@@ -34,6 +37,8 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --break-system-packages \
         --upgrade pip wheel setuptools Cython numpy
 
+RUN df -h
+
 # Install PyTorch from AMD repo
 # https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/install-pytorch.html
 RUN --mount=type=cache,target=/root/.cache/pip \
@@ -42,6 +47,8 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         https://repo.radeon.com/rocm/manylinux/rocm-rel-6.1/torchvision-0.16.1%2Brocm6.1-cp310-cp310-linux_x86_64.whl \
         https://repo.radeon.com/rocm/manylinux/rocm-rel-6.1/pytorch_triton_rocm-2.1.0%2Brocm6.1.4d510c3a44-cp310-cp310-linux_x86_64.whl \
         --extra-index-url  https://download.pytorch.org/whl/nightly/rocm6.1
+
+RUN df -h
 
 # Dependencies for frequently-used
 # (Do this firstly so PIP won't be solving too many deps at one time)
