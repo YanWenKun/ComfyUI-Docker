@@ -29,7 +29,7 @@ RUN --mount=type=cache,target=/var/cache/zypp \
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --break-system-packages \
-        --upgrade pip wheel setuptools Cython numpy
+        --upgrade pip wheel setuptools
 
 # Install xFormers (stable version, will specify PyTorch version),
 # and Torchvision + Torchaudio (will downgrade to match xFormers' PyTorch version).
@@ -89,8 +89,10 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 #    Ref: https://onnxruntime.ai/docs/install/
 # 2. Fix MediaPipe's broken dep (protobuf<4).
 RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install --break-system-packages \
-        --force-reinstall onnxruntime-gpu \
+    pip uninstall --break-system-packages --yes \
+        onnxruntime-gpu \
+    && pip install --break-system-packages \
+        onnxruntime-gpu \
         --index-url https://aiinfra.pkgs.visualstudio.com/PublicPackages/_packaging/onnxruntime-cuda-12/pypi/simple/ \
         --extra-index-url https://pypi.org/simple \
     && pip install --break-system-packages \
