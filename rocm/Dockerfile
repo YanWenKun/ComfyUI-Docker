@@ -8,9 +8,6 @@ FROM opensuse/tumbleweed:latest
 
 LABEL maintainer="code@yanwk.fun"
 
-# Check disk space for debugging GitHub CI.
-RUN df -h
-
 # Note: GCC for InsightFace;
 #       FFmpeg for video (pip[imageio-ffmpeg] will use system FFmpeg instead of bundled);
 #       'half' for ORT on ROCm.
@@ -37,8 +34,6 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --break-system-packages \
         --upgrade pip wheel setuptools
 
-RUN df -h
-
 # Install PyTorch && ONNX from AMD repo
 # https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/native_linux/install-pytorch.html
 # https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/native_linux/install-onnx.html
@@ -51,12 +46,6 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         https://repo.radeon.com/rocm/manylinux/rocm-rel-6.1.3/onnxruntime_rocm-1.17.0-cp310-cp310-linux_x86_64.whl \
         https://download.pytorch.org/whl/cpu/torchaudio-2.1.2%2Bcpu-cp310-cp310-linux_x86_64.whl \
         --extra-index-url  https://download.pytorch.org/whl/nightly/rocm6.1
-
-# Save some disk space for GitHub CI
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip cache purge
-
-RUN df -h
 
 # Dependencies for frequently-used
 # (Do this firstly so PIP won't be solving too many deps at one time)
