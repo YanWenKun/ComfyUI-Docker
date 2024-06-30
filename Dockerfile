@@ -91,6 +91,8 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip uninstall --break-system-packages --yes \
         onnxruntime-gpu \
+    && pip cache remove \
+        onnxruntime-gpu \
     && pip install --break-system-packages \
         onnxruntime-gpu \
         --index-url https://aiinfra.pkgs.visualstudio.com/PublicPackages/_packaging/onnxruntime-cuda-12/pypi/simple/ \
