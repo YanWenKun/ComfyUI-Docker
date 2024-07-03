@@ -9,7 +9,7 @@ link:../docs/wsl-directml.zh.adoc[在 WSL2 环境下通过 DirectML 运行 Comfy
 ## 准备工作
 
 * 确保 Linux 宿主机上正确安装了
-https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/install-radeon.html[Radeon software for Linux with ROCm]。
+https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/native_linux/install-radeon.html[Radeon software for Linux with ROCm]。
 
 ## 运行
 

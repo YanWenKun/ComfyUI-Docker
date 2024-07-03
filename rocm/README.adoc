@@ -11,7 +11,7 @@ It's slower than ROCm but still faster than CPU, and even works on an APU.
 ## Prepare
 
 * Make sure
-https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/install-radeon.html[Radeon software for Linux with ROCm]
+https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/native_linux/install-radeon.html[Radeon software for Linux with ROCm]
 is installed on your Linux host.
 
 ## Run
