@@ -51,6 +51,7 @@ pytorch-msssim
 pyyaml
 qrcode[pil]
 rembg
+requests
 requirements-parser
 rich
 rich-argparse
