@@ -32,7 +32,7 @@ sed -i 's/[[:space:]]*$//' pak5.txt
 sed -i 's/>=.*$//' pak5.txt
 sed -i 's/_/-/g' pak5.txt
 
-# Do not "sort foo.txt >foo.txt" => https://stackoverflow.com/a/29244408
-sort -uo pak5.txt pak5.txt
+# Don't "sort foo.txt >foo.txt". See: https://stackoverflow.com/a/29244408
+sort -ufo pak5.txt pak5.txt
 
 echo "<pak5.txt> generated. Check before use."
