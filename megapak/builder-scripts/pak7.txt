@@ -7,6 +7,9 @@ https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v3/to
 https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v3/kiui-0.2.10-py3-none-any.whl
 dlib
 insightface
-gradio
-gradio-client
+# Gradio needs urllib3~=2.0,
+# but matrix-client(used by ComfyUI-Manager) needs urllib3~=1.21.
+# Have to give up Gradio here.
+#gradio
+#gradio-client
 git+https://github.com/openai/CLIP.git
