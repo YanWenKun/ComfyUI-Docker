@@ -19,6 +19,9 @@ jobs:
     environment: Publish to Docker Hub
     runs-on: ubuntu-latest
     steps:
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
       - name: Maximize build disk space
         uses: easimon/maximize-build-space@master
         with:
@@ -45,5 +48,7 @@ jobs:
         with:
           context: ./megapak
           file: ./megapak/Dockerfile
-          tags: yanwk/comfyui-boot:megapak
+          tags:  |
+            yanwk/comfyui-boot:megapak
+            yanwk/comfyui-boot:megapak-${{ steps.date.outputs.date }}
           push: true
