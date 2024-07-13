@@ -99,22 +99,22 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 
 # Fix for libs (.so files)
 ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\
-:/usr/lib64/python3.11/site-packages/torch/lib\
-:/usr/lib/python3.11/site-packages/nvidia/cuda_cupti/lib\
-:/usr/lib/python3.11/site-packages/nvidia/cuda_runtime/lib\
-:/usr/lib/python3.11/site-packages/nvidia/cudnn/lib\
-:/usr/lib/python3.11/site-packages/nvidia/cufft/lib"
+:/usr/local/lib64/python3.11/site-packages/torch/lib\
+:/usr/local/lib/python3.11/site-packages/nvidia/cuda_cupti/lib\
+:/usr/local/lib/python3.11/site-packages/nvidia/cuda_runtime/lib\
+:/usr/local/lib/python3.11/site-packages/nvidia/cudnn/lib\
+:/usr/local/lib/python3.11/site-packages/nvidia/cufft/lib"
 
 # More libs (not necessary, just in case)
 ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\
-:/usr/lib/python3.11/site-packages/nvidia/cublas/lib\
-:/usr/lib/python3.11/site-packages/nvidia/cuda_nvrtc/lib\
-:/usr/lib/python3.11/site-packages/nvidia/curand/lib\
-:/usr/lib/python3.11/site-packages/nvidia/cusolver/lib\
-:/usr/lib/python3.11/site-packages/nvidia/cusparse/lib\
-:/usr/lib/python3.11/site-packages/nvidia/nccl/lib\
-:/usr/lib/python3.11/site-packages/nvidia/nvjitlink/lib\
-:/usr/lib/python3.11/site-packages/nvidia/nvtx/lib"
+:/usr/local/lib/python3.11/site-packages/nvidia/cublas/lib\
+:/usr/local/lib/python3.11/site-packages/nvidia/cuda_nvrtc/lib\
+:/usr/local/lib/python3.11/site-packages/nvidia/curand/lib\
+:/usr/local/lib/python3.11/site-packages/nvidia/cusolver/lib\
+:/usr/local/lib/python3.11/site-packages/nvidia/cusparse/lib\
+:/usr/local/lib/python3.11/site-packages/nvidia/nccl/lib\
+:/usr/local/lib/python3.11/site-packages/nvidia/nvjitlink/lib\
+:/usr/local/lib/python3.11/site-packages/nvidia/nvtx/lib"
 
 # Create a low-privilege user
 RUN printf 'CREATE_MAIL_SPOOL=no' >> /etc/default/useradd \
