@@ -87,6 +87,7 @@ python311-scipy \
 python311-svglib \
 python311-tqdm \
 Mesa-libGL1 \
+Mesa-libEGL-devel \
 libgthread-2_0-0 \
 make \
 ninja \
