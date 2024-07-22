@@ -93,6 +93,9 @@ See link:rocm/README.adoc[ROCm].
 [[q-n-a]]
 ## Q & A
 
+Q: I want to use https://github.com/MrForExample/ComfyUI-3D-Pack[ComfyUI-3D-Pack] +
+A: For Comfy3D and other "heavy" usage, just use link:megapak/README.adoc[megapak] image.
+
 Q: My GPU has only 4GB VRAM +
 A: Add `--lowvram` to *CLI_ARGS*.
 
@@ -164,7 +167,6 @@ $gcs https://github.com/MrForExample/ComfyUI-AnimateAnyone-Evolved.git
 
 # More
 $gcs https://github.com/cubiq/ComfyUI_FaceAnalysis.git
-$gcs https://github.com/MrForExample/ComfyUI-3D-Pack.git
 $gcs https://github.com/pythongosssss/ComfyUI-WD14-Tagger.git
 $gcs https://github.com/SLAPaper/ComfyUI-Image-Selector.git
 $gcs https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git

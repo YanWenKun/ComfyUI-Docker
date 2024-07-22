@@ -96,6 +96,9 @@ docker image prune
 [[q-n-a]]
 ## Q & A
 
+Q: 我想使用 https://github.com/MrForExample/ComfyUI-3D-Pack[ComfyUI-3D-Pack] +
+A: 对于 Comfy3D 和其他“重型”使用场景，请使用 link:megapak/README.zh.adoc[megapak] 镜像。
+
 Q: 显存只有 4G 怎么办？ +
 A: 在启动参数 `CLI_ARGS` 中添加 `--lowvram` 。
 
@@ -211,7 +214,6 @@ $gcs https://github.com/MrForExample/ComfyUI-AnimateAnyone-Evolved.git
 
 # 更多
 $gcs https://github.com/cubiq/ComfyUI_FaceAnalysis.git
-$gcs https://github.com/MrForExample/ComfyUI-3D-Pack.git
 $gcs https://github.com/pythongosssss/ComfyUI-WD14-Tagger.git
 $gcs https://github.com/SLAPaper/ComfyUI-Image-Selector.git
 $gcs https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git

@@ -16,7 +16,8 @@
 
 And will:
 
-* Install more Custom Nodes
+* Install a lot of Custom Nodes by default
+** Especially https://github.com/MrForExample/ComfyUI-3D-Pack[ComfyUI-3D-Pack] (not easy to install)
 
 * Download more models
 
@@ -30,7 +31,10 @@ The design of `megapak` is similar to the `latest` tag, as well as the usage. Wi
 
 This makes rootless deploy on Linux easier.
 
-For WSL2 users, recommend using a Docker volume or a WSL2 directory for file storage, rather than bind-mount a directory from Windows(NTFS) filesystem - which would perform I/O slower, and have dubious ownership.
+But WSL2 users need to be aware of the file storage. +
+Bind-mount a directory from Windows(NTFS) filesystem into Linux(ext4) would perform I/O much slower, and have dubious ownership. +
+Recommend using a Docker volume or a WSL2 directory for file storage. +
+Or just try native https://github.com/YanWenKun/ComfyUI-Windows-Portable[ComfyUI-Windows-Portable].
 
 ## Usage
 
