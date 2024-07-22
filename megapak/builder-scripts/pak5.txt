@@ -30,7 +30,6 @@ numba
 numexpr
 numpy
 omegaconf
-onnxruntime
 open-clip-torch
 packaging
 pandas
@@ -45,6 +44,7 @@ pyhocon
 PyMCubes
 pymeshlab
 pynvml
+pyrsmi
 python-dateutil
 pytorch-lightning
 pytorch-msssim
@@ -61,17 +61,20 @@ scikit-image
 scikit-learn
 scipy
 segment-anything
+sentencepiece
 simpleeval
 soundfile
 spandrel
 svglib
 timm
+tokenizers
 torch
 torchmetrics
 torchsde
 torchtyping
 tqdm
 transformers
+transparent-background
 trimesh[easy]
 typer
 typing-extensions
