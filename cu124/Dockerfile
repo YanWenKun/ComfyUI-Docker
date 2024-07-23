@@ -10,28 +10,6 @@ LABEL maintainer="YAN Wenkun <code@yanwk.fun>"
 RUN set -eu
 
 ################################################################################
-# GCC 13 
-# Required for compiling CUDA 12.4-related code.
-
-RUN --mount=type=cache,target=/var/cache/zypp \
-    zypper --gpg-auto-import-keys \
-        install --no-confirm --auto-agree-with-licenses \
-gcc13 \
-gcc13-c++ \
-cpp13 \
-    && update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++-13 90 \
-    && update-alternatives --install /usr/bin/cc  cc  /usr/bin/gcc-13 90 \
-    && update-alternatives --install /usr/bin/cpp cpp /usr/bin/cpp-13 90 \
-    && update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 90 \
-    && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 90 \
-    && update-alternatives --install /usr/bin/gcc-ar gcc-ar /usr/bin/gcc-ar-13 90 \
-    && update-alternatives --install /usr/bin/gcc-nm gcc-nm /usr/bin/gcc-nm-13 90 \
-    && update-alternatives --install /usr/bin/gcc-ranlib gcc-ranlib /usr/bin/gcc-ranlib-13 90 \
-    && update-alternatives --install /usr/bin/gcov gcov /usr/bin/gcov-13 90 \
-    && update-alternatives --install /usr/bin/gcov-dump gcov-dump /usr/bin/gcov-dump-13 90 \
-    && update-alternatives --install /usr/bin/gcov-tool gcov-tool /usr/bin/gcov-tool-13 90 
-
-################################################################################
 # NVIDIA CUDA devel
 # Ref: https://gitlab.com/nvidia/container-images/cuda/
 
@@ -127,6 +105,28 @@ google-noto-sans-cjk-fonts \
 google-noto-coloremoji-fonts \
     && rm /usr/lib64/python3.12/EXTERNALLY-MANAGED \
     && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 100
+
+################################################################################
+# GCC 13 
+# Required for compiling CUDA 12.4-related code.
+
+RUN --mount=type=cache,target=/var/cache/zypp \
+    zypper --gpg-auto-import-keys \
+        install --no-confirm --auto-agree-with-licenses \
+gcc13 \
+gcc13-c++ \
+cpp13 \
+    && update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++-13 90 \
+    && update-alternatives --install /usr/bin/cc  cc  /usr/bin/gcc-13 90 \
+    && update-alternatives --install /usr/bin/cpp cpp /usr/bin/cpp-13 90 \
+    && update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 90 \
+    && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 90 \
+    && update-alternatives --install /usr/bin/gcc-ar gcc-ar /usr/bin/gcc-ar-13 90 \
+    && update-alternatives --install /usr/bin/gcc-nm gcc-nm /usr/bin/gcc-nm-13 90 \
+    && update-alternatives --install /usr/bin/gcc-ranlib gcc-ranlib /usr/bin/gcc-ranlib-13 90 \
+    && update-alternatives --install /usr/bin/gcov gcov /usr/bin/gcov-13 90 \
+    && update-alternatives --install /usr/bin/gcov-dump gcov-dump /usr/bin/gcov-dump-13 90 \
+    && update-alternatives --install /usr/bin/gcov-tool gcov-tool /usr/bin/gcov-tool-13 90 
 
 ################################################################################
 # Python Packages
