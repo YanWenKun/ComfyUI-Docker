@@ -24,7 +24,7 @@ https://hub.docker.com/r/yanwk/comfyui-boot[Docker 镜像]
 ## 运行前提
 
 * NVIDIA 显卡， ≥6GB 显存
-** 4GB 方法见 <<q-n-a, Q & A>>
+** 4GB 显存见 <<cli-args, CLI_ARGS>>
 ** AMD 显卡见 link:rocm/README.zh.adoc[ROCm].
 
 * 安装好最新的 NVIDIA 显卡驱动
@@ -93,23 +93,32 @@ docker image prune
 参见 link:rocm/README.zh.adoc[ROCm]。
 
 
-[[q-n-a]]
-## Q & A
+## 提示 - Comfy3D
 
-Q: 我想使用 https://github.com/MrForExample/ComfyUI-3D-Pack[ComfyUI-3D-Pack] +
-A: 对于 Comfy3D 和其他“重型”使用场景，请使用 link:megapak/README.zh.adoc[megapak] 镜像。
+对于
+https://github.com/MrForExample/ComfyUI-3D-Pack[ComfyUI-3D-Pack]
+和其他“重型”使用场景，请使用 link:megapak/README.zh.adoc[megapak] 镜像。
 
-Q: 显存只有 4G 怎么办？ +
-A: 在启动参数 `CLI_ARGS` 中添加 `--lowvram` 。
 
-Q: 用了 `--lowvram` 还是显存不够 +
-A: 参数换成 `--novram` （直接用 CPU 内存）。
+[[cli-args]]
+## CLI_ARGS
 
-Q: 能不能直接用 CPU 来跑？ +
-A: 在启动参数 `CLI_ARGS` 中添加 `--cpu` ，会很慢。
+[cols="1,1"]
+|===
+|启动参数 |说明
 
-Q: 我不想用 xFormers，如何使用 PyTorch 原生交叉注意力机制？ +
-A: 在启动参数 `CLI_ARGS` 中添加 `--use-pytorch-cross-attention` 。在 WSL2 上可能速度／显存占用表现更佳，但在 Linux 宿主机上会明显更慢。
+|--lowvram
+|如果显存只有 4G
+
+|--novram
+|如果用了 __--lowvram__ 还是显存不够，直接改用 CPU 内存
+
+|--cpu
+|用 CPU 来跑，会很慢
+
+|--use-pytorch-cross-attention
+|如果不想用 xFormers，而改用 PyTorch 原生交叉注意力机制。在 WSL2 上可能会有更好的速度／显存占用表现，但在 Linux 宿主机上会明显更慢。
+|===
 
 更多 `CLI_ARGS` 参考 
 https://github.com/comfyanonymous/ComfyUI/blob/master/comfy/cli_args.py[ComfyUI] 。
@@ -245,7 +254,8 @@ https://docs.podman.io/en/latest/markdown/podman-run.1.html#mount-type-type-type
 .展开细节
 [%collapsible]
 ====
-简单直接的方式，用 `sudo` 来运行 Podman 就是 rootful 了，使用体验基本和 Docker 一样，就是记得后续操作也要用 "sudo"。 +
+简单直接的方式，用 `sudo` 来运行 Podman 就是 rootful 了，使用体验基本和 Docker 一样，就是记得后续操作也要用 "sudo"。
+
 此外镜像文件也是下载到 root 用户名下。如果已经用当前 Linux 用户下载了镜像，可以本地复制： +
 `sudo podman image scp username@localhost::docker.io/yanwk/comfyui-boot:latest`
 

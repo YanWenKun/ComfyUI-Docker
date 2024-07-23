@@ -26,7 +26,7 @@ a Stable Diffusion GUI powering node-based workflow.
 ## Prerequisites
 
 * NVIDIA GPU with ≥6GB VRAM
-** For 4GB see <<q-n-a, Q & A>>.
+** For 4GB see <<cli-args, CLI_ARGS>>.
 ** For AMD GPU see link:rocm/README.adoc[ROCm].
 
 * Latest NVIDIA GPU driver
@@ -90,23 +90,32 @@ Once the app is loaded, visit http://localhost:8188/
 See link:rocm/README.adoc[ROCm].
 
 
-[[q-n-a]]
-## Q & A
+## Tip - Comfy3D
 
-Q: I want to use https://github.com/MrForExample/ComfyUI-3D-Pack[ComfyUI-3D-Pack] +
-A: For Comfy3D and other "heavy" usage, just use link:megapak/README.adoc[megapak] image.
+For
+https://github.com/MrForExample/ComfyUI-3D-Pack[ComfyUI-3D-Pack]
+and other "heavy" usage, recommend using link:megapak/README.adoc[megapak] image.
 
-Q: My GPU has only 4GB VRAM +
-A: Add `--lowvram` to *CLI_ARGS*.
 
-Q: Adding __--lowvram__ still out-of-memory +
-A: Use `--novram` instead. It will use CPU RAM.
+[[cli-args]]
+## CLI_ARGS
 
-Q: How to run on CPU? +
-A: Add `--cpu` to *CLI_ARGS*. It's pretty slow.
+[cols="1,1"]
+|===
+|args |description
 
-Q: I don't want to use xFormers, how to use PyTorch's Cross Attention? +
-A: Add `--use-pytorch-cross-attention` to *CLI_ARGS*. It may perform well on WSL2, but significantly slower on Linux hosts.
+|--lowvram
+|If your GPU only has 4GB VRAM.
+
+|--novram
+|If adding __--lowvram__ still out-of-memory.
+
+|--cpu
+|Run on CPU. It's pretty slow.
+
+|--use-pytorch-cross-attention
+|If you don't want to use xFormers. This may perform well on WSL2, but significantly slower on Linux hosts.
+|===
 
 More `CLI_ARGS` available at 
 https://github.com/comfyanonymous/ComfyUI/blob/master/comfy/cli_args.py[ComfyUI].
@@ -209,7 +218,8 @@ Recommend three different ways to workaround:
 .Expand details
 [%collapsible]
 ====
-The straightforward way. By adding `sudo` you go from rootless to rootful. And everything else would be the same as using Docker. +
+The straightforward way. By adding `sudo` you go from rootless to rootful. And everything else would be the same as using Docker.
+
 Note that sudo Podman will download images to root space. If you already downloaded the image in current user, you can local-copy it: +
 `sudo podman image scp username@localhost::docker.io/yanwk/comfyui-boot:latest`
 

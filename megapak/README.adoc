@@ -23,18 +23,25 @@ And will:
 
 Also, if you'd like to build your own development environment for ComfyUI ecosystem, this image would be a good starting point.
 
-## Note
+## Note - For WSL2 Users
 
-The design of `megapak` is similar to the `latest` tag, as well as the usage. With one key difference:
+The design of `megapak` is similar to the `latest` image, as well as the usage. With one key difference:
 
-* The user within container is now 'root'.
-
-This makes rootless deploy on Linux easier.
+* The user within the container is `root`, not "runner".
+** This makes rootless deploy on Linux easier.
 
 But WSL2 users need to be aware of the file storage. +
 Bind-mount a directory from Windows(NTFS) filesystem into Linux(ext4) would perform I/O much slower, and have dubious ownership. +
 Recommend using a Docker volume or a WSL2 directory for file storage. +
-Or just try native https://github.com/YanWenKun/ComfyUI-Windows-Portable[ComfyUI-Windows-Portable].
+(You can still manage your ComfyUI files in Explorer via URL `\\wsl$`).
+
+More discussion in
+https://github.com/YanWenKun/ComfyUI-Docker/issues/43[#43].
+
+`latest` image uses a low-privilege user (runner), so it doesn't have dubious ownership issue under WSL2.
+
+If confused, give a try to the native
+https://github.com/YanWenKun/ComfyUI-Windows-Portable[ComfyUI-Windows-Portable].
 
 ## Usage
 

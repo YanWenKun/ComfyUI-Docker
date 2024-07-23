@@ -21,18 +21,25 @@
 
 此外，如果你在考虑攒一个自己的、面向 ComfyUI 生态的开发环境，这个镜像会是个不错的起点。
 
-## 提示
+## 提示 - WSL2 用户
 
 `megapak` 镜像的设计理念和 `latest` 差不多，但有一个显著差异：
 
-* 容器内用户为 'root'
+* 容器内用户为 `root`，不是 runner。
+** 这样便于 Linux 下 rootless 式部署运行。
 
-以便于 Linux 下 rootless 式部署运行。
+但 WSL2 用户需要额外注意，建议不要挂载／映射 NTFS 文件系统下的目录作为存储，一来跨文件系统互访性能很差，二来会有文件权限混乱的问题。
 
-但是 WSL2 用户需要注意文件所有权。 +
-建议使用 Docker Volume 来存储文件，或者存储到 WSL2 下的目录，这两者都是基于 WSL2 虚拟机的 ext4 虚拟硬盘，IO 性能较好。 +
-强烈建议不要用挂载的 Windows(NTFS) 下的文件目录，一来跨文件系统互访性能很差，二来会有文件归属权混乱的问题。 +
-如果搞不明白，也可以试试原生的 https://github.com/YanWenKun/ComfyUI-Windows-Portable/blob/main/README.zh.adoc[ComfyUI Windows 多节点整合包] 。
+建议使用 Docker Volume 来存储文件，或者存储到 WSL2 下的目录，这两者均基于 WSL2 虚拟机的 ext4 虚拟硬盘，IO 性能较好，不存在跨访混乱。 +
+但在 Windows 下访问存储目录会比较不便，需要通过地址 `\\wsl$` 以网络文件形式访问。
+
+更多讨论可以参看
+https://github.com/YanWenKun/ComfyUI-Docker/issues/43[#43]
+。
+
+`latest` 镜像因为使用了低特权用户（runner），不存权限混乱问题。
+
+如果搞不明白，也可以换 Win 原生的 https://github.com/YanWenKun/ComfyUI-Windows-Portable/blob/main/README.zh.adoc[ComfyUI Windows 多节点整合包] 试试。
 
 ## 用法
 
