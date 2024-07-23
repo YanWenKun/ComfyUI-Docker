@@ -1,4 +1,4 @@
-name: Publish 'latest' to Docker Hub
+name: Publish 'cu124' to Docker Hub
 
 on: 
   workflow_dispatch: # Can be manually triggered
@@ -7,23 +7,21 @@ on:
   push: 
     branches: [ main ]
     paths-ignore:
-      - 'docker-compose*.yml'
-      - 'README*'
-      - 'cu124/**'
-      - 'docs/**'
-      - 'megapak/**'
-      - 'rocm/**'
-      - 'storage/**'
-      - '.github/**'
-      - '!.github/workflows/build-latest.yml'
-
+      - '**'
+      - '!cu124/Dockerfile'
+      - '!cu124/builder-scripts/**'
+      - '!cu124/runner-scripts/**'
+      - '!.github/workflows/build-cu124.yml'
 
 jobs:
 
-  build-publish-latest:
+  build-publish-cu124:
     environment: Publish to Docker Hub
     runs-on: ubuntu-latest
     steps:
+      - name: Get current date
+        id: date
+        run: echo "date=$(date +'%Y%m%d')" >> $GITHUB_OUTPUT
       - name: Maximize build disk space
         uses: easimon/maximize-build-space@master
         with:
@@ -45,10 +43,11 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_ACCESSTOKEN }}
       -
-        name: Build and push 'latest'
+        name: Build and push 'cu124'
         uses: docker/build-push-action@v6
         with:
-          context: .
-          file: Dockerfile
-          tags: yanwk/comfyui-boot:latest
+          context: ./cu124
+          file: ./cu124/Dockerfile
+          tags:  |
+            yanwk/comfyui-boot:cu124
           push: true

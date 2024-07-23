@@ -1,0 +1,126 @@
+# Checkpoints
+
+https://huggingface.co/playgroundai/playground-v2.5-1024px-aesthetic/resolve/main/playground-v2.5-1024px-aesthetic.fp16.safetensors
+  dir=checkpoints
+  out=playground-v2.5-1024px-aesthetic.fp16.safetensors
+
+# VAE
+
+https://huggingface.co/stabilityai/sd-vae-ft-mse-original/resolve/main/vae-ft-mse-840000-ema-pruned.safetensors
+  dir=vae
+  out=vae-ft-mse-840000-ema-pruned.safetensors
+https://huggingface.co/madebyollin/taesd/resolve/main/taesd_decoder.safetensors
+  dir=vae_approx
+  out=taesd_decoder.safetensors
+https://huggingface.co/madebyollin/taesdxl/resolve/main/taesdxl_decoder.safetensors
+  dir=vae_approx
+  out=taesdxl_decoder.safetensors
+
+# Upscale
+
+https://github.com/xinntao/Real-ESRGAN/releases/download/v0.1.0/RealESRGAN_x4plus.pth
+  dir=upscale_models
+  out=RealESRGAN_x4plus.pth
+https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.2.4/RealESRGAN_x4plus_anime_6B.pth
+  dir=upscale_models
+  out=RealESRGAN_x4plus_anime_6B.pth
+https://huggingface.co/Kim2091/AnimeSharp/resolve/main/4x-AnimeSharp.pth
+  dir=upscale_models
+  out=4x-AnimeSharp.pth
+https://huggingface.co/Kim2091/UltraSharp/resolve/main/4x-UltraSharp.pth
+  dir=upscale_models
+  out=4x-UltraSharp.pth
+https://huggingface.co/gemasai/4x_NMKD-Siax_200k/resolve/main/4x_NMKD-Siax_200k.pth
+  dir=upscale_models
+  out=4x_NMKD-Siax_200k.pth
+https://huggingface.co/uwg/upscaler/resolve/main/ESRGAN/4x_foolhardy_Remacri.pth
+  dir=upscale_models
+  out=4x_foolhardy_Remacri.pth
+https://huggingface.co/uwg/upscaler/resolve/main/ESRGAN/8x_NMKD-Superscale_150000_G.pth
+  dir=upscale_models
+  out=8x_NMKD-Superscale_150000_G.pth
+
+# Embeddings
+
+https://huggingface.co/datasets/gsdf/EasyNegative/resolve/main/EasyNegative.safetensors
+  dir=embeddings
+  out=easynegative.safetensors
+https://huggingface.co/lenML/DeepNegative/resolve/main/NG_DeepNegative_V1_75T.pt
+  dir=embeddings
+  out=ng_deepnegative_v1_75t.pt
+
+# CLIP Vision
+
+https://huggingface.co/openai/clip-vit-large-patch14/resolve/main/model.safetensors
+  dir=clip_vision
+  out=clip_vit14.safetensors
+https://huggingface.co/stabilityai/control-lora/resolve/main/revision/clip_vision_g.safetensors
+  dir=clip_vision
+  out=control-lora-clip_vision_g.safetensors
+
+# unCLIP
+
+https://huggingface.co/stabilityai/stable-diffusion-2-1-unclip-small/resolve/main/image_encoder/model.safetensors
+  dir=checkpoints
+  out=stable-diffusion-2-1-unclip-small.safetensors
+
+# ControlNet v1.1
+# More models: https://huggingface.co/lllyasviel/sd_control_collection
+
+https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11f1p_sd15_depth.pth
+  dir=controlnet
+  out=control_v11f1p_sd15_depth.pth
+https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_canny.pth
+  dir=controlnet
+  out=control_v11p_sd15_canny.pth
+https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_openpose.pth
+  dir=controlnet
+  out=control_v11p_sd15_openpose.pth
+https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11e_sd15_ip2p.pth
+  dir=controlnet
+  out=control_v11e_sd15_ip2p.pth
+https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11e_sd15_shuffle.pth
+  dir=controlnet
+  out=control_v11e_sd15_shuffle.pth
+https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11f1e_sd15_tile.pth
+  dir=controlnet
+  out=control_v11f1e_sd15_tile.pth
+https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_inpaint.pth
+  dir=controlnet
+  out=control_v11p_sd15_inpaint.pth
+https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_lineart.pth
+  dir=controlnet
+  out=control_v11p_sd15_lineart.pth
+https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_mlsd.pth
+  dir=controlnet
+  out=control_v11p_sd15_mlsd.pth
+https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_normalbae.pth
+  dir=controlnet
+  out=control_v11p_sd15_normalbae.pth
+https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_scribble.pth
+  dir=controlnet
+  out=control_v11p_sd15_scribble.pth
+https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_seg.pth
+  dir=controlnet
+  out=control_v11p_sd15_seg.pth
+https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_softedge.pth
+  dir=controlnet
+  out=control_v11p_sd15_softedge.pth
+https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15s2_lineart_anime.pth
+  dir=controlnet
+  out=control_v11p_sd15s2_lineart_anime.pth
+
+# Control-LoRA
+
+https://huggingface.co/stabilityai/control-lora/resolve/main/control-LoRAs-rank256/control-lora-canny-rank256.safetensors
+  dir=controlnet
+  out=control-lora-canny-rank256.safetensors
+https://huggingface.co/stabilityai/control-lora/resolve/main/control-LoRAs-rank256/control-lora-depth-rank256.safetensors
+  dir=controlnet
+  out=control-lora-depth-rank256.safetensors
+https://huggingface.co/stabilityai/control-lora/resolve/main/control-LoRAs-rank256/control-lora-recolor-rank256.safetensors
+  dir=controlnet
+  out=control-lora-recolor-rank256.safetensors
+https://huggingface.co/stabilityai/control-lora/resolve/main/control-LoRAs-rank256/control-lora-sketch-rank256.safetensors
+  dir=controlnet
+  out=control-lora-sketch-rank256.safetensors

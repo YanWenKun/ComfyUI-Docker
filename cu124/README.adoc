@@ -1,0 +1,32 @@
+# Image in dev stage for CUDA 12.4
+
+UNDER CONSTRUCTION
+
+DO NOT USE
+
+* Based on `megapak`
+
+* Dev kits:
+** CUDA dev kit (12.4)
+** Python dev package (3.12)
+** GCC C++ (13)
+** OpenCV-devel
+** CMake, Ninja...
+
+* Tools:
+** Vim, Fish, fd...
+
+.Run with Podman
+[source,bash]
+----
+mkdir -p storage
+
+podman run -it --rm \
+  --name comfyui-cu124 \
+  --device nvidia.com/gpu=all \
+  --security-opt label=disable \
+  -p 8188:8188 \
+  -v "$(pwd)"/storage:/root \
+  -e CLI_ARGS="" \
+  docker.io/yanwk/comfyui-boot:cu124
+----
