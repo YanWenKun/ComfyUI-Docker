@@ -137,7 +137,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     && pip install \
         --upgrade pip wheel setuptools \
     && pip install \
-        --pre xformers torchvision torchaudio \
+        --pre torch torchvision torchaudio \
         --index-url https://download.pytorch.org/whl/nightly/cu124 \
         --extra-index-url https://pypi.org/simple
 
