@@ -131,15 +131,14 @@ cpp13 \
 ################################################################################
 # Python Packages
 
-# PyTorch, xFormers
+# PyTorch
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip list \
     && pip install \
         --upgrade pip wheel setuptools \
     && pip install \
         --pre torch torchvision torchaudio \
-        --index-url https://download.pytorch.org/whl/nightly/cu124 \
-        --extra-index-url https://pypi.org/simple
+        --index-url https://download.pytorch.org/whl/nightly/cu124
 
 # Bind libs (.so files)
 # Even we have CUDA installed by Zypper, we still need to install CUDA libs for Python in order to run PyTorch.
@@ -159,6 +158,10 @@ ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\
 :/usr/local/lib/python3.12/site-packages/nvidia/nvjitlink/lib\
 :/usr/local/lib/python3.12/site-packages/nvidia/nvtx/lib"
 
+# Install xFormers from wheel file (compiled for PyTorch Nightly)
+COPY --from=docker.io/yanwk/comfyui-extras:xformers-cu124 /wheels /wheels
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install /wheels/*.whl
 
 COPY builder-scripts/.  /builder-scripts/
 
