@@ -1,8 +1,4 @@
-# Image in dev stage for CUDA 12.4
-
-UNDER CONSTRUCTION
-
-DO NOT USE
+# Image for CUDA 12.4 (early stage)
 
 * Based on `megapak`
 
@@ -15,6 +11,8 @@ DO NOT USE
 
 * Tools:
 ** Vim, Fish, fd...
+
+* Currently not working with 3D-Pack
 
 .Run with Podman
 [source,bash]
