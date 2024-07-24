@@ -12,8 +12,6 @@
 * Tools:
 ** Vim, Fish, fd...
 
-* Currently not working with 3D-Pack
-
 .Run with Podman
 [source,bash]
 ----
@@ -27,4 +25,13 @@ podman run -it --rm \
   -v "$(pwd)"/storage:/root \
   -e CLI_ARGS="" \
   docker.io/yanwk/comfyui-boot:cu124
+----
+
+* Currently not working with 3D-Pack
+** Unable to compile `pytorch_scatter`
+
+[source,log]
+----
+/tmp/pip-build-env-8fvbvikr/overlay/lib64/python3.12/site-packages/torch/include/ATen/core/boxing/impl/boxing.h:42:103: error: expected primary-expression before ‘>’ token
+42 | struct has_ivalue_to<T, std::void_t<decltype(std::declval<IValue>().to<T>())>>
 ----
