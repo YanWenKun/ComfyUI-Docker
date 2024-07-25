@@ -1,6 +1,7 @@
 ################################################################################
 # Dockerfile that builds 'yanwk/comfyui-boot:cu121-megapak'
 # A big all-in-one package with many custom nodes.
+# Using CUDA 12.1, Python 3.11, GCC 12.
 # The container will be running in root (easy for rootless deploy).
 ################################################################################
 

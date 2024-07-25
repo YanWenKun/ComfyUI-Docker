@@ -11,6 +11,8 @@
 ** OpenCV-devel
 ** CMake, Ninja...
 
+* Latest stable version of xFormers + PyTorch
+
 * Tools:
 ** Vim, Fish, fd...
 

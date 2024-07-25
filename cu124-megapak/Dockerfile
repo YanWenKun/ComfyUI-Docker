@@ -1,5 +1,7 @@
 ################################################################################
 # Dockerfile that builds 'yanwk/comfyui-boot:cu124-megapak'
+# A big all-in-one package with many custom nodes.
+# Using CUDA 12.4, Python 3.12, GCC 13.
 # The container will be running in root (easy for rootless deploy).
 ################################################################################
 
@@ -158,7 +160,8 @@ ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\
 :/usr/lib/python3.12/site-packages/nvidia/nvjitlink/lib\
 :/usr/lib/python3.12/site-packages/nvidia/nvtx/lib"
 
-# Install xFormers from wheel file (compiled for PyTorch Nightly)
+# xFormers
+# Wheel file compiled on PyTorch Nightly
 COPY --from=docker.io/yanwk/comfyui-extras:xformers-cu124 /wheels /wheels
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install /wheels/*.whl

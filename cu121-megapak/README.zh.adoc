@@ -9,6 +9,8 @@
 ** OpenCV-devel
 ** CMake, Ninja...
 
+* 最新稳定版 xFormers + PyTorch
+
 * 工具：
 ** Vim, Fish, fd...
 

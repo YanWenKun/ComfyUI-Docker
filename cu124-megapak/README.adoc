@@ -9,6 +9,8 @@
 ** OpenCV-devel
 ** CMake, Ninja...
 
+* Nightly version of xFormers + PyTorch
+
 * Tools:
 ** Vim, Fish, fd...
 
