@@ -18,13 +18,13 @@
 mkdir -p storage
 
 podman run -it --rm \
-  --name comfyui-cu124 \
+  --name comfyui-cu124-mega \
   --device nvidia.com/gpu=all \
   --security-opt label=disable \
   -p 8188:8188 \
   -v "$(pwd)"/storage:/root \
   -e CLI_ARGS="" \
-  docker.io/yanwk/comfyui-boot:cu124
+  docker.io/yanwk/comfyui-boot:cu124-megapak
 ----
 
 * Currently not working with 3D-Pack

@@ -1,4 +1,4 @@
-name: Publish 'cu124' to Docker Hub
+name: Publish 'cu124-megapak' to Docker Hub
 
 on: 
   workflow_dispatch: # Can be manually triggered
@@ -8,14 +8,14 @@ on:
     branches: [ main ]
     paths-ignore:
       - '**'
-      - '!cu124/Dockerfile'
-      - '!cu124/builder-scripts/**'
-      - '!cu124/runner-scripts/**'
-      - '!.github/workflows/build-cu124.yml'
+      - '!cu124-megapak/Dockerfile'
+      - '!cu124-megapak/builder-scripts/**'
+      - '!cu124-megapak/runner-scripts/**'
+      - '!.github/workflows/build-cu124-megapak.yml'
 
 jobs:
 
-  build-publish-cu124:
+  build-publish-cu124-megapak:
     environment: Publish to Docker Hub
     runs-on: ubuntu-latest
     steps:
@@ -43,11 +43,11 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_ACCESSTOKEN }}
       -
-        name: Build and push 'cu124'
+        name: Build and push 'cu124-megapak'
         uses: docker/build-push-action@v6
         with:
-          context: ./cu124
-          file: ./cu124/Dockerfile
+          context: ./cu124-megapak
+          file: ./cu124-megapak/Dockerfile
           tags:  |
-            yanwk/comfyui-boot:cu124
+            yanwk/comfyui-boot:cu124-megapak
           push: true

@@ -1,5 +1,5 @@
 ################################################################################
-# Dockerfile that builds 'yanwk/comfyui-boot:cu124'
+# Dockerfile that builds 'yanwk/comfyui-boot:cu124-megapak'
 # The container will be running in root (easy for rootless deploy).
 ################################################################################
 
