@@ -1,6 +1,6 @@
 # Image for CUDA 12.4 (early stage)
 
-* Based on `megapak`
+* Derived from `cu121-megapak`
 
 * Dev kits:
 ** CUDA dev kit (12.4)

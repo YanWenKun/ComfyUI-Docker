@@ -1,17 +1,3 @@
-# Comfy3D is not ready for CUDA 12.4
-#https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v3/pointnet2_ops-3.0.0-cp311-cp311-linux_x86_64.whl
-#https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v3/simple_knn-0.0.0-cp311-cp311-linux_x86_64.whl
-#https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v3/diff_gaussian_rasterization-0.0.0-cp311-cp311-linux_x86_64.whl
-#https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v3/nvdiffrast-0.3.1-py3-none-any.whl
-#https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v3/pytorch3d-0.7.7-cp311-cp311-linux_x86_64.whl
-#https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v3/torch_scatter-2.1.2-cp311-cp311-linux_x86_64.whl
-#https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v3/kiui-0.2.10-py3-none-any.whl
-# Gradio needs urllib3~=2.0,
-# but matrix-client(used by ComfyUI-Manager) needs urllib3~=1.21.
-# Have to give up Gradio here.
-#gradio
-#gradio-client
-# ----------------------------------
 dlib
 insightface
 git+https://github.com/openai/CLIP.git

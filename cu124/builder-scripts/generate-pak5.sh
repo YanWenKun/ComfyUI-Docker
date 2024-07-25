@@ -18,7 +18,6 @@ https://raw.githubusercontent.com/ltdrdata/ComfyUI-Impact-Subpack/main/requireme
 https://raw.githubusercontent.com/ltdrdata/ComfyUI-Inspire-Pack/main/requirements.txt
 https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/requirements.txt
 https://raw.githubusercontent.com/melMass/comfy_mtb/main/requirements.txt
-https://raw.githubusercontent.com/MrForExample/ComfyUI-3D-Pack/main/requirements.txt
 https://raw.githubusercontent.com/storyicon/comfyui_segment_anything/main/requirements.txt
 https://raw.githubusercontent.com/ZHO-ZHO-ZHO/ComfyUI-InstantID/main/requirements.txt
 )
