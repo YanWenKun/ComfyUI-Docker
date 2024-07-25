@@ -1,5 +1,5 @@
 ################################################################################
-# Dockerfile that builds 'yanwk/comfyui-boot:megapak'
+# Dockerfile that builds 'yanwk/comfyui-boot:cu121-megapak'
 # A big all-in-one package with many custom nodes.
 # The container will be running in root (easy for rootless deploy).
 ################################################################################

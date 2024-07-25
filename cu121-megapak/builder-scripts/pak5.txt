@@ -24,6 +24,7 @@ librosa
 matplotlib
 matrix-client==0.4.0
 mediapipe
+mss
 nerfacc
 ninja
 numba
