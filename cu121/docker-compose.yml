@@ -7,7 +7,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: "yanwk/comfyui-boot"
+    image: "yanwk/comfyui-boot:cu121"
     user: "root"
     volumes: 
       - "./storage:/home/runner"
@@ -22,7 +22,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: "yanwk/comfyui-boot"
+    image: "yanwk/comfyui-boot:cu121"
     ports:
       - "8188:8188"
     volumes:

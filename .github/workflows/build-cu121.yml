@@ -1,4 +1,4 @@
-name: Publish 'latest' to Docker Hub
+name: Publish 'cu121' to Docker Hub
 
 on: 
   workflow_dispatch: # Can be manually triggered
@@ -8,14 +8,14 @@ on:
     branches: [ main ]
     paths-ignore:
       - '**'
-      - '!Dockerfile'
-      - '!scripts/**'
-      - '!.github/workflows/build-latest.yml'
+      - '!cu121/Dockerfile'
+      - '!cu121/scripts/**'
+      - '!.github/workflows/build-cu121.yml'
 
 
 jobs:
 
-  build-publish-latest:
+  build-publish-cu121:
     environment: Publish to Docker Hub
     runs-on: ubuntu-latest
     steps:
@@ -40,10 +40,12 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_ACCESSTOKEN }}
       -
-        name: Build and push 'latest'
+        name: Build and push 'cu121'
         uses: docker/build-push-action@v6
         with:
-          context: .
-          file: Dockerfile
-          tags: yanwk/comfyui-boot:latest
+          context: ./cu121
+          file: ./cu121/Dockerfile
+          tags: | 
+            yanwk/comfyui-boot:latest
+            yanwk/comfyui-boot:cu121
           push: true
