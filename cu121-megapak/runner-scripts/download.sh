@@ -77,7 +77,6 @@ clone_or_pull https://github.com/MrForExample/ComfyUI-AnimateAnyone-Evolved.git
 
 # More
 clone_or_pull https://github.com/cubiq/ComfyUI_FaceAnalysis.git
-clone_or_pull https://github.com/MrForExample/ComfyUI-3D-Pack.git
 clone_or_pull https://github.com/pythongosssss/ComfyUI-WD14-Tagger.git
 clone_or_pull https://github.com/SLAPaper/ComfyUI-Image-Selector.git
 

@@ -5,9 +5,9 @@
 # The container will be running in root (easy for rootless deploy).
 ################################################################################
 
-FROM opensuse/tumbleweed:latest
+FROM docker.io/opensuse/tumbleweed:latest
 
-LABEL maintainer="code@yanwk.fun"
+LABEL maintainer="YAN Wenkun <code@yanwk.fun>"
 
 RUN set -eu
 
