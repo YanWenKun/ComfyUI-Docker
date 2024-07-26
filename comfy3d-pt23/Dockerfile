@@ -62,8 +62,10 @@ https://raw.githubusercontent.com/MrForExample/Comfy3D_Pre_Builds/b27af1a28d9f19
 
 ################################################################################
 
-RUN du -ah /root \
-    && rm -rf /root/* /root/.*
+RUN set +e \
+    && du -ah /root \
+    && rm -rf /root/* /root/.* \
+    && set -e
 
 COPY runner-scripts/.  /runner-scripts/
 
