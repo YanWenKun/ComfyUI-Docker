@@ -64,8 +64,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 ################################################################################
 
 RUN du -ah /root \
-    && rm -rf /root/* \
-    && rm -rfv /root/.* 2>/dev/null
+    && find /root/ -mindepth 1 -delete
 
 COPY runner-scripts/.  /runner-scripts/
 
