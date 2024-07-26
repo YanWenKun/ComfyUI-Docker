@@ -45,7 +45,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         https://repo.radeon.com/rocm/manylinux/rocm-rel-6.1.3/pytorch_triton_rocm-2.1.0%2Brocm6.1.3.4d510c3a44-cp310-cp310-linux_x86_64.whl \
         https://repo.radeon.com/rocm/manylinux/rocm-rel-6.1.3/onnxruntime_rocm-1.17.0-cp310-cp310-linux_x86_64.whl \
         https://download.pytorch.org/whl/cpu/torchaudio-2.1.2%2Bcpu-cp310-cp310-linux_x86_64.whl \
-        --extra-index-url  https://download.pytorch.org/whl/nightly/rocm6.1
+        --extra-index-url  https://download.pytorch.org/whl/rocm6.1
 
 # Dependencies for frequently-used
 # (Do this firstly so PIP won't be solving too many deps at one time)
@@ -60,7 +60,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Impact-Subpack/main/requirements.txt \
         -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Inspire-Pack/main/requirements.txt \
         -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/requirements.txt \
-        --extra-index-url https://download.pytorch.org/whl/nightly/rocm6.1
+        --extra-index-url https://download.pytorch.org/whl/rocm6.1
 
 # Dependencies for more, with few hand-pick:
 # 'compel lark' for smZNodes
@@ -78,7 +78,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         -r https://raw.githubusercontent.com/ZHO-ZHO-ZHO/ComfyUI-InstantID/main/requirements.txt \
         compel lark torchdiffeq fairscale \
         python-ffmpeg \
-        --extra-index-url https://download.pytorch.org/whl/nightly/rocm6.1
+        --extra-index-url https://download.pytorch.org/whl/rocm6.1
 
 # Fix MediaPipe's broken dep (protobuf<4).
 RUN --mount=type=cache,target=/root/.cache/pip \
