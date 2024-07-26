@@ -1,0 +1,291 @@
+# Docker image for ComfyUI
+
+image::../docs/chart-concept.svg["Concept Design"]
+
+image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-cu121.yml/badge.svg["GitHub Workflow Status",link="https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-cu121.yml"]
+
+https://hub.docker.com/repository/docker/yanwk/comfyui-boot/tags?name=cu121[View on <Docker Hub>]
+
+
+## How it works
+
+1. At first start, a script will download latest ComfyUI, ComfyUI-Manager and some models.
+2. The whole ComfyUI will be stored in a local folder (`./storage/ComfyUI`).
+3. If you already have a ComfyUI bundle, put it there and make an empty file (`./storage/.download-complete`) so the start script will skip downloading.
+4. Use ComfyUI-Manager (in ComfyUI web page) to update ComfyUI, manage custom nodes, and download models.
+
+
+## Prerequisites
+
+* NVIDIA GPU with ≥6GB VRAM
+** For 4GB see <<cli-args, CLI_ARGS>>.
+
+* Latest NVIDIA GPU driver
+** Either Game or Studio edition will work.
+** You don't need to install drivers inside containers. Just make sure it's working on your host OS.
+
+* Docker Installed
+** Linux user may need to install https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html[NVIDIA Container Toolkit] (only on host OS). It will enable containers' GPU access.
+** Windows user could use https://www.docker.com/products/docker-desktop/[Docker Desktop] with WSL2 enabled.
+
+
+## Usage - NVIDIA GPU
+
+.A. Using `docker run`
+[source,sh]
+----
+mkdir -p storage
+
+docker run -it \
+  --name comfyui \
+  --gpus all \
+  -p 8188:8188 \
+  -v "$(pwd)"/storage:/home/runner \
+  -e CLI_ARGS="" \
+  yanwk/comfyui-boot:latest
+----
+
+[source,sh]
+----
+# Update image (only when Python components are outdated)
+docker rm comfyui
+docker pull yanwk/comfyui-boot:latest
+# Then re-run above 'docker run' again
+----
+
+.B. Using `docker compose`
+[source,sh]
+----
+git clone https://github.com/YanWenKun/ComfyUI-Docker.git
+
+cd ComfyUI-Docker
+
+docker compose up --detach
+----
+
+[source,sh]
+----
+# Update image (only when Python components are outdated)
+git pull
+docker compose pull
+docker compose up --detach --remove-orphans
+docker image prune
+----
+
+Once the app is loaded, visit http://localhost:8188/
+
+
+[[cli-args]]
+## CLI_ARGS
+
+[cols="1,1"]
+|===
+|args |description
+
+|--lowvram
+|If your GPU only has 4GB VRAM.
+
+|--novram
+|If adding __--lowvram__ still out-of-memory.
+
+|--cpu
+|Run on CPU. It's pretty slow.
+
+|--use-pytorch-cross-attention
+|If you don't want to use xFormers. This may perform well on WSL2, but significantly slower on Linux hosts.
+|===
+
+More `CLI_ARGS` available at 
+https://github.com/comfyanonymous/ComfyUI/blob/master/comfy/cli_args.py[ComfyUI].
+
+
+## Add some custom nodes
+
+.Install a bunch of custom nodes that may save your time
+[%collapsible]
+====
+Note that most dependencies are bundled in the image, you don't need to manually install them.
+
+[source,sh]
+----
+cd ComfyUI/custom_nodes/
+
+gcs='git clone --depth=1 --no-tags --recurse-submodules --shallow-submodules'
+
+# Workspace
+$gcs https://github.com/11cafe/comfyui-workspace-manager.git
+$gcs https://github.com/AIGODLIKE/AIGODLIKE-ComfyUI-Translation.git
+$gcs https://github.com/crystian/ComfyUI-Crystools-save.git
+$gcs https://github.com/crystian/ComfyUI-Crystools.git
+
+# General
+$gcs https://github.com/bash-j/mikey_nodes.git
+$gcs https://github.com/chrisgoringe/cg-use-everywhere.git
+$gcs https://github.com/cubiq/ComfyUI_essentials.git
+$gcs https://github.com/Derfuu/Derfuu_ComfyUI_ModdedNodes.git
+$gcs https://github.com/jags111/efficiency-nodes-comfyui.git
+$gcs https://github.com/kijai/ComfyUI-KJNodes.git
+$gcs https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git
+$gcs https://github.com/rgthree/rgthree-comfy.git
+$gcs https://github.com/shiimizu/ComfyUI_smZNodes.git
+$gcs https://github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes.git
+
+# Control
+$gcs https://github.com/cubiq/ComfyUI_InstantID.git
+$gcs https://github.com/cubiq/ComfyUI_IPAdapter_plus.git
+$gcs https://github.com/Fannovel16/comfyui_controlnet_aux.git
+$gcs https://github.com/florestefano1975/comfyui-portrait-master.git
+$gcs https://github.com/Gourieff/comfyui-reactor-node.git
+$gcs https://github.com/huchenlei/ComfyUI-layerdiffuse.git
+$gcs https://github.com/Kosinkadink/ComfyUI-Advanced-ControlNet.git
+$gcs https://github.com/ltdrdata/ComfyUI-Impact-Pack.git
+$gcs https://github.com/ltdrdata/ComfyUI-Inspire-Pack.git
+$gcs https://github.com/mcmonkeyprojects/sd-dynamic-thresholding.git
+$gcs https://github.com/storyicon/comfyui_segment_anything.git
+$gcs https://github.com/twri/sdxl_prompt_styler.git
+
+# Video
+$gcs https://github.com/Fannovel16/ComfyUI-Frame-Interpolation.git
+$gcs https://github.com/FizzleDorf/ComfyUI_FizzNodes.git
+$gcs https://github.com/Kosinkadink/ComfyUI-AnimateDiff-Evolved.git
+$gcs https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git
+$gcs https://github.com/melMass/comfy_mtb.git
+$gcs https://github.com/MrForExample/ComfyUI-AnimateAnyone-Evolved.git
+
+# More
+$gcs https://github.com/cubiq/ComfyUI_FaceAnalysis.git
+$gcs https://github.com/pythongosssss/ComfyUI-WD14-Tagger.git
+$gcs https://github.com/SLAPaper/ComfyUI-Image-Selector.git
+$gcs https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git
+----
+
+Another note is this image doesn't bundled deps for
+https://github.com/WASasquatch/was-node-suite-comfyui[WAS Node Suite],
+because it has some deps version
+https://github.com/WASasquatch/was-node-suite-comfyui/blob/main/requirements.txt[fixed],
+and is not under active development. +
+However, the image's script only install one custom node (ComfyUI-Manager). You can safely install WAS NS via ComfyUI-Manager in a new deployment. +
+If anything conflicts, just delete unwanted custom nodes and `.local` (or `local`) folder, and update/try-fix/reinstall custom nodes in ComfyUI-Manager.
+====
+
+
+## Pre-start scripts
+
+You can create your own pre-start script at
+----
+./storage/scripts/pre-start.sh
+----
+It will run before ComfyUI starts, handy for debugging.
+
+Also, if you need to setup proxy, this script will start before `pre-start` and `download` :
+----
+./storage/scripts/set-proxy.sh
+----
+
+
+// [[podman]]
+// ## Run with Podman
+
+// Podman is root-less by default. And https://www.tutorialworks.com/podman-rootless-volumes/[it's tricky] to bind-mount volume as non-root user inside rootless container. 
+// https://docs.podman.io/en/latest/markdown/podman-run.1.html#mount-type-type-type-specific-option[Options] provided by Podman will chown files on host space, which probably is undesirable.
+
+// Recommend three different ways to workaround:
+
+// ### 1. Go "root-ful" just like Docker
+
+// .Expand details
+// [%collapsible]
+// ====
+// The straightforward way. By adding `sudo` you go from rootless to rootful. And everything else would be the same as using Docker.
+
+// Note that sudo Podman will download images to root space. If you already downloaded the image in current user, you can local-copy it: +
+// `sudo podman image scp username@localhost::docker.io/yanwk/comfyui-boot:latest`
+
+// [source,sh]
+// ----
+// mkdir -p storage
+
+// sudo podman run -it --rm \
+//   --name comfyui-rootful \
+//   --device nvidia.com/gpu=all \
+//   --security-opt label=disable \
+//   -p 8188:8188 \
+//   -v "$(pwd)"/storage:/home/runner \
+//   -e CLI_ARGS="" \
+//   docker.io/yanwk/comfyui-boot
+// ----
+// ====
+
+// ### 2. Run as root inside container
+
+// .Expand details
+// [%collapsible]
+// ====
+// The rootless way, no sudo needed. Inside the pod, Podman will mount volume as root, scripts will run as root. And from the host side, we see files keep their original ownership.
+
+// [source,sh]
+// ----
+// mkdir -p storage
+
+// podman run -it --rm \
+//   --name comfyui-rootless \
+//   --device nvidia.com/gpu=all \
+//   --security-opt label=disable \
+//   -p 8188:8188 \
+//   -v "$(pwd)"/storage:/root \
+//   --user root \
+//   --workdir /root \
+//   -e CLI_ARGS="" \
+//   docker.io/yanwk/comfyui-boot:latest \
+//   /bin/bash /home/scripts/root-wrapper.sh
+// ----
+// ====
+
+// ### 3. Use link:megapak/README.adoc[megapak] image
+
+// This image was built for rootless.
+
+
+## Some commands for debugging
+
+.Build the image, print all logs to STDOUT
+[source,sh]
+----
+docker build . --progress=plain -f Dockerfile -t yanwk/comfyui-boot:latest
+----
+
+.Run a one-time container
+[source,sh]
+----
+docker run -it --rm \
+  --gpus all -p 8188:8188 \
+  --volume "$(pwd)"/storage:/home/runner \
+  --env CLI_ARGS="" \
+  yanwk/comfyui-boot:latest
+----
+
+.Run into a root bash
+[source,sh]
+----
+docker run -it --rm \
+  --gpus all -p 8188:8188 \
+  --volume "$(pwd)"/storage:/home/runner \
+  --env CLI_ARGS="" \
+  --user root \
+  yanwk/comfyui-boot:latest /bin/bash
+----
+
+.Clean up cache files
+Usually this is not needed. 
+Some custom nodes will use `huggingface_hub` to download models and store them in `.cache`.
+You may need to download them again after cleaning cache. +
+But if having issues when updating, it may worth a try:
+
+[source,sh]
+----
+docker exec -it --workdir /home/runner  comfyui \
+  rm -rf .cache/ .config/ .local/ .nv/ bin/ include/ lib/ lib64 pyvenv.cfg
+
+docker restart comfyui
+----
+

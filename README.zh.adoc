@@ -1,10 +1,6 @@
 # 用于 ComfyUI 的 Docker 镜像
 
-image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-latest.yml/badge.svg["GitHub Workflow Status",link="https://github.com/YanWenKun/ComfyUI-Docker/actions"]
-image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-rocm.yml/badge.svg["GitHub Workflow Status",link="https://github.com/YanWenKun/ComfyUI-Docker/tree/main/rocm"]
-image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-megapak.yml/badge.svg["GitHub Workflow Status",link="https://github.com/YanWenKun/ComfyUI-Docker/tree/main/megapak"]
-
-image::docs/chart-concept.zh.svg["布局"]
+image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-cu121.yml/badge.svg["GitHub Workflow Status",link="https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-cu121.yml"]
 
 https://github.com/comfyanonymous/ComfyUI[ComfyUI]
 是一个使用节点工作流的 Stable Diffusion 图形界面。 +
@@ -13,334 +9,48 @@ https://hub.docker.com/r/yanwk/comfyui-boot[Docker 镜像]
 包含其依赖项，及下载／启动脚本。
 
 
-## 工作流程
+## 2024 七月重大更新
 
-1. 初次启动时，启动脚本会下载 ComfyUI、ComfyUI-Manager 以及一些常用的功能性模型。
-2. 整个 ComfyUI 会保存在本地 (`./storage/ComfyUI`) 。
-3. 如果你已经有了现成的 ComfyUI 包，放在上述目录，并新建一个空白文件 (`./storage/.download-complete`)，启动脚本会跳过下载。
-4. 使用 ComfyUI-Manager 即可更新组件、安装模型（在 ComfyUI 页面中找到“Manager”）。
+* `latest` 更名 `cu121` （保留原名）
+* `megapak` 更名  `cu121-megapak` （保留原名）
+* 新增 `cu124-megapak`
+* 新增 `comfy3d-pt22`, `comfy3d-pt23`
+* 其他镜像移除 comfy3d 支持
 
+* 文档细节完善中……
 
-## 运行前提
 
-* NVIDIA 显卡， ≥6GB 显存
-** 4GB 显存见 <<cli-args, CLI_ARGS>>
-** AMD 显卡见 link:rocm/README.zh.adoc[ROCm].
+## 镜像标签
 
-* 安装好最新的 NVIDIA 显卡驱动
-** 游戏驱动或 Studio 驱动均可。
-** 只需要在宿主系统中安装驱动即可，容器中不需要再安装驱动。
+* link:cu121/README.zh.adoc[`cu121`, `latest`]
 
-* 安装好 Docker
-** Windows 用户建议使用 https://www.docker.com/products/docker-desktop/[Docker Desktop] 并在安装时启用 WSL2，并 https://zhuanlan.zhihu.com/p/345645621[限制内存用量] 。
-** Linux 用户可能需要安装 https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html[NVIDIA Container Toolkit] （使得容器可以访问宿主机的 GPU）。
-** Podman 用户参见： <<podman, 使用 Podman 运行>>。
+** 适用于大多数使用场景。适合用户：
+*** ComfyUI 新手
+*** Docker 新手
+*** WSL2 Docker 用户
+** 不推荐 Podman 或 rootless 用户使用（推荐用以下 megapak 标签）
 
+* link:cu121-megapak/README.zh.adoc[`cu121-megapak`, `megapak`]
 
-* 科学上网
-** 访问 GitHub（下载自定义节点）与 HuggingFace、Civitai（下载模型）大概率需要科学上网，访问 PyPI（安装依赖项）也可能需要加速。
-** Docker Desktop 用户可在设置中找到“代理”（Settings - Resources - Proxies）选项页。
-** Linux 用户可以使用 <<pre-start, 预启动脚本>>。
+** 大型整合包，包含开发组件，适用于“重型”使用场景
+** 基于 CUDA 12.1 + Python 3.11.
 
-## 运行方法 - NVIDIA 显卡
+* link:cu124-megapak/README.zh.adoc[`cu124-megapak`]
 
-.方法 A 使用 `docker run`
-[source,sh]
-----
-mkdir -p storage
+** 与上一个标签基本一致，但基于 CUDA 12.4 + Python 3.12.
+** 在新 GPU 上可能性能更佳
 
-docker run -it \
-  --name comfyui \
-  --gpus all \
-  -p 8188:8188 \
-  -v "$(pwd)"/storage:/home/runner \
-  -e CLI_ARGS="" \
-  yanwk/comfyui-boot:latest
-----
+* link:rocm/README.zh.adoc[`rocm`]
 
-[source,sh]
-----
-# 更新镜像（仅在 Python 组件版本过期时需要）
-docker rm comfyui
-docker pull yanwk/comfyui-boot:latest
-# 接下来再运行一遍上述 'docker run' 即可
-----
+** 适用于 AMD GPU
 
-.方法 B 使用 `docker compose`
-[source,sh]
-----
-git clone https://github.com/YanWenKun/ComfyUI-Docker.git
+* link:comfy3d-pt22/README.zh.adoc[`comfy3d-pt22`]
 
-cd ComfyUI-Docker
+** https://github.com/MrForExample/ComfyUI-3D-Pack[ComfyUI-3D-Pack] 专用
+** 基于 PyTorch 2.2，使用经典版本的 Comfy3D
 
-docker compose up --detach
-----
-
-[source,sh]
-----
-# 更新镜像（仅在 Python 组件版本过期时需要）
-git pull
-docker compose pull
-docker compose up --detach --remove-orphans
-docker image prune
-----
-
-启动完成后，访问 http://localhost:8188/
-
-
-## 运行方法 - AMD 显卡
-
-参见 link:rocm/README.zh.adoc[ROCm]。
-
-
-## 提示 - Comfy3D
-
-对于
-https://github.com/MrForExample/ComfyUI-3D-Pack[ComfyUI-3D-Pack]
-和其他“重型”使用场景，请使用 link:megapak/README.zh.adoc[megapak] 镜像。
-
-
-[[cli-args]]
-## CLI_ARGS
-
-[cols="1,1"]
-|===
-|启动参数 |说明
-
-|--lowvram
-|如果显存只有 4G
-
-|--novram
-|如果用了 __--lowvram__ 还是显存不够，直接改用 CPU 内存
-
-|--cpu
-|用 CPU 来跑，会很慢
-
-|--use-pytorch-cross-attention
-|如果不想用 xFormers，而改用 PyTorch 原生交叉注意力机制。在 WSL2 上可能会有更好的速度／显存占用表现，但在 Linux 宿主机上会明显更慢。
-|===
-
-更多 `CLI_ARGS` 参考 
-https://github.com/comfyanonymous/ComfyUI/blob/master/comfy/cli_args.py[ComfyUI] 。
-
-
-[[pre-start]]
-## 预启动脚本
-
-如果需要在 ComfyUI 启动前执行脚本，可以创建这个文件：
-----
-./storage/scripts/pre-start.sh
-----
-
-### 网络代理脚本
-
-如果你需要单独设置代理，可以创建这个文件，它会在 `pre-start` 和 `download` 之前运行:
-----
-./storage/scripts/set-proxy.sh
-----
-
-.参考脚本内容：
-[%collapsible]
-====
-提示：在容器内，不能直接通过 127.0.0.1 访问宿主机，需要走（虚拟）局域网，而容器平台一般都贴心绑定好了宿主机的 IP 地址-主机名：
-
-* 在 Docker 中是 `host.docker.internal`
-* 在 Podman 中是 `host.containers.internal`
-
-[source,sh]
-----
-#!/bin/bash
-set -eu
-export HTTP_PROXY=http://host.docker.internal:1081
-export HTTPS_PROXY=$HTTP_PROXY
-export http_proxy=$HTTP_PROXY
-export https_proxy=$HTTP_PROXY
-export NO_PROXY="localhost,*.local,*.internal,[::1],fd00::/7,
-10.0.0.0/8,127.0.0.0/8,169.254.0.0/16,172.16.0.0/12,192.168.0.0/16,
-10.*,127.*,169.254.*,172.16.*,172.17.*,172.18.*,172.19.*,172.20.*,
-172.21.*,172.22.*,172.23.*,172.24.*,172.25.*,172.26.*,172.27.*,
-172.28.*,172.29.*,172.30.*,172.31.*,172.32.*,192.168.*,
-*.cn,ghproxy.com,*.ghproxy.com,ghproxy.org,*.ghproxy.org,
-gh-proxy.com,*.gh-proxy.com,ghproxy.net,*.ghproxy.net"
-export no_proxy=$NO_PROXY
-echo "[INFO] 代理设置为 $HTTP_PROXY"
-----
-====
-
-
-## 一些自定义节点
-
-.以下命令会安装一些常用节点，也许能帮你节省点时间
-[%collapsible]
-====
-镜像里已经安装好了绝大部分依赖项，不需要手动安装。
-
-[source,sh]
-----
-cd ComfyUI/custom_nodes/
-
-gcs='git clone --depth=1 --no-tags --recurse-submodules --shallow-submodules'
-
-# 工作空间
-$gcs https://github.com/11cafe/comfyui-workspace-manager.git
-$gcs https://github.com/AIGODLIKE/AIGODLIKE-ComfyUI-Translation.git
-$gcs https://github.com/crystian/ComfyUI-Crystools-save.git
-$gcs https://github.com/crystian/ComfyUI-Crystools.git
-
-# 综合
-$gcs https://github.com/bash-j/mikey_nodes.git
-$gcs https://github.com/chrisgoringe/cg-use-everywhere.git
-$gcs https://github.com/cubiq/ComfyUI_essentials.git
-$gcs https://github.com/Derfuu/Derfuu_ComfyUI_ModdedNodes.git
-$gcs https://github.com/jags111/efficiency-nodes-comfyui.git
-$gcs https://github.com/kijai/ComfyUI-KJNodes.git
-$gcs https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git
-$gcs https://github.com/rgthree/rgthree-comfy.git
-$gcs https://github.com/shiimizu/ComfyUI_smZNodes.git
-$gcs https://github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes.git
-
-# 控制
-$gcs https://github.com/cubiq/ComfyUI_InstantID.git
-$gcs https://github.com/cubiq/ComfyUI_IPAdapter_plus.git
-$gcs https://github.com/Fannovel16/comfyui_controlnet_aux.git
-$gcs https://github.com/florestefano1975/comfyui-portrait-master.git
-$gcs https://github.com/Gourieff/comfyui-reactor-node.git
-$gcs https://github.com/huchenlei/ComfyUI-layerdiffuse.git
-$gcs https://github.com/Kosinkadink/ComfyUI-Advanced-ControlNet.git
-$gcs https://github.com/ltdrdata/ComfyUI-Impact-Pack.git
-$gcs https://github.com/ltdrdata/ComfyUI-Inspire-Pack.git
-$gcs https://github.com/mcmonkeyprojects/sd-dynamic-thresholding.git
-$gcs https://github.com/storyicon/comfyui_segment_anything.git
-$gcs https://github.com/twri/sdxl_prompt_styler.git
-
-# 视频
-$gcs https://github.com/Fannovel16/ComfyUI-Frame-Interpolation.git
-$gcs https://github.com/FizzleDorf/ComfyUI_FizzNodes.git
-$gcs https://github.com/Kosinkadink/ComfyUI-AnimateDiff-Evolved.git
-$gcs https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git
-$gcs https://github.com/melMass/comfy_mtb.git
-$gcs https://github.com/MrForExample/ComfyUI-AnimateAnyone-Evolved.git
-
-# 更多
-$gcs https://github.com/cubiq/ComfyUI_FaceAnalysis.git
-$gcs https://github.com/pythongosssss/ComfyUI-WD14-Tagger.git
-$gcs https://github.com/SLAPaper/ComfyUI-Image-Selector.git
-$gcs https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git
-----
-
-此外，本镜像并未提供
-https://github.com/WASasquatch/was-node-suite-comfyui[WAS Node Suite]
-所需依赖项，因为其部分
-https://github.com/WASasquatch/was-node-suite-comfyui/blob/main/requirements.txt[版本固定]，
-而且已不再活跃开发。 +
-但是通过 ComfyUI-Manager 正常安装不受影响，本镜像的脚本只安装 ComfyUI-Manager 这一个自定义节点。在全新部署的情况下，使用 ComfyUI-Manager 安装 WAS NS 不会有版本冲突。 +
-如果不同节点间出现冲突，尝试在 `custom_nodes` 下删除对应节点，并删除 `.local` （或 `local`）目录，然后在 ComfyUI-Manager 中更新／尝试修复／重新安装对应节点。
-====
-
-
-[[podman]]
-## 使用 Podman 运行
-
-关于文件权限：Podman 默认是 root-less 的，不需要 sudo，这也给挂载目录 
-https://www.tutorialworks.com/podman-rootless-volumes/[带来了限制] 。 +
-Podman 默认挂载文件为 root 身份，而想要在容器内挂载为非 root 用户，Podman 提供的
-https://docs.podman.io/en/latest/markdown/podman-run.1.html#mount-type-type-type-specific-option[选项]
-则会对主机上的文件执行 `chown`，变成和容器内一样的 uid 和 gid，给文件管理带来混乱。
-
-这里推荐三种不同的方式绕过：
-
-### 1. 像 Docker 一样 "root-ful"
-
-.展开细节
-[%collapsible]
-====
-简单直接的方式，用 `sudo` 来运行 Podman 就是 rootful 了，使用体验基本和 Docker 一样，就是记得后续操作也要用 "sudo"。
-
-此外镜像文件也是下载到 root 用户名下。如果已经用当前 Linux 用户下载了镜像，可以本地复制： +
-`sudo podman image scp username@localhost::docker.io/yanwk/comfyui-boot:latest`
-
-[source,sh]
-----
-mkdir -p storage
-
-sudo podman run -it --rm \
-  --name comfyui-rootful \
-  --device nvidia.com/gpu=all \
-  --security-opt label=disable \
-  -p 8188:8188 \
-  -v "$(pwd)"/storage:/home/runner \
-  -e CLI_ARGS="" \
-  docker.io/yanwk/comfyui-boot
-----
-====
-
-### 2. 在容器内改为 root 运行
-
-.展开细节
-[%collapsible]
-====
-保持 rootless 风格，不需要 sudo。容器内文件挂载为 root，程序也以 root 执行。而在宿主机一侧看来，文件还是本来的用户所有权。
-
-[source,sh]
-----
-mkdir -p storage
-
-podman run -it --rm \
-  --name comfyui-rootless \
-  --device nvidia.com/gpu=all \
-  --security-opt label=disable \
-  -p 8188:8188 \
-  -v "$(pwd)"/storage:/root \
-  --user root \
-  --workdir /root \
-  -e CLI_ARGS="" \
-  docker.io/yanwk/comfyui-boot:latest \
-  /bin/bash /home/scripts/root-wrapper.sh
-----
-====
-
-### 3. 改用 link:megapak/README.zh.adoc[megapak] 镜像
-
-该镜像一开始就为 rootless 而设计。
-
-## 一些方便 Debug 的命令
-
-.构建镜像，打印所有日志（不折叠）
-[source,sh]
-----
-docker build . --progress=plain -f Dockerfile -t yanwk/comfyui-boot:latest
-----
-
-.运行一个一次性容器
-[source,sh]
-----
-docker run -it --rm \
-  --gpus all -p 8188:8188 \
-  --volume "$(pwd)"/storage:/home/runner \
-  --env CLI_ARGS="" \
-  yanwk/comfyui-boot:latest
-----
-
-.用 root 身份运行 bash
-[source,sh]
-----
-docker run -it --rm \
-  --gpus all -p 8188:8188 \
-  --volume "$(pwd)"/storage:/home/runner \
-  --env CLI_ARGS="" \
-  --user root \
-  yanwk/comfyui-boot:latest /bin/bash
-----
-
-.清理缓存文件
-如果在升级时遇到奇怪问题，可以尝试清理缓存文件。平时不需要清理，避免反复下载一些文件（尤其一些节点用 `huggingface_hub` 下载模型，会存在 `.cache` 中）。
-[source,sh]
-----
-docker exec -it --workdir /home/runner  comfyui \
-  rm -rf .cache/ .config/ .local/ .nv/ bin/ include/ lib/ lib64 pyvenv.cfg
-
-docker restart comfyui
-----
+* link:comfy3d-pt23/README.zh.adoc[`comfy3d-pt23`]
+** 基于 PyTorch 2.3，使用较新版本的 Comfy3D
 
 
 ## 声明

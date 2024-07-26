@@ -1,25 +1,25 @@
-# MEGAPAK for CUDA 12.4 (early stage)
+# MEGAPAK，但是 CUDA 12.4 （早期版本）
 
 image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-cu124-megapak.yml/badge.svg["GitHub Workflow Status",link="https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-cu124-megapak.yml"]
 
-https://hub.docker.com/repository/docker/yanwk/comfyui-boot/tags?name=cu124-megapak[View on <Docker Hub>]
+https://hub.docker.com/repository/docker/yanwk/comfyui-boot/tags?name=cu124-megapak[在 <Docker Hub> 上查看]
 
 
-* Derived from `cu121-megapak`
+* 基于 `cu121-megapak` 演进而来
 
-* Dev kits:
+* 开发组件：
 ** CUDA dev kit (12.4)
 ** Python dev package (3.12)
 ** GCC C++ (13)
 ** OpenCV-devel
 ** CMake, Ninja...
 
-* Latest stable version of xFormers + PyTorch
+* 最新稳定版 xFormers + PyTorch
 
-* Tools:
+* 工具：
 ** Vim, Fish, fd...
 
-.Run with Podman
+.使用 Podman 运行
 [source,bash]
 ----
 mkdir -p storage
@@ -32,13 +32,4 @@ podman run -it --rm \
   -v "$(pwd)"/storage:/root \
   -e CLI_ARGS="" \
   docker.io/yanwk/comfyui-boot:cu124-megapak
-----
-
-* Currently not working with 3D-Pack
-** Unable to compile `pytorch_scatter`
-
-[source,log]
-----
-/tmp/pip-build-env-8fvbvikr/overlay/lib64/python3.12/site-packages/torch/include/ATen/core/boxing/impl/boxing.h:42:103: error: expected primary-expression before ‘>’ token
-42 | struct has_ivalue_to<T, std::void_t<decltype(std::declval<IValue>().to<T>())>>
 ----

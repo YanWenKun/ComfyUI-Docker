@@ -1,5 +1,9 @@
 # 你发现了 MEGAPAK！
 
+image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-cu121-megapak.yml/badge.svg["GitHub Workflow Status",link="https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-cu121-megapak.yml"]
+
+https://hub.docker.com/repository/docker/yanwk/comfyui-boot/tags?name=cu121-megapak[在 <Docker Hub> 上查看]
+
 `megapak` 是一个大而全的 Docker 镜像，包含：
 
 * 开发组件：
