@@ -43,13 +43,13 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     && pip install \
         --upgrade pip wheel setuptools \
     && pip install \
-        xformers==0.0.27.post1 torchvision torchaudio \
+        xformers==0.0.26.post1 torchvision torchaudio \
         --index-url https://download.pytorch.org/whl/cu121 \
         --extra-index-url https://pypi.org/simple \
     && pip install \
         -r https://raw.githubusercontent.com/comfyanonymous/ComfyUI/master/requirements.txt \
         -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/requirements.txt \
-        -r https://raw.githubusercontent.com/MrForExample/ComfyUI-3D-Pack/3b4e715939376634c68aa4c1c7d4ea4a8665c098/requirements.txt \
+        -r https://raw.githubusercontent.com/MrForExample/ComfyUI-3D-Pack/30bc061d926f660e7f4822f54778df46326a8fec/requirements.txt \
     && pip install \
 https://data.pyg.org/whl/torch-2.3.0%2Bcu121/torch_scatter-2.1.2%2Bpt23cu121-cp311-cp311-linux_x86_64.whl \
 https://raw.githubusercontent.com/MrForExample/Comfy3D_Pre_Builds/b27af1a28d9f194cea1a137750e35ac698406e60/_Build_Wheels/_Wheels_linux_py311_cu121/diff_gaussian_rasterization-0.0.0-cp311-cp311-linux_x86_64.whl \
