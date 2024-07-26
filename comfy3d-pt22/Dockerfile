@@ -63,10 +63,9 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 
 ################################################################################
 
-RUN set +e \
-    && du -ah /root \
-    && rm -rf /root/* /root/.* \
-    && set -e
+RUN du -ah /root \
+    && rm -rf /root/* \
+    && rm -rfv /root/.* 2>/dev/null
 
 COPY runner-scripts/.  /runner-scripts/
 
