@@ -7,8 +7,9 @@ https://hub.docker.com/repository/docker/yanwk/comfyui-boot/tags?name=comfy3d-pt
 
 * 默认仅安装 ComfyUI, ComfyUI-Manager, ComfyUI-3D-Pack
 
-* 基于
-https://gitlab.com/nvidia/container-images/cuda/-/blob/master/dist/12.1.1/ubi9/devel/cudnn8/Dockerfile[`nvidia/cuda:12.1.1-cudnn8-devel-ubi9`]
+* Comfy3D 版本：
+** https://github.com/MrForExample/ComfyUI-3D-Pack/tree/30bc061d926f660e7f4822f54778df46326a8fec[30bc061]
+(2024/07/24)
 
 * 开发组件：
 ** CUDA dev kit (12.1)
@@ -18,10 +19,6 @@ https://gitlab.com/nvidia/container-images/cuda/-/blob/master/dist/12.1.1/ubi9/d
 * 关键组件：
 ** torch==2.3.0+cu121
 ** xformers==0.0.26.post1
-
-* Comfy3D 版本：
-** https://github.com/MrForExample/ComfyUI-3D-Pack/tree/30bc061d926f660e7f4822f54778df46326a8fec[30bc061]
-(2024/07/24)
 
 ## 用法
 
