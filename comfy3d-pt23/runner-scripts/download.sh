@@ -32,13 +32,17 @@ clone_or_pull https://github.com/ltdrdata/ComfyUI-Manager.git
 
 
 echo "########################################"
-echo "[INFO] Downloading Custom Nodes..."
+echo "[INFO] Downloading ComfyUI-3D-Pack..."
 echo "########################################"
 
 cd /root/ComfyUI/custom_nodes
 
-clone_or_pull https://github.com/MrForExample/ComfyUI-3D-Pack.git
-git -C ComfyUI-3D-Pack reset --hard 30bc061d926f660e7f4822f54778df46326a8fec
+set +e
+git clone --recurse-submodules https://github.com/MrForExample/ComfyUI-3D-Pack.git \
+    || git -C "ComfyUI-3D-Pack" pull --ff-only ;
+set -e
+
+git -C "ComfyUI-3D-Pack" reset --hard 30bc061d926f660e7f4822f54778df46326a8fec
 
 
 # Finish

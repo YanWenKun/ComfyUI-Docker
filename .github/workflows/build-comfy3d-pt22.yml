@@ -2,6 +2,14 @@ name: Publish 'comfy3d-pt22' to Docker Hub
 
 on: 
   workflow_dispatch: # Can be manually triggered
+  push: 
+    branches: [ main ]
+    paths-ignore:
+      - '**'
+      - '!comfy3d-pt22/Dockerfile'
+      - '!comfy3d-pt22/runner-scripts/**'
+      - '!.github/workflows/build-comfy3d-pt22.yml'
+
 
 jobs:
 
