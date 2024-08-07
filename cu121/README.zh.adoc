@@ -1,6 +1,6 @@
 # 用于 ComfyUI 的 Docker 镜像
 
-image::docs/chart-concept.zh.svg["布局"]
+image::../docs/chart-concept.zh.svg["布局"]
 
 image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-cu121.yml/badge.svg["GitHub Workflow Status",link="https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-cu121.yml"]
 
