@@ -8,7 +8,7 @@ https://hub.docker.com/repository/docker/yanwk/comfyui-boot/tags?name=comfy3d-pt
 * 默认仅安装 ComfyUI, ComfyUI-Manager, ComfyUI-3D-Pack
 
 * Comfy3D 版本：
-** https://github.com/MrForExample/ComfyUI-3D-Pack/tree/30bc061d926f660e7f4822f54778df46326a8fec[30bc061]
+** https://github.com/MrForExample/ComfyUI-3D-Pack/tree/8c4d127528a9215d23262df722facf519ed80f56[30bc061]
 (2024/07/24)
 
 * 开发组件：

@@ -42,7 +42,7 @@ git clone --recurse-submodules https://github.com/MrForExample/ComfyUI-3D-Pack.g
     || git -C "ComfyUI-3D-Pack" pull --ff-only ;
 set -e
 
-git -C "ComfyUI-3D-Pack" reset --hard 30bc061d926f660e7f4822f54778df46326a8fec
+git -C "ComfyUI-3D-Pack" reset --hard 8c4d127528a9215d23262df722facf519ed80f56
 
 
 # Finish
