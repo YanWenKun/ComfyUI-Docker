@@ -19,7 +19,12 @@ jobs:
     environment: Publish to Docker Hub
     runs-on: ubuntu-latest
     steps:
-      - name: Maximize build disk space
+      -
+        name: Get current date
+        id: date
+        run: echo "date=$(date +'%Y%m%d')" >> $GITHUB_OUTPUT
+      -
+        name: Maximize build disk space
         uses: easimon/maximize-build-space@master
         with:
           overprovision-lvm: 'true'
@@ -27,7 +32,7 @@ jobs:
           remove-dotnet: 'true'
           remove-docker-images: 'true'
           swap-size-mb: 512
-      - 
+      -
         name: Git checkout
         uses: actions/checkout@v4
       -
@@ -48,5 +53,7 @@ jobs:
         with:
           context: ./rocm
           file: ./rocm/Dockerfile
-          tags: yanwk/comfyui-boot:rocm
+          tags: |
+            yanwk/comfyui-boot:rocm
+            yanwk/comfyui-boot:rocm-${{ steps.date.outputs.date }}
           push: true

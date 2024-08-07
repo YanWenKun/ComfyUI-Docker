@@ -19,12 +19,17 @@ jobs:
     environment: Publish to Docker Hub
     runs-on: ubuntu-latest
     steps:
-      - name: Maximize build disk space
+      -
+        name: Get current date
+        id: date
+        run: echo "date=$(date +'%Y%m%d')" >> $GITHUB_OUTPUT
+      -
+        name: Maximize build disk space
         uses: easimon/maximize-build-space@master
         with:
           overprovision-lvm: 'true'
           remove-android: 'true'
-      - 
+      -
         name: Git checkout
         uses: actions/checkout@v4
       -
@@ -48,4 +53,5 @@ jobs:
           tags: | 
             yanwk/comfyui-boot:latest
             yanwk/comfyui-boot:cu121
+            yanwk/comfyui-boot:cu121-${{ steps.date.outputs.date }}
           push: true
