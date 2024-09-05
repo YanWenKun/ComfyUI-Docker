@@ -147,19 +147,19 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # Even we have CUDA installed by Zypper, we still need to install CUDA libs for Python in order to run PyTorch.
 # What's more, NVIDIA's openSUSE15 repo didn't provide CuDNN & NCCL, we have to use Python packages anyway.
 ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\
-:/usr/lib64/python3.12/site-packages/torch/lib\
-:/usr/lib/python3.12/site-packages/nvidia/cuda_cupti/lib\
-:/usr/lib/python3.12/site-packages/nvidia/cuda_runtime/lib\
-:/usr/lib/python3.12/site-packages/nvidia/cudnn/lib\
-:/usr/lib/python3.12/site-packages/nvidia/cufft/lib\
-:/usr/lib/python3.12/site-packages/nvidia/cublas/lib\
-:/usr/lib/python3.12/site-packages/nvidia/cuda_nvrtc/lib\
-:/usr/lib/python3.12/site-packages/nvidia/curand/lib\
-:/usr/lib/python3.12/site-packages/nvidia/cusolver/lib\
-:/usr/lib/python3.12/site-packages/nvidia/cusparse/lib\
-:/usr/lib/python3.12/site-packages/nvidia/nccl/lib\
-:/usr/lib/python3.12/site-packages/nvidia/nvjitlink/lib\
-:/usr/lib/python3.12/site-packages/nvidia/nvtx/lib"
+:/usr/local/lib64/python3.12/site-packages/torch/lib\
+:/usr/local/lib/python3.12/site-packages/nvidia/cuda_cupti/lib\
+:/usr/local/lib/python3.12/site-packages/nvidia/cuda_runtime/lib\
+:/usr/local/lib/python3.12/site-packages/nvidia/cudnn/lib\
+:/usr/local/lib/python3.12/site-packages/nvidia/cufft/lib\
+:/usr/local/lib/python3.12/site-packages/nvidia/cublas/lib\
+:/usr/local/lib/python3.12/site-packages/nvidia/cuda_nvrtc/lib\
+:/usr/local/lib/python3.12/site-packages/nvidia/curand/lib\
+:/usr/local/lib/python3.12/site-packages/nvidia/cusolver/lib\
+:/usr/local/lib/python3.12/site-packages/nvidia/cusparse/lib\
+:/usr/local/lib/python3.12/site-packages/nvidia/nccl/lib\
+:/usr/local/lib/python3.12/site-packages/nvidia/nvjitlink/lib\
+:/usr/local/lib/python3.12/site-packages/nvidia/nvtx/lib"
 
 COPY builder-scripts/.  /builder-scripts/
 
