@@ -8,7 +8,7 @@ https://hub.docker.com/repository/docker/yanwk/comfyui-boot/tags?name=comfy3d-pt
 * By default, install only ComfyUI, ComfyUI-Manager, ComfyUI-3D-Pack
 
 * Comfy3D version:
-** https://github.com/MrForExample/ComfyUI-3D-Pack/tree/8c4d127528a9215d23262df722facf519ed80f56[30bc061]
+** https://github.com/MrForExample/ComfyUI-3D-Pack/tree/124bdbc69907ca8ab339279d04e0680b972c3f39[124bdbc]
 (Jul 24, 2024)
 
 * Dev kits:
