@@ -67,7 +67,7 @@ echo "[INFO] Downloading Models..."
 echo "########################################"
 
 # Models
-cd /root/ComfyUI
+cd /root/ComfyUI/models
 aria2c \
   --input-file=/runner-scripts/download.txt \
   --allow-overwrite=false \

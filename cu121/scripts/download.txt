@@ -4,13 +4,13 @@
 # It's a good start point for users who are new to ComfyUI.
 
 https://huggingface.co/digiplay/Photon_v1/resolve/main/photon_v1.safetensors
-  dir=models/checkpoints
+  dir=checkpoints
   out=photon_v1.safetensors
 
 # VAE
 
 https://huggingface.co/stabilityai/sd-vae-ft-mse-original/resolve/main/vae-ft-mse-840000-ema-pruned.safetensors
-  dir=models/vae
+  dir=vae
   out=vae-ft-mse-840000-ema-pruned.safetensors
 
 # Upscale
@@ -19,17 +19,17 @@ https://huggingface.co/stabilityai/sd-vae-ft-mse-original/resolve/main/vae-ft-ms
 # For more fine-tuned upscaler models, check: https://openmodeldb.info/
 
 https://github.com/xinntao/Real-ESRGAN/releases/download/v0.1.0/RealESRGAN_x4plus.pth
-  dir=models/upscale_models
+  dir=upscale_models
   out=RealESRGAN_x4plus.pth
 https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.2.4/RealESRGAN_x4plus_anime_6B.pth
-  dir=models/upscale_models
+  dir=upscale_models
   out=RealESRGAN_x4plus_anime_6B.pth
 
 # Embeddings
 
 https://huggingface.co/datasets/gsdf/EasyNegative/resolve/main/EasyNegative.safetensors
-  dir=models/embeddings
+  dir=embeddings
   out=easynegative.safetensors
 https://huggingface.co/lenML/DeepNegative/resolve/main/NG_DeepNegative_V1_75T.pt
-  dir=models/embeddings
+  dir=embeddings
   out=ng_deepnegative_v1_75t.pt
