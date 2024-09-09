@@ -6,8 +6,8 @@
 # 容器内将以 root 用户运行，以便于 rootless 部署
 ################################################################################
 
-# 注意，该基础镜像也是走国内源下载
-FROM dhub.kubesre.xyz/opensuse/tumbleweed:latest
+# 该基础镜像声明不含仓库前缀，因而会先尝试使用本地镜像
+FROM opensuse/tumbleweed:latest
 
 LABEL maintainer="YAN Wenkun <code@yanwk.fun>"
 

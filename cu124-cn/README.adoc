@@ -129,6 +129,7 @@ podman run -it --rm \
 
 [source,sh]
 ----
+docker pull dhub.kubesre.xyz/opensuse/tumbleweed:latest
 docker build . -t yanwk/comfyui-boot:cu124-cn -f Dockerfile-cn
 ----
 
