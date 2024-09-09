@@ -88,7 +88,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 
 RUN df -h \
     && du -ah /root \
-    && rm -rf /root/* /root/.*
+    && find /root/ -mindepth 1 -delete
 
 COPY runner-scripts/.  /runner-scripts/
 
