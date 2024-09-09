@@ -11,9 +11,18 @@ https://hub.docker.com/r/yanwk/comfyui-boot[Docker 镜像]
 
 ## 镜像标签
 
+
+* link:cu124-cn/README.adoc[`cu124-cn`]
+
+** 针对国内网络环境重写
+** 从下载到首次启动均无需代理
+** 提供整合与精简两种安装方式
+** 额外提供 `Dockerfile-cn` 以便本地构建
+** 推荐初次尝试 ComfyUI 的国内用户使用
+
 * link:cu121/README.zh.adoc[`cu121`, `latest`]
 
-** 推荐初次尝试 ComfyUI 的用户使用
+** 经典版本，简洁易上手，但需要良好的网络连接
 ** 默认仅安装基本的 ComfyUI 与 Manager
 ** 镜像中预装大量依赖项，方便后续无痛安装热门自定义节点（扩展插件）
 ** 容器内使用低特权用户运行（便于 WSL2 部署）
@@ -45,6 +54,10 @@ https://hub.docker.com/r/yanwk/comfyui-boot[Docker 镜像]
 ** https://github.com/MrForExample/ComfyUI-3D-Pack[ComfyUI-3D-Pack] 专用
 ** 基于 PyTorch 2.3，使用较新版本的 Comfy3D
 
+
+## 2024 九月重大更新
+
+* 新增 `cu124-cn`
 
 ## 2024 七月重大更新
 

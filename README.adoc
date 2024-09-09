@@ -45,6 +45,10 @@ docker run -it --rm \
 ** Using 'root' user within the container (easy for rootless deploy).
 ** Using CUDA 12.4 + Python 3.12. May perform better on newer GPUs.
 
+* link:cu124-cn/README.adoc[`cu124-cn`]
+
+** Modified all download links for users in mainland China.
+
 * link:rocm/README.adoc[`rocm`]
 
 ** For AMD GPUs with ROCm.

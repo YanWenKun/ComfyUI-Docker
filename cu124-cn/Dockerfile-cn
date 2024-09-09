@@ -1,11 +1,12 @@
 ################################################################################
 # 下载地址改用国内源（不再适合 GitHub CI）。
 # 注意，构建时仍需访问 download.pytorch.org 和 aiinfra.pkgs.visualstudio.com
-# 基于 CUDA 12.4, Python 3.12, GCC 13
+#
+# 使用 CUDA 12.4, Python 3.12, GCC 13
 # 容器内将以 root 用户运行，以便于 rootless 部署
 ################################################################################
 
-# 注意，基础镜像也是走国内源下载
+# 注意，该基础镜像也是走国内源下载
 FROM dhub.kubesre.xyz/opensuse/tumbleweed:latest
 
 LABEL maintainer="YAN Wenkun <code@yanwk.fun>"

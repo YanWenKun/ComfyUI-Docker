@@ -14,7 +14,7 @@ function clone_or_pull () {
                 || git -C "${BASH_REMATCH[2]}" pull --ff-only ;
         set -e ;
     else
-        echo "[ERROR] Invalid URL: $1" ;
+        echo "[ERROR] 无效的 URL: $1" ;
         return 1 ;
     fi ;
 }
@@ -107,5 +107,5 @@ aria2c \
   --continue=true \
   --max-connection-per-server=3
 
-# 标记为下载完成，下次启动不再下载
+# 标记为下载完成，下次启动不再尝试下载
 touch /root/.download-complete

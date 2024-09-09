@@ -1,8 +1,8 @@
 # 大模型（Checkpoints）
 
-https://hf-mirror.com/black-forest-labs/FLUX.1-schnell/resolve/main/flux1-schnell.safetensors?download=true
+https://hf-mirror.com/Comfy-Org/flux1-schnell/resolve/main/flux1-schnell-fp8.safetensors
   dir=checkpoints
-  out=flux1-schnell.safetensors
+  out=flux1-schnell-fp8.safetensors
 
 # VAE
 

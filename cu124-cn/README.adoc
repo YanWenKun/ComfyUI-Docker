@@ -1,57 +1,59 @@
 # 适配国内网络环境的 ComfyUI 容器镜像
 
+image::../docs/chart-concept-cn.zh.svg["布局"]
+
 image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-cu124-cn.yml/badge.svg["GitHub Workflow 执行状态",link="https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-cu124-cn.yml"]
 
-https://hub.docker.com/repository/docker/yanwk/comfyui-boot/tags?name=cu124-cn[在 <Docker Hub> 上查看]
+https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=cu124-cn[在 <Docker Hub> 上查看]
 
-`cu124-cn` 是专门为国内网络环境考虑一个大而全的 Docker 镜像
-
-== 包含组件
-
-* 基于 CUDA 12.4 的 PyTorch + xFormers 稳定版
-* Python dev (3.12)
-* GCC C++ (13)
-* OpenCV-devel
-* FFmpeg 与 x264、x265 编码器
-* CMake, Ninja 等编译工具
-* Vim, Fish, fd 等 CLI 工具
-
-== 使用的镜像源
-
-* PyPI 使用清华源：
-** https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple
-** 可按需替换为阿里云源 http://mirrors.aliyun.com/pypi/simple/
-
-* HuggingFace 使用：
-** https://hf-mirror.com
-
-* GitHub 使用：
-** https://mirror.ghproxy.com
-
-* openSUSE 与 PackMan 使用清华源：
-** https://mirrors.tuna.tsinghua.edu.cn/opensuse/tumbleweed/
-** https://mirrors.tuna.tsinghua.edu.cn/packman/suse/openSUSE_Tumbleweed/Essentials/
-** 容器运行时很少需要安装系统包，在构建镜像时可能有修改需求
-
-* dhub.kubesre.xyz
+`yanwk/comfyui-boot:cu124-cn` 是专门为国内网络环境考虑的 ComfyUI Docker 镜像，在下载镜像、程序、扩展、模型时使用国内源。
 
 
-## 用法
+## 工作流程
+
+1. 初次启动时，启动脚本会下载 ComfyUI、ComfyUI-Manager 以及一些常用的功能性模型。
+2. 整个 ComfyUI 会保存在本地 (`./storage/ComfyUI`) 。
+3. 如果你已经有了现成的 ComfyUI 包，放在上述目录，并新建一个空白文件 (`./storage/.download-complete`)，启动脚本会跳过下载。
+4. 使用 ComfyUI-Manager 即可更新组件（在 ComfyUI 页面中找到“Manager”）。Manager 也可下载模型，但可能需要
+<<pre-start, 挂代理>>
+。
+
+
+## 运行前提
+
+* NVIDIA 显卡， ≥8GB 显存
+** 4~6GB 显存见 <<cli-args, CLI_ARGS>>
+
+* 安装好最新的 NVIDIA 显卡驱动
+** 游戏驱动或 Studio 驱动均可。
+** 只需要在宿主系统中安装驱动即可，容器中不需要再安装驱动。
+
+* 安装好 Docker 或 Podman
+** Linux 用户可能需要安装 https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html[NVIDIA Container Toolkit] 并进行初始化（使得容器可以访问宿主机的 GPU）。
+** Windows 用户建议使用 https://www.docker.com/products/docker-desktop/[Docker Desktop] 并在安装时启用 WSL2，并 https://zhuanlan.zhihu.com/p/345645621[限制内存用量] 。
+
+
+## 运行方法
+
+* 以下命令均使用了一次性容器 (`--rm`) 来保持环境整洁、配置清晰。
+* 不建议 WSL2 用户把文件存放在 NTFS 分区内，跨文件系统互访性能极低，且会权限混乱。
 
 .使用 Docker
 [source,sh]
 ----
 mkdir -p storage
 
+docker pull dhub.kubesre.xyz/yanwk/comfyui-boot:cu124-cn
+
 docker run -it --rm \
-  --name comfyui-mega \
+  --name comfyui-cn \
   --gpus all \
   -p 8188:8188 \
   -v "$(pwd)"/storage:/root \
   -e CLI_ARGS="--preview-method taesd" \
   -e PIP_INDEX_URL="https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple" \
   -e HF_ENDPOINT="https://hf-mirror.com" \
-  dhub.kubesre.xyz/yanwk/comfyui-boot:cu124-cn
+  yanwk/comfyui-boot:cu124-cn
 ----
 
 .使用 Podman
@@ -59,8 +61,10 @@ docker run -it --rm \
 ----
 mkdir -p storage
 
+podman pull dhub.kubesre.xyz/yanwk/comfyui-boot:cu124-cn
+
 podman run -it --rm \
-  --name comfyui-mega \
+  --name comfyui-cn \
   --device nvidia.com/gpu=all \
   --security-opt label=disable \
   --security-opt seccomp=unconfined \
@@ -69,7 +73,193 @@ podman run -it --rm \
   -e CLI_ARGS="--preview-method taesd" \
   -e PIP_INDEX_URL="https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple" \
   -e HF_ENDPOINT="https://hf-mirror.com" \
-  dhub.kubesre.xyz/yanwk/comfyui-boot:cu124-cn
+  yanwk/comfyui-boot:cu124-cn
 ----
 
-个人推荐使用一次性容器 (`--rm`) 来保持环境整洁、配置清晰。
+## 运行方法-不下载模型
+
+如果初次启动时下载缓慢，可以改用最简启动：
+
+.使用 Docker
+[source,sh]
+----
+mkdir -p storage
+
+docker pull dhub.kubesre.xyz/yanwk/comfyui-boot:cu124-cn
+
+docker run -it --rm \
+  --name comfyui-cn \
+  --gpus all \
+  -p 8188:8188 \
+  -v "$(pwd)"/storage:/root \
+  -e CLI_ARGS="" \
+  yanwk/comfyui-boot:cu124-cn \
+  /bin/bash /runner-scripts/minimal-start.sh
+----
+
+.使用 Podman
+[source,sh]
+----
+mkdir -p storage
+
+podman pull dhub.kubesre.xyz/yanwk/comfyui-boot:cu124-cn
+
+podman run -it --rm \
+  --name comfyui-cn \
+  --device nvidia.com/gpu=all \
+  --security-opt label=disable \
+  --security-opt seccomp=unconfined \
+  -p 8188:8188 \
+  -v "$(pwd)"/storage:/root \
+  -e CLI_ARGS="" \
+  yanwk/comfyui-boot:cu124-cn \
+  /bin/bash /runner-scripts/minimal-start.sh
+----
+
+执行 `minimal-start.sh` 只会下载 ComfyUI 与 Manager，不下载任何模型与扩展。
+
+
+## 构建镜像
+
+使用纯国内环境构建镜像，可以使用专门的 `Dockerfile-cn` 文件：
+
+[source,sh]
+----
+docker build . -t yanwk/comfyui-boot:cu124-cn -f Dockerfile-cn
+----
+
+`Dockerfile-cn` 中绝大部分文件从国内源下载，少部分来自 download.pytorch.org 与 aiinfra.pkgs.visualstudio.com ，目前这两个域名不受影响。
+
+构建后，运行方法同上，略过 pull 步骤即可。
+
+
+## 组件信息
+
+* 基于 CUDA 12.4 的 PyTorch + xFormers 稳定版
+* 未包含 CUDA 开发包（减小镜像体积）
+* Python dev (3.12)
+* GCC C++ (13)
+* OpenCV-devel
+* FFmpeg 与 x264、x265 编码器
+* CMake, Ninja 等编译工具
+* Vim, Fish, fd 等 CLI 工具
+
+
+## 使用的国内源
+
+各地网络情况不一，镜像访问不一定快，可按需搜索替换。
+
+* Docker 镜像仓库
+** dhub.kubesre.xyz
+
+* PyPI
+** https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple
+** 可按需替换为阿里云源 http://mirrors.aliyun.com/pypi/simple/
+** 替换启动参数（环境变量）即可
+
+* HuggingFace
+** https://hf-mirror.com
+
+* GitHub
+** https://mirror.ghproxy.com
+
+* openSUSE 与 PackMan
+** https://mirrors.tuna.tsinghua.edu.cn/opensuse/tumbleweed/
+** https://mirrors.tuna.tsinghua.edu.cn/packman/suse/openSUSE_Tumbleweed/Essentials/
+
+
+[[pre-start]]
+## 预启动脚本
+
+脚本执行顺序为： +
+代理脚本 → 下载脚本（仅初次启动） → 普通预启动脚本 → 启动命令
+
+### 关于挂代理
+* 本镜像启动时不需要挂代理，但是用户使用中可能遇到：
+** 访问 GitHub（使用 Manager 下载新扩展）
+** 访问 HuggingFace（某些扩展通过硬编码 URL 下载模型）
+* 如何判断节点卡下载：如果命令行输出有百分比进度，但 CPU 和 GPU 占用均很低，则多半为卡下载。
+* Docker Desktop 用户可在设置中找到“代理”（Settings - Resources - Proxies）选项页。
+* Linux 用户可以使用下述方法来配置代理。
+
+### 网络代理脚本
+
+创建该文件，它会在容器启动的第一时间运行： +
+----
+./storage/user-scripts/set-proxy.sh
+----
+（在容器第一次启动时，该文件也会被自动创建）
+
+.参考脚本内容（点击展开）：
+[%collapsible]
+====
+提示：在容器内，不能直接通过 127.0.0.1 访问宿主机，需要走（虚拟）局域网，而容器平台一般都贴心绑定好了宿主机的 IP 地址-主机名：
+
+* 在 Docker 中是 `host.docker.internal`
+* 在 Podman 中是 `host.containers.internal`
+
+[source,sh]
+----
+#!/bin/bash
+set -eu
+export HTTP_PROXY=http://host.docker.internal:1081
+export HTTPS_PROXY=$HTTP_PROXY
+export http_proxy=$HTTP_PROXY
+export https_proxy=$HTTP_PROXY
+export NO_PROXY="localhost,*.local,*.internal,[::1],fd00::/7,
+10.0.0.0/8,127.0.0.0/8,169.254.0.0/16,172.16.0.0/12,192.168.0.0/16,
+10.*,127.*,169.254.*,172.16.*,172.17.*,172.18.*,172.19.*,172.20.*,
+172.21.*,172.22.*,172.23.*,172.24.*,172.25.*,172.26.*,172.27.*,
+172.28.*,172.29.*,172.30.*,172.31.*,172.32.*,192.168.*,
+*.cn,ghproxy.com,*.ghproxy.com,ghproxy.org,*.ghproxy.org,
+gh-proxy.com,*.gh-proxy.com,ghproxy.net,*.ghproxy.net"
+export no_proxy=$NO_PROXY
+echo "[INFO] 代理设置为 $HTTP_PROXY"
+----
+====
+
+
+### 普通预启动脚本
+
+如果需要在 ComfyUI 启动前执行一些操作，可以创建这个文件：
+----
+./storage/user-scripts/pre-start.sh
+----
+
+
+[[cli-args]]
+## CLI_ARGS 参考
+
+[cols="1,1"]
+|===
+|启动参数 |说明
+
+|--lowvram
+|如果显存只有 4G （程序启动时会检测显存，自动开启）
+
+|--novram
+|如果用了 __--lowvram__ 还是显存不够，直接改用 CPU 内存
+
+|--cpu
+|用 CPU 来跑，会很慢
+
+|--use-pytorch-cross-attention
+|如果不想用 xFormers，而改用 PyTorch 原生交叉注意力机制。在 WSL2 上可能会有更好的速度／显存占用表现，但在 Linux 宿主机上会明显更慢。
+
+|--preview-method taesd
+|使用基于 TAESD 的高质量实时预览
+
+|--front-end-version Comfy-Org/ComfyUI_frontend@latest
+|使用最新版本的 ComfyUI 前端
+|===
+
+更多启动参数见 ComfyUI 的
+https://github.com/comfyanonymous/ComfyUI/blob/master/comfy/cli_args.py[cli_args.py]
+。
+
+
+## 声明
+
+代码使用
+link:../LICENSE[木兰公共许可证, 第2版] 。
+中英双语哦！
