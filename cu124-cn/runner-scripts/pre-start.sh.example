@@ -1,0 +1,4 @@
+#!/bin/bash
+set -eu
+
+echo "[INFO] 无预启动脚本，跳过。"

@@ -1,0 +1,79 @@
+# 大模型（Checkpoints）
+
+https://hf-mirror.com/black-forest-labs/FLUX.1-schnell/resolve/main/flux1-schnell.safetensors?download=true
+  dir=checkpoints
+  out=flux1-schnell.safetensors
+
+# VAE
+
+https://hf-mirror.com/stabilityai/sd-vae-ft-mse-original/resolve/main/vae-ft-mse-840000-ema-pruned.safetensors
+  dir=vae
+  out=vae-ft-mse-840000-ema-pruned.safetensors
+
+# 放大
+
+https://hf-mirror.com/gemasai/4x_NMKD-Siax_200k/resolve/main/4x_NMKD-Siax_200k.pth
+  dir=upscale_models
+  out=4x_NMKD-Siax_200k.pth
+https://hf-mirror.com/uwg/upscaler/resolve/main/ESRGAN/4x_foolhardy_Remacri.pth
+  dir=upscale_models
+  out=4x_foolhardy_Remacri.pth
+https://hf-mirror.com/uwg/upscaler/resolve/main/ESRGAN/8x_NMKD-Superscale_150000_G.pth
+  dir=upscale_models
+  out=8x_NMKD-Superscale_150000_G.pth
+
+# Embeddings
+
+https://hf-mirror.com/datasets/gsdf/EasyNegative/resolve/main/EasyNegative.safetensors
+  dir=embeddings
+  out=easynegative.safetensors
+https://hf-mirror.com/lenML/DeepNegative/resolve/main/NG_DeepNegative_V1_75T.pt
+  dir=embeddings
+  out=ng_deepnegative_v1_75t.pt
+
+# 用于 ImpactPack
+
+https://hf-mirror.com/dustysys/ddetailer/resolve/main/mmdet/bbox/mmdet_anime-face_yolov3.pth
+  dir=mmdets/bbox
+  out=mmdet_anime-face_yolov3.pth
+https://mirror.ghproxy.com/https://raw.githubusercontent.com/Bing-su/dddetailer/master/config/mmdet_anime-face_yolov3.py
+  dir=mmdets/bbox
+  out=mmdet_anime-face_yolov3.py
+https://hf-mirror.com/datasets/Gourieff/ReActor/resolve/main/models/sams/sam_vit_b_01ec64.pth
+  dir=sams
+  out=sam_vit_b_01ec64.pth
+https://hf-mirror.com/Bingsu/adetailer/resolve/main/face_yolov8m.pt
+  dir=ultralytics/bbox
+  out=face_yolov8m.pt
+https://hf-mirror.com/Bingsu/adetailer/resolve/main/hand_yolov8s.pt
+  dir=ultralytics/bbox
+  out=hand_yolov8s.pt
+https://hf-mirror.com/Bingsu/adetailer/resolve/main/person_yolov8m-seg.pt
+  dir=ultralytics/segm
+  out=person_yolov8m-seg.pt
+
+# 用于 ReActor
+https://hf-mirror.com/datasets/Gourieff/ReActor/resolve/main/models/facerestore_models/GFPGANv1.3.pth
+  dir=facerestore_models
+  out=GFPGANv1.3.pth
+https://hf-mirror.com/datasets/Gourieff/ReActor/resolve/main/models/facerestore_models/GFPGANv1.4.pth
+  dir=facerestore_models
+  out=GFPGANv1.4.pth
+https://hf-mirror.com/datasets/Gourieff/ReActor/resolve/main/models/facerestore_models/codeformer-v0.1.0.pth
+  dir=facerestore_models
+  out=codeformer-v0.1.0.pth
+https://hf-mirror.com/datasets/Gourieff/ReActor/resolve/main/models/facerestore_models/GPEN-BFR-512.onnx
+  dir=facerestore_models
+  out=GPEN-BFR-512.onnx
+https://hf-mirror.com/datasets/Gourieff/ReActor/resolve/main/models/facerestore_models/GPEN-BFR-1024.onnx
+  dir=facerestore_models
+  out=GPEN-BFR-1024.onnx
+https://hf-mirror.com/datasets/Gourieff/ReActor/resolve/main/models/facerestore_models/GPEN-BFR-2048.onnx
+  dir=facerestore_models
+  out=GPEN-BFR-2048.onnx
+https://hf-mirror.com/datasets/Gourieff/ReActor/resolve/main/models/inswapper_128.onnx
+  dir=insightface
+  out=inswapper_128.onnx
+https://hf-mirror.com/datasets/Gourieff/ReActor/resolve/main/models/inswapper_128_fp16.onnx
+  dir=insightface
+  out=inswapper_128_fp16.onnx

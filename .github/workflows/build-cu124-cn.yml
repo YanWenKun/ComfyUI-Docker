@@ -1,0 +1,56 @@
+name: Publish 'cu124-cn' to Docker Hub
+
+on: 
+  workflow_dispatch: # 可以手动触发
+  schedule: # 每周一 07:00 UTC 自动运行
+    - cron: '0 7 * * 1'
+  push: 
+    branches: [ main ]
+    paths-ignore:
+      - '**'
+      - '!cu124-cn/Dockerfile'
+      - '!cu124-cn/builder-scripts/**'
+      - '!cu124-cn/runner-scripts/**'
+      - '!.github/workflows/build-cu124-cn.yml'
+
+jobs:
+
+  build-publish-cu124-cn:
+    environment: Publish to Docker Hub
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Get current date
+        id: date
+        run: echo "date=$(date +'%Y%m%d')" >> $GITHUB_OUTPUT
+      -
+        name: Maximize build disk space
+        uses: easimon/maximize-build-space@master
+        with:
+          overprovision-lvm: 'true'
+          remove-android: 'true'
+      -
+        name: Git checkout
+        uses: actions/checkout@v4
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      -
+        name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_ACCESSTOKEN }}
+      -
+        name: Build and push 'cu124-cn'
+        uses: docker/build-push-action@v6
+        with:
+          context: ./cu124-cn
+          file: ./cu124-cn/Dockerfile
+          tags:  |
+            yanwk/comfyui-boot:cu124-cn
+            yanwk/comfyui-boot:cu124-cn-${{ steps.date.outputs.date }}
+          push: true

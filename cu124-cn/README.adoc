@@ -1,0 +1,75 @@
+# 适配国内网络环境的 ComfyUI 容器镜像
+
+image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-cu124-cn.yml/badge.svg["GitHub Workflow 执行状态",link="https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-cu124-cn.yml"]
+
+https://hub.docker.com/repository/docker/yanwk/comfyui-boot/tags?name=cu124-cn[在 <Docker Hub> 上查看]
+
+`cu124-cn` 是专门为国内网络环境考虑一个大而全的 Docker 镜像
+
+== 包含组件
+
+* 基于 CUDA 12.4 的 PyTorch + xFormers 稳定版
+* Python dev (3.12)
+* GCC C++ (13)
+* OpenCV-devel
+* FFmpeg 与 x264、x265 编码器
+* CMake, Ninja 等编译工具
+* Vim, Fish, fd 等 CLI 工具
+
+== 使用的镜像源
+
+* PyPI 使用清华源：
+** https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple
+** 可按需替换为阿里云源 http://mirrors.aliyun.com/pypi/simple/
+
+* HuggingFace 使用：
+** https://hf-mirror.com
+
+* GitHub 使用：
+** https://mirror.ghproxy.com
+
+* openSUSE 与 PackMan 使用清华源：
+** https://mirrors.tuna.tsinghua.edu.cn/opensuse/tumbleweed/
+** https://mirrors.tuna.tsinghua.edu.cn/packman/suse/openSUSE_Tumbleweed/Essentials/
+** 容器运行时很少需要安装系统包，在构建镜像时可能有修改需求
+
+* dhub.kubesre.xyz
+
+
+## 用法
+
+.使用 Docker
+[source,sh]
+----
+mkdir -p storage
+
+docker run -it --rm \
+  --name comfyui-mega \
+  --gpus all \
+  -p 8188:8188 \
+  -v "$(pwd)"/storage:/root \
+  -e CLI_ARGS="--preview-method taesd" \
+  -e PIP_INDEX_URL="https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple" \
+  -e HF_ENDPOINT="https://hf-mirror.com" \
+  dhub.kubesre.xyz/yanwk/comfyui-boot:cu124-cn
+----
+
+.使用 Podman
+[source,sh]
+----
+mkdir -p storage
+
+podman run -it --rm \
+  --name comfyui-mega \
+  --device nvidia.com/gpu=all \
+  --security-opt label=disable \
+  --security-opt seccomp=unconfined \
+  -p 8188:8188 \
+  -v "$(pwd)"/storage:/root \
+  -e CLI_ARGS="--preview-method taesd" \
+  -e PIP_INDEX_URL="https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple" \
+  -e HF_ENDPOINT="https://hf-mirror.com" \
+  dhub.kubesre.xyz/yanwk/comfyui-boot:cu124-cn
+----
+
+个人推荐使用一次性容器 (`--rm`) 来保持环境整洁、配置清晰。
