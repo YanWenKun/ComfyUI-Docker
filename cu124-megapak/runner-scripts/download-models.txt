@@ -9,6 +9,18 @@ https://huggingface.co/Comfy-Org/flux1-schnell/resolve/main/flux1-schnell-fp8.sa
 https://huggingface.co/stabilityai/sd-vae-ft-mse-original/resolve/main/vae-ft-mse-840000-ema-pruned.safetensors
   dir=vae
   out=vae-ft-mse-840000-ema-pruned.safetensors
+https://raw.githubusercontent.com/madebyollin/taesd/main/taesd_decoder.pth
+  dir=vae_approx
+  out=taesd_decoder.pth
+https://raw.githubusercontent.com/madebyollin/taesd/main/taesdxl_decoder.pth
+  dir=vae_approx
+  out=taesdxl_decoder.pth
+https://raw.githubusercontent.com/madebyollin/taesd/main/taesd3_decoder.pth
+  dir=vae_approx
+  out=taesd3_decoder.pth
+https://raw.githubusercontent.com/madebyollin/taesd/main/taef1_decoder.pth
+  dir=vae_approx
+  out=taef1_decoder.pth
 
 # Upscale
 
