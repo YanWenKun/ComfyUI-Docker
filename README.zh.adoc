@@ -3,42 +3,34 @@
 image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-cu121.yml/badge.svg["GitHub Workflow Status",link="https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-cu121.yml"]
 
 https://github.com/comfyanonymous/ComfyUI[ComfyUI]
-是一个使用节点工作流的 Stable Diffusion 图形界面。 +
+是一套使用节点工作流的 Stable Diffusion 图形界面。 +
 本仓库所构建的
 https://hub.docker.com/r/yanwk/comfyui-boot[Docker 镜像]
 包含其依赖项，及下载／启动脚本。
-
-
-## 2024 七月重大更新
-
-* `latest` 更名 `cu121` （保留原名）
-* `megapak` 更名  `cu121-megapak` （保留原名）
-* 新增 `cu124-megapak`
-* 新增 `comfy3d-pt22`, `comfy3d-pt23`
-* 其他镜像移除 comfy3d 支持
-
-* 文档细节完善中……
 
 
 ## 镜像标签
 
 * link:cu121/README.zh.adoc[`cu121`, `latest`]
 
-** 适用于大多数使用场景。适合用户：
-*** ComfyUI 新手
-*** Docker 新手
-*** WSL2 Docker 用户
-** 不推荐 Podman 或 rootless 用户使用（推荐用以下 megapak 标签）
+** 推荐初次尝试 ComfyUI 的用户使用
+** 默认仅安装基本的 ComfyUI 与 Manager
+** 镜像中预装大量依赖项，方便后续无痛安装热门自定义节点（扩展插件）
+** 容器内使用低特权用户运行（便于 WSL2 部署）
+** 不推荐 Podman 与 rootless 用户使用（推荐用以下 megapak 标签）
+** 使用 CUDA 12.1 与 Python 3.11
 
 * link:cu121-megapak/README.zh.adoc[`cu121-megapak`, `megapak`]
 
-** 大型整合包，包含开发组件，适用于“重型”使用场景
-** 基于 CUDA 12.1 + Python 3.11.
+** 大型整合包，包含开发组件
+** 容器内使用 root 用户运行（便于 rootless 部署）
+** 使用 CUDA 12.1 与 Python 3.11
 
 * link:cu124-megapak/README.zh.adoc[`cu124-megapak`]
 
-** 与上一个标签基本一致，但基于 CUDA 12.4 + Python 3.12.
-** 在新 GPU 上可能性能更佳
+** 大型整合包，包含开发组件
+** 容器内使用 root 用户运行（便于 rootless 部署）
+** 使用 CUDA 12.4 与 Python 3.12（在新 GPU 上可能性能更佳）
 
 * link:rocm/README.zh.adoc[`rocm`]
 
@@ -50,7 +42,19 @@ https://hub.docker.com/r/yanwk/comfyui-boot[Docker 镜像]
 ** 基于 PyTorch 2.2，使用经典版本的 Comfy3D
 
 * link:comfy3d-pt23/README.zh.adoc[`comfy3d-pt23`]
+** https://github.com/MrForExample/ComfyUI-3D-Pack[ComfyUI-3D-Pack] 专用
 ** 基于 PyTorch 2.3，使用较新版本的 Comfy3D
+
+
+## 2024 七月重大更新
+
+* `latest` 更名 `cu121` （保留原名）
+* `megapak` 更名  `cu121-megapak` （保留原名）
+* 新增 `cu124-megapak`
+* 新增 `comfy3d-pt22`, `comfy3d-pt23`
+* 其他镜像移除 comfy3d 支持
+
+* 文档细节完善中……
 
 
 ## 声明

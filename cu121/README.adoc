@@ -93,6 +93,12 @@ Once the app is loaded, visit http://localhost:8188/
 
 |--use-pytorch-cross-attention
 |If you don't want to use xFormers. This may perform well on WSL2, but significantly slower on Linux hosts.
+
+|--preview-method taesd
+|Enable higher-quality previews with TAESD.
+
+|--front-end-version Comfy-Org/ComfyUI_frontend@latest
+|Use the most up-to-date frontend version.
 |===
 
 More `CLI_ARGS` available at 

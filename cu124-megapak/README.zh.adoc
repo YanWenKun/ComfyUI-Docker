@@ -30,6 +30,6 @@ podman run -it --rm \
   --security-opt label=disable \
   -p 8188:8188 \
   -v "$(pwd)"/storage:/root \
-  -e CLI_ARGS="" \
+  -e CLI_ARGS="--preview-method taesd --front-end-version Comfy-Org/ComfyUI_frontend@latest" \
   docker.io/yanwk/comfyui-boot:cu124-megapak
 ----

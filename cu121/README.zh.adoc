@@ -98,6 +98,12 @@ docker image prune
 
 |--use-pytorch-cross-attention
 |如果不想用 xFormers，而改用 PyTorch 原生交叉注意力机制。在 WSL2 上可能会有更好的速度／显存占用表现，但在 Linux 宿主机上会明显更慢。
+
+|--preview-method taesd
+|使用基于 TAESD 的高质量实时预览
+
+|--front-end-version Comfy-Org/ComfyUI_frontend@latest
+|使用最新的 ComfyUI 前端
 |===
 
 更多 `CLI_ARGS` 参考 
