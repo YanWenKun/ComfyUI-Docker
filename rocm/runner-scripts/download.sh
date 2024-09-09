@@ -66,12 +66,6 @@ echo "########################################"
 echo "[INFO] Downloading Models..."
 echo "########################################"
 
-# TAESD
-cd /root/ComfyUI/models/vae_approx
-clone_or_pull https://github.com/madebyollin/taesd.git
-cp taesd/*.pth ./
-rm -rf taesd
-
 # Models
 cd /root/ComfyUI
 aria2c \
