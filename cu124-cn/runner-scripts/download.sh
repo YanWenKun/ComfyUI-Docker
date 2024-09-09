@@ -43,7 +43,6 @@ echo "########################################"
 cd /root/ComfyUI/custom_nodes
 
 # 工作空间
-clone_or_pull https://mirror.ghproxy.com/https://github.com/11cafe/comfyui-workspace-manager.git
 clone_or_pull https://mirror.ghproxy.com/https://github.com/AIGODLIKE/AIGODLIKE-ComfyUI-Translation.git
 clone_or_pull https://mirror.ghproxy.com/https://github.com/crystian/ComfyUI-Crystools.git
 clone_or_pull https://mirror.ghproxy.com/https://github.com/crystian/ComfyUI-Crystools-save.git
@@ -77,7 +76,6 @@ clone_or_pull https://mirror.ghproxy.com/https://github.com/Fannovel16/ComfyUI-F
 clone_or_pull https://mirror.ghproxy.com/https://github.com/FizzleDorf/ComfyUI_FizzNodes.git
 clone_or_pull https://mirror.ghproxy.com/https://github.com/Kosinkadink/ComfyUI-AnimateDiff-Evolved.git
 clone_or_pull https://mirror.ghproxy.com/https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git
-clone_or_pull https://mirror.ghproxy.com/https://github.com/melMass/comfy_mtb.git
 clone_or_pull https://mirror.ghproxy.com/https://github.com/MrForExample/ComfyUI-AnimateAnyone-Evolved.git
 
 # 更多
@@ -87,6 +85,12 @@ clone_or_pull https://mirror.ghproxy.com/https://github.com/SLAPaper/ComfyUI-Ima
 
 # WAS NS 的依赖项并未完整安装，但可以正常运行
 clone_or_pull https://mirror.ghproxy.com/https://github.com/WASasquatch/was-node-suite-comfyui.git
+
+# 配置为中文界面
+if [ ! -f "/root/ComfyUI/user/default/comfy.settings.json" ] ; then
+    mkdir -p /root/ComfyUI/user/default
+    cp /runner-scripts/comfy.settings.json.example  /root/ComfyUI/user/default/comfy.settings.json
+fi ;
 
 echo "########################################"
 echo "[INFO] 下载模型……"

@@ -57,7 +57,7 @@ docker run -it --rm \
   --gpus all \
   -p 8188:8188 \
   -v "$(pwd)"/storage:/root \
-  -e CLI_ARGS="--preview-method taesd" \
+  -e CLI_ARGS="--fast --preview-method taesd" \
   -e PIP_INDEX_URL="https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple" \
   -e HF_ENDPOINT="https://hf-mirror.com" \
   yanwk/comfyui-boot:cu124-cn
@@ -77,11 +77,20 @@ podman run -it --rm \
   --security-opt seccomp=unconfined \
   -p 8188:8188 \
   -v "$(pwd)"/storage:/root \
-  -e CLI_ARGS="--preview-method taesd" \
+  -e CLI_ARGS="--fast --preview-method taesd" \
   -e PIP_INDEX_URL="https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple" \
   -e HF_ENDPOINT="https://hf-mirror.com" \
   yanwk/comfyui-boot:cu124-cn
 ----
+
+待下载完毕、程序启动后：
+
+1. 打开浏览器访问 http://localhost:8188/
+2. 如界面为英文，刷新浏览器，或点击右侧菜单的“Switch Locale”切换语言（可能要点两遍）。
+3. 点击右侧菜单的“加载”按钮，加载
+https://mirror.ghproxy.com/https://raw.githubusercontent.com/comfyanonymous/ComfyUI_examples/master/flux/flux_schnell_checkpoint_example.png[这张图片]
+（该图内嵌 json，内含 FLUX.1 Schnell FP8 Checkpoint 工作流），再点击右侧菜单的“添加提示词队列”，即可运行工作流。
+
 
 ## 运行方法-不下载模型
 
@@ -262,6 +271,9 @@ echo "[INFO] 代理设置为 $HTTP_PROXY"
 
 |--front-end-version Comfy-Org/ComfyUI_frontend@latest
 |使用最新版本的 ComfyUI 前端
+
+|--fast
+|使用实验性的高性能模式，对 40 系显卡 + CUDA 12.4 + 最新 PyTorch + FLUX 模型可达 40% 性能提升。但也有可能造成图像质量劣化。
 |===
 
 更多启动参数见 ComfyUI 的
