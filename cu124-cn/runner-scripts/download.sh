@@ -92,13 +92,6 @@ echo "########################################"
 echo "[INFO] 下载模型……"
 echo "########################################"
 
-# TAESD（用于高质量预览）
-mkdir -p /root/ComfyUI/models/vae_approx
-cd /root/ComfyUI/models/vae_approx
-clone_or_pull https://mirror.ghproxy.com/https://github.com/madebyollin/taesd.git
-cp taesd/*.pth ./
-rm -rf taesd
-
 cd /root/ComfyUI/models
 aria2c \
   --input-file=/runner-scripts/download-models.txt \

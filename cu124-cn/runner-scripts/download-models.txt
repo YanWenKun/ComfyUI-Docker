@@ -10,6 +10,20 @@ https://hf-mirror.com/stabilityai/sd-vae-ft-mse-original/resolve/main/vae-ft-mse
   dir=vae
   out=vae-ft-mse-840000-ema-pruned.safetensors
 
+# TAESD（用于高质量预览）
+https://mirror.ghproxy.com/https://raw.githubusercontent.com/madebyollin/taesd/main/taesd_decoder.pth
+  dir=vae_approx
+  out=taesd_decoder.pth
+https://mirror.ghproxy.com/https://raw.githubusercontent.com/madebyollin/taesd/main/taesdxl_decoder.pth
+  dir=vae_approx
+  out=taesdxl_decoder.pth
+https://mirror.ghproxy.com/https://raw.githubusercontent.com/madebyollin/taesd/main/taesd3_decoder.pth
+  dir=vae_approx
+  out=taesd3_decoder.pth
+https://mirror.ghproxy.com/https://raw.githubusercontent.com/madebyollin/taesd/main/taef1_decoder.pth
+  dir=vae_approx
+  out=taef1_decoder.pth
+
 # 放大
 
 https://hf-mirror.com/gemasai/4x_NMKD-Siax_200k/resolve/main/4x_NMKD-Siax_200k.pth
