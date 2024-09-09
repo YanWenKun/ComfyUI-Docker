@@ -2,9 +2,9 @@
 
 image::../docs/chart-concept-cn.zh.svg["布局"]
 
-image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-cu124-cn.yml/badge.svg["GitHub Workflow 执行状态",link="https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-cu124-cn.yml"]
+https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=cu124-cn[在 Docker Hub 上查找该镜像]
 
-https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=cu124-cn[在 <Docker Hub> 上查看]
+image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-cu124-cn.yml/badge.svg["GitHub Workflow 执行状态",link="https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-cu124-cn.yml"]
 
 `yanwk/comfyui-boot:cu124-cn` 是专门为国内网络环境考虑的 ComfyUI Docker 镜像，在下载镜像、程序、扩展、模型时使用国内源。
 
@@ -21,10 +21,14 @@ https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=cu124-cn[在 <Docker Hub> 
 
 ## 运行前提
 
-* NVIDIA 显卡， ≥8GB 显存
-** 4~6GB 显存见 <<cli-args, CLI_ARGS>>
+* NVIDIA 显卡
+** 理论上 Maxwell（GTX900系）之后的显卡架构都支持。
+
+* ≥8GB 显存
+** 4~6GB 显存见 <<cli-args, CLI_ARGS>> 。
 
 * 安装好最新的 NVIDIA 显卡驱动
+** 必须要 2024 年三月以后的驱动才能支持 CUDA 12.4。
 ** 游戏驱动或 Studio 驱动均可。
 ** 只需要在宿主系统中安装驱动即可，容器中不需要再安装驱动。
 
