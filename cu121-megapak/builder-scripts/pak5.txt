@@ -8,6 +8,7 @@ color-matcher
 colour-science
 deepdiff
 diffusers
+dill
 einops
 filelock
 ftfy
@@ -17,11 +18,10 @@ huggingface-hub
 imageio
 imageio-ffmpeg
 importlib-metadata
-insightface
 jaxtyping
 kornia
 librosa
-matplotlib
+matplotlib==3.8
 matrix-client==0.4.0
 mediapipe
 mss
@@ -69,7 +69,6 @@ spandrel
 svglib
 timm
 tokenizers
-torch
 torchmetrics
 torchsde
 torchtyping
