@@ -25,7 +25,10 @@ echo "[INFO] Downloading ComfyUI & Manager..."
 echo "########################################"
 
 cd /root
-clone_or_pull https://github.com/comfyanonymous/ComfyUI.git
+set +e
+git clone https://github.com/comfyanonymous/ComfyUI.git \
+    || git -C ComfyUI pull --ff-only
+set -e
 
 cd /root/ComfyUI/custom_nodes
 clone_or_pull https://github.com/ltdrdata/ComfyUI-Manager.git
