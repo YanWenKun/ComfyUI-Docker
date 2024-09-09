@@ -2,7 +2,7 @@
 
 image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-cu124-megapak.yml/badge.svg["GitHub Workflow Status",link="https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-cu124-megapak.yml"]
 
-https://hub.docker.com/repository/docker/yanwk/comfyui-boot/tags?name=cu124-megapak[在 <Docker Hub> 上查看]
+https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=cu124-megapak[在 <Docker Hub> 上查看]
 
 
 * 基于 `cu121-megapak` 演进而来

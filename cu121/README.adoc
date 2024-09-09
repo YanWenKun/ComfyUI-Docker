@@ -4,7 +4,7 @@ image::../docs/chart-concept.svg["Concept Design"]
 
 image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-cu121.yml/badge.svg["GitHub Workflow Status",link="https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-cu121.yml"]
 
-https://hub.docker.com/repository/docker/yanwk/comfyui-boot/tags?name=cu121[View on <Docker Hub>]
+https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=cu121[View on <Docker Hub>]
 
 
 ## How it works
