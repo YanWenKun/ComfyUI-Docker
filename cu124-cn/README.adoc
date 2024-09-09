@@ -41,13 +41,16 @@ image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-cu124-
 
 * 以下命令均使用了一次性容器 (`--rm`) 来保持环境整洁、配置清晰。
 * 不建议 WSL2 用户把文件存放在 NTFS 分区内，跨文件系统互访性能极低，且会权限混乱。
+* 注意命令中的 `doublezonline.cloud` 为 Docker Hub 镜像源地址。如果镜像源失效，可替换为备用地址，
+https://www.coderjia.cn/archives/dba3f94c-a021-468a-8ac6-e840f85867ea[参考列表]
+。
 
 .使用 Docker
 [source,sh]
 ----
 mkdir -p storage
 
-docker pull dhub.kubesre.xyz/yanwk/comfyui-boot:cu124-cn
+docker pull doublezonline.cloud/yanwk/comfyui-boot:cu124-cn
 
 docker run -it --rm \
   --name comfyui-cn \
@@ -65,7 +68,7 @@ docker run -it --rm \
 ----
 mkdir -p storage
 
-podman pull dhub.kubesre.xyz/yanwk/comfyui-boot:cu124-cn
+podman pull doublezonline.cloud/yanwk/comfyui-boot:cu124-cn
 
 podman run -it --rm \
   --name comfyui-cn \
@@ -89,7 +92,7 @@ podman run -it --rm \
 ----
 mkdir -p storage
 
-docker pull dhub.kubesre.xyz/yanwk/comfyui-boot:cu124-cn
+docker pull doublezonline.cloud/yanwk/comfyui-boot:cu124-cn
 
 docker run -it --rm \
   --name comfyui-cn \
@@ -106,7 +109,7 @@ docker run -it --rm \
 ----
 mkdir -p storage
 
-podman pull dhub.kubesre.xyz/yanwk/comfyui-boot:cu124-cn
+podman pull doublezonline.cloud/yanwk/comfyui-boot:cu124-cn
 
 podman run -it --rm \
   --name comfyui-cn \
@@ -129,7 +132,8 @@ podman run -it --rm \
 
 [source,sh]
 ----
-docker pull dhub.kubesre.xyz/opensuse/tumbleweed:latest
+docker pull docker.m.daocloud.io/opensuse/tumbleweed:latest
+
 docker build . -t yanwk/comfyui-boot:cu124-cn -f Dockerfile-cn
 ----
 
@@ -154,8 +158,10 @@ docker build . -t yanwk/comfyui-boot:cu124-cn -f Dockerfile-cn
 
 各地网络情况不一，镜像访问不一定快，可按需搜索替换。
 
-* Docker 镜像仓库
-** dhub.kubesre.xyz
+* Docker Hub 镜像仓库
+** doublezonline.cloud
+** https://www.coderjia.cn/archives/dba3f94c-a021-468a-8ac6-e840f85867ea[参考列表]
+** 替换为 `docker.io` 即为官方源地址
 
 * PyPI
 ** https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple
