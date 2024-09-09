@@ -95,9 +95,11 @@ cd ..
 
 ### (可选) 下载一些模型文件
 ```sh
-aria2c https://raw.githubusercontent.com/YanWenKun/ComfyUI-Docker/main/scripts/download.txt
+cd models
+aria2c https://raw.githubusercontent.com/YanWenKun/ComfyUI-Docker/main/cu121/scripts/download-models.txt
 aria2c --allow-overwrite=false --auto-file-renaming=false --continue=true \
-    --max-connection-per-server=5 --input-file=download.txt
+    --max-connection-per-server=5 --input-file=download-models.txt
+cd ..
 ```
 
 ## 6. 运行 ComfyUI
