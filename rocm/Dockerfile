@@ -32,7 +32,8 @@ RUN --mount=type=cache,target=/var/cache/zypp \
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --break-system-packages \
-        --upgrade pip wheel setuptools
+        --upgrade pip wheel setuptools \
+    && df -h
 
 # Install PyTorch && ONNX from AMD repo
 # https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/native_linux/install-pytorch.html
@@ -48,7 +49,8 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         https://repo.radeon.com/rocm/manylinux/rocm-rel-6.2/jaxlib-0.4.23%2Brocm620-cp310-cp310-manylinux2014_x86_64.whl \
         https://repo.radeon.com/rocm/manylinux/rocm-rel-6.2/rocpydecode-1.0.0.0-py3-none-manylinux_2_28_x86_64.whl \
         https://download.pytorch.org/whl/cpu/torchaudio-2.3.0%2Bcpu-cp310-cp310-linux_x86_64.whl \
-        --extra-index-url https://download.pytorch.org/whl/nightly/rocm6.2
+        --extra-index-url https://download.pytorch.org/whl/nightly/rocm6.2 \
+    && df -h
 
 # Dependencies for frequently-used
 # (Do this firstly so PIP won't be solving too many deps at one time)
