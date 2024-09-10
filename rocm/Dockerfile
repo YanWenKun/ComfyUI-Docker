@@ -50,8 +50,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         https://download.pytorch.org/whl/cpu/torchaudio-2.3.0%2Bcpu-cp310-cp310-linux_x86_64.whl \
         --extra-index-url https://download.pytorch.org/whl/nightly/rocm6.2
 
-# Dependencies for frequently-used
-# (Do this firstly so PIP won't be solving too many deps at one time)
+# Dependencies for Custom Nodes
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --break-system-packages \
         -r https://raw.githubusercontent.com/comfyanonymous/ComfyUI/master/requirements.txt \
@@ -63,24 +62,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Impact-Subpack/main/requirements.txt \
         -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Inspire-Pack/main/requirements.txt \
         -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/requirements.txt \
-        --extra-index-url https://download.pytorch.org/whl/nightly/rocm6.2
-
-# Dependencies for more, with few hand-pick:
-# 'compel lark' for smZNodes
-# 'torchdiffeq' for DepthFM
-# 'fairscale' for APISR
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install --break-system-packages \
-        -r https://raw.githubusercontent.com/cubiq/ComfyUI_FaceAnalysis/main/requirements.txt \
-        -r https://raw.githubusercontent.com/cubiq/ComfyUI_InstantID/main/requirements.txt \
         -r https://raw.githubusercontent.com/Fannovel16/ComfyUI-Frame-Interpolation/main/requirements-no-cupy.txt \
-        -r https://raw.githubusercontent.com/FizzleDorf/ComfyUI_FizzNodes/main/requirements.txt \
-        -r https://raw.githubusercontent.com/kijai/ComfyUI-KJNodes/main/requirements.txt \
-        -r https://raw.githubusercontent.com/melMass/comfy_mtb/main/requirements.txt \
-        -r https://raw.githubusercontent.com/storyicon/comfyui_segment_anything/main/requirements.txt \
-        -r https://raw.githubusercontent.com/ZHO-ZHO-ZHO/ComfyUI-InstantID/main/requirements.txt \
-        compel lark torchdiffeq fairscale \
-        python-ffmpeg \
         --extra-index-url https://download.pytorch.org/whl/nightly/rocm6.2
 
 # Fix MediaPipe's broken dep (protobuf<4).
