@@ -55,3 +55,9 @@ podman run -it --rm \
 ----
 
 Once the app is loaded, visit http://localhost:8188/
+
+## Note
+
+Due to GitHub CI error "No space left on device", less Python dependencies were installed, and less Custom Nodes were in the download list.
+
+If you build this image locally, you can uncomment the lines in `Dockerfile` and `download.sh`, so you will have a more all-in-one image.

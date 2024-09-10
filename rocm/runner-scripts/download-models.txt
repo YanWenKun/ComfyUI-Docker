@@ -9,6 +9,9 @@ https://huggingface.co/playgroundai/playground-v2.5-1024px-aesthetic/resolve/mai
 https://huggingface.co/stabilityai/sd-vae-ft-mse-original/resolve/main/vae-ft-mse-840000-ema-pruned.safetensors
   dir=vae
   out=vae-ft-mse-840000-ema-pruned.safetensors
+
+# TAESD
+
 https://raw.githubusercontent.com/madebyollin/taesd/main/taesd_decoder.pth
   dir=vae_approx
   out=taesd_decoder.pth
