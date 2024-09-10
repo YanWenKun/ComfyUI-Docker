@@ -47,7 +47,7 @@ docker run -it --rm \
 
 * link:cu124-cn/README.adoc[`cu124-cn`]
 
-** Modified all download links for users in mainland China.
+** For users in mainland China. Using mirror sites for all download links.
 
 * link:rocm/README.adoc[`rocm`]
 

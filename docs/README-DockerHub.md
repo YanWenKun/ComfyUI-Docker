@@ -2,7 +2,9 @@
 
 **[CHECK THE GITHUB REPO](https://github.com/YanWenKun/ComfyUI-Docker)**
 
-**[中文文档在 GITHUB 上](https://github.com/YanWenKun/ComfyUI-Docker/blob/main/README.zh.adoc)**
+**[中文文档在 GITHUB 上](https://github.com/YanWenKun/ComfyUI-Docker/blob/main/README.zh.adoc)** 
+| 
+**[国内适配镜像点我](https://gitee.com/yanwenkun/ComfyUI-Docker/tree/main/cu124-cn)**
 
 Docker images for [ComfyUI](https://github.com/comfyanonymous/ComfyUI) - a Stable Diffusion GUI powering node-based workflow.
 
@@ -42,6 +44,10 @@ Once the app is loaded, visit http://localhost:8188/
   - All-in-one bundle, including dev kits.
   - Using 'root' user within the container (easy for rootless deploy).
   - Using CUDA 12.4 + Python 3.12. May perform better on newer GPUs.
+
+- `cu124-cn` [\[doc\]](https://github.com/YanWenKun/ComfyUI-Docker/tree/main/cu124-cn)
+
+  - For users in mainland China. Using mirror sites for all download links.
 
 - `rocm` [\[doc\]](https://github.com/YanWenKun/ComfyUI-Docker/tree/main/rocm)
 
