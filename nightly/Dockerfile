@@ -65,7 +65,9 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         --pre torch torchvision torchaudio \
         --index-url https://download.pytorch.org/whl/nightly/cu124
 
+################################################################################
 # Dependencies
+
 # RUN --mount=type=cache,target=/root/.cache/pip \
 #     pip install \
 # accelerate \
@@ -129,6 +131,37 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 #     && pip install \
 #         mediapipe \
 #     && pip list
+
+################################################################################
+# # Build xFormers
+
+# # https://arnon.dk/matching-sm-architectures-arch-and-gencode-for-various-nvidia-cards/
+# ARG TORCH_CUDA_ARCH_LIST="5.2+PTX;6.0;6.1+PTX;7.0+PTX;7.5;8.0;8.6+PTX;8.9+PTX"
+
+# # Limit max concurrent build jobs. Not set here.
+# ARG MAX_JOBS
+
+# RUN mkdir -p /BUILD/wheels
+
+# RUN --mount=type=cache,target=/root/.cache/pip \
+#     pip install \
+#         -r https://raw.githubusercontent.com/facebookresearch/xformers/main/requirements.txt
+
+# RUN git clone --depth=1 --no-tags --recurse-submodules --shallow-submodules \
+#         https://github.com/facebookresearch/xformers.git \
+#         /BUILD/xformers
+
+# WORKDIR /BUILD/xformers
+
+# RUN --mount=type=cache,target=/root/.cache/pip \
+#     --mount=type=cache,target=/BUILD/xformers/build \
+#     --mount=type=cache,target=/BUILD/xformers/dist \
+#     python3 setup.py bdist_wheel -d /BUILD/wheels
+
+# RUN --mount=type=cache,target=/root/.cache/pip \
+#     pip install /BUILD/wheels/*.whl
+
+################################################################################
 
 RUN du -ah /root \
     && find /root/ -mindepth 1 -delete \

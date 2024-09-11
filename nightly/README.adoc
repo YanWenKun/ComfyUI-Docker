@@ -8,8 +8,14 @@ https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=nightly[View on <Docker Hu
 
 * This image won't download ComfyUI or any models. Please prepare your ComfyUI suite before running the container.
 
-* `xFormers` is not installed in this image.
-It requires building from source in order to use it with PyTorch nightly. And building xFormers (with comprehensive build targets) on GitHub Actions (unpaid version) would often result in halt. So for now it's not included.
+* Part of the `Dockerfile` is commented out due to CI limitation:
+
+** Only basic dependencies for running ComfyUI is installed. Otherwise the image would be too big that GitHub Actions would throw IOException.
+
+** `xFormers` is not installed in this image.
+It requires building from source in order to use it with PyTorch nightly. And building xFormers (with comprehensive build targets) on GitHub Actions would often result in halt (maybe just unpaid version).
+
+** If you build the image by yourself, you can uncomment the lines in `Dockerfile`, for a bigger, yet more comprehensive image.
 
 ## Running
 
