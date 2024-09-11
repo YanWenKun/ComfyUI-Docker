@@ -24,7 +24,6 @@ https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=cu121-megapak[View on <Doc
 And will:
 
 * Install a lot of Custom Nodes by default
-** Especially https://github.com/MrForExample/ComfyUI-3D-Pack[ComfyUI-3D-Pack] (not easy to install)
 
 * Download more models
 
@@ -62,7 +61,7 @@ docker run -it --rm \
   --gpus all \
   -p 8188:8188 \
   -v "$(pwd)"/storage:/root \
-  -e CLI_ARGS="" \
+  -e CLI_ARGS="--preview-method taesd" \
   yanwk/comfyui-boot:megapak
 ----
 
@@ -77,7 +76,7 @@ podman run -it --rm \
   --security-opt label=disable \
   -p 8188:8188 \
   -v "$(pwd)"/storage:/root \
-  -e CLI_ARGS="" \
+  -e CLI_ARGS="--preview-method taesd" \
   docker.io/yanwk/comfyui-boot:megapak
 ----
 

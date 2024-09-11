@@ -65,16 +65,9 @@ https://github.com/MrForExample/ComfyUI-3D-Pack[ComfyUI-3D-Pack]
 https://github.com/MrForExample/ComfyUI-3D-Pack[ComfyUI-3D-Pack]
 ** Running a newer version of Comfy3D based on PyTorch 2.3
 
+* link:nightly/README.adoc[`nightly`]
 
-## Major Update July 2024
-
-* alias `latest` as `cu121`
-* alias `megapak` as `cu121-megapak`
-* add `cu124-megapak`
-* add `comfy3d-pt22`, `comfy3d-pt23`
-* remove support for comfy3d in other images
-
-* More detailed documentation coming soon...
+** Using preview version of PyTorch.
 
 
 ## License

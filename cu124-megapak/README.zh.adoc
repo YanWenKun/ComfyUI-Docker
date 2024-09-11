@@ -1,4 +1,4 @@
-# MEGAPAK，但是 CUDA 12.4 （早期版本）
+# MEGAPAK，但是 CUDA 12.4
 
 image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-cu124-megapak.yml/badge.svg["GitHub Workflow Status",link="https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-cu124-megapak.yml"]
 
@@ -19,6 +19,20 @@ https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=cu124-megapak[在 <Docker 
 * 工具：
 ** Vim, Fish, fd...
 
+.使用 Docker 运行
+[source,sh]
+----
+mkdir -p storage
+
+docker run -it --rm \
+  --name comfyui-cu124-mega \
+  --gpus all \
+  -p 8188:8188 \
+  -v "$(pwd)"/storage:/root \
+  -e CLI_ARGS="--fast --preview-method taesd" \
+  yanwk/comfyui-boot:cu124-megapak
+----
+
 .使用 Podman 运行
 [source,bash]
 ----
@@ -30,6 +44,6 @@ podman run -it --rm \
   --security-opt label=disable \
   -p 8188:8188 \
   -v "$(pwd)"/storage:/root \
-  -e CLI_ARGS="--fast --preview-method taesd --front-end-version Comfy-Org/ComfyUI_frontend@latest" \
+  -e CLI_ARGS="--fast --preview-method taesd" \
   docker.io/yanwk/comfyui-boot:cu124-megapak
 ----

@@ -274,6 +274,7 @@ echo "[INFO] 代理设置为 $HTTP_PROXY"
 
 |--fast
 |使用实验性的高性能模式，对 40 系显卡 + CUDA 12.4 + 最新 PyTorch + FLUX 模型可达 40% 性能提升。但也有可能造成图像质量劣化。
+https://github.com/comfyanonymous/ComfyUI/commit/9953f22fce0ba899da0676a0b374e5d1f72bf259[来源]
 |===
 
 更多启动参数见 ComfyUI 的

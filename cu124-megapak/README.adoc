@@ -1,4 +1,4 @@
-# MEGAPAK for CUDA 12.4 (early stage)
+# MEGAPAK for CUDA 12.4
 
 image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-cu124-megapak.yml/badge.svg["GitHub Workflow Status",link="https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-cu124-megapak.yml"]
 
@@ -19,6 +19,20 @@ https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=cu124-megapak[View on <Doc
 * Tools:
 ** Vim, Fish, fd...
 
+.Run with Docker
+[source,sh]
+----
+mkdir -p storage
+
+docker run -it --rm \
+  --name comfyui-cu124-mega \
+  --gpus all \
+  -p 8188:8188 \
+  -v "$(pwd)"/storage:/root \
+  -e CLI_ARGS="--fast --preview-method taesd" \
+  yanwk/comfyui-boot:cu124-megapak
+----
+
 .Run with Podman
 [source,bash]
 ----
@@ -30,15 +44,6 @@ podman run -it --rm \
   --security-opt label=disable \
   -p 8188:8188 \
   -v "$(pwd)"/storage:/root \
-  -e CLI_ARGS="--fast --preview-method taesd --front-end-version Comfy-Org/ComfyUI_frontend@latest" \
+  -e CLI_ARGS="--fast --preview-method taesd" \
   docker.io/yanwk/comfyui-boot:cu124-megapak
-----
-
-* Currently not working with 3D-Pack
-** Unable to compile `pytorch_scatter`
-
-[source,log]
-----
-/tmp/pip-build-env-8fvbvikr/overlay/lib64/python3.12/site-packages/torch/include/ATen/core/boxing/impl/boxing.h:42:103: error: expected primary-expression before ‘>’ token
-42 | struct has_ivalue_to<T, std::void_t<decltype(std::declval<IValue>().to<T>())>>
 ----

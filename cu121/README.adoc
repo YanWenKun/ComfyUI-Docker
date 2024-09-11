@@ -99,6 +99,14 @@ Once the app is loaded, visit http://localhost:8188/
 
 |--front-end-version Comfy-Org/ComfyUI_frontend@latest
 |Use the most up-to-date frontend version.
+
+|--fast
+|Enable experimental optimizations.
+Currently the only optimization is float8_e4m3fn matrix multiplication on
+4000/ADA series Nvidia cards or later.
+Might break things/lower quality.
+See the 
+https://github.com/comfyanonymous/ComfyUI/commit/9953f22fce0ba899da0676a0b374e5d1f72bf259[commit].
 |===
 
 More `CLI_ARGS` available at 

@@ -21,7 +21,6 @@ https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=cu121-megapak[在 <Docker 
 并且会：
 
 * 默认即安装大量自定义节点
-** 尤其是 https://github.com/MrForExample/ComfyUI-3D-Pack[ComfyUI-3D-Pack] （很不易安装）
 
 * 下载更多模型文件
 
@@ -59,7 +58,7 @@ docker run -it --rm \
   --gpus all \
   -p 8188:8188 \
   -v "$(pwd)"/storage:/root \
-  -e CLI_ARGS="" \
+  -e CLI_ARGS="--preview-method taesd" \
   yanwk/comfyui-boot:megapak
 ----
 
@@ -74,7 +73,7 @@ podman run -it --rm \
   --security-opt label=disable \
   -p 8188:8188 \
   -v "$(pwd)"/storage:/root \
-  -e CLI_ARGS="" \
+  -e CLI_ARGS="--preview-method taesd" \
   docker.io/yanwk/comfyui-boot:megapak
 ----
 

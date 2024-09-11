@@ -9,7 +9,6 @@ https://hub.docker.com/r/yanwk/comfyui-boot[Docker 镜像]
 
 ## 镜像标签
 
-
 * link:cu124-cn/README.adoc[`cu124-cn`]
 
 ** 针对国内网络环境重写
@@ -52,10 +51,15 @@ https://hub.docker.com/r/yanwk/comfyui-boot[Docker 镜像]
 ** https://github.com/MrForExample/ComfyUI-3D-Pack[ComfyUI-3D-Pack] 专用
 ** 基于 PyTorch 2.3，使用较新版本的 Comfy3D
 
+* link:nightly/README.adoc[`nightly`]
+
+** 使用最新预览版的 PyTorch
+
 
 ## 2024 九月重大更新
 
 * 新增 `cu124-cn`
+* 新增 `nightly`
 
 ## 2024 七月重大更新
 
@@ -64,8 +68,6 @@ https://hub.docker.com/r/yanwk/comfyui-boot[Docker 镜像]
 * 新增 `cu124-megapak`
 * 新增 `comfy3d-pt22`, `comfy3d-pt23`
 * 其他镜像移除 comfy3d 支持
-
-* 文档细节完善中……
 
 
 ## 声明

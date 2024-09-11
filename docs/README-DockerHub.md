@@ -63,4 +63,8 @@ Once the app is loaded, visit http://localhost:8188/
   - Dedicated for [ComfyUI-3D-Pack](https://github.com/MrForExample/ComfyUI-3D-Pack).
   - Running a newer version of Comfy3D based on PyTorch 2.3.
 
+- `nightly` [\[doc\]](https://github.com/YanWenKun/ComfyUI-Docker/tree/main/nightly)
+
+  - Using preview version of PyTorch.
+
 For more detailed docs, check [GitHub Page](https://github.com/YanWenKun/ComfyUI-Docker).
