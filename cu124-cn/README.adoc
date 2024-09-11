@@ -11,7 +11,7 @@ image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-cu124-
 
 ## 工作流程
 
-1. 初次启动时，启动脚本会下载 ComfyUI、ComfyUI-Manager 以及一些常用的功能性模型。
+1. 初次启动时，启动脚本会下载 ComfyUI、ComfyUI-Manager、大量扩展（自定义节点）、单个大模型以及少量功能性模型。
 2. 整个 ComfyUI 会保存在本地 (`./storage/ComfyUI`) 。
 3. 如果你已经有了现成的 ComfyUI 包，放在上述目录，并新建一个空白文件 (`./storage/.download-complete`)，启动脚本会跳过下载。
 4. 使用 ComfyUI-Manager 即可更新组件（在 ComfyUI 页面中找到“Manager”）。Manager 也可下载模型，但可能需要
@@ -21,11 +21,9 @@ image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-cu124-
 
 ## 运行前提
 
-* NVIDIA 显卡
-** 理论上 Maxwell（GTX900系）之后的显卡架构都支持。
-
-* ≥8GB 显存
-** 4~6GB 显存见 <<cli-args, CLI_ARGS>> 。
+* NVIDIA 显卡，建议 8GB 以上显存
+** 理论上 Maxwell（GTX 900系）之后的显卡架构均支持运行，但能跑多大的模型主要取决于显存。
+** 4~6GB 显存可以跑 SD 1.5 模型，再小需要改启动参数，见 <<cli-args, CLI_ARGS>> 。
 
 * 安装好最新的 NVIDIA 显卡驱动
 ** 必须要 2024 年三月以后的驱动才能支持 CUDA 12.4。
@@ -41,7 +39,7 @@ image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-cu124-
 
 * 以下命令均使用了一次性容器 (`--rm`) 来保持环境整洁、配置清晰。
 * 不建议 WSL2 用户把文件存放在 NTFS 分区内，跨文件系统互访性能极低，且会权限混乱。
-* 注意命令中的 `doublezonline.cloud` 为 Docker Hub 镜像源地址。如果镜像源失效，可替换为备用地址，
+* 注意命令中的 `doublezonline.cloud` 为 Docker Hub 镜像站点地址。如果站点失效，可替换为备用地址，
 https://www.coderjia.cn/archives/dba3f94c-a021-468a-8ac6-e840f85867ea[参考列表]
 。
 
@@ -83,6 +81,8 @@ podman run -it --rm \
   yanwk/comfyui-boot:cu124-cn
 ----
 
+容器启动后，启动脚本会自动开始下载，如果之前下载未完成，则会尝试继续下载。
+
 待下载完毕、程序启动后：
 
 1. 打开浏览器访问 http://localhost:8188/
@@ -94,7 +94,7 @@ https://mirror.ghproxy.com/https://raw.githubusercontent.com/comfyanonymous/Comf
 
 ## 运行方法-不下载模型
 
-如果初次启动时下载缓慢，可以改用最简启动：
+如果启动时下载过于缓慢，可以改用最简启动：
 
 .使用 Docker
 [source,sh]
@@ -135,7 +135,7 @@ podman run -it --rm \
 执行 `minimal-start.sh` 只会下载 ComfyUI 与 Manager，不下载任何模型与扩展。
 
 
-## 构建镜像
+## 构建镜像-国内源
 
 使用纯国内环境构建镜像，可以使用专门的 `Dockerfile-cn` 文件：
 
@@ -146,7 +146,8 @@ docker pull docker.m.daocloud.io/opensuse/tumbleweed:latest
 docker build . -t yanwk/comfyui-boot:cu124-cn -f Dockerfile-cn
 ----
 
-`Dockerfile-cn` 中绝大部分文件从国内源下载，少部分来自 download.pytorch.org 与 aiinfra.pkgs.visualstudio.com ，目前这两个域名不受影响。
+`Dockerfile-cn` 中绝大部分文件从国内源下载，少部分来自 download.pytorch.org 
+与 aiinfra.pkgs.visualstudio.com ，目前这两个域名下载速度基本正常。
 
 构建后，运行方法同上，略过 pull 步骤即可。
 
@@ -154,18 +155,18 @@ docker build . -t yanwk/comfyui-boot:cu124-cn -f Dockerfile-cn
 ## 组件信息
 
 * 基于 CUDA 12.4 的 PyTorch + xFormers 稳定版
-* 未包含 CUDA 开发包（减小镜像体积）
-* Python dev (3.12)
+* Python 开发包 (3.12)
 * GCC C++ (13)
-* OpenCV-devel
+* OpenCV 开发包
 * FFmpeg 与 x264、x265 编码器
 * CMake, Ninja 等编译工具
 * Vim, Fish, fd 等 CLI 工具
+* 未包含 CUDA 开发包（以减小镜像体积）
 
 
-## 使用的国内源
+## 使用到的国内源
 
-各地网络情况不一，镜像访问不一定快，可按需搜索替换。
+各地网络情况不一，访问镜像站点有快有慢，可按需搜索替换。
 
 * Docker Hub 镜像仓库
 ** doublezonline.cloud
@@ -195,12 +196,13 @@ docker build . -t yanwk/comfyui-boot:cu124-cn -f Dockerfile-cn
 代理脚本 → 下载脚本（仅初次启动） → 普通预启动脚本 → 启动命令
 
 ### 关于挂代理
-* 本镜像启动时不需要挂代理，但是用户使用中可能遇到：
+* 本镜像启动时不需要挂代理，理论上更新时也不需要，但是用户使用中可能遇到：
 ** 访问 GitHub（使用 Manager 下载新扩展）
-** 访问 HuggingFace（某些扩展通过硬编码 URL 下载模型）
-* 如何判断节点卡下载：如果命令行输出有百分比进度，但 CPU 和 GPU 占用均很低，则多半为卡下载。
+** 访问 HuggingFace（一些扩展通过硬编码 URL 下载模型）
+** 访问 Civitai（一些扩展将其作为画廊）
+* 如何判断节点运行时卡下载：如果命令行输出有百分比进度，但 CPU、GPU 占用与硬盘读写均很低，则多半为卡下载。
 * Docker Desktop 用户可在设置中找到“代理”（Settings - Resources - Proxies）选项页。
-* Linux 用户可以使用下述方法来配置代理。
+* Linux 用户可以用下述方法来配置代理：
 
 ### 网络代理脚本
 

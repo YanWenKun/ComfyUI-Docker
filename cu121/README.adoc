@@ -9,7 +9,7 @@ https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=cu121[View on <Docker Hub>
 
 ## How it works
 
-1. At first start, a script will download latest ComfyUI, ComfyUI-Manager and some models.
+1. On the first start, a script will download latest ComfyUI, ComfyUI-Manager and some models.
 2. The whole ComfyUI will be stored in a local folder (`./storage/ComfyUI`).
 3. If you already have a ComfyUI bundle, put it there and make an empty file (`./storage/.download-complete`) so the start script will skip downloading.
 4. Use ComfyUI-Manager (in ComfyUI web page) to update ComfyUI, manage custom nodes, and download models.
@@ -58,7 +58,7 @@ docker pull yanwk/comfyui-boot:latest
 ----
 git clone https://github.com/YanWenKun/ComfyUI-Docker.git
 
-cd ComfyUI-Docker
+cd ComfyUI-Docker/cu121
 
 docker compose up --detach
 ----
@@ -173,12 +173,6 @@ $gcs https://github.com/SLAPaper/ComfyUI-Image-Selector.git
 $gcs https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git
 ----
 
-Another note is this image doesn't bundled deps for
-https://github.com/WASasquatch/was-node-suite-comfyui[WAS Node Suite],
-because it has some deps version
-https://github.com/WASasquatch/was-node-suite-comfyui/blob/main/requirements.txt[fixed],
-and is not under active development. +
-However, the image's script only install one custom node (ComfyUI-Manager). You can safely install WAS NS via ComfyUI-Manager in a new deployment. +
 If anything conflicts, just delete unwanted custom nodes and `.local` (or `local`) folder, and update/try-fix/reinstall custom nodes in ComfyUI-Manager.
 ====
 

@@ -28,7 +28,7 @@ https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=cu121-megapak[在 <Docker 
 
 ## 提示 - WSL2 用户
 
-`megapak` 镜像的设计理念和 `latest` 差不多，但有一个显著差异：
+`cu121-megapak` 镜像的设计理念和 `cu121` 差不多，但有一个显著差异：
 
 * 容器内用户为 `root`，不是 runner。
 ** 这样便于 Linux 下 rootless 式部署运行。
@@ -78,3 +78,15 @@ podman run -it --rm \
 ----
 
 个人推荐使用一次性容器 (`--rm`) 来保持环境整洁、配置清晰。
+
+## 跳过下载模型文件等
+
+下载脚本使用 aria2 的断点下载功能，如果下载未完成，再次运行容器时，会继续下载。
+
+如果不希望下载，在容器运行前先创建空白文件 `.download-complete` 即可跳过下载脚本：
+
+[source,sh]
+----
+mkdir -p storage
+touch storage/.download-complete
+----

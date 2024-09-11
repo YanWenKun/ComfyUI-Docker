@@ -19,6 +19,8 @@ https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=cu124-megapak[View on <Doc
 * Tools:
 ** Vim, Fish, fd...
 
+## Usage
+
 .Run with Docker
 [source,sh]
 ----
@@ -46,4 +48,19 @@ podman run -it --rm \
   -v "$(pwd)"/storage:/root \
   -e CLI_ARGS="--fast --preview-method taesd" \
   docker.io/yanwk/comfyui-boot:cu124-megapak
+----
+
+## Skip downloading
+
+The container will run the download script on the first start
+and will create an empty file `.download-complete` as a marker when the download is complete.
+
+If the download does not complete, on the next start, the download script will resume downloading (using aria2's mechanism).
+
+You can create the `.download-complete` file to skip the download script.
+
+[source,sh]
+----
+mkdir -p storage
+touch storage/.download-complete
 ----

@@ -19,6 +19,8 @@ https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=cu124-megapak[在 <Docker 
 * 工具：
 ** Vim, Fish, fd...
 
+## 用法
+
 .使用 Docker 运行
 [source,sh]
 ----
@@ -46,4 +48,16 @@ podman run -it --rm \
   -v "$(pwd)"/storage:/root \
   -e CLI_ARGS="--fast --preview-method taesd" \
   docker.io/yanwk/comfyui-boot:cu124-megapak
+----
+
+## 跳过下载模型文件等
+
+下载脚本使用 aria2 的断点下载功能，如果下载未完成，再次运行容器时，会继续下载。
+
+如果不希望下载，在容器运行前先创建空白文件 `.download-complete` 即可跳过下载脚本：
+
+[source,sh]
+----
+mkdir -p storage
+touch storage/.download-complete
 ----

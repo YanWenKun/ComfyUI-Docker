@@ -63,7 +63,7 @@ docker pull yanwk/comfyui-boot:latest
 ----
 git clone https://github.com/YanWenKun/ComfyUI-Docker.git
 
-cd ComfyUI-Docker
+cd ComfyUI-Docker/cu121
 
 docker compose up --detach
 ----
@@ -218,12 +218,6 @@ $gcs https://github.com/SLAPaper/ComfyUI-Image-Selector.git
 $gcs https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git
 ----
 
-此外，本镜像并未提供
-https://github.com/WASasquatch/was-node-suite-comfyui[WAS Node Suite]
-所需依赖项，因为其部分
-https://github.com/WASasquatch/was-node-suite-comfyui/blob/main/requirements.txt[版本固定]，
-而且已不再活跃开发。 +
-但是通过 ComfyUI-Manager 正常安装不受影响，本镜像的脚本只安装 ComfyUI-Manager 这一个自定义节点。在全新部署的情况下，使用 ComfyUI-Manager 安装 WAS NS 不会有版本冲突。 +
 如果不同节点间出现冲突，尝试在 `custom_nodes` 下删除对应节点，并删除 `.local` （或 `local`）目录，然后在 ComfyUI-Manager 中更新／尝试修复／重新安装对应节点。
 ====
 

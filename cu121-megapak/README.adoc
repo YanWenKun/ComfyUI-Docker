@@ -31,7 +31,7 @@ Also, if you'd like to build your own development environment for ComfyUI ecosys
 
 ## Note - For WSL2 Users
 
-The design of `megapak` is similar to the `latest` image, as well as the usage. With one key difference:
+The design of `cu121-megapak` is similar to the `cu121` image, as well as the usage. With one key difference:
 
 * The user within the container is `root`, not "runner".
 ** This makes rootless deploy on Linux easier.
@@ -81,3 +81,18 @@ podman run -it --rm \
 ----
 
 Recommend running ephemeral containers (`--rm`) to keep everything clean and visible.
+
+## Skip downloading
+
+The container will run the download script on the first start
+and will create an empty file `.download-complete` as a marker when the download is complete.
+
+If the download does not complete, on the next start, the download script will resume downloading (using aria2's mechanism).
+
+You can create the `.download-complete` file to skip the download script.
+
+[source,sh]
+----
+mkdir -p storage
+touch storage/.download-complete
+----
