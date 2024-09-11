@@ -1,0 +1,54 @@
+name: Publish 'nightly' to Docker Hub
+
+on: 
+  workflow_dispatch: # Can be manually triggered
+  schedule: # Runs on every Monday, Wednesday, and Friday, at 00:00 UTC
+    - cron: '0 0 * * 1,3,5'
+  push: 
+    branches: [ main ]
+    paths-ignore:
+      - '**'
+      - '!nightly/Dockerfile'
+      - '!.github/workflows/build-nightly.yml'
+
+jobs:
+
+  build-publish-nightly:
+    environment: Publish to Docker Hub
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Get current commit hash
+        id: commit
+        uses: prompt/actions-commit-hash@v3
+      -
+        name: Maximize build disk space
+        uses: easimon/maximize-build-space@master
+        with:
+          overprovision-lvm: 'true'
+          remove-android: 'true'
+      -
+        name: Git checkout
+        uses: actions/checkout@v4
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      -
+        name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_ACCESSTOKEN }}
+      -
+        name: Build and push 'nightly'
+        uses: docker/build-push-action@v6
+        with:
+          context: ./nightly
+          file: ./nightly/Dockerfile
+          tags:  |
+            yanwk/comfyui-boot:nightly
+            yanwk/comfyui-boot:nightly-${{ steps.commit.outputs.short }}
+          push: true
