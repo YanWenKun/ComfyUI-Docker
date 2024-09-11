@@ -22,6 +22,10 @@ jobs:
         id: commit
         uses: prompt/actions-commit-hash@v3
       -
+        name: Get current date
+        id: date
+        run: echo "date=$(date +'%Y%m%d')" >> $GITHUB_OUTPUT
+      -
         name: Maximize build disk space
         uses: easimon/maximize-build-space@master
         with:
@@ -50,5 +54,5 @@ jobs:
           file: ./nightly/Dockerfile
           tags:  |
             yanwk/comfyui-boot:nightly
-            yanwk/comfyui-boot:nightly-${{ steps.commit.outputs.short }}
+            yanwk/comfyui-boot:nightly-${{ steps.date.outputs.date }}-${{ steps.commit.outputs.short }}
           push: true
