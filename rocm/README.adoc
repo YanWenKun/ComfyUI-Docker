@@ -6,11 +6,14 @@ image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-rocm.y
 
 https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=rocm[View on <Docker Hub>]
 
-## In case of WSL2
+## Note - not all-in-one image
 
-If you are using WSL2 with AMD/Intel GPU, try 
-link:../docs/wsl-directml.adoc[Run ComfyUI on WSL2 with DirectML]. 
-It's slower than ROCm but still faster than CPU, and even works on an APU.
+Due to GitHub CI error "No space left on device",
+the list for installing Python dependencies and the list for downloading Custom Nodes were both reduced.
+
+If you build this image locally, 
+you can uncomment the lines in `Dockerfile` and `download.sh`, 
+so you will have a more all-in-one image.
 
 ## Prepare
 
@@ -56,16 +59,8 @@ podman run -it --rm \
 
 Once the app is loaded, visit http://localhost:8188/
 
-## Note
-
-Due to GitHub CI error "No space left on device",
-the list for installing Python dependencies and the list for downloading Custom Nodes were both reduced.
-
-If you build this image locally, 
-you can uncomment the lines in `Dockerfile` and `download.sh`, 
-so you will have a more all-in-one image.
-
-## Hint
+[[hint]]
+## If you want to dive in...
 
 ROCm has a PyTorch image:
 
@@ -76,4 +71,29 @@ https://hub.docker.com/r/rocm/pytorch
 docker pull rocm/pytorch:rocm6.2_ubuntu22.04_py3.10_pytorch_release_2.3.0
 ----
 
-It's big, but if you find it hard to run the container, it may be helpful.
+It's big, but if you find it hard to run the container, it may be helpful. As it takes care of PyTorch, the most important part, and you just need to install few more Python packages in order to run ComfyUI.
+
+## Additional notes for Windows users
+
+WSL2 supports ROCm and DirectML.
+
+* ROCm
+
+If your GPU is in the
+https://rocm.docs.amd.com/projects/radeon/en/latest/docs/compatibility/wsl/wsl_compatibility.html[Compatibility List],
+you can either install
+https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/wsl/install-radeon.html[Radeon software]
+in your WSL2 distro,
+or use
+<<hint, ROCm PyTorch image>>.
+
+* DirectML
+
+DirectML works for most GPUs (including AMD APU, Intel GPU).
+It's slower than ROCm but still faster than CPU.
+See: 
+link:../docs/wsl-directml.adoc[Run ComfyUI on WSL2 with DirectML]. 
+
+* ZLUDA
+
+This is not using WSL2, it's running natively on Windows. ZLUDA can "translate" CUDA codes to run on AMD GPUs. But as the first step, I recommend to try running SD-WebUI with ZLUDA, it's easier to start with.

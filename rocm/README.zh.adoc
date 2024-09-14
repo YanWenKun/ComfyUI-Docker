@@ -4,11 +4,11 @@ image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-rocm.y
 
 https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=rocm[在 <Docker Hub> 上查看]
 
-## 提醒： WSL2 用户
+## 备注
 
-如果你在用 WSL2 + AMD/Intel GPU， 可以考虑：
-link:../docs/wsl-directml.zh.adoc[在 WSL2 环境下通过 DirectML 运行 ComfyUI]。
-该方法比纯 CPU 快，比 Linux 下的 ROCm 慢，且支持的 GPU 型号更多（甚至核显也能跑）。
+由于 GitHub CI 总是报错“存储空间不足”，不得已裁剪镜像尺寸，少安装一些 Python 依赖项，因此也少下载若干扩展。
+
+如果你在本地构建本镜像，可以在 `Dockerfile` 与 `download.sh` 中将对应代码取消注释，以获得一个更加“全能”的镜像。
 
 ## 准备工作
 
@@ -53,13 +53,8 @@ podman run -it --rm \
 
 启动完成后，访问 http://localhost:8188/
 
-## 提示
-
-由于 GitHub CI 总是报错“存储空间不足”，不得已裁剪镜像尺寸，少安装一些 Python 依赖项，因此也少下载若干扩展。
-
-如果你在本地构建本镜像，可以在 `Dockerfile` 与 `download.sh` 中将对应代码取消注释，以获得一个更加“全能”的镜像。
-
-## 提示2
+[[hint]]
+## 如果你愿意折腾……
 
 ROCm 有一个 PyTorch 镜像：
 
@@ -71,3 +66,31 @@ docker pull rocm/pytorch:rocm6.2_ubuntu22.04_py3.10_pytorch_release_2.3.0
 ----
 
 这个镜像很大，大到我没办法用免费的 GitHub CI 来构建。但如果你运行遇到困难，可以尝试用这个镜像手动安装运行 ComfyUI。
+它已经安装好了最重要的 PyTorch，你只需要再安装少量 Python 包即可运行 ComfyUI。
+
+## 备注： Windows 用户
+
+WSL2 支持 ROCm 与 DirectML。
+
+* ROCm
+
+如果你的 AMD GPU 在
+https://rocm.docs.amd.com/projects/radeon/en/latest/docs/compatibility/wsl/wsl_compatibility.html[兼容性列表]
+中，你可以在 WSL2 环境中安装
+https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/wsl/install-radeon.html[Radeon software]
+，也可以通过 Docker Desktop 使用
+<<hint, ROCm PyTorch 镜像>>。
+
+* DirectML
+
+DirectML 支持大多数 GPU（包括 AMD APU 与 Intel GPU）。
+该方法比纯 CPU 快，比 Linux 下的 ROCm 慢，且支持的 GPU 型号更多（甚至核显也能跑）。
+
+见：
+link:../docs/wsl-directml.zh.adoc[在 WSL2 环境下通过 DirectML 运行 ComfyUI]。
+
+* ZLUDA
+
+这里 ZLUDA 不是跑在 WSL2 上，而是 Windows 原生运行。ZLUDA 能“翻译”CUDA 指令给 AMD GPU 运行。
+这里不写详细了，因为老方法很可能一更新就不能用了，还请搜索教程。
+但还是提一点建议，先试着跑 SD-WebUI，这个起手要容易不少。
