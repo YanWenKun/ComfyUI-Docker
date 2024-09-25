@@ -20,7 +20,7 @@ RUN --mount=type=cache,target=/var/cache/zypp \
             install --no-confirm \
         python310 python310-pip python310-wheel python310-setuptools \
         python310-devel python310-Cython gcc-c++ python310-py-build-cmake \
-        python310-numpy python310-opencv \
+        python310-numpy1 python310-opencv \
         python310-ffmpeg-python ffmpeg x264 x265 \
         python310-dbm \
         ghc-half \

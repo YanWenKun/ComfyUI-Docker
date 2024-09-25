@@ -19,7 +19,7 @@ RUN --mount=type=cache,target=/var/cache/zypp \
             install --no-confirm \
         python311 python311-pip python311-wheel python311-setuptools \
         python311-devel python311-Cython gcc-c++ python311-py-build-cmake \
-        python311-numpy python311-opencv \
+        python311-numpy1 python311-opencv \
         python311-ffmpeg-python ffmpeg x264 x265 \
         python311-dbm \
         google-noto-sans-fonts google-noto-sans-cjk-fonts google-noto-coloremoji-fonts \
