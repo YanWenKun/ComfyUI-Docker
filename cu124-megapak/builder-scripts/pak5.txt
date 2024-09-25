@@ -45,7 +45,6 @@ pyhocon
 PyMCubes
 pymeshlab
 pynvml
-pyrsmi
 python-dateutil
 pytorch-lightning
 pytorch-msssim
