@@ -27,7 +27,7 @@ docker run -it --rm \
 
 * link:cu121/README.adoc[`cu121`, `latest`]
 
-** Recommended for those trying ComfyUI for the first time.
+** Recommended for anyone trying ComfyUI for the first time.
 ** Equipped with many dependencies. Starts with ComfyUI core only.
 ** Using a low-privilege user within the container (easy for WSL2 deploy).
 ** Not recommended for Podman or rootless deploy (use `megapak` instead).

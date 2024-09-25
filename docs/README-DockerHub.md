@@ -28,7 +28,7 @@ Once the app is loaded, visit http://localhost:8188/
 
 - `cu121`, `latest` [\[doc\]](https://github.com/YanWenKun/ComfyUI-Docker/tree/main/cu121)
 
-  - Recommended for those trying ComfyUI for the first time.
+  - Recommended for anyone trying ComfyUI for the first time.
   - Equipped with many dependencies. Starts with ComfyUI core only.
   - Using a low-privilege user within the container (easy for WSL2 deploy).
   - Using CUDA 12.1 + Python 3.11.
