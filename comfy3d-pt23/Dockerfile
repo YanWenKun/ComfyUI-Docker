@@ -2,7 +2,7 @@
 # Dockerfile that builds 'yanwk/comfyui-boot:comfy3d-pt23'
 # An environment for running ComfyUI with ComfyUI-3D-Pack.
 # Using PyTorch 2.3, CUDA 12.1, Python 3.11
-# Using Comfy3D Version: https://github.com/MrForExample/ComfyUI-3D-Pack/tree/2ba3480284fa85c4f110b104f1da1d1abf0b58c6
+# Using Comfy3D Version: https://github.com/MrForExample/ComfyUI-3D-Pack/tree/45a42ca7cadd652c8a2393622e2de0ff9e0154e6
 ################################################################################
 
 FROM docker.io/opensuse/tumbleweed:latest
@@ -145,7 +145,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     && pip install \
         -r https://raw.githubusercontent.com/comfyanonymous/ComfyUI/master/requirements.txt \
         -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/requirements.txt \
-        -r https://raw.githubusercontent.com/MrForExample/ComfyUI-3D-Pack/2ba3480284fa85c4f110b104f1da1d1abf0b58c6/requirements.txt \
+        -r https://raw.githubusercontent.com/MrForExample/ComfyUI-3D-Pack/45a42ca7cadd652c8a2393622e2de0ff9e0154e6/requirements.txt \
     && pip install \
 https://data.pyg.org/whl/torch-2.3.0%2Bcu121/torch_scatter-2.1.2%2Bpt23cu121-cp311-cp311-linux_x86_64.whl \
 https://raw.githubusercontent.com/MrForExample/Comfy3D_Pre_Builds/b27af1a28d9f194cea1a137750e35ac698406e60/_Build_Wheels/_Wheels_linux_py311_cu121/diff_gaussian_rasterization-0.0.0-cp311-cp311-linux_x86_64.whl \
