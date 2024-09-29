@@ -70,7 +70,30 @@ https://hub.docker.com/r/rocm/pytorch
 
 [source,sh]
 ----
-docker pull rocm/pytorch:rocm6.2_ubuntu22.04_py3.10_pytorch_release_2.3.0
+docker pull rocm/pytorch:rocm6.2.1_ubuntu20.04_py3.9_pytorch_release_2.3.0
+
+mkdir -p storage
+
+docker run -it --rm \
+  --name comfyui-rocm \
+  --device=/dev/kfd --device=/dev/dri \
+  --group-add=video --ipc=host --cap-add=SYS_PTRACE \
+  --security-opt seccomp=unconfined \
+  --security-opt label=disable \
+  -p 8188:8188 \
+  --user root \
+  --workdir /root/workdir \
+  -v "$(pwd)"/storage:/root/workdir \
+  rocm/pytorch:rocm6.2.1_ubuntu20.04_py3.9_pytorch_release_2.3.0 \
+  /bin/bash
+
+git clone https://github.com/comfyanonymous/ComfyUI.git
+
+# Or use conda
+pip install -r ComfyUI/requirements.txt
+
+# Or python3
+python ComfyUI/main.py --listen --port 8188
 ----
 
 It's big, but if you find it hard to run the container, it may be helpful. As it takes care of PyTorch, the most important part, and you just need to install few more Python packages in order to run ComfyUI.
