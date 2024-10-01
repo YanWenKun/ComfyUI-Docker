@@ -6,9 +6,11 @@
 # Using image from NVIDIA as base image:
 # https://catalog.ngc.nvidia.com/orgs/nvidia/containers/cuda/tags
 #
+# Note about GCC:
 # Ubuntu 24.04 comes with GCC 13, so no additional config here.
 #
-# Note about env vars: in NVIDIA's image, there's no CUDA_HOME or CUDA_PATH.
+# Note about env vars:
+# In NVIDIA's image, there's no CUDA_HOME or CUDA_PATH.
 # Also, the LD_LIBRARY_PATH is intended to point to a non-existent folder.
 # Ref: https://gitlab.com/nvidia/container-images/cuda/-/issues/47
 ################################################################################

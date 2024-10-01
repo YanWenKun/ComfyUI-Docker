@@ -31,7 +31,7 @@ docker run -it --rm \
   --gpus all \
   -p 8188:8188 \
   -v "$(pwd)"/storage:/root \
-  -e CLI_ARGS="--fast --preview-method taesd" \
+  -e CLI_ARGS="--fast" \
   yanwk/comfyui-boot:cu124-megapak
 ----
 
@@ -46,7 +46,7 @@ podman run -it --rm \
   --security-opt label=disable \
   -p 8188:8188 \
   -v "$(pwd)"/storage:/root \
-  -e CLI_ARGS="--fast --preview-method taesd" \
+  -e CLI_ARGS="--fast" \
   docker.io/yanwk/comfyui-boot:cu124-megapak
 ----
 
