@@ -42,10 +42,10 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # The extra index of PyTorch nightly has no use here, just a fail-safe.
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --break-system-packages \
-        https://repo.radeon.com/rocm/manylinux/rocm-rel-6.2/torch-2.3.0%2Brocm6.2.0-cp310-cp310-linux_x86_64.whl \
-        https://repo.radeon.com/rocm/manylinux/rocm-rel-6.2/torchvision-0.18.0%2Brocm6.2.0-cp310-cp310-linux_x86_64.whl \
-        https://repo.radeon.com/rocm/manylinux/rocm-rel-6.2/pytorch_triton_rocm-2.3.0%2Brocm6.2.0.1540b42334-cp310-cp310-linux_x86_64.whl \
-        https://repo.radeon.com/rocm/manylinux/rocm-rel-6.2/onnxruntime_rocm-1.18.0-cp310-cp310-linux_x86_64.whl \
+        https://repo.radeon.com/rocm/manylinux/rocm-rel-6.2.3/torch-2.3.0%2Brocm6.2.3-cp310-cp310-linux_x86_64.whl \
+        https://repo.radeon.com/rocm/manylinux/rocm-rel-6.2.3/torchvision-0.18.0%2Brocm6.2.3-cp310-cp310-linux_x86_64.whl \
+        https://repo.radeon.com/rocm/manylinux/rocm-rel-6.2.3/pytorch_triton_rocm-2.3.0%2Brocm6.2.3.5a02332983-cp310-cp310-linux_x86_64.whl \
+        https://repo.radeon.com/rocm/manylinux/rocm-rel-6.2.3/onnxruntime_rocm-1.18.0-cp310-cp310-linux_x86_64.whl \
         https://repo.radeon.com/rocm/manylinux/rocm-rel-6.2/jaxlib-0.4.23%2Brocm620-cp310-cp310-manylinux2014_x86_64.whl \
         https://repo.radeon.com/rocm/manylinux/rocm-rel-6.2/rocpydecode-1.0.0.0-py3-none-manylinux_2_28_x86_64.whl \
         https://download.pytorch.org/whl/cpu/torchaudio-2.3.0%2Bcpu-cp310-cp310-linux_x86_64.whl \
