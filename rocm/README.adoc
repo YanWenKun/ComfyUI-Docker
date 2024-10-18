@@ -9,11 +9,11 @@ https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=rocm[View on <Docker Hub>]
 ## Note - not all-in-one image
 
 Due to GitHub CI error "No space left on device",
-the list for installing Python dependencies and the list for downloading Custom Nodes were both reduced.
+I have to shorten the list for installing Python dependencies and the list for downloading Custom Nodes.
 
 If you build this image locally, 
-you can uncomment the lines in `Dockerfile` and `download.sh`, 
-so you will have a more all-in-one image.
+you can uncomment the commented lines in `Dockerfile` and `download.sh`, 
+to build an all-in-one image.
 
 ## Prepare
 
@@ -70,7 +70,7 @@ https://hub.docker.com/r/rocm/pytorch
 
 [source,sh]
 ----
-docker pull rocm/pytorch:rocm6.2.1_ubuntu20.04_py3.9_pytorch_release_2.3.0
+docker pull rocm/pytorch:rocm6.2.3_ubuntu22.04_py3.10_pytorch_release_2.3.0
 
 mkdir -p storage
 
@@ -84,7 +84,7 @@ docker run -it --rm \
   --user root \
   --workdir /root/workdir \
   -v "$(pwd)"/storage:/root/workdir \
-  rocm/pytorch:rocm6.2.1_ubuntu20.04_py3.9_pytorch_release_2.3.0 \
+  rocm/pytorch:rocm6.2.3_ubuntu22.04_py3.10_pytorch_release_2.3.0 \
   /bin/bash
 
 git clone https://github.com/comfyanonymous/ComfyUI.git

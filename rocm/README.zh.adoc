@@ -64,7 +64,7 @@ https://hub.docker.com/r/rocm/pytorch
 
 [source,sh]
 ----
-docker pull rocm/pytorch:rocm6.2.1_ubuntu20.04_py3.9_pytorch_release_2.3.0
+docker pull rocm/pytorch:rocm6.2.3_ubuntu22.04_py3.10_pytorch_release_2.3.0
 
 mkdir -p storage
 
@@ -78,7 +78,7 @@ docker run -it --rm \
   --user root \
   --workdir /root/workdir \
   -v "$(pwd)"/storage:/root/workdir \
-  rocm/pytorch:rocm6.2.1_ubuntu20.04_py3.9_pytorch_release_2.3.0 \
+  rocm/pytorch:rocm6.2.3_ubuntu22.04_py3.10_pytorch_release_2.3.0 \
   /bin/bash
 
 git clone https://github.com/comfyanonymous/ComfyUI.git
