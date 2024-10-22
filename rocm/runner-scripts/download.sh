@@ -39,8 +39,8 @@ cd /root/ComfyUI/custom_nodes
 
 # Workspace
 clone_or_pull https://github.com/AIGODLIKE/AIGODLIKE-ComfyUI-Translation.git
-# clone_or_pull https://github.com/crystian/ComfyUI-Crystools.git
-# clone_or_pull https://github.com/crystian/ComfyUI-Crystools-save.git
+clone_or_pull https://github.com/crystian/ComfyUI-Crystools.git
+clone_or_pull https://github.com/crystian/ComfyUI-Crystools-save.git
 
 # General
 clone_or_pull https://github.com/chrisgoringe/cg-use-everywhere.git
@@ -52,12 +52,12 @@ clone_or_pull https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git
 clone_or_pull https://github.com/cubiq/ComfyUI_IPAdapter_plus.git
 clone_or_pull https://github.com/Fannovel16/comfyui_controlnet_aux.git
 clone_or_pull https://github.com/Kosinkadink/ComfyUI-Advanced-ControlNet.git
-# clone_or_pull https://github.com/ltdrdata/ComfyUI-Impact-Pack.git
-# clone_or_pull https://github.com/ltdrdata/ComfyUI-Inspire-Pack.git
+clone_or_pull https://github.com/ltdrdata/ComfyUI-Impact-Pack.git
+clone_or_pull https://github.com/ltdrdata/ComfyUI-Inspire-Pack.git
 clone_or_pull https://github.com/twri/sdxl_prompt_styler.git
 
 # Video
-# clone_or_pull https://github.com/Fannovel16/ComfyUI-Frame-Interpolation.git
+clone_or_pull https://github.com/Fannovel16/ComfyUI-Frame-Interpolation.git
 clone_or_pull https://github.com/Kosinkadink/ComfyUI-AnimateDiff-Evolved.git
 clone_or_pull https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git
 

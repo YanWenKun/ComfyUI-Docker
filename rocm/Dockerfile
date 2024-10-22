@@ -32,14 +32,13 @@ RUN --mount=type=cache,target=/var/cache/zypp \
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --break-system-packages \
-        --upgrade pip wheel setuptools \
-    && df -h
+        --upgrade pip wheel setuptools
 
 # Install PyTorch && ONNX from AMD repo
 # https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/native_linux/install-pytorch.html
 # https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/native_linux/install-onnx.html
 # Using torchaudio CPU for compatibility
-# The extra index of PyTorch nightly has no use here, just a fail-safe.
+# The extra index of PyTorch has no use here, just a fail-safe.
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --break-system-packages \
         https://repo.radeon.com/rocm/manylinux/rocm-rel-6.2.3/torch-2.3.0%2Brocm6.2.3-cp310-cp310-linux_x86_64.whl \
@@ -49,11 +48,9 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         https://repo.radeon.com/rocm/manylinux/rocm-rel-6.2/jaxlib-0.4.23%2Brocm620-cp310-cp310-manylinux2014_x86_64.whl \
         https://repo.radeon.com/rocm/manylinux/rocm-rel-6.2/rocpydecode-1.0.0.0-py3-none-manylinux_2_28_x86_64.whl \
         https://download.pytorch.org/whl/cpu/torchaudio-2.3.0%2Bcpu-cp310-cp310-linux_x86_64.whl \
-        --extra-index-url https://download.pytorch.org/whl/nightly/rocm6.2 \
-    && df -h
+        --extra-index-url https://download.pytorch.org/whl/rocm6.2
 
 # Dependencies for frequently-used
-# Due to GitHub CI's "out of disk space" error, reducing the list.
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --break-system-packages \
         -r https://raw.githubusercontent.com/comfyanonymous/ComfyUI/master/requirements.txt \
@@ -61,37 +58,35 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         -r https://raw.githubusercontent.com/cubiq/ComfyUI_essentials/main/requirements.txt \
         -r https://raw.githubusercontent.com/Fannovel16/comfyui_controlnet_aux/main/requirements.txt \
         -r https://raw.githubusercontent.com/jags111/efficiency-nodes-comfyui/main/requirements.txt \
-        --extra-index-url https://download.pytorch.org/whl/nightly/rocm6.2
+        --extra-index-url https://download.pytorch.org/whl/rocm6.2
 
-# When you build your own image, you can uncomment the code blocks below.
+# Dependencies for more, with few hand-pick:
+# 'compel lark' for smZNodes
+# 'torchdiffeq' for DepthFM
+# 'fairscale' for APISR
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install --break-system-packages \
+        -r https://raw.githubusercontent.com/crystian/ComfyUI-Crystools/main/requirements.txt \
+        -r https://raw.githubusercontent.com/cubiq/ComfyUI_FaceAnalysis/main/requirements.txt \
+        -r https://raw.githubusercontent.com/cubiq/ComfyUI_InstantID/main/requirements.txt \
+        -r https://raw.githubusercontent.com/Fannovel16/ComfyUI-Frame-Interpolation/main/requirements-no-cupy.txt \
+        -r https://raw.githubusercontent.com/FizzleDorf/ComfyUI_FizzNodes/main/requirements.txt \
+        -r https://raw.githubusercontent.com/kijai/ComfyUI-KJNodes/main/requirements.txt \
+        -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Impact-Pack/Main/requirements.txt \
+        -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Impact-Subpack/main/requirements.txt \
+        -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Inspire-Pack/main/requirements.txt \
+        -r https://raw.githubusercontent.com/melMass/comfy_mtb/main/requirements.txt \
+        -r https://raw.githubusercontent.com/storyicon/comfyui_segment_anything/main/requirements.txt \
+        -r https://raw.githubusercontent.com/ZHO-ZHO-ZHO/ComfyUI-InstantID/main/requirements.txt \
+        compel lark torchdiffeq fairscale \
+        python-ffmpeg \
+        --extra-index-url https://download.pytorch.org/whl/rocm6.2
 
-# # Dependencies for more, with few hand-pick:
-# # 'compel lark' for smZNodes
-# # 'torchdiffeq' for DepthFM
-# # 'fairscale' for APISR
-# RUN --mount=type=cache,target=/root/.cache/pip \
-#     pip install --break-system-packages \
-#         -r https://raw.githubusercontent.com/crystian/ComfyUI-Crystools/main/requirements.txt \
-#         -r https://raw.githubusercontent.com/cubiq/ComfyUI_FaceAnalysis/main/requirements.txt \
-#         -r https://raw.githubusercontent.com/cubiq/ComfyUI_InstantID/main/requirements.txt \
-#         -r https://raw.githubusercontent.com/Fannovel16/ComfyUI-Frame-Interpolation/main/requirements-no-cupy.txt \
-#         -r https://raw.githubusercontent.com/FizzleDorf/ComfyUI_FizzNodes/main/requirements.txt \
-#         -r https://raw.githubusercontent.com/kijai/ComfyUI-KJNodes/main/requirements.txt \
-#         -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Impact-Pack/Main/requirements.txt \
-#         -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Impact-Subpack/main/requirements.txt \
-#         -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Inspire-Pack/main/requirements.txt \
-#         -r https://raw.githubusercontent.com/melMass/comfy_mtb/main/requirements.txt \
-#         -r https://raw.githubusercontent.com/storyicon/comfyui_segment_anything/main/requirements.txt \
-#         -r https://raw.githubusercontent.com/ZHO-ZHO-ZHO/ComfyUI-InstantID/main/requirements.txt \
-#         compel lark torchdiffeq fairscale \
-#         python-ffmpeg \
-#         --extra-index-url https://download.pytorch.org/whl/nightly/rocm6.2
-
-# # Fix MediaPipe's broken dep (protobuf<4).
-# RUN --mount=type=cache,target=/root/.cache/pip \
-#     pip install --break-system-packages \
-#         mediapipe \
-#     && pip list
+# Fix MediaPipe's broken dep (protobuf<4).
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install --break-system-packages \
+        mediapipe \
+    && pip list
 
 RUN df -h \
     && du -ah /root \

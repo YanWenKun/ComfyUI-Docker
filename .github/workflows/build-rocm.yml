@@ -2,15 +2,15 @@ name: Publish 'rocm' to Docker Hub
 
 on: 
   workflow_dispatch: # Can be manually triggered
-  schedule: # Runs on every Monday, 07:00 UTC
-    - cron: '0 7 * * 1'
-  push: 
-    branches: [ main ]
-    paths-ignore:
-      - '**'
-      - '!rocm/Dockerfile'
-      - '!rocm/runner-scripts/**'
-      - '!.github/workflows/build-rocm.yml'
+  # schedule: # Runs on every Monday, 07:00 UTC
+  #   - cron: '0 7 * * 1'
+  # push: 
+  #   branches: [ main ]
+  #   paths-ignore:
+  #     - '**'
+  #     - '!rocm/Dockerfile'
+  #     - '!rocm/runner-scripts/**'
+  #     - '!.github/workflows/build-rocm.yml'
 
 
 jobs:
