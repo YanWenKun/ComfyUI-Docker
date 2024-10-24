@@ -78,6 +78,7 @@ trimesh[easy]
 typer
 typing-extensions
 ultralytics
+webcolors
 xatlas
 yacs
 yapf
