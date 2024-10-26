@@ -1,0 +1,57 @@
+# Docker Image for Comfy3D
+
+image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-comfy3d-pt25.yml/badge.svg["GitHub Workflow Status",link="https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-comfy3d-pt25.yml"]
+
+https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=comfy3d-pt25[View on <Docker Hub>]
+
+
+* By default, install only ComfyUI, ComfyUI-Manager, ComfyUI-3D-Pack
+
+* Comfy3D version:
+** https://github.com/MrForExample/ComfyUI-3D-Pack/tree/bdc5e3029ed96d9fa25e651e12fce1553a4422c4[bdc5e30]
+(Oct 18, 2024)
+
+* Dev kits:
+** CUDA dev kit (12.4)
+** Python dev package (3.12)
+** GCC C++ (13)
+
+* Key Components:
+** torch==2.5.0+cu124
+** xformers==0.0.28.post2
+
+Additionally, compiled wheel files for Comfy3D can be found
+https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/tag/v5[here]
+and instructions for compiling can be found
+https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/tree/v5[here].
+
+## Usage
+
+.Run with Docker
+[source,sh]
+----
+mkdir -p storage
+
+docker run -it --rm \
+  --name comfy3d-pt25 \
+  --gpus all \
+  -p 8188:8188 \
+  -v "$(pwd)"/storage:/root \
+  -e CLI_ARGS="" \
+  yanwk/comfyui-boot:comfy3d-pt25
+----
+
+.Run with Podman
+[source,sh]
+----
+mkdir -p storage
+
+podman run -it --rm \
+  --name comfy3d-pt25 \
+  --device nvidia.com/gpu=all \
+  --security-opt label=disable \
+  -p 8188:8188 \
+  -v "$(pwd)"/storage:/root \
+  -e CLI_ARGS="" \
+  docker.io/yanwk/comfyui-boot:comfy3d-pt25
+----

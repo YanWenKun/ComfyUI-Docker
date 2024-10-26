@@ -1,0 +1,63 @@
+# Comfy3D 单独镜像
+
+image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-comfy3d-pt25.yml/badge.svg["GitHub Workflow Status",link="https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-comfy3d-pt25.yml"]
+
+https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=comfy3d-pt25[在 <Docker Hub> 上查看]
+
+
+* 默认仅安装 ComfyUI, ComfyUI-Manager, ComfyUI-3D-Pack
+
+* Comfy3D 版本：
+** https://github.com/MrForExample/ComfyUI-3D-Pack/tree/bdc5e3029ed96d9fa25e651e12fce1553a4422c4[bdc5e30]
+(2024/10/18)
+
+* 开发组件：
+** CUDA dev kit (12.4)
+** Python dev package (3.12)
+** GCC C++ (13)
+
+* 关键组件：
+** torch==2.5.0+cu124
+** xformers==0.0.28.post2
+
+用到的 Comfy3D 依赖项（二进制 wheel 文件）在
+https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/tag/v5[这里]
+，编译指南在
+https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/tree/v5[这里]
+。
+
+## 用法
+
+.使用 Docker
+[source,sh]
+----
+mkdir -p storage
+
+docker run -it --rm \
+  --name comfy3d-pt25 \
+  --gpus all \
+  -p 8188:8188 \
+  -v "$(pwd)"/storage:/root \
+  -e PIP_INDEX_URL="https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple" \
+  -e HF_ENDPOINT="https://hf-mirror.com" \
+  -e CLI_ARGS="" \
+  yanwk/comfyui-boot:comfy3d-pt25
+----
+
+.使用 Podman
+[source,sh]
+----
+mkdir -p storage
+
+podman run -it --rm \
+  --name comfy3d-pt25 \
+  --device nvidia.com/gpu=all \
+  --security-opt label=disable \
+  -p 8188:8188 \
+  -v "$(pwd)"/storage:/root \
+  -e PIP_INDEX_URL="https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple" \
+  -e HF_ENDPOINT="https://hf-mirror.com" \
+  -e CLI_ARGS="" \
+  docker.io/yanwk/comfyui-boot:comfy3d-pt25
+----
+

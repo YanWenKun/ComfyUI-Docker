@@ -53,18 +53,17 @@ Once the app is loaded, visit http://localhost:8188/
 
   - For AMD GPU with ROCm.
 
-- `comfy3d-pt22` [\[doc\]](https://github.com/YanWenKun/ComfyUI-Docker/tree/main/comfy3d-pt22)
-
-  - Dedicated for [ComfyUI-3D-Pack](https://github.com/MrForExample/ComfyUI-3D-Pack).
-  - Running a classic version of Comfy3D based on PyTorch 2.2.
-
-- `comfy3d-pt23` [\[doc\]](https://github.com/YanWenKun/ComfyUI-Docker/tree/main/comfy3d-pt23)
-
-  - Dedicated for [ComfyUI-3D-Pack](https://github.com/MrForExample/ComfyUI-3D-Pack).
-  - Running a newer version of Comfy3D based on PyTorch 2.3.
-
 - `nightly` [\[doc\]](https://github.com/YanWenKun/ComfyUI-Docker/tree/main/nightly)
 
   - Using preview version of PyTorch.
+
+- Images dedicated for [ComfyUI-3D-Pack](https://github.com/MrForExample/ComfyUI-3D-Pack):
+
+  - `comfy3d-pt22` [\[doc\]](https://github.com/YanWenKun/ComfyUI-Docker/tree/main/comfy3d-pt22) Running the [Jun 23, 2024](https://github.com/MrForExample/ComfyUI-3D-Pack/tree/3b4e715939376634c68aa4c1c7d4ea4a8665c098[) version of Comfy3D based on PyTorch 2.2.
+
+  - `comfy3d-pt23` [\[doc\]](https://github.com/YanWenKun/ComfyUI-Docker/tree/main/comfy3d-pt23) Running the [Oct 18, 2024](https://github.com/MrForExample/ComfyUI-3D-Pack/tree/bdc5e3029ed96d9fa25e651e12fce1553a4422c4) version of Comfy3D based on PyTorch 2.3.
+
+  - `comfy3d-pt25` [\[doc\]](https://github.com/YanWenKun/ComfyUI-Docker/tree/main/comfy3d-pt25) Running the latest version of Comfy3D based on PyTorch 2.5.
+
 
 For more detailed docs, check [GitHub Page](https://github.com/YanWenKun/ComfyUI-Docker).

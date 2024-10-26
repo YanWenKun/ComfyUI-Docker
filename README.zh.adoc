@@ -42,18 +42,24 @@ https://hub.docker.com/r/yanwk/comfyui-boot[Docker 镜像]
 
 ** 适用于 AMD GPU
 
-* link:comfy3d-pt22/README.zh.adoc[`comfy3d-pt22`]
-
-** https://github.com/MrForExample/ComfyUI-3D-Pack[ComfyUI-3D-Pack] 专用
-** 基于 PyTorch 2.2，使用经典版本的 Comfy3D
-
-* link:comfy3d-pt23/README.zh.adoc[`comfy3d-pt23`]
-** https://github.com/MrForExample/ComfyUI-3D-Pack[ComfyUI-3D-Pack] 专用
-** 基于 PyTorch 2.3，使用较新版本的 Comfy3D
-
 * link:nightly/README.adoc[`nightly`]
 
 ** 使用最新预览版的 PyTorch
+
+* https://github.com/MrForExample/ComfyUI-3D-Pack[ComfyUI-3D-Pack] 专用镜像：
+
+** link:comfy3d-pt22/README.zh.adoc[`comfy3d-pt22`]
+基于 PyTorch 2.2，使用
+https://github.com/MrForExample/ComfyUI-3D-Pack/tree/3b4e715939376634c68aa4c1c7d4ea4a8665c098[2024/06/23]
+版本的 Comfy3D
+
+** link:comfy3d-pt23/README.zh.adoc[`comfy3d-pt23`]
+基于 PyTorch 2.3，使用
+https://github.com/MrForExample/ComfyUI-3D-Pack/tree/bdc5e3029ed96d9fa25e651e12fce1553a4422c4[2024/10/18]
+版本的 Comfy3D
+
+** link:comfy3d-pt25/README.zh.adoc[`comfy3d-pt25`]
+基于 PyTorch 2.5，使用最新版本的 Comfy3D
 
 
 ## 2024 九月重大更新

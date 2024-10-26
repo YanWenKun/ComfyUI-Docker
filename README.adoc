@@ -53,22 +53,24 @@ docker run -it --rm \
 
 ** For AMD GPUs with ROCm.
 
-* link:comfy3d-pt22/README.adoc[`comfy3d-pt22`]
-
-** Dedicated for
-https://github.com/MrForExample/ComfyUI-3D-Pack[ComfyUI-3D-Pack]
-** Running a classic version of Comfy3D based on PyTorch 2.2
-
-* link:comfy3d-pt23/README.adoc[`comfy3d-pt23`]
-
-** Dedicated for
-https://github.com/MrForExample/ComfyUI-3D-Pack[ComfyUI-3D-Pack]
-** Running a newer version of Comfy3D based on PyTorch 2.3
-
 * link:nightly/README.adoc[`nightly`]
 
 ** Using preview version of PyTorch.
 
+* Images dedicated for https://github.com/MrForExample/ComfyUI-3D-Pack[ComfyUI-3D-Pack]:
+
+** link:comfy3d-pt22/README.adoc[`comfy3d-pt22`]
+Running the
+https://github.com/MrForExample/ComfyUI-3D-Pack/tree/3b4e715939376634c68aa4c1c7d4ea4a8665c098[Jun 23, 2024]
+version of Comfy3D based on PyTorch 2.2.
+
+** link:comfy3d-pt23/README.adoc[`comfy3d-pt23`]
+Running the
+https://github.com/MrForExample/ComfyUI-3D-Pack/tree/bdc5e3029ed96d9fa25e651e12fce1553a4422c4[Oct 18, 2024]
+version of Comfy3D based on PyTorch 2.3.
+
+** link:comfy3d-pt25/README.adoc[`comfy3d-pt25`]
+Running the latest version of Comfy3D based on PyTorch 2.5.
 
 ## License
 

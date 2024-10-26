@@ -1,6 +1,8 @@
 # Docker Image for Comfy3D
 
-image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-comfy3d-pt22.yml/badge.svg["GitHub Workflow Status",link="https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-comfy3d-pt22.yml"]
+This `comfy3d-pt22` Docker image is archived and will no longer receive updates.
+
+However, it may be useful if you need to run older version of Comfy3D.
 
 https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=comfy3d-pt22[View on <Docker Hub>]
 
