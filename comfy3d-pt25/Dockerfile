@@ -142,7 +142,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     && pip install \
         --upgrade pip wheel setuptools \
     && pip install \
-        xformers==0.0.28.post2 torch=2.5.0 torchvision torchaudio \
+        xformers==0.0.28.post2 torch==2.5.0 torchvision torchaudio \
         --index-url https://download.pytorch.org/whl/cu124 \
         --extra-index-url https://pypi.org/simple \
     && pip install \
