@@ -39,7 +39,7 @@ image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-cu124-
 
 * 以下命令均使用了一次性容器 (`--rm`) 来保持环境整洁、配置清晰。
 * 不建议 WSL2 用户把文件存放在 NTFS 分区内，跨文件系统互访性能极低，且会权限混乱。
-* 注意命令中的 `doublezonline.cloud` 为 Docker Hub 镜像站点地址。如果站点失效，可替换为备用地址，
+* 注意命令中的 `dockerproxy.cn` 为 Docker Hub 镜像站点地址。如果站点失效，可替换为备用地址，
 https://www.coderjia.cn/archives/dba3f94c-a021-468a-8ac6-e840f85867ea[参考列表]
 。
 
@@ -48,7 +48,7 @@ https://www.coderjia.cn/archives/dba3f94c-a021-468a-8ac6-e840f85867ea[参考列�
 ----
 mkdir -p storage
 
-docker pull doublezonline.cloud/yanwk/comfyui-boot:cu124-cn
+docker pull dockerproxy.cn/yanwk/comfyui-boot:cu124-cn
 
 docker run -it --rm \
   --name comfyui-cn \
@@ -66,7 +66,7 @@ docker run -it --rm \
 ----
 mkdir -p storage
 
-podman pull doublezonline.cloud/yanwk/comfyui-boot:cu124-cn
+podman pull dockerproxy.cn/yanwk/comfyui-boot:cu124-cn
 
 podman run -it --rm \
   --name comfyui-cn \
@@ -88,7 +88,7 @@ podman run -it --rm \
 1. 打开浏览器访问 http://localhost:8188/
 2. 如界面为英文，刷新浏览器，或点击右侧菜单的“Switch Locale”切换语言（可能要点两遍）。
 3. 点击右侧菜单的“加载”按钮，加载
-https://mirror.ghproxy.com/https://raw.githubusercontent.com/comfyanonymous/ComfyUI_examples/master/flux/flux_schnell_checkpoint_example.png[这张图片]
+https://ghp.ci/https://raw.githubusercontent.com/comfyanonymous/ComfyUI_examples/master/flux/flux_schnell_checkpoint_example.png[这张图片]
 （该图内嵌 json，内含 FLUX.1 Schnell FP8 Checkpoint 工作流），再点击右侧菜单的“添加提示词队列”，即可运行工作流。
 
 
@@ -101,7 +101,7 @@ https://mirror.ghproxy.com/https://raw.githubusercontent.com/comfyanonymous/Comf
 ----
 mkdir -p storage
 
-docker pull doublezonline.cloud/yanwk/comfyui-boot:cu124-cn
+docker pull dockerproxy.cn/yanwk/comfyui-boot:cu124-cn
 
 docker run -it --rm \
   --name comfyui-cn \
@@ -118,7 +118,7 @@ docker run -it --rm \
 ----
 mkdir -p storage
 
-podman pull doublezonline.cloud/yanwk/comfyui-boot:cu124-cn
+podman pull dockerproxy.cn/yanwk/comfyui-boot:cu124-cn
 
 podman run -it --rm \
   --name comfyui-cn \
@@ -169,7 +169,7 @@ docker build . -t yanwk/comfyui-boot:cu124-cn -f Dockerfile-cn
 各地网络情况不一，访问镜像站点有快有慢，可按需搜索替换。
 
 * Docker Hub 镜像仓库
-** doublezonline.cloud
+** dockerproxy.cn
 ** https://www.coderjia.cn/archives/dba3f94c-a021-468a-8ac6-e840f85867ea[参考列表]
 ** 替换为 `docker.io` 即为官方源地址
 
@@ -182,7 +182,7 @@ docker build . -t yanwk/comfyui-boot:cu124-cn -f Dockerfile-cn
 ** https://hf-mirror.com
 
 * GitHub
-** https://mirror.ghproxy.com
+** https://ghp.ci
 
 * openSUSE 与 PackMan
 ** https://mirrors.tuna.tsinghua.edu.cn/opensuse/tumbleweed/
