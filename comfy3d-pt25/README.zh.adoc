@@ -17,13 +17,13 @@ https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=comfy3d-pt25[在 <Docker H
 ** GCC C++ (13)
 
 * 关键组件：
-** torch==2.5.0+cu124
-** xformers==0.0.28.post2
+** torch==2.5.1+cu124
+** xformers==0.0.28.post3
 
 用到的 Comfy3D 依赖项（二进制 wheel 文件）在
-https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/tag/v5[这里]
+https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/tag/v5.1[这里]
 ，编译指南在
-https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/tree/v5[这里]
+https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/blob/v5.1/README.adoc[这里]
 。
 
 ## 用法

@@ -17,13 +17,13 @@ https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=comfy3d-pt25[View on <Dock
 ** GCC C++ (13)
 
 * Key Components:
-** torch==2.5.0+cu124
-** xformers==0.0.28.post2
+** torch==2.5.1+cu124
+** xformers==0.0.28.post3
 
 Additionally, compiled wheel files for Comfy3D can be found
-https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/tag/v5[here]
+https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/tag/v5.1[here]
 and instructions for compiling can be found
-https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/tree/v5[here].
+https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/blob/v5.1/README.adoc[here].
 
 ## Usage
 

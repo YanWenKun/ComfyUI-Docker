@@ -142,7 +142,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     && pip install \
         --upgrade pip wheel setuptools \
     && pip install \
-        xformers==0.0.28.post2 torch==2.5.0 torchvision torchaudio \
+        xformers==0.0.28.post3 torch==2.5.1 torchvision torchaudio \
         --index-url https://download.pytorch.org/whl/cu124 \
         --extra-index-url https://pypi.org/simple \
     && pip install \
@@ -150,13 +150,13 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/requirements.txt \
         -r https://raw.githubusercontent.com/MrForExample/ComfyUI-3D-Pack/bdc5e3029ed96d9fa25e651e12fce1553a4422c4/requirements.txt \
     && pip install \
-https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v5/pointnet2_ops-3.0.0-cp312-cp312-linux_x86_64.whl \
-https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v5/simple_knn-0.0.0-cp312-cp312-linux_x86_64.whl \
-https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v5/diff_gaussian_rasterization-0.0.0-cp312-cp312-linux_x86_64.whl \
-https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v5/kiui-0.2.14-py3-none-any.whl \
-https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v5/nvdiffrast-0.3.3-py3-none-any.whl \
-https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v5/pytorch3d-0.7.8-cp312-cp312-linux_x86_64.whl \
-https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v5/torch_scatter-2.1.2-cp312-cp312-linux_x86_64.whl \
+https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v5.1/pointnet2_ops-3.0.0-cp312-cp312-linux_x86_64.whl \
+https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v5.1/simple_knn-0.0.0-cp312-cp312-linux_x86_64.whl \
+https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v5.1/diff_gaussian_rasterization-0.0.0-cp312-cp312-linux_x86_64.whl \
+https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v5.1/kiui-0.2.14-py3-none-any.whl \
+https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v5.1/nvdiffrast-0.3.3-py3-none-any.whl \
+https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v5.1/pytorch3d-0.7.8-cp312-cp312-linux_x86_64.whl \
+https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v5.1/torch_scatter-2.1.2-cp312-cp312-linux_x86_64.whl \
     && pip list
 
 # Bind libs (.so files)
