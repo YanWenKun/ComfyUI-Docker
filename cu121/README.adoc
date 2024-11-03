@@ -2,6 +2,8 @@
 
 image::../docs/chart-concept.svg["Concept Design"]
 
+*link:README.zh.adoc[中文说明]*
+
 image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-cu121.yml/badge.svg["GitHub Workflow Status",link="https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-cu121.yml"]
 
 https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=cu121[View on <Docker Hub>]
@@ -42,14 +44,14 @@ docker run -it \
   -p 8188:8188 \
   -v "$(pwd)"/storage:/home/runner \
   -e CLI_ARGS="" \
-  yanwk/comfyui-boot:latest
+  yanwk/comfyui-boot:cu121
 ----
 
 [source,sh]
 ----
 # Update image (only when Python components are outdated)
 docker rm comfyui
-docker pull yanwk/comfyui-boot:latest
+docker pull yanwk/comfyui-boot:cu121
 # Then re-run above 'docker run' again
 ----
 
@@ -115,7 +117,7 @@ https://github.com/comfyanonymous/ComfyUI/blob/master/comfy/cli_args.py[ComfyUI]
 
 ## Add some custom nodes
 
-.Install a bunch of custom nodes that may save your time
+.(Click to expand) Install a bunch of custom nodes that may save your time
 [%collapsible]
 ====
 Note that most dependencies are bundled in the image, you don't need to manually install them.
@@ -207,7 +209,7 @@ Also, if you need to setup proxy, this script will start before `pre-start` and 
 // The straightforward way. By adding `sudo` you go from rootless to rootful. And everything else would be the same as using Docker.
 
 // Note that sudo Podman will download images to root space. If you already downloaded the image in current user, you can local-copy it: +
-// `sudo podman image scp username@localhost::docker.io/yanwk/comfyui-boot:latest`
+// `sudo podman image scp username@localhost::docker.io/yanwk/comfyui-boot:cu121`
 
 // [source,sh]
 // ----
@@ -244,7 +246,7 @@ Also, if you need to setup proxy, this script will start before `pre-start` and 
 //   --user root \
 //   --workdir /root \
 //   -e CLI_ARGS="" \
-//   docker.io/yanwk/comfyui-boot:latest \
+//   docker.io/yanwk/comfyui-boot:cu121 \
 //   /bin/bash /home/scripts/root-wrapper.sh
 // ----
 // ====
@@ -259,7 +261,7 @@ Also, if you need to setup proxy, this script will start before `pre-start` and 
 .Build the image, print all logs to STDOUT
 [source,sh]
 ----
-docker build . --progress=plain -f Dockerfile -t yanwk/comfyui-boot:latest
+docker build . --progress=plain -f Dockerfile -t yanwk/comfyui-boot:cu121
 ----
 
 .Run a one-time container
@@ -269,7 +271,7 @@ docker run -it --rm \
   --gpus all -p 8188:8188 \
   --volume "$(pwd)"/storage:/home/runner \
   --env CLI_ARGS="" \
-  yanwk/comfyui-boot:latest
+  yanwk/comfyui-boot:cu121
 ----
 
 .Run into a root bash
@@ -280,7 +282,7 @@ docker run -it --rm \
   --volume "$(pwd)"/storage:/home/runner \
   --env CLI_ARGS="" \
   --user root \
-  yanwk/comfyui-boot:latest /bin/bash
+  yanwk/comfyui-boot:cu121 /bin/bash
 ----
 
 .Clean up cache files

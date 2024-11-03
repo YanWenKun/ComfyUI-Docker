@@ -47,14 +47,14 @@ docker run -it \
   -p 8188:8188 \
   -v "$(pwd)"/storage:/home/runner \
   -e CLI_ARGS="" \
-  yanwk/comfyui-boot:latest
+  yanwk/comfyui-boot:cu121
 ----
 
 [source,sh]
 ----
 # 更新镜像（仅在 Python 组件版本过期时需要）
 docker rm comfyui
-docker pull yanwk/comfyui-boot:latest
+docker pull yanwk/comfyui-boot:cu121
 # 接下来再运行一遍上述 'docker run' 即可
 ----
 
@@ -129,7 +129,7 @@ https://github.com/comfyanonymous/ComfyUI/blob/master/comfy/cli_args.py[ComfyUI]
 ./storage/scripts/set-proxy.sh
 ----
 
-.参考脚本内容：
+.（点击展开）参考脚本内容：
 [%collapsible]
 ====
 提示：在容器内，不能直接通过 127.0.0.1 访问宿主机，需要走（虚拟）局域网，而容器平台一般都贴心绑定好了宿主机的 IP 地址-主机名：
@@ -160,7 +160,7 @@ echo "[INFO] 代理设置为 $HTTP_PROXY"
 
 ## 一些自定义节点
 
-.以下命令会安装一些常用节点，也许能帮你节省点时间
+.（点击展开）以下命令会安装一些常用节点，也许能帮你节省点时间
 [%collapsible]
 ====
 镜像里已经安装好了绝大部分依赖项，不需要手动安装。
@@ -241,7 +241,7 @@ $gcs https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git
 // 简单直接的方式，用 `sudo` 来运行 Podman 就是 rootful 了，使用体验基本和 Docker 一样，就是记得后续操作也要用 "sudo"。
 
 // 此外镜像文件也是下载到 root 用户名下。如果已经用当前 Linux 用户下载了镜像，可以本地复制： +
-// `sudo podman image scp username@localhost::docker.io/yanwk/comfyui-boot:latest`
+// `sudo podman image scp username@localhost::docker.io/yanwk/comfyui-boot:cu121`
 
 // [source,sh]
 // ----
@@ -278,7 +278,7 @@ $gcs https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git
 //   --user root \
 //   --workdir /root \
 //   -e CLI_ARGS="" \
-//   docker.io/yanwk/comfyui-boot:latest \
+//   docker.io/yanwk/comfyui-boot:cu121 \
 //   /bin/bash /home/scripts/root-wrapper.sh
 // ----
 // ====
@@ -293,7 +293,7 @@ $gcs https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git
 .构建镜像，打印所有日志（不折叠）
 [source,sh]
 ----
-docker build . --progress=plain -f Dockerfile -t yanwk/comfyui-boot:latest
+docker build . --progress=plain -f Dockerfile -t yanwk/comfyui-boot:cu121
 ----
 
 .运行一个一次性容器
@@ -303,7 +303,7 @@ docker run -it --rm \
   --gpus all -p 8188:8188 \
   --volume "$(pwd)"/storage:/home/runner \
   --env CLI_ARGS="" \
-  yanwk/comfyui-boot:latest
+  yanwk/comfyui-boot:cu121
 ----
 
 .用 root 身份运行 bash
@@ -314,7 +314,7 @@ docker run -it --rm \
   --volume "$(pwd)"/storage:/home/runner \
   --env CLI_ARGS="" \
   --user root \
-  yanwk/comfyui-boot:latest /bin/bash
+  yanwk/comfyui-boot:cu121 /bin/bash
 ----
 
 .清理缓存文件
