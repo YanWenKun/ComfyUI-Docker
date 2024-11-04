@@ -11,16 +11,16 @@ https://hf-mirror.com/stabilityai/sd-vae-ft-mse-original/resolve/main/vae-ft-mse
   out=vae-ft-mse-840000-ema-pruned.safetensors
 
 # TAESD（用于高质量预览）
-https://mirror.ghproxy.com/https://raw.githubusercontent.com/madebyollin/taesd/main/taesd_decoder.pth
+https://ghp.ci/https://raw.githubusercontent.com/madebyollin/taesd/main/taesd_decoder.pth
   dir=vae_approx
   out=taesd_decoder.pth
-https://mirror.ghproxy.com/https://raw.githubusercontent.com/madebyollin/taesd/main/taesdxl_decoder.pth
+https://ghp.ci/https://raw.githubusercontent.com/madebyollin/taesd/main/taesdxl_decoder.pth
   dir=vae_approx
   out=taesdxl_decoder.pth
-https://mirror.ghproxy.com/https://raw.githubusercontent.com/madebyollin/taesd/main/taesd3_decoder.pth
+https://ghp.ci/https://raw.githubusercontent.com/madebyollin/taesd/main/taesd3_decoder.pth
   dir=vae_approx
   out=taesd3_decoder.pth
-https://mirror.ghproxy.com/https://raw.githubusercontent.com/madebyollin/taesd/main/taef1_decoder.pth
+https://ghp.ci/https://raw.githubusercontent.com/madebyollin/taesd/main/taef1_decoder.pth
   dir=vae_approx
   out=taef1_decoder.pth
 
@@ -50,7 +50,7 @@ https://hf-mirror.com/lenML/DeepNegative/resolve/main/NG_DeepNegative_V1_75T.pt
 https://hf-mirror.com/dustysys/ddetailer/resolve/main/mmdet/bbox/mmdet_anime-face_yolov3.pth
   dir=mmdets/bbox
   out=mmdet_anime-face_yolov3.pth
-https://mirror.ghproxy.com/https://raw.githubusercontent.com/Bing-su/dddetailer/master/config/mmdet_anime-face_yolov3.py
+https://ghp.ci/https://raw.githubusercontent.com/Bing-su/dddetailer/master/config/mmdet_anime-face_yolov3.py
   dir=mmdets/bbox
   out=mmdet_anime-face_yolov3.py
 https://hf-mirror.com/datasets/Gourieff/ReActor/resolve/main/models/sams/sam_vit_b_01ec64.pth
