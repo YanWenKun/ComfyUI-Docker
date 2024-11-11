@@ -2,7 +2,7 @@
 # Dockerfile that builds 'yanwk/comfyui-boot:comfy3d-pt25'
 # An environment for running ComfyUI with ComfyUI-3D-Pack.
 # Using PyTorch 2.5, CUDA 12.4, Python 3.12
-# Using Comfy3D Version: https://github.com/MrForExample/ComfyUI-3D-Pack/tree/bdc5e3029ed96d9fa25e651e12fce1553a4422c4
+# Using Comfy3D Version: https://github.com/MrForExample/ComfyUI-3D-Pack/tree/c1718943d8e13844332c346285685681fdba3070
 ################################################################################
 
 FROM docker.io/opensuse/tumbleweed:latest
@@ -148,7 +148,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     && pip install \
         -r https://raw.githubusercontent.com/comfyanonymous/ComfyUI/master/requirements.txt \
         -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/requirements.txt \
-        -r https://raw.githubusercontent.com/MrForExample/ComfyUI-3D-Pack/bdc5e3029ed96d9fa25e651e12fce1553a4422c4/requirements.txt \
+        -r https://raw.githubusercontent.com/MrForExample/ComfyUI-3D-Pack/c1718943d8e13844332c346285685681fdba3070/requirements.txt \
     && pip install \
 https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v5.1/pointnet2_ops-3.0.0-cp312-cp312-linux_x86_64.whl \
 https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v5.1/simple_knn-0.0.0-cp312-cp312-linux_x86_64.whl \
