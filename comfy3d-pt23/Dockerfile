@@ -36,7 +36,7 @@ cuda-nvcc-12-1 \
 cuda-nvprof-12-1 \
 cuda-nvtx-12-1 \
 libcublas-12-1 \
-libnpp-12-1 \
+libnpp-12-1
 
 RUN --mount=type=cache,target=/var/cache/zypp \
     zypper --gpg-auto-import-keys \
