@@ -50,7 +50,11 @@ libnpp-devel-12-1
 RUN --mount=type=cache,target=/var/cache/zypp \
     zypper --gpg-auto-import-keys \
         install --no-confirm --no-recommends --auto-agree-with-licenses \
-cuda-libraries-12-1 \
+cuda-libraries-12-1
+
+RUN --mount=type=cache,target=/var/cache/zypp \
+    zypper --gpg-auto-import-keys \
+        install --no-confirm --no-recommends --auto-agree-with-licenses \
 cuda-libraries-devel-12-1
 
 ENV PATH="${PATH}:/usr/local/cuda-12.1/bin" \
@@ -96,6 +100,12 @@ python311-scikit-learn \
 python311-scipy \
 python311-svglib \
 python311-tqdm \
+    && rm /usr/lib64/python3.11/EXTERNALLY-MANAGED \
+    && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11 100
+
+RUN --mount=type=cache,target=/var/cache/zypp \
+    zypper --gpg-auto-import-keys \
+        install --no-confirm --auto-agree-with-licenses \
 Mesa-libGL1 \
 Mesa-libEGL-devel \
 libgthread-2_0-0 \
@@ -113,9 +123,7 @@ x264 \
 x265 \
 google-noto-sans-fonts \
 google-noto-sans-cjk-fonts \
-google-noto-coloremoji-fonts \
-    && rm /usr/lib64/python3.11/EXTERNALLY-MANAGED \
-    && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11 100
+google-noto-coloremoji-fonts
 
 ################################################################################
 # GCC 12 
@@ -146,11 +154,49 @@ cpp12 \
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip list \
     && pip install \
-        --upgrade pip wheel setuptools \
-    && pip install \
-        xformers torchvision torchaudio \
-        --index-url https://download.pytorch.org/whl/cu121 \
-        --extra-index-url https://pypi.org/simple
+        --upgrade pip wheel setuptools
+
+ARG PIP_INDEX_URL="https://download.pytorch.org/whl/cu121"
+ARG PIP_EXTRA_INDEX_URL="https://pypi.org/simple"
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        --dry-run xformers torchvision torchaudio
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        --no-deps xformers torchvision torchaudio
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        --no-deps xformers torch torchvision torchaudio
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        --no-deps xformers torch nvidia-cudnn-cu12
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        --no-deps xformers torch nvidia-cublas-cu12
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        --no-deps xformers torch triton
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        --no-deps xformers torch nvidia-cusparse-cu12
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        --no-deps xformers torch nvidia-nccl-cu12
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        xformers torchvision torchaudio
+
+ARG PIP_INDEX_URL=
+ARG PIP_EXTRA_INDEX_URL=
 
 # Bind libs (.so files)
 # Even we have CUDA installed by Zypper, we still need to install CUDA libs for Python in order to run PyTorch.
@@ -176,10 +222,14 @@ COPY builder-scripts/.  /builder-scripts/
 # Deps for ComfyUI & custom nodes
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        -r /builder-scripts/pak3.txt \
-    && pip install \
-        -r /builder-scripts/pak5.txt \
-    && pip install \
+        -r /builder-scripts/pak3.txt
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        -r /builder-scripts/pak5.txt
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
         -r /builder-scripts/pak7.txt \
     && pip list
 

@@ -35,23 +35,48 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # Install xFormers (stable version, will specify PyTorch version),
 # and Torchvision + Torchaudio (will downgrade to match xFormers' PyTorch version).
 # Break down the steps, so we have more but smaller image layers.
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install \
-        --dry-run xformers torchvision torchaudio \
-        --index-url https://download.pytorch.org/whl/cu121 \
-        --extra-index-url https://pypi.org/simple
+
+ARG PIP_INDEX_URL="https://download.pytorch.org/whl/cu121"
+ARG PIP_EXTRA_INDEX_URL="https://pypi.org/simple"
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        --no-deps xformers torch torchvision torchaudio \
-        --index-url https://download.pytorch.org/whl/cu121 \
-        --extra-index-url https://pypi.org/simple
+        --dry-run xformers torchvision torchaudio
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        xformers torchvision torchaudio \
-        --index-url https://download.pytorch.org/whl/cu121 \
-        --extra-index-url https://pypi.org/simple
+        --no-deps xformers torchvision torchaudio
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        --no-deps xformers torch torchvision torchaudio
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        --no-deps xformers torch nvidia-cudnn-cu12
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        --no-deps xformers torch nvidia-cublas-cu12
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        --no-deps xformers torch triton
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        --no-deps xformers torch nvidia-cusparse-cu12
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        --no-deps xformers torch nvidia-nccl-cu12
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        xformers torchvision torchaudio
+
+ARG PIP_INDEX_URL=
+ARG PIP_EXTRA_INDEX_URL=
 
 # Dependencies for frequently-used
 # (Do this firstly so PIP won't be solving too many deps at one time)
