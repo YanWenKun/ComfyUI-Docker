@@ -29,26 +29,26 @@ RUN --mount=type=cache,target=/var/cache/zypp \
     && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11 100
 
 RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install --break-system-packages \
+    pip install \
         --upgrade pip wheel setuptools
 
 # Install xFormers (stable version, will specify PyTorch version),
 # and Torchvision + Torchaudio (will downgrade to match xFormers' PyTorch version).
 # Break down the steps, so we have more but smaller image layers.
 RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install --break-system-packages \
+    pip install \
         --dry-run xformers torchvision torchaudio \
         --index-url https://download.pytorch.org/whl/cu121 \
         --extra-index-url https://pypi.org/simple
 
 RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install --break-system-packages \
+    pip install \
         --no-deps xformers torch torchvision torchaudio \
         --index-url https://download.pytorch.org/whl/cu121 \
         --extra-index-url https://pypi.org/simple
 
 RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install --break-system-packages \
+    pip install \
         xformers torchvision torchaudio \
         --index-url https://download.pytorch.org/whl/cu121 \
         --extra-index-url https://pypi.org/simple
@@ -56,7 +56,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # Dependencies for frequently-used
 # (Do this firstly so PIP won't be solving too many deps at one time)
 RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install --break-system-packages \
+    pip install \
         -r https://raw.githubusercontent.com/comfyanonymous/ComfyUI/master/requirements.txt \
         -r https://raw.githubusercontent.com/crystian/ComfyUI-Crystools/main/requirements.txt \
         -r https://raw.githubusercontent.com/cubiq/ComfyUI_essentials/main/requirements.txt \
@@ -73,7 +73,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # 'torchdiffeq' for DepthFM
 # 'fairscale' for APISR
 RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install --break-system-packages \
+    pip install \
         -r https://raw.githubusercontent.com/cubiq/ComfyUI_FaceAnalysis/main/requirements.txt \
         -r https://raw.githubusercontent.com/cubiq/ComfyUI_InstantID/main/requirements.txt \
         -r https://raw.githubusercontent.com/Fannovel16/ComfyUI-Frame-Interpolation/main/requirements-no-cupy.txt \
