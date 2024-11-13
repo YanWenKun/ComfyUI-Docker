@@ -8,6 +8,7 @@ cupy-cuda12x
 diffusers
 fairscale
 ftfy
+huggingface-hub[hf-transfer]
 imageio
 joblib
 kornia

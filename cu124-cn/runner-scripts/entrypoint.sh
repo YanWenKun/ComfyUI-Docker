@@ -46,6 +46,9 @@ export PIP_USER=true
 export PATH="${PATH}:/root/.local/bin"
 # 不再显示警报 [WARNING: Running pip as the 'root' user]
 export PIP_ROOT_USER_ACTION=ignore
+# 启用 HuggingFace Hub 高速传输
+# https://huggingface.co/docs/huggingface_hub/hf_transfer
+export HF_HUB_ENABLE_HF_TRANSFER=1
 
 cd /root
 

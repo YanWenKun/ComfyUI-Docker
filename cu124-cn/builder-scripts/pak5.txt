@@ -14,7 +14,6 @@ filelock
 ftfy
 fvcore
 GitPython
-huggingface-hub
 imageio
 imageio-ffmpeg
 importlib-metadata
