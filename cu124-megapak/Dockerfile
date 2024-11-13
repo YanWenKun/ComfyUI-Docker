@@ -96,6 +96,12 @@ python312-scikit-learn \
 python312-scipy \
 python312-svglib \
 python312-tqdm \
+    && rm /usr/lib64/python3.12/EXTERNALLY-MANAGED \
+    && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 100
+
+RUN --mount=type=cache,target=/var/cache/zypp \
+    zypper --gpg-auto-import-keys \
+        install --no-confirm --auto-agree-with-licenses \
 Mesa-libGL1 \
 Mesa-libEGL-devel \
 libgthread-2_0-0 \
@@ -113,9 +119,7 @@ x264 \
 x265 \
 google-noto-sans-fonts \
 google-noto-sans-cjk-fonts \
-google-noto-coloremoji-fonts \
-    && rm /usr/lib64/python3.12/EXTERNALLY-MANAGED \
-    && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 100
+google-noto-coloremoji-fonts
 
 ################################################################################
 # GCC 13 
@@ -188,10 +192,14 @@ COPY builder-scripts/.  /builder-scripts/
 # Deps for ComfyUI & custom nodes
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        -r /builder-scripts/pak3.txt \
-    && pip install \
-        -r /builder-scripts/pak5.txt \
-    && pip install \
+        -r /builder-scripts/pak3.txt
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        -r /builder-scripts/pak5.txt
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
         -r /builder-scripts/pak7.txt \
     && pip list
 

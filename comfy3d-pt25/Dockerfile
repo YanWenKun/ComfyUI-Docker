@@ -50,7 +50,11 @@ libnpp-devel-12-4
 RUN --mount=type=cache,target=/var/cache/zypp \
     zypper --gpg-auto-import-keys \
         install --no-confirm --no-recommends --auto-agree-with-licenses \
-cuda-libraries-12-4 \
+cuda-libraries-12-4
+
+RUN --mount=type=cache,target=/var/cache/zypp \
+    zypper --gpg-auto-import-keys \
+        install --no-confirm --no-recommends --auto-agree-with-licenses \
 cuda-libraries-devel-12-4
 
 ENV PATH="${PATH}:/usr/local/cuda-12.4/bin" \
@@ -96,6 +100,12 @@ python312-scikit-learn \
 python312-scipy \
 python312-svglib \
 python312-tqdm \
+    && rm /usr/lib64/python3.12/EXTERNALLY-MANAGED \
+    && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 100
+
+RUN --mount=type=cache,target=/var/cache/zypp \
+    zypper --gpg-auto-import-keys \
+        install --no-confirm --auto-agree-with-licenses \
 meshlab \
 Mesa-libGL1 \
 Mesa-libEGL-devel \
@@ -116,8 +126,6 @@ x265 \
 google-noto-sans-fonts \
 google-noto-sans-cjk-fonts \
 google-noto-coloremoji-fonts \
-    && rm /usr/lib64/python3.12/EXTERNALLY-MANAGED \
-    && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 100 \
     && zypper remove --no-confirm libQt5Core5 # Temp fix for PyMeshLab
 
 ################################################################################
@@ -151,47 +159,27 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     && pip install \
         --upgrade pip wheel setuptools
 
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install \
-        --dry-run xformers==0.0.28.post3 torch==2.5.1 torchvision torchaudio \
-        --index-url https://download.pytorch.org/whl/cu124 \
-        --extra-index-url https://pypi.org/simple
+ARG PIP_INDEX_URL="https://download.pytorch.org/whl/cu124"
+ARG PIP_EXTRA_INDEX_URL="https://pypi.org/simple"
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        --no-deps torch==2.5.1 \
-        --index-url https://download.pytorch.org/whl/cu124
+        --dry-run xformers==0.0.28.post3 torch==2.5.1 torchvision torchaudio
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        --no-deps torch==2.5.1 nvidia-cudnn-cu12 \
-        --index-url https://download.pytorch.org/whl/cu124
+        --no-deps torch==2.5.1
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        --no-deps torch==2.5.1 nvidia-cublas-cu12 \
-        --index-url https://download.pytorch.org/whl/cu124
+        --no-deps xformers==0.0.28.post3 torch==2.5.1
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        --no-deps torch==2.5.1 triton \
-        --index-url https://download.pytorch.org/whl/cu124
+        xformers==0.0.28.post3 torch==2.5.1 torchvision torchaudio
 
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install \
-        --no-deps torch==2.5.1 nvidia-cusparse-cu12 \
-        --index-url https://download.pytorch.org/whl/cu124
-
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install \
-        --no-deps torch==2.5.1 nvidia-nccl-cu12 \
-        --index-url https://download.pytorch.org/whl/cu124
-
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install \
-        xformers==0.0.28.post3 torch==2.5.1 torchvision torchaudio \
-        --index-url https://download.pytorch.org/whl/cu124 \
-        --extra-index-url https://pypi.org/simple
+ARG PIP_INDEX_URL=
+ARG PIP_EXTRA_INDEX_URL=
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
