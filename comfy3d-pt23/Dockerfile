@@ -14,6 +14,7 @@ RUN set -eu
 ################################################################################
 # NVIDIA CUDA devel
 # Ref: https://gitlab.com/nvidia/container-images/cuda/
+# Break down the steps, so we have more but smaller image layers.
 
 RUN --mount=type=cache,target=/var/cache/zypp \
     printf "\
@@ -30,19 +31,27 @@ cuda-cccl-12-1 \
 cuda-command-line-tools-12-1 \
 cuda-compat-12-1 \
 cuda-cudart-12-1 \
-cuda-cudart-devel-12-1 \
-cuda-libraries-12-1 \
-cuda-libraries-devel-12-1 \
 cuda-minimal-build-12-1 \
 cuda-nvcc-12-1 \
-cuda-nvml-devel-12-1 \
 cuda-nvprof-12-1 \
-cuda-nvrtc-devel-12-1 \
 cuda-nvtx-12-1 \
 libcublas-12-1 \
-libcublas-devel-12-1 \
 libnpp-12-1 \
+
+RUN --mount=type=cache,target=/var/cache/zypp \
+    zypper --gpg-auto-import-keys \
+        install --no-confirm --no-recommends --auto-agree-with-licenses \
+cuda-cudart-devel-12-1 \
+cuda-nvml-devel-12-1 \
+cuda-nvrtc-devel-12-1 \
+libcublas-devel-12-1 \
 libnpp-devel-12-1
+
+RUN --mount=type=cache,target=/var/cache/zypp \
+    zypper --gpg-auto-import-keys \
+        install --no-confirm --no-recommends --auto-agree-with-licenses \
+cuda-libraries-12-1 \
+cuda-libraries-devel-12-1
 
 ENV PATH="${PATH}:/usr/local/cuda-12.1/bin" \
     LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/local/cuda-12.1/lib64" \
