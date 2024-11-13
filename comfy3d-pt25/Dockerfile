@@ -164,6 +164,31 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
+        --no-deps torch==2.5.1 nvidia-cudnn-cu12 \
+        --index-url https://download.pytorch.org/whl/cu124
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        --no-deps torch==2.5.1 nvidia-cublas-cu12 \
+        --index-url https://download.pytorch.org/whl/cu124
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        --no-deps torch==2.5.1 triton \
+        --index-url https://download.pytorch.org/whl/cu124
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        --no-deps torch==2.5.1 nvidia-cusparse-cu12 \
+        --index-url https://download.pytorch.org/whl/cu124
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        --no-deps torch==2.5.1 nvidia-nccl-cu12 \
+        --index-url https://download.pytorch.org/whl/cu124
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
         xformers==0.0.28.post3 torch==2.5.1 torchvision torchaudio \
         --index-url https://download.pytorch.org/whl/cu124 \
         --extra-index-url https://pypi.org/simple
