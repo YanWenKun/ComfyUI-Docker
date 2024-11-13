@@ -138,9 +138,7 @@ ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\
 
 COPY builder-scripts/.  /builder-scripts/
 
-# 1. 安装 ComfyUI 及扩展的依赖项
-# 2. 处理 ONNX Runtime 报错 "missing CUDA provider"，并添加 CUDA 12 支持，参考： https://onnxruntime.ai/docs/install/
-# 3. 接上，处理 MediaPipe's 的依赖项错误（需要 protobuf<4）
+# 安装 ComfyUI 及扩展的依赖项
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         -r /builder-scripts/pak3.txt \
@@ -148,14 +146,6 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         -r /builder-scripts/pak5.txt \
     && pip install \
         -r /builder-scripts/pak7.txt \
-    && pip uninstall --break-system-packages --yes \
-        onnxruntime-gpu \
-    && pip --no-cache-dir install --break-system-packages \
-        onnxruntime-gpu \
-        --index-url https://aiinfra.pkgs.visualstudio.com/PublicPackages/_packaging/onnxruntime-cuda-12/pypi/simple/ \
-        --extra-index-url https://pypi.org/simple \
-    && pip install \
-        mediapipe \
     && pip list
 
 ################################################################################

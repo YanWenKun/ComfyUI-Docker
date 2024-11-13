@@ -146,8 +146,7 @@ docker pull docker.m.daocloud.io/opensuse/tumbleweed:latest
 docker build . -t yanwk/comfyui-boot:cu124-cn -f Dockerfile-cn
 ----
 
-`Dockerfile-cn` 中绝大部分文件从国内源下载，少部分来自 download.pytorch.org 
-与 aiinfra.pkgs.visualstudio.com ，目前这两个域名下载速度基本正常。
+`Dockerfile-cn` 中绝大部分文件从国内源下载， PyTorch 部分来自 download.pytorch.org ，目前该域名下载速度基本正常。
 
 构建后，运行方法同上，略过 pull 步骤即可。
 

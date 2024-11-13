@@ -176,9 +176,7 @@ ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\
 
 COPY builder-scripts/.  /builder-scripts/
 
-# 1. Deps for ComfyUI & custom nodes
-# 2. Fix ONNX Runtime "missing CUDA provider". Also add support for CUDA 12. Ref: https://onnxruntime.ai/docs/install/
-# 3. Fix MediaPipe's broken dep (protobuf<4).
+# Deps for ComfyUI & custom nodes
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         -r /builder-scripts/pak3.txt \
@@ -186,14 +184,6 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         -r /builder-scripts/pak5.txt \
     && pip install \
         -r /builder-scripts/pak7.txt \
-    && pip uninstall --break-system-packages --yes \
-        onnxruntime-gpu \
-    && pip --no-cache-dir install --break-system-packages \
-        onnxruntime-gpu \
-        --index-url https://aiinfra.pkgs.visualstudio.com/PublicPackages/_packaging/onnxruntime-cuda-12/pypi/simple/ \
-        --extra-index-url https://pypi.org/simple \
-    && pip install \
-        mediapipe \
     && pip list
 
 ################################################################################

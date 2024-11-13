@@ -74,19 +74,6 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         compel lark torchdiffeq fairscale \
         python-ffmpeg
 
-# 1. Fix ONNX Runtime "missing CUDA provider". Also add support for CUDA 12.1.
-#    Ref: https://onnxruntime.ai/docs/install/
-# 2. Fix MediaPipe's broken dep (protobuf<4).
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip uninstall --break-system-packages --yes \
-        onnxruntime-gpu \
-    && pip --no-cache-dir install --break-system-packages \
-        onnxruntime-gpu \
-        --index-url https://aiinfra.pkgs.visualstudio.com/PublicPackages/_packaging/onnxruntime-cuda-12/pypi/simple/ \
-        --extra-index-url https://pypi.org/simple \
-    && pip install --break-system-packages \
-        mediapipe
-
 # Fix for libs (.so files)
 ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\
 :/usr/local/lib64/python3.11/site-packages/torch/lib\
