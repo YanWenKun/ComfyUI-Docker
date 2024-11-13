@@ -17,7 +17,6 @@ matplotlib
 onnx
 onnxruntime-gpu
 opencv-contrib-python-headless
-opencv-python-headless
 pandas
 pilgram
 pillow
