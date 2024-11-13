@@ -45,31 +45,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        --no-deps xformers torchvision torchaudio
-
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install \
         --no-deps xformers torch torchvision torchaudio
-
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install \
-        --no-deps xformers torch nvidia-cudnn-cu12
-
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install \
-        --no-deps xformers torch nvidia-cublas-cu12
-
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install \
-        --no-deps xformers torch triton
-
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install \
-        --no-deps xformers torch nvidia-cusparse-cu12
-
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install \
-        --no-deps xformers torch nvidia-nccl-cu12
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \

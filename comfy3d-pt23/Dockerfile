@@ -168,15 +168,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        --no-deps xformers==0.0.26.post1 torch==2.3.0 torchvision torchaudio
-
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install \
-        --no-deps torch==2.3.0 nvidia-cudnn-cu12
-
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install \
-        --no-deps torch==2.3.0 nvidia-cublas-cu12
+        --no-deps xformers==0.0.26.post1 torch==2.3.0
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
