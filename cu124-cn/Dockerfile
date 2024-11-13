@@ -98,11 +98,24 @@ cpp13 \
 # Python 包
 
 # PyTorch, xFormers
+# 拆分安装步骤，使生成的镜像文件分为更多更小的层，减少单层下载大小。
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip list \
     && pip install \
         --upgrade pip wheel setuptools \
     && pip install \
+        --dry-run xformers torchvision torchaudio \
+        --index-url https://download.pytorch.org/whl/cu124 \
+        --extra-index-url https://pypi.org/simple
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        --no-deps xformers torchvision torchaudio \
+        --index-url https://download.pytorch.org/whl/cu124 \
+        --extra-index-url https://pypi.org/simple
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
         xformers torchvision torchaudio \
         --index-url https://download.pytorch.org/whl/cu124 \
         --extra-index-url https://pypi.org/simple

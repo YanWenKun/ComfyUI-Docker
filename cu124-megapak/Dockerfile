@@ -134,11 +134,24 @@ cpp13 \
 # Python Packages
 
 # PyTorch, xFormers
+# Break down the steps, so we have more but smaller image layers.
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip list \
     && pip install \
         --upgrade pip wheel setuptools \
     && pip install \
+        --dry-run xformers torchvision torchaudio \
+        --index-url https://download.pytorch.org/whl/cu124 \
+        --extra-index-url https://pypi.org/simple
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        --no-deps xformers torchvision torchaudio \
+        --index-url https://download.pytorch.org/whl/cu124 \
+        --extra-index-url https://pypi.org/simple
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
         xformers torchvision torchaudio \
         --index-url https://download.pytorch.org/whl/cu124 \
         --extra-index-url https://pypi.org/simple
