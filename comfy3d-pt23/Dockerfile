@@ -149,10 +149,24 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     && pip install \
         --upgrade pip wheel setuptools \
     && pip install \
-        xformers==0.0.26.post1 torchvision torchaudio \
+        --dry-run xformers==0.0.26.post1 torch==2.3.0 torchvision torchaudio \
         --index-url https://download.pytorch.org/whl/cu121 \
-        --extra-index-url https://pypi.org/simple \
-    && pip install \
+        --extra-index-url https://pypi.org/simple
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        --no-deps xformers==0.0.26.post1 torch==2.3.0 torchvision torchaudio \
+        --index-url https://download.pytorch.org/whl/cu121 \
+        --extra-index-url https://pypi.org/simple
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        xformers==0.0.26.post1 torch==2.3.0 torchvision torchaudio \
+        --index-url https://download.pytorch.org/whl/cu121 \
+        --extra-index-url https://pypi.org/simple
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
         -r https://raw.githubusercontent.com/comfyanonymous/ComfyUI/master/requirements.txt \
         -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/requirements.txt \
         -r https://raw.githubusercontent.com/MrForExample/ComfyUI-3D-Pack/bdc5e3029ed96d9fa25e651e12fce1553a4422c4/requirements.txt \

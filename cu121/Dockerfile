@@ -34,6 +34,19 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 
 # Install xFormers (stable version, will specify PyTorch version),
 # and Torchvision + Torchaudio (will downgrade to match xFormers' PyTorch version).
+# Break down the steps, so we have more but smaller image layers.
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install --break-system-packages \
+        --dry-run xformers torchvision torchaudio \
+        --index-url https://download.pytorch.org/whl/cu121 \
+        --extra-index-url https://pypi.org/simple
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install --break-system-packages \
+        --no-deps xformers torch torchvision torchaudio \
+        --index-url https://download.pytorch.org/whl/cu121 \
+        --extra-index-url https://pypi.org/simple
+
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --break-system-packages \
         xformers torchvision torchaudio \
