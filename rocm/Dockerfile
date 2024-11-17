@@ -94,6 +94,7 @@ RUN df -h \
 
 COPY runner-scripts/.  /runner-scripts/
 
+RUN groupadd -r video
 USER root
 VOLUME /root
 WORKDIR /root
