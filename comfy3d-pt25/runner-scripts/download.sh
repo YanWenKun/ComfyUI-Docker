@@ -3,7 +3,7 @@
 set -euo pipefail
 
 echo "########################################"
-echo "[INFO] Downloading ComfyUI & Manager..."
+echo "[INFO] Downloading ComfyUI..."
 echo "########################################"
 
 cd /root
@@ -12,12 +12,15 @@ git clone https://github.com/comfyanonymous/ComfyUI.git \
     || git -C "ComfyUI" pull --ff-only
 set -e
 
-cd /root/ComfyUI/custom_nodes
-set +e
-git clone --depth=1 --no-tags --recurse-submodules --shallow-submodules \
-    https://github.com/ltdrdata/ComfyUI-Manager.git \
-    || git -C "ComfyUI-Manager" pull --ff-only
-set -e
+# ComfyUI-Manager can do re-install of dependencies, which is not wanted for 3D-Pack.
+# Uncomment the commands below if you still want to have ComfyUI-Manager.
+
+# cd /root/ComfyUI/custom_nodes
+# set +e
+# git clone --depth=1 --no-tags --recurse-submodules --shallow-submodules \
+#     https://github.com/ltdrdata/ComfyUI-Manager.git \
+#     || git -C "ComfyUI-Manager" pull --ff-only
+# set -e
 
 echo "########################################"
 echo "[INFO] Downloading ComfyUI-3D-Pack..."

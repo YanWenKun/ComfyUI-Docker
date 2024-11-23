@@ -21,7 +21,7 @@ function clone_or_pull () {
 
 
 echo "########################################"
-echo "[INFO] Downloading ComfyUI & Manager..."
+echo "[INFO] Downloading ComfyUI..."
 echo "########################################"
 
 # Using stable version (has a release tag)
@@ -31,9 +31,6 @@ git clone https://github.com/comfyanonymous/ComfyUI.git || git -C ComfyUI pull -
 cd /root/ComfyUI
 git reset --hard "$(git tag | grep -e '^v' | sort -V | tail -1)"
 set -e
-
-cd /root/ComfyUI/custom_nodes
-clone_or_pull https://github.com/ltdrdata/ComfyUI-Manager.git
 
 
 echo "########################################"
