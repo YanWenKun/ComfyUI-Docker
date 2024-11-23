@@ -115,6 +115,7 @@ git \
 aria2 \
 fish \
 fd \
+which \
 vim \
 opencv \
 opencv-devel \
