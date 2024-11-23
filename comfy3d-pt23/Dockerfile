@@ -182,7 +182,10 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         -r https://raw.githubusercontent.com/comfyanonymous/ComfyUI/master/requirements.txt \
         -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/requirements.txt \
         -r https://raw.githubusercontent.com/MrForExample/ComfyUI-3D-Pack/bdc5e3029ed96d9fa25e651e12fce1553a4422c4/requirements.txt \
-    && pip install \
+        onnxruntime-gpu
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
 https://data.pyg.org/whl/torch-2.3.0%2Bcu121/torch_scatter-2.1.2%2Bpt23cu121-cp311-cp311-linux_x86_64.whl \
 https://raw.githubusercontent.com/MrForExample/Comfy3D_Pre_Builds/b27af1a28d9f194cea1a137750e35ac698406e60/_Build_Wheels/_Wheels_linux_py311_cu121/diff_gaussian_rasterization-0.0.0-cp311-cp311-linux_x86_64.whl \
 https://raw.githubusercontent.com/MrForExample/Comfy3D_Pre_Builds/b27af1a28d9f194cea1a137750e35ac698406e60/_Build_Wheels/_Wheels_linux_py311_cu121/kiui-0.2.10-py3-none-any.whl \
