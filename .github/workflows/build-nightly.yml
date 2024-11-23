@@ -2,8 +2,8 @@ name: Publish 'nightly' to Docker Hub
 
 on: 
   workflow_dispatch: # Can be manually triggered
-  schedule: # Runs on every Monday and Friday, at 00:00 UTC
-    - cron: '0 0 * * 1,5'
+  schedule: # Runs on every Friday, at 00:00 UTC
+    - cron: '0 0 * * 5'
   push: 
     branches: [ main ]
     paths-ignore:
