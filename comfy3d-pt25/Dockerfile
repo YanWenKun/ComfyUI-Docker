@@ -186,7 +186,10 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         -r https://raw.githubusercontent.com/comfyanonymous/ComfyUI/master/requirements.txt \
         -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/requirements.txt \
         -r https://raw.githubusercontent.com/MrForExample/ComfyUI-3D-Pack/c1718943d8e13844332c346285685681fdba3070/requirements.txt \
-    && pip install \
+        onnxruntime-gpu
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
 https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v5.1/pointnet2_ops-3.0.0-cp312-cp312-linux_x86_64.whl \
 https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v5.1/simple_knn-0.0.0-cp312-cp312-linux_x86_64.whl \
 https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v5.1/diff_gaussian_rasterization-0.0.0-cp312-cp312-linux_x86_64.whl \
