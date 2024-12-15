@@ -8,8 +8,8 @@ https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=comfy3d-pt25[在 <Docker H
 * 默认仅安装 ComfyUI, ComfyUI-Manager, ComfyUI-3D-Pack
 
 * Comfy3D 版本：
-** https://github.com/MrForExample/ComfyUI-3D-Pack/tree/c1718943d8e13844332c346285685681fdba3070[c171894]
-(2024/11/09)
+** https://github.com/MrForExample/ComfyUI-3D-Pack/tree/b015ed3918d6916ff2a2ee230beafe2169a5de51[b015ed3]
+(2024/12/11)
 
 * 开发组件：
 ** CUDA dev kit (12.4)

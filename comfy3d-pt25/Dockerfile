@@ -2,7 +2,8 @@
 # Dockerfile that builds 'yanwk/comfyui-boot:comfy3d-pt25'
 # An environment for running ComfyUI with ComfyUI-3D-Pack.
 # Using PyTorch 2.5, CUDA 12.4, Python 3.12
-# Using Comfy3D Version: https://github.com/MrForExample/ComfyUI-3D-Pack/tree/c1718943d8e13844332c346285685681fdba3070
+# Using Comfy3D Version:
+# https://github.com/MrForExample/ComfyUI-3D-Pack/tree/b015ed3918d6916ff2a2ee230beafe2169a5de51
 ################################################################################
 
 FROM docker.io/opensuse/tumbleweed:latest
@@ -151,8 +152,7 @@ cpp13 \
     && update-alternatives --install /usr/bin/gcov-tool gcov-tool /usr/bin/gcov-tool-13 90 
 
 ################################################################################
-# Python Packages
-# Comfy3D doesn't use ONNX Runtime, so this image skipped it.
+# PyTorch Packages
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip list \
@@ -181,24 +181,6 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 ARG PIP_INDEX_URL=
 ARG PIP_EXTRA_INDEX_URL=
 
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install \
-        -r https://raw.githubusercontent.com/comfyanonymous/ComfyUI/master/requirements.txt \
-        -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/requirements.txt \
-        -r https://raw.githubusercontent.com/MrForExample/ComfyUI-3D-Pack/c1718943d8e13844332c346285685681fdba3070/requirements.txt \
-        onnxruntime-gpu
-
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install \
-https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v5.1/pointnet2_ops-3.0.0-cp312-cp312-linux_x86_64.whl \
-https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v5.1/simple_knn-0.0.0-cp312-cp312-linux_x86_64.whl \
-https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v5.1/diff_gaussian_rasterization-0.0.0-cp312-cp312-linux_x86_64.whl \
-https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v5.1/kiui-0.2.14-py3-none-any.whl \
-https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v5.1/nvdiffrast-0.3.3-py3-none-any.whl \
-https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v5.1/pytorch3d-0.7.8-cp312-cp312-linux_x86_64.whl \
-https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v5.1/torch_scatter-2.1.2-cp312-cp312-linux_x86_64.whl \
-    && pip list
-
 # Bind libs (.so files)
 # Even we have CUDA installed by Zypper, we still need to install CUDA libs for Python in order to run PyTorch.
 # What's more, NVIDIA's openSUSE15 repo didn't provide CuDNN & NCCL, we have to use Python packages anyway.
@@ -216,6 +198,31 @@ ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\
 :/usr/local/lib/python3.12/site-packages/nvidia/nccl/lib\
 :/usr/local/lib/python3.12/site-packages/nvidia/nvjitlink/lib\
 :/usr/local/lib/python3.12/site-packages/nvidia/nvtx/lib"
+
+################################################################################
+# Other Python Packages
+
+COPY builder-scripts/.  /builder-scripts/
+
+# Deps for ComfyUI & custom nodes
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        -r /builder-scripts/pak3.txt
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        -r /builder-scripts/pak5.txt
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        -r /builder-scripts/pak6.txt \
+    && pip install \
+        -r /builder-scripts/pak7.txt \
+    && pip install \
+        -r /builder-scripts/pak8.txt \
+    && pip install \
+        -r /builder-scripts/pak9.txt \
+    && pip list
 
 ################################################################################
 

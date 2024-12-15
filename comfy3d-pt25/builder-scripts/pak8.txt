@@ -1,0 +1,4 @@
+# https://pip.pypa.io/en/stable/reference/requirements-file-format/
+# https://github.com/rusty1s/pytorch_scatter?tab=readme-ov-file#binaries
+--find-links https://data.pyg.org/whl/torch-2.5.1%2Bcu124.html
+torch-scatter

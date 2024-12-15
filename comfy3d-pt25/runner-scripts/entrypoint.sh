@@ -33,6 +33,13 @@ else
     source /root/user-scripts/pre-start.sh
 fi ;
 
+# Build Dependencies
+cd /root
+if [ ! -f "/root/.build-complete" ] ; then
+    chmod +x /runner-scripts/build-deps.sh
+    bash /runner-scripts/build-deps.sh
+fi ;
+
 
 echo "########################################"
 echo "[INFO] Starting ComfyUI..."

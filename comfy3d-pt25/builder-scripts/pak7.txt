@@ -1,0 +1,6 @@
+https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v5.1/pointnet2_ops-3.0.0-cp312-cp312-linux_x86_64.whl
+https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v5.1/simple_knn-0.0.0-cp312-cp312-linux_x86_64.whl
+https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v5.1/diff_gaussian_rasterization-0.0.0-cp312-cp312-linux_x86_64.whl
+https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v5.1/kiui-0.2.14-py3-none-any.whl
+https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v5.1/nvdiffrast-0.3.3-py3-none-any.whl
+https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/download/v5.1/pytorch3d-0.7.8-cp312-cp312-linux_x86_64.whl
