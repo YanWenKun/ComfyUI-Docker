@@ -1,0 +1,59 @@
+# Podman 运行
+podman run -it --rm --name trellis \
+--device nvidia.com/gpu=all \
+--security-opt label=disable \
+--memory 28g \
+--network=host \
+-v ~/app-trellis:/root \
+-e PIP_INDEX_URL="https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple" \
+-e HF_ENDPOINT="https://hf-mirror.com" \
+-e HTTP_PROXY=http://localhost:1081 \
+-e HTTPS_PROXY=http://localhost:1081 \
+-e http_proxy=http://localhost:1081 \
+-e https_proxy=http://localhost:1081 \
+-e TORCH_CUDA_ARCH_LIST="6.1" \
+-e PYTHONPYCACHEPREFIX="/root/.cache/pycache" \
+-e PIP_USER=true \
+-e PIP_ROOT_USER_ACTION=ignore \
+-e GRADIO_SERVER_NAME="0.0.0.0" \
+yanwk/comfyui-boot:comfy3d-pt25-20241216 /bin/fish
+
+export PATH="$PATH:/root/.local/bin"
+
+pip install pillow imageio imageio-ffmpeg tqdm easydict opencv-python-headless scipy ninja rembg onnxruntime trimesh xatlas pyvista pymeshfix igraph transformers
+
+pip install spconv-cu124
+
+# 这个是下载源码后编译安装
+pip install flash-attn
+
+# 完全可以用新版
+pip install git+https://github.com/EasternJournalist/utils3d.git@9a4eb15e4021b67b12c460c7057d642626897ec8
+pip install git+https://github.com/EasternJournalist/utils3d.git
+
+pip install kaolin -f https://nvidia-kaolin.s3.us-east-2.amazonaws.com/torch-2.5.1_cu124.html
+
+# 其实完全可以改为下载 zip archive 再安装
+mkdir -p /tmp/extensions
+        git clone --recurse-submodules https://github.com/JeffreyXiang/diffoctreerast.git /tmp/extensions/diffoctreerast
+        pip install /tmp/extensions/diffoctreerast
+
+# 需要编辑头文件 rasterizer_impl.h，添加 cstdint
+mkdir -p /tmp/extensions
+        git clone https://github.com/autonomousvision/mip-splatting.git /tmp/extensions/mip-splatting
+        pip install /tmp/extensions/mip-splatting/submodules/diff-gaussian-rasterization/
+
+git clone --recurse-submodules https://github.com/microsoft/TRELLIS.git
+cd TRELLIS
+
+mkdir -p /tmp/extensions
+        cp -r extensions/vox2seq /tmp/extensions/vox2seq
+        pip install /tmp/extensions/vox2seq
+
+# Gradio 演示用的，会降低一些组件版本。但 gradio 4.44.1 是稳定版本，选它没啥毛病
+pip install gradio==4.44.1 gradio_litmodel3d==0.0.1
+
+huggingface-cli download JeffreyXiang/TRELLIS-image-large
+
+# cd TRELLIS/
+python3 app.py
