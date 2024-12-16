@@ -1,0 +1,48 @@
+name: Publish 'base-cu124-pt25' to Docker Hub
+
+on: 
+  workflow_dispatch: # Can be manually triggered
+  push: 
+    branches: [ main ]
+    paths-ignore:
+      - '**'
+      - '!base-cu124-pt25/Dockerfile'
+      - '!.github/workflows/build-base-cu124-pt25.yml'
+
+
+jobs:
+
+  build-publish-base-cu124-pt25:
+    environment: Publish to Docker Hub
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Maximize build disk space
+        uses: easimon/maximize-build-space@master
+        with:
+          overprovision-lvm: 'true'
+          remove-android: 'true'
+      -
+        name: Git checkout
+        uses: actions/checkout@v4
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      -
+        name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_ACCESSTOKEN }}
+      -
+        name: Build and push 'base-cu124-pt25'
+        uses: docker/build-push-action@v6
+        with:
+          context: ./base-cu124-pt25
+          file: ./base-cu124-pt25/Dockerfile
+          tags:  |
+            yanwk/comfyui-boot:base-cu124-pt25
+          push: true
