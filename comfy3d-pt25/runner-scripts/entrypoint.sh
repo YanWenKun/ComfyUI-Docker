@@ -33,18 +33,6 @@ else
     source /root/user-scripts/pre-start.sh
 fi ;
 
-# Build Dependencies
-cd /root
-if [ ! -f "/root/.build-complete" ] ; then
-    chmod +x /runner-scripts/build-deps.sh
-    bash /runner-scripts/build-deps.sh
-fi ;
-
-
-echo "########################################"
-echo "[INFO] Starting ComfyUI..."
-echo "########################################"
-
 # Let .pyc files be stored in one place
 export PYTHONPYCACHEPREFIX="/root/.cache/pycache"
 # Let PIP install packages to /root/.local
@@ -53,6 +41,17 @@ export PIP_USER=true
 export PATH="${PATH}:/root/.local/bin"
 # Suppress [WARNING: Running pip as the 'root' user]
 export PIP_ROOT_USER_ACTION=ignore
+
+# Build Dependencies
+cd /root
+if [ ! -f "/root/.build-complete" ] ; then
+    chmod +x /runner-scripts/build-deps.sh
+    bash /runner-scripts/build-deps.sh
+fi ;
+
+echo "########################################"
+echo "[INFO] Starting ComfyUI..."
+echo "########################################"
 
 cd /root
 
