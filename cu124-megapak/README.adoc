@@ -64,3 +64,9 @@ You can create the `.download-complete` file to skip the download script.
 mkdir -p storage
 touch storage/.download-complete
 ----
+
+
+include::../docs/section-cli-args.adoc[]
+
+include::../docs/section-env-vars.adoc[]
+

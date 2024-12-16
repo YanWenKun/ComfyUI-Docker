@@ -4,8 +4,14 @@ image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-comfy3
 
 https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=comfy3d-pt25[View on <Docker Hub>]
 
+* By default, install only ComfyUI, AGL Translation, ComfyUI-3D-Pack and custom nodes required by example workflows.
+* Will install ComfyUI-Manager, but disable it by default.
+* After download complete, will try to rebuild dependencies for 3D-Pack.
+** Will target local GPU, usually no need to config. If having issues, try set env var `TORCH_CUDA_ARCH_LIST` and `CMAKE_ARGS` (see table below).
+** If rebuild is unnecessary, add an empty file `.build-complete` to the storage folder (just like `.download-complete`).
 
-* By default, install only ComfyUI, ComfyUI-Manager, ComfyUI-3D-Pack
+
+## Version Info
 
 * Comfy3D version:
 ** https://github.com/MrForExample/ComfyUI-3D-Pack/tree/b015ed3918d6916ff2a2ee230beafe2169a5de51[b015ed3]
@@ -55,3 +61,6 @@ podman run -it --rm \
   -e CLI_ARGS="" \
   docker.io/yanwk/comfyui-boot:comfy3d-pt25
 ----
+
+
+include::../docs/section-env-vars.adoc[]

@@ -1,13 +1,19 @@
-# Comfy3D 单独镜像
+# ComfyUI-3D-Pack 单独镜像
 
 image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-comfy3d-pt25.yml/badge.svg["GitHub Workflow Status",link="https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-comfy3d-pt25.yml"]
 
 https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=comfy3d-pt25[在 <Docker Hub> 上查看]
 
 
-* 默认仅安装 ComfyUI, ComfyUI-Manager, ComfyUI-3D-Pack
+* 默认仅安装 ComfyUI、AGL 翻译、ComfyUI-3D-Pack 以及 3D-Pack 示例工作流所需节点。
+* 会下载安装 ComfyUI-Manager，但默认将其禁用，以避免其自动更新依赖项。
+* 第一次启动时，在下载步骤完成后，会尝试重新编译 3D-Pack 所需依赖项。
+** 默认仅针对本机 GPU 编译，一般不需要手动调整。如有问题，可手动设置环境变量 `TORCH_CUDA_ARCH_LIST` 与 `CMAKE_ARGS` （见附表）。
+** 如果兼容性OK，不需要重新编译，添加空文件 `.build-complete` 到主目录下即可（类似 `.download-complete`）。
 
-* Comfy3D 版本：
+## 版本信息
+
+* ComfyUI-3D-Pack 版本：
 ** https://github.com/MrForExample/ComfyUI-3D-Pack/tree/b015ed3918d6916ff2a2ee230beafe2169a5de51[b015ed3]
 (2024/12/11)
 
@@ -61,3 +67,5 @@ podman run -it --rm \
   docker.io/yanwk/comfyui-boot:comfy3d-pt25
 ----
 
+
+include::../docs/section-env-vars.zh.adoc[]

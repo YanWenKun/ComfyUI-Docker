@@ -61,3 +61,9 @@ podman run -it --rm \
 mkdir -p storage
 touch storage/.download-complete
 ----
+
+
+include::../docs/section-cli-args.zh.adoc[]
+
+include::../docs/section-env-vars.zh.adoc[]
+

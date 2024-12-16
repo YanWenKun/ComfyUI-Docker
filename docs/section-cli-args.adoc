@@ -1,0 +1,37 @@
+[[cli-args]]
+## CLI_ARGS Reference
+
+[%autowidth,cols=2]
+|===
+|args |description
+
+|--lowvram
+|If your GPU only has 4GB VRAM.
+
+|--novram
+|If adding __--lowvram__ still out-of-memory.
+
+|--cpu
+|Run on CPU. It's pretty slow.
+
+|--use-pytorch-cross-attention
+|If you don't want to use xFormers. This may perform well on WSL2, but significantly slower on Linux hosts.
+
+|--preview-method taesd
+|Enable higher-quality previews with TAESD. ComfyUI-Manager would override this (settings available in Manager UI).
+
+|--front-end-version Comfy-Org/ComfyUI_frontend@latest
+|Use the most up-to-date frontend version.
+
+|--fast
+|Enable experimental optimizations.
+Currently the only optimization is float8_e4m3fn matrix multiplication on
+4000/ADA series Nvidia cards or later.
+Might break things/lower quality.
+See the 
+https://github.com/comfyanonymous/ComfyUI/commit/9953f22fce0ba899da0676a0b374e5d1f72bf259[commit].
+|===
+
+More `CLI_ARGS` available at 
+https://github.com/comfyanonymous/ComfyUI/blob/master/comfy/cli_args.py[ComfyUI].
+
