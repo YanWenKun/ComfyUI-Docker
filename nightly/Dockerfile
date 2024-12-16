@@ -15,7 +15,7 @@
 # Ref: https://gitlab.com/nvidia/container-images/cuda/-/issues/47
 ################################################################################
 
-FROM nvidia/cuda:12.6.2-cudnn-devel-ubuntu24.04
+FROM nvidia/cuda:12.6.3-cudnn-devel-ubuntu24.04
 
 RUN --mount=type=cache,target=/var/cache/apt \
     apt-get update \
