@@ -46,9 +46,6 @@ export PIP_USER=true
 export PATH="${PATH}:/root/.local/bin"
 # Suppress [WARNING: Running pip as the 'root' user]
 export PIP_ROOT_USER_ACTION=ignore
-# Enable HuggingFace Hub high-speed file transfers
-# https://huggingface.co/docs/huggingface_hub/hf_transfer
-export HF_HUB_ENABLE_HF_TRANSFER=1
 
 cd /root
 
