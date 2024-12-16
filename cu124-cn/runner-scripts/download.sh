@@ -56,16 +56,19 @@ clone_or_pull https://ghp.ci/https://github.com/kijai/ComfyUI-KJNodes.git
 clone_or_pull https://ghp.ci/https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git
 clone_or_pull https://ghp.ci/https://github.com/rgthree/rgthree-comfy.git
 clone_or_pull https://ghp.ci/https://github.com/shiimizu/ComfyUI_smZNodes.git
+clone_or_pull https://ghp.ci/https://github.com/WASasquatch/was-node-suite-comfyui.git
 
 # 控制
 clone_or_pull https://ghp.ci/https://github.com/cubiq/ComfyUI_InstantID.git
 clone_or_pull https://ghp.ci/https://github.com/cubiq/ComfyUI_IPAdapter_plus.git
+clone_or_pull https://ghp.ci/https://github.com/cubiq/PuLID_ComfyUI.git
 clone_or_pull https://ghp.ci/https://github.com/Fannovel16/comfyui_controlnet_aux.git
 clone_or_pull https://ghp.ci/https://github.com/florestefano1975/comfyui-portrait-master.git
 clone_or_pull https://ghp.ci/https://github.com/Gourieff/comfyui-reactor-node.git
 clone_or_pull https://ghp.ci/https://github.com/huchenlei/ComfyUI-layerdiffuse.git
 clone_or_pull https://ghp.ci/https://github.com/Kosinkadink/ComfyUI-Advanced-ControlNet.git
 clone_or_pull https://ghp.ci/https://github.com/ltdrdata/ComfyUI-Impact-Pack.git
+clone_or_pull https://ghp.ci/https://github.com/ltdrdata/ComfyUI-Impact-Subpack.git
 clone_or_pull https://ghp.ci/https://github.com/ltdrdata/ComfyUI-Inspire-Pack.git
 clone_or_pull https://ghp.ci/https://github.com/mcmonkeyprojects/sd-dynamic-thresholding.git
 clone_or_pull https://ghp.ci/https://github.com/storyicon/comfyui_segment_anything.git
@@ -76,15 +79,13 @@ clone_or_pull https://ghp.ci/https://github.com/Fannovel16/ComfyUI-Frame-Interpo
 clone_or_pull https://ghp.ci/https://github.com/FizzleDorf/ComfyUI_FizzNodes.git
 clone_or_pull https://ghp.ci/https://github.com/Kosinkadink/ComfyUI-AnimateDiff-Evolved.git
 clone_or_pull https://ghp.ci/https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git
-clone_or_pull https://ghp.ci/https://github.com/MrForExample/ComfyUI-AnimateAnyone-Evolved.git
+clone_or_pull https://ghp.ci/https://github.com/melMass/comfy_mtb.git
 
 # 更多
 clone_or_pull https://ghp.ci/https://github.com/cubiq/ComfyUI_FaceAnalysis.git
 clone_or_pull https://ghp.ci/https://github.com/pythongosssss/ComfyUI-WD14-Tagger.git
 clone_or_pull https://ghp.ci/https://github.com/SLAPaper/ComfyUI-Image-Selector.git
-
-# WAS NS 的依赖项并未完整安装，但可以正常运行
-clone_or_pull https://ghp.ci/https://github.com/WASasquatch/was-node-suite-comfyui.git
+clone_or_pull https://ghp.ci/https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git
 
 # 配置为中文界面
 if [ ! -f "/root/ComfyUI/user/default/comfy.settings.json" ] ; then

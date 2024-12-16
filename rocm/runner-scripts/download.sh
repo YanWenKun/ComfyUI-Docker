@@ -53,6 +53,7 @@ clone_or_pull https://github.com/cubiq/ComfyUI_IPAdapter_plus.git
 clone_or_pull https://github.com/Fannovel16/comfyui_controlnet_aux.git
 clone_or_pull https://github.com/Kosinkadink/ComfyUI-Advanced-ControlNet.git
 clone_or_pull https://github.com/ltdrdata/ComfyUI-Impact-Pack.git
+clone_or_pull https://github.com/ltdrdata/ComfyUI-Impact-Subpack.git
 clone_or_pull https://github.com/ltdrdata/ComfyUI-Inspire-Pack.git
 clone_or_pull https://github.com/twri/sdxl_prompt_styler.git
 

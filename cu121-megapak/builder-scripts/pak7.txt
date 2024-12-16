@@ -1,6 +1,10 @@
 dlib
+facexlib
 insightface
 git+https://github.com/openai/CLIP.git
+git+https://github.com/WASasquatch/cstr
+git+https://github.com/WASasquatch/ffmpy.git
+git+https://github.com/WASasquatch/img2texture.git
 
 # Gradio needs urllib3~=2.0,
 # but matrix-client(used by ComfyUI-Manager) needs urllib3~=1.21.

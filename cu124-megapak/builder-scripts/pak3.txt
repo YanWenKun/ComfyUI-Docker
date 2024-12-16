@@ -23,6 +23,7 @@ pillow
 pygit2
 python-ffmpeg
 regex
+scikit-build-core
 scikit-image
 scikit-learn
 scipy
