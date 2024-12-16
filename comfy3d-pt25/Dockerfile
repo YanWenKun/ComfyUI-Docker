@@ -127,6 +127,7 @@ x265 \
 google-noto-sans-fonts \
 google-noto-sans-cjk-fonts \
 google-noto-coloremoji-fonts \
+unzip 7zip \
     && zypper remove --no-confirm libQt5Core5 # Temp fix for PyMeshLab
 
 ################################################################################

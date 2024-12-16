@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -euo pipefail
+set -eo pipefail
 
 echo "########################################"
 echo "[INFO] Building Dependencies for 3D-Pack..."
@@ -24,8 +24,7 @@ aria2c \
 unzip -q /tmp/Comfy3D_Pre_Builds-main.zip -d /tmp ;
 rm /tmp/Comfy3D_Pre_Builds-main.zip ;
 
-cd /tmp/Comfy3D_Pre_Builds-main/_Libs
-for D in *; do
+for D in /tmp/Comfy3D_Pre_Builds-main/_Libs/*; do
     if [ -d "${D}" ] ; then
         pip install --force-reinstall "${D}"
     fi
