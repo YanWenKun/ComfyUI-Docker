@@ -1,4 +1,4 @@
-# Docker Image for Comfy3D
+# Docker Image for ComfyUI-3D-Pack
 
 image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-comfy3d-pt25.yml/badge.svg["GitHub Workflow Status",link="https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-comfy3d-pt25.yml"]
 
@@ -13,9 +13,7 @@ https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=comfy3d-pt25[View on <Dock
 
 ## Version Info
 
-* Comfy3D version:
-** https://github.com/MrForExample/ComfyUI-3D-Pack/tree/b015ed3918d6916ff2a2ee230beafe2169a5de51[b015ed3]
-(Dec 11, 2024)
+* ComfyUI-3D-Pack version: latest
 
 * Dev kits:
 ** CUDA dev kit (12.4)

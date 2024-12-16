@@ -13,9 +13,7 @@ https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=comfy3d-pt25[在 <Docker H
 
 ## 版本信息
 
-* ComfyUI-3D-Pack 版本：
-** https://github.com/MrForExample/ComfyUI-3D-Pack/tree/b015ed3918d6916ff2a2ee230beafe2169a5de51[b015ed3]
-(2024/12/11)
+* ComfyUI-3D-Pack 版本：最新
 
 * 开发组件：
 ** CUDA dev kit (12.4)

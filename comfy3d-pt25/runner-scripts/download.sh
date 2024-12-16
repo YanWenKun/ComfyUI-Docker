@@ -20,10 +20,14 @@ echo "########################################"
 echo "[INFO] Downloading ComfyUI..."
 echo "########################################"
 
-cd /root
 set +e
-git clone https://github.com/comfyanonymous/ComfyUI.git \
-    || git -C "ComfyUI" pull --ff-only
+
+cd /root
+git clone https://github.com/comfyanonymous/ComfyUI.git || git -C ComfyUI pull --ff-only
+
+cd /root/ComfyUI
+git reset --hard "$(git tag | grep -e '^v' | sort -V | tail -1)"
+
 set -e
 
 echo "########################################"
@@ -31,13 +35,23 @@ echo "[INFO] Downloading ComfyUI-3D-Pack..."
 echo "########################################"
 
 cd /root/ComfyUI/custom_nodes
+clone_or_pull https://github.com/MrForExample/ComfyUI-3D-Pack.git
+
+# Copy example files of 3D-Pack
 set +e
-git clone --recurse-submodules https://github.com/MrForExample/ComfyUI-3D-Pack.git \
-    || git -C "ComfyUI-3D-Pack" pull --ff-only ;
+
+mkdir -p /root/ComfyUI/user/default/workflows
+
+cp -r /root/ComfyUI/custom_nodes/ComfyUI-3D-Pack/_Example_Workflows/. \
+    /root/ComfyUI/user/default/workflows/
+
+rm -rf /root/ComfyUI/user/default/workflows/_Example_Inputs_Files
+rm -rf /root/ComfyUI/user/default/workflows/_Example_Outputs
+
+cp -r /root/ComfyUI/custom_nodes/ComfyUI-3D-Pack/_Example_Workflows/_Example_Inputs_Files/. \
+    /root/ComfyUI/input/
+
 set -e
-
-git -C "ComfyUI-3D-Pack" reset --hard b015ed3918d6916ff2a2ee230beafe2169a5de51
-
 
 echo "########################################"
 echo "[INFO] Downloading Custom Nodes..."

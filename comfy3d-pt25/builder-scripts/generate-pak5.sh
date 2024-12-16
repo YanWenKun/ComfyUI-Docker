@@ -5,7 +5,7 @@ echo '#' > pak5.txt
 
 array=(
 https://github.com/comfyanonymous/ComfyUI/raw/refs/heads/master/requirements.txt
-https://github.com/MrForExample/ComfyUI-3D-Pack/raw/b015ed3918d6916ff2a2ee230beafe2169a5de51/requirements.txt
+https://github.com/MrForExample/ComfyUI-3D-Pack/raw/refs/heads/main/requirements.txt
 https://github.com/edenartlab/eden_comfy_pipelines/raw/refs/heads/main/requirements.txt
 https://github.com/kijai/ComfyUI-KJNodes/raw/refs/heads/main/requirements.txt
 https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite/raw/refs/heads/main/requirements.txt
