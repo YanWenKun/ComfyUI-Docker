@@ -10,6 +10,7 @@ cd /root
 
 if [ -z "${CMAKE_ARGS}" ]; then
     export CMAKE_ARGS='-DBUILD_opencv_world=ON -DWITH_CUDA=ON -DCUDA_FAST_MATH=ON -DWITH_CUBLAS=ON -DWITH_NVCUVID=ON'
+    echo "CMAKE_ARGS not set, setting to ${CMAKE_ARGS}"
 fi ;
 
 # Compile PyTorch3D first
@@ -47,3 +48,7 @@ pip install numpy==1.26.4
 
 # Finish
 touch /root/.build-complete
+
+echo "########################################"
+echo "[INFO] Build Complete."
+echo "########################################"
