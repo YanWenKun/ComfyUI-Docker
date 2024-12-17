@@ -4,7 +4,7 @@ image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-comfy3
 
 https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=comfy3d-pt25[在 <Docker Hub> 上查看]
 
-注意：目前尚不兼容 WSL2 Docker
+注意：**目前尚不兼容 WSL2 Docker**
 
 * 默认仅安装 ComfyUI、AGL 翻译、ComfyUI-3D-Pack 以及 3D-Pack 示例工作流所需节点。
 * 会下载安装 ComfyUI-Manager，但默认将其禁用，以避免其自动更新依赖项。

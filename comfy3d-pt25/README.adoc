@@ -4,7 +4,7 @@ image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-comfy3
 
 https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=comfy3d-pt25[View on <Docker Hub>]
 
-NOTE: Currently Not Working on WSL2 Docker.
+NOTE: **Currently Not Working on WSL2**.
 
 * By default, install only ComfyUI, AGL Translation, ComfyUI-3D-Pack and custom nodes required by example workflows.
 * Will install ComfyUI-Manager, but disable it by default.
