@@ -4,3 +4,4 @@ git+https://github.com/openai/CLIP.git
 git+https://github.com/WASasquatch/cstr
 git+https://github.com/WASasquatch/ffmpy.git
 git+https://github.com/WASasquatch/img2texture.git
+git+https://github.com/EasternJournalist/utils3d.git#egg=utils3d

@@ -3,10 +3,12 @@ cachetools
 clip-interrogator==0.6.0
 color-matcher
 dill
+easydict
 einops
 fairscale
 GitPython
 gpytoolbox
+igraph
 imageio-ffmpeg
 iopath
 jaxtyping
@@ -29,10 +31,12 @@ PyGithub
 pygltflib
 pyhocon
 PyMCubes
+pymeshfix
 pymeshlab
 python-dotenv
 pytorch-lightning
 pytorch-msssim
+pyvista
 pyyaml
 rembg
 requests

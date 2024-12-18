@@ -30,7 +30,9 @@ COPY builder-scripts/.  /builder-scripts/
 # Deps for ComfyUI & custom nodes
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        -r /builder-scripts/pak3.txt
+        -r /builder-scripts/pak3.txt \
+    && pip install \
+        -r /builder-scripts/pak4.txt
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
@@ -45,6 +47,8 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         -r /builder-scripts/pak8.txt \
     && pip install \
         -r /builder-scripts/pak9.txt \
+    && pip install \
+        -r /builder-scripts/pakA.txt \
     && pip list
 
 ################################################################################

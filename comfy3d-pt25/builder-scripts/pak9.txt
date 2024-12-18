@@ -1,1 +1,2 @@
-numpy==1.26.4
+--find-links https://nvidia-kaolin.s3.us-east-2.amazonaws.com/torch-2.5.1_cu124.html
+kaolin
