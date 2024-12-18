@@ -52,7 +52,7 @@ mkdir -p /tmp/build
 
 git clone --depth=1 https://github.com/autonomousvision/mip-splatting.git \
     /tmp/build/mip-splatting
-pip uninstall --break-system-packages --yes diff-gaussian-rasterization
+#pip uninstall --break-system-packages --yes diff-gaussian-rasterization
 pip install --force-reinstall \
     /tmp/build/mip-splatting/submodules/diff-gaussian-rasterization/
 
