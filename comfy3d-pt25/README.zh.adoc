@@ -9,8 +9,9 @@ https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=comfy3d-pt25[在 <Docker H
 * 默认仅安装 ComfyUI、AGL 翻译、ComfyUI-3D-Pack 以及 3D-Pack 示例工作流所需节点。
 * 会下载安装 ComfyUI-Manager，但默认将其禁用，以避免其自动更新依赖项。
 * 第一次启动时，在下载步骤完成后，会尝试重新编译 3D-Pack 所需依赖项。
-** 默认仅针对本机 GPU 编译，一般不需要手动调整。如有问题，可手动设置环境变量 `TORCH_CUDA_ARCH_LIST` 与 `CMAKE_ARGS` （见附表）。
-** 如果兼容性OK，不需要重新编译，添加空文件 `.build-complete` 到主目录下即可（类似 `.download-complete`）。
+** 添加空文件 `.build-complete` 到主目录下即可跳过该步骤（类似 `.download-complete`）。一些工作流（比如 TripoSR）不需要重新编译也能正常运行，这里为了确保兼容性添加了该步骤。
+** 耗时大约 10 分钟，如果太长（比如半小时以上）建议跳过编译，尝试直接运行。
+** 默认仅针对本机 GPU 编译，一般不需要手动调整参数。如有问题，可手动设置环境变量 `TORCH_CUDA_ARCH_LIST` 与 `CMAKE_ARGS` （见附表）。
 
 ## 版本信息
 
@@ -67,4 +68,117 @@ podman run -it --rm \
 ----
 
 
-include::../docs/section-env-vars.zh.adoc[]
+[[env-vars]]
+## 环境变量参考
+
+[cols="2,2,3"]
+|===
+|变量名|参考值|备注
+
+|HTTP_PROXY +
+HTTPS_PROXY
+|http://localhost:1081 +
+http://localhost:1081
+|设置 HTTP 代理。
+
+|PIP_INDEX_URL
+|'https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple'
+|设置 PyPI 镜像站点。
+
+|HF_ENDPOINT
+|'https://hf-mirror.com'
+|设置 HuggingFace 镜像站点。
+
+|HF_TOKEN
+|'hf_your_token'
+|设置 HuggingFace
+https://huggingface.co/settings/tokens[访问令牌]
+（Access Token）。
+
+|HF_HUB_ENABLE_HF_TRANSFER
+|1
+|启用 HuggingFace Hub 实验性高速传输，仅对 >1000Mbps 且十分稳定的连接有意义（比如云服务器）。
+https://huggingface.co/docs/huggingface_hub/hf_transfer[文档]
+
+|TORCH_CUDA_ARCH_LIST
+|7.5 +
+或 +
+'5.2+PTX;6.0;6.1+PTX;7.5;8.0;8.6;8.9+PTX'
+|设置 PyTorch 及扩展的编译目标。
+对于大多数用户，仅需为自己的 GPU 设置一个目标。
+https://arnon.dk/matching-sm-architectures-arch-and-gencode-for-various-nvidia-cards/[参考]
+
+|CMAKE_ARGS
+|'-DBUILD_opencv_world=ON -DWITH_CUDA=ON -DCUDA_FAST_MATH=ON -DWITH_CUBLAS=ON -DWITH_NVCUVID=ON'
+|设置 CMAKE 编译参数，脚本中已默认设置，一般情况无需调整。
+
+|===
+
+
+[[trellis-demo]]
+## 额外内容：使用本镜像运行 TRELLIS 官方 demo
+
+https://github.com/microsoft/TRELLIS[TRELLIS]
+官方自带了一个 Gradio 演示程序，可以从单张或多张图片生成环绕视频和 `.glb` 模型。
+而本镜像依赖项基本完备，可以简单运行该 demo，以下提供执行脚本。
+
+* 注意：需要 16G 以上显存
+
+* `ATTN_BACKEND` 参数选择
+** `flash-attn` 适合安培架构（30系／A100）及之后的 GPU
+** `xformers` 兼容性更好
+
+* `SPCONV_ALGO` 参数选择
+** `native` 启动较快，适合单次运行
+** `auto` 会有更好性能，但一开始会花时间进行性能测试
+
+.1. 运行容器
+[source,sh]
+----
+mkdir -p storage
+
+# 注意这里配置了代理
+# 请按需修改
+podman run -it \
+  --name trellis-demo \
+  --device nvidia.com/gpu=all \
+  --security-opt label=disable \
+  -p 7860:7860 \
+  -v "$(pwd)"/storage:/root \
+  -e ATTN_BACKEND="flash-attn" \
+  -e SPCONV_ALGO="native" \
+  -e GRADIO_SERVER_NAME="0.0.0.0" \
+  -e PIP_USER=true \
+  -e PIP_ROOT_USER_ACTION=ignore \
+  -e PYTHONPYCACHEPREFIX="/root/.cache/pycache" \
+  -e PIP_INDEX_URL="https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple" \
+  -e HF_ENDPOINT="https://hf-mirror.com" \
+  docker.io/yanwk/comfyui-boot:comfy3d-pt25 \
+  /bin/fish
+----
+
+.2. 运行命令
+[source,sh]
+----
+export PATH="$PATH:/root/.local/bin"
+
+# 执行一遍编译脚本，耗时10分钟左右
+bash /runner-scripts/build-deps.sh
+
+# 安装依赖项
+pip install gradio==4.44.1 gradio_litmodel3d==0.0.1
+
+# 下载模型
+huggingface-cli download JeffreyXiang/TRELLIS-image-large
+
+# 下载并运行 TRELLIS demo
+git clone --depth=1 --recurse-submodules \
+  https://github.com/microsoft/TRELLIS.git \
+  /root/TRELLIS
+
+cd /root/TRELLIS
+
+python3 app.py
+----
+
+NOTE: 如果提示 "matrix-client 0.4.0 requires urllib3~=1.21, but you have urllib3 2.2.3 which is incompatible." 直接忽略即可。只有 ComfyUI-Manager 的分享功能会用到 `matrix-client` 这个过时的组件，此处毫无影响。

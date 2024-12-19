@@ -63,7 +63,84 @@ touch storage/.download-complete
 ----
 
 
-include::../docs/section-cli-args.zh.adoc[]
+[[cli-args]]
+## CLI_ARGS 参考
 
-include::../docs/section-env-vars.zh.adoc[]
+[%autowidth,cols=2]
+|===
+|启动参数 |说明
 
+|--lowvram
+|如果显存只有 4G （程序启动时会检测显存，自动开启）
+
+|--novram
+|如果用了 __--lowvram__ 还是显存不够，直接改用 CPU 内存
+
+|--cpu
+|用 CPU 来跑，会很慢
+
+|--use-pytorch-cross-attention
+|如果不想用 xFormers，而改用 PyTorch 原生交叉注意力机制。在 WSL2 上可能会有更好的速度／显存占用表现，但在 Linux 宿主机上会明显更慢。
+
+|--preview-method taesd
+|使用基于 TAESD 的高质量实时预览。使用 Manager 会覆盖该参数（需在 Manager 界面中设置预览方式）。
+
+|--front-end-version Comfy-Org/ComfyUI_frontend@latest
+|使用最新版本的 ComfyUI 前端
+
+|--fast
+|使用实验性的高性能模式，对 40 系显卡 + CUDA 12.4 + 最新 PyTorch + fp8-e4m3fn 模型可达 40% 性能提升。但也有可能造成图像质量劣化。
+https://github.com/comfyanonymous/ComfyUI/commit/9953f22fce0ba899da0676a0b374e5d1f72bf259[来源]
+|===
+
+更多启动参数见 ComfyUI 的
+https://github.com/comfyanonymous/ComfyUI/blob/master/comfy/cli_args.py[cli_args.py]
+。
+
+
+[[env-vars]]
+## 环境变量参考
+
+[cols="2,2,3"]
+|===
+|变量名|参考值|备注
+
+|HTTP_PROXY +
+HTTPS_PROXY
+|http://localhost:1081 +
+http://localhost:1081
+|设置 HTTP 代理。
+
+|PIP_INDEX_URL
+|'https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple'
+|设置 PyPI 镜像站点。
+
+|HF_ENDPOINT
+|'https://hf-mirror.com'
+|设置 HuggingFace 镜像站点。
+
+|HF_TOKEN
+|'hf_your_token'
+|设置 HuggingFace
+https://huggingface.co/settings/tokens[访问令牌]
+（Access Token）。
+
+|HF_HUB_ENABLE_HF_TRANSFER
+|1
+|启用 HuggingFace Hub 实验性高速传输，仅对 >1000Mbps 且十分稳定的连接有意义（比如云服务器）。
+https://huggingface.co/docs/huggingface_hub/hf_transfer[文档]
+
+|TORCH_CUDA_ARCH_LIST
+|7.5 +
+或 +
+'5.2+PTX;6.0;6.1+PTX;7.5;8.0;8.6;8.9+PTX'
+|设置 PyTorch 及扩展的编译目标（CUDA 架构版本）。
+对于大多数用户，无需设置，在 Linux 下会自动选择。
+如有需要，一般仅需设置自己的 GPU 这一个目标。
+https://arnon.dk/matching-sm-architectures-arch-and-gencode-for-various-nvidia-cards/[参考]
+
+|CMAKE_ARGS
+|'-DBUILD_opencv_world=ON -DWITH_CUDA=ON -DCUDA_FAST_MATH=ON -DWITH_CUBLAS=ON -DWITH_NVCUVID=ON'
+|设置 CMAKE 编译参数，脚本中已默认设置，一般情况无需调整。
+
+|===

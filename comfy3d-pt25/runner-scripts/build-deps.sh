@@ -10,10 +10,11 @@ cd /root
 
 if [ -z "${CMAKE_ARGS}" ]; then
     export CMAKE_ARGS='-DBUILD_opencv_world=ON -DWITH_CUDA=ON -DCUDA_FAST_MATH=ON -DWITH_CUBLAS=ON -DWITH_NVCUVID=ON'
-    echo "CMAKE_ARGS not set, setting to ${CMAKE_ARGS}"
+    echo "[INFO] CMAKE_ARGS not set, setting to ${CMAKE_ARGS}"
 fi ;
 
-# Compile PyTorch3D first
+# Compile PyTorch3D
+# Put it first because it takes longest time.
 pip install --force-reinstall \
     "git+https://github.com/facebookresearch/pytorch3d.git"
 
@@ -57,7 +58,7 @@ pip install --force-reinstall \
     /tmp/build/mip-splatting/submodules/diff-gaussian-rasterization/
 
 # (Optional) Compile Flash Attention for Ampere and later GPUs.
-# Limit Ninja jobs to avoid OOM.
+# "MAX_JOBS" limits Ninja jobs to avoid OOM.
 # If have >96GB RAM, just remove MAX_JOBS line.
 export MAX_JOBS=4
 pip install flash-attn --no-build-isolation
