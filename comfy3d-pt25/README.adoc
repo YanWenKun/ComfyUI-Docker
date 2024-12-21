@@ -120,13 +120,13 @@ This image has almost all the necessary dependencies, so you can easily run the 
 
 * Note: Requires more than 16G VRAM.
 
-* `ATTN_BACKEND` Parameter Selection
+* `ATTN_BACKEND` options
 ** `flash-attn` is suitable for Ampere architecture (30 series/A100) and later GPUs.
 ** `xformers` has better compatibility.
 
-* `SPCONV_ALGO` Parameter Selection
+* `SPCONV_ALGO` options
 ** `native` starts faster and is suitable for single runs.
-** `auto` will have better performance, but will take some time for benchmarking at the beginning.
+** `auto` has better performance, but will take some time for benchmarking at the beginning.
 
 .1. Run the Container
 [source,sh]
@@ -173,4 +173,4 @@ cd /root/TRELLIS
 python3 app.py
 ----
 
-NOTE: You may safely ignore the message "matrix-client 0.4.0 requires urllib3~=1.21, but you have urllib3 2.2.3 which is incompatible." As `matrix-client` is used by ComfyUI-Manager, it is not relevant in this context.
+NOTE: You may safely ignore the message `matrix-client 0.4.0 requires urllib3~=1.21, but you have urllib3 2.2.3 which is incompatible.` As `matrix-client` is used by ComfyUI-Manager, it is not relevant in this context.
