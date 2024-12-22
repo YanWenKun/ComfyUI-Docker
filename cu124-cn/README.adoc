@@ -319,13 +319,13 @@ https://huggingface.co/docs/huggingface_hub/hf_transfer[文档]
 |7.5 +
 或 +
 '5.2+PTX;6.0;6.1+PTX;7.5;8.0;8.6;8.9+PTX'
-|设置 PyTorch 及扩展的编译目标。
-对于大多数用户，仅需为自己的 GPU 设置一个目标。
+|设置 PyTorch 及扩展的编译目标，Linux 下一般无需手动指定。
+如有必要，一般设置为自己的 GPU 架构版本。
 https://arnon.dk/matching-sm-architectures-arch-and-gencode-for-various-nvidia-cards/[参考]
 
 |CMAKE_ARGS
 |'-DBUILD_opencv_world=ON -DWITH_CUDA=ON -DCUDA_FAST_MATH=ON -DWITH_CUBLAS=ON -DWITH_NVCUVID=ON'
-|设置 CMAKE 编译参数，脚本中已默认设置，一般情况无需调整。
+|设置 CMAKE 编译参数，一般无需调整。
 
 |===
 

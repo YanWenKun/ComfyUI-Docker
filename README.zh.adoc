@@ -22,8 +22,8 @@ https://hub.docker.com/r/yanwk/comfyui-boot[Docker 镜像]
 ** 经典版本，简洁易上手，但需要良好的网络连接
 ** 默认仅安装基本的 ComfyUI 与 Manager
 ** 镜像中预装大量依赖项，方便后续无痛安装热门自定义节点（扩展插件）
-** 容器内使用低特权用户运行（便于 WSL2 部署）
-** 不推荐 Podman 与 rootless 用户使用（推荐用以下 megapak 标签）
+** 容器内使用低特权用户运行（便于 WSL2 部署，仅该镜像如此设计）
+** 不推荐 Podman 与 rootless 用户使用（改用本仓库内其他镜像均可）
 ** 使用 CUDA 12.1 与 Python 3.11
 
 * link:cu121-megapak/README.zh.adoc[`cu121-megapak`, `megapak`]
@@ -34,9 +34,7 @@ https://hub.docker.com/r/yanwk/comfyui-boot[Docker 镜像]
 
 * link:cu124-megapak/README.zh.adoc[`cu124-megapak`]
 
-** 大型整合包，包含开发组件
-** 容器内使用 root 用户运行（便于 rootless 部署）
-** 使用 CUDA 12.4 与 Python 3.12（在新 GPU 上可能性能更佳）
+** 同上，但使用 CUDA 12.4 与 Python 3.12（在新 GPU 上可能性能更佳）
 
 * link:rocm/README.zh.adoc[`rocm`]
 

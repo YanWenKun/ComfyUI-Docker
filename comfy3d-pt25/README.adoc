@@ -116,7 +116,7 @@ https://arnon.dk/matching-sm-architectures-arch-and-gencode-for-various-nvidia-c
 
 https://github.com/microsoft/TRELLIS[TRELLIS]
 officially provides a Gradio demo that can generate orbit videos and `.glb` models from images.
-This image has almost all the necessary dependencies, so you can easily run the demo. The execution script is provided below.
+This Docker image has almost all the necessary dependencies, so you can easily run the demo. The execution script is provided below.
 
 * Note: Requires more than 16G VRAM.
 

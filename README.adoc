@@ -30,20 +30,24 @@ docker run -it --rm \
 ** Recommended for anyone trying ComfyUI for the first time.
 ** Equipped with many dependencies. Starts with ComfyUI core only.
 ** Using a low-privilege user within the container (easy for WSL2 deploy).
-** Not recommended for Podman or rootless deploy (use `megapak` instead).
+** Not recommended for Podman or rootless deploy (use any image below instead).
 ** Using CUDA 12.1 + Python 3.11.
+
+* link:cu124-slim/README.adoc[`cu124-slim`]
+
+** Similar to `cu121`, starts with ComfyUI and ComfyUI-Manager only.
+** Using 'root' user within the container (easy for rootless deploy).
+** Using CUDA 12.4 + Python 3.12.
 
 * link:cu121-megapak/README.adoc[`cu121-megapak`, `megapak`]
 
 ** All-in-one bundle, including dev kits.
-** Using 'root' user within the container (easy for rootless deploy).
 ** Using CUDA 12.1 + Python 3.11.
 
 * link:cu124-megapak/README.adoc[`cu124-megapak`]
 
 ** All-in-one bundle, including dev kits.
-** Using 'root' user within the container (easy for rootless deploy).
-** Using CUDA 12.4 + Python 3.12. May perform better on newer GPUs.
+** Using CUDA 12.4 + Python 3.12.
 
 * link:cu124-cn/README.adoc[`cu124-cn`]
 

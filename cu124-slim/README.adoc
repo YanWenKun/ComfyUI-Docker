@@ -1,0 +1,185 @@
+# Docker image for ComfyUI
+
+image::../docs/chart-concept-slim.svg["Concept Design"]
+
+image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-cu124-slim.yml/badge.svg["GitHub Workflow Status",link="https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-cu124-slim.yml"]
+
+https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=cu124-slim[View on <Docker Hub>]
+
+中文用户提示： slim 镜像内容与 link:../cu124-cn/README.adoc[cu124-cn] 基本相同，使用 cu124-cn 镜像的
+https://github.com/YanWenKun/ComfyUI-Docker/tree/main/cu124-cn#%E8%BF%90%E8%A1%8C%E6%96%B9%E6%B3%95-%E4%B8%8D%E4%B8%8B%E8%BD%BD%E6%A8%A1%E5%9E%8B[最简启动] 即可达到相同效果。
+
+
+## How it works
+
+1. On the first start, a script will download latest stable ComfyUI, ComfyUI-Manager and TAESD models. Since this is a slim image, large SD models are not in the download list.
+2. The whole ComfyUI will be stored in a local folder (`./storage/ComfyUI`).
+3. If you already have a ComfyUI bundle, put it there and make an empty file (`./storage/.download-complete`) so the start script will skip downloading.
+4. Use ComfyUI-Manager (in ComfyUI web page) to update ComfyUI, manage custom nodes, and download models.
+
+
+## Prerequisites
+
+* NVIDIA GPU with ≥6GB VRAM
+
+* Latest NVIDIA GPU driver
+** Either Game or Studio edition will work.
+** You don't need to install drivers inside containers. Just make sure it's working on your host OS.
+
+* Docker Installed
+** Linux user may need to install https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html[NVIDIA Container Toolkit] (only on host OS). It will enable containers' GPU access.
+** Windows user could use https://www.docker.com/products/docker-desktop/[Docker Desktop] with WSL2 enabled.
+** WSL2 users please note that NTFS <--> ext4 "translation" is very slow (down to <100MB/s), so you probably want to use an in-WSL folder (or Docker volume) to save ComfyUI.
+
+
+## Usage
+
+.Run with Docker
+[source,sh]
+----
+mkdir -p storage
+
+docker run -it --rm \
+  --name comfyui-cu124 \
+  --gpus all \
+  -p 8188:8188 \
+  -v "$(pwd)"/storage:/root \
+  -e CLI_ARGS="--fast" \
+  yanwk/comfyui-boot:cu124-slim
+----
+
+.Run with Podman
+[source,bash]
+----
+mkdir -p storage
+
+podman run -it --rm \
+  --name comfyui-cu124 \
+  --device nvidia.com/gpu=all \
+  --security-opt label=disable \
+  -p 8188:8188 \
+  -v "$(pwd)"/storage:/root \
+  -e CLI_ARGS="--fast" \
+  docker.io/yanwk/comfyui-boot:cu124-slim
+----
+
+Once the app is loaded, visit http://localhost:8188/
+
+
+
+## Pre-start scripts
+
+The start script will create two example user script files at first start:
+
+----
+./storage/user-scripts/set-proxy.sh
+./storage/user-scripts/pre-start.sh
+----
+
+The `set-proxy.sh` is for setting up proxy, it will start before everything else.
+
+The `pre-start.sh` is for user operations, it will start just before ComfyUI starts.
+
+
+## Tips and Tricks
+
+. `.cache` folder is used to save model files downloaded by HuggingFace Hub and PyTorch Hub. They are not necessary "cache" so you may not want to delete them.
+
+. You can perform a major update (e.g. to a new PyTorch version) by swapping the Docker image:
+
+[source,sh]
+----
+docker pull yanwk/comfyui-boot:cu124-slim
+
+# remove the container if not using an ephemeral one
+docker rm comfyui-cu124
+
+# Then re-run above 'docker run' again
+----
+
+
+
+[[cli-args]]
+## CLI_ARGS Reference
+
+[%autowidth,cols=2]
+|===
+|args |description
+
+|--lowvram
+|If your GPU only has 4GB VRAM.
+
+|--novram
+|If adding __--lowvram__ still out-of-memory.
+
+|--cpu
+|Run on CPU. It's pretty slow.
+
+|--use-pytorch-cross-attention
+|Disable xFormers. Not recommend for video workflows or Linux hosts.
+
+|--preview-method taesd
+|Enable higher-quality previews with TAESD. ComfyUI-Manager would override this (settings available in Manager UI).
+
+|--front-end-version Comfy-Org/ComfyUI_frontend@latest
+|Use the most up-to-date frontend version.
+
+|--fast
+|Enable experimental optimizations.
+Currently the only optimization is float8_e4m3fn matrix multiplication on
+4000/ADA series Nvidia cards or later.
+Might break things/lower quality.
+See the 
+https://github.com/comfyanonymous/ComfyUI/commit/9953f22fce0ba899da0676a0b374e5d1f72bf259[commit].
+|===
+
+More `CLI_ARGS` available at 
+https://github.com/comfyanonymous/ComfyUI/blob/master/comfy/cli_args.py[ComfyUI].
+
+
+[[env-vars]]
+## Environment Variables Reference
+
+[cols="2,2,3"]
+|===
+|Variable|Example Value|Memo
+
+|HTTP_PROXY +
+HTTPS_PROXY
+|http://localhost:1081 +
+http://localhost:1081
+|Set HTTP proxy.
+
+|PIP_INDEX_URL
+|'https://pypi.org/simple'
+|Set mirror site for Python Package Index.
+
+|HF_ENDPOINT
+|'https://huggingface.co'
+|Set mirror site for HuggingFace Hub.
+
+|HF_TOKEN
+|'hf_your_token'
+|Set HuggingFace Access Token.
+https://huggingface.co/settings/tokens[More]
+
+|HF_HUB_ENABLE_HF_TRANSFER
+|1
+|Enable HuggingFace Hub experimental high-speed file transfers.
+Only make sense if you have >1000Mbps and VERY STABLE connection (e.g. cloud server).
+https://huggingface.co/docs/huggingface_hub/hf_transfer[More]
+
+|TORCH_CUDA_ARCH_LIST
+|7.5 +
+or +
+'5.2+PTX;6.0;6.1+PTX;7.5;8.0;8.6;8.9+PTX'
+|Build target for PyTorch and its extensions.
+For most users, no setup is needed as it will be automatically selected on Linux.
+When needed, you only need to set one build target just for your GPU.
+https://arnon.dk/matching-sm-architectures-arch-and-gencode-for-various-nvidia-cards/[More]
+
+|CMAKE_ARGS
+|'-DBUILD_opencv_world=ON -DWITH_CUDA=ON -DCUDA_FAST_MATH=ON -DWITH_CUBLAS=ON -DWITH_NVCUVID=ON'
+|Build options for CMAKE projects using CUDA.
+
+|===
