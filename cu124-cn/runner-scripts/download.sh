@@ -27,13 +27,13 @@ echo "########################################"
 # 使用稳定版 ComfyUI（GitHub 上有发布标签）
 set +e
 cd /root
-git clone https://ghp.ci/https://github.com/comfyanonymous/ComfyUI.git || git -C ComfyUI pull --ff-only
+git clone https://gh-proxy.com/https://github.com/comfyanonymous/ComfyUI.git || git -C ComfyUI pull --ff-only
 cd /root/ComfyUI
 git reset --hard "$(git tag | grep -e '^v' | sort -V | tail -1)"
 set -e
 
 cd /root/ComfyUI/custom_nodes
-clone_or_pull https://ghp.ci/https://github.com/ltdrdata/ComfyUI-Manager.git
+clone_or_pull https://gh-proxy.com/https://github.com/ltdrdata/ComfyUI-Manager.git
 
 
 echo "########################################"
@@ -43,49 +43,49 @@ echo "########################################"
 cd /root/ComfyUI/custom_nodes
 
 # 工作空间
-clone_or_pull https://ghp.ci/https://github.com/AIGODLIKE/AIGODLIKE-ComfyUI-Translation.git
-clone_or_pull https://ghp.ci/https://github.com/crystian/ComfyUI-Crystools.git
-clone_or_pull https://ghp.ci/https://github.com/crystian/ComfyUI-Crystools-save.git
+clone_or_pull https://gh-proxy.com/https://github.com/AIGODLIKE/AIGODLIKE-ComfyUI-Translation.git
+clone_or_pull https://gh-proxy.com/https://github.com/crystian/ComfyUI-Crystools.git
+clone_or_pull https://gh-proxy.com/https://github.com/crystian/ComfyUI-Crystools-save.git
 
 # 综合
-clone_or_pull https://ghp.ci/https://github.com/bash-j/mikey_nodes.git
-clone_or_pull https://ghp.ci/https://github.com/chrisgoringe/cg-use-everywhere.git
-clone_or_pull https://ghp.ci/https://github.com/cubiq/ComfyUI_essentials.git
-clone_or_pull https://ghp.ci/https://github.com/jags111/efficiency-nodes-comfyui.git
-clone_or_pull https://ghp.ci/https://github.com/kijai/ComfyUI-KJNodes.git
-clone_or_pull https://ghp.ci/https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git
-clone_or_pull https://ghp.ci/https://github.com/rgthree/rgthree-comfy.git
-clone_or_pull https://ghp.ci/https://github.com/shiimizu/ComfyUI_smZNodes.git
-clone_or_pull https://ghp.ci/https://github.com/WASasquatch/was-node-suite-comfyui.git
+clone_or_pull https://gh-proxy.com/https://github.com/bash-j/mikey_nodes.git
+clone_or_pull https://gh-proxy.com/https://github.com/chrisgoringe/cg-use-everywhere.git
+clone_or_pull https://gh-proxy.com/https://github.com/cubiq/ComfyUI_essentials.git
+clone_or_pull https://gh-proxy.com/https://github.com/jags111/efficiency-nodes-comfyui.git
+clone_or_pull https://gh-proxy.com/https://github.com/kijai/ComfyUI-KJNodes.git
+clone_or_pull https://gh-proxy.com/https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git
+clone_or_pull https://gh-proxy.com/https://github.com/rgthree/rgthree-comfy.git
+clone_or_pull https://gh-proxy.com/https://github.com/shiimizu/ComfyUI_smZNodes.git
+clone_or_pull https://gh-proxy.com/https://github.com/WASasquatch/was-node-suite-comfyui.git
 
 # 控制
-clone_or_pull https://ghp.ci/https://github.com/cubiq/ComfyUI_InstantID.git
-clone_or_pull https://ghp.ci/https://github.com/cubiq/ComfyUI_IPAdapter_plus.git
-clone_or_pull https://ghp.ci/https://github.com/cubiq/PuLID_ComfyUI.git
-clone_or_pull https://ghp.ci/https://github.com/Fannovel16/comfyui_controlnet_aux.git
-clone_or_pull https://ghp.ci/https://github.com/florestefano1975/comfyui-portrait-master.git
-clone_or_pull https://ghp.ci/https://github.com/Gourieff/comfyui-reactor-node.git
-clone_or_pull https://ghp.ci/https://github.com/huchenlei/ComfyUI-layerdiffuse.git
-clone_or_pull https://ghp.ci/https://github.com/Kosinkadink/ComfyUI-Advanced-ControlNet.git
-clone_or_pull https://ghp.ci/https://github.com/ltdrdata/ComfyUI-Impact-Pack.git
-clone_or_pull https://ghp.ci/https://github.com/ltdrdata/ComfyUI-Impact-Subpack.git
-clone_or_pull https://ghp.ci/https://github.com/ltdrdata/ComfyUI-Inspire-Pack.git
-clone_or_pull https://ghp.ci/https://github.com/mcmonkeyprojects/sd-dynamic-thresholding.git
-clone_or_pull https://ghp.ci/https://github.com/storyicon/comfyui_segment_anything.git
-clone_or_pull https://ghp.ci/https://github.com/twri/sdxl_prompt_styler.git
+clone_or_pull https://gh-proxy.com/https://github.com/cubiq/ComfyUI_InstantID.git
+clone_or_pull https://gh-proxy.com/https://github.com/cubiq/ComfyUI_IPAdapter_plus.git
+clone_or_pull https://gh-proxy.com/https://github.com/cubiq/PuLID_ComfyUI.git
+clone_or_pull https://gh-proxy.com/https://github.com/Fannovel16/comfyui_controlnet_aux.git
+clone_or_pull https://gh-proxy.com/https://github.com/florestefano1975/comfyui-portrait-master.git
+clone_or_pull https://gh-proxy.com/https://github.com/Gourieff/comfyui-reactor-node.git
+clone_or_pull https://gh-proxy.com/https://github.com/huchenlei/ComfyUI-layerdiffuse.git
+clone_or_pull https://gh-proxy.com/https://github.com/Kosinkadink/ComfyUI-Advanced-ControlNet.git
+clone_or_pull https://gh-proxy.com/https://github.com/ltdrdata/ComfyUI-Impact-Pack.git
+clone_or_pull https://gh-proxy.com/https://github.com/ltdrdata/ComfyUI-Impact-Subpack.git
+clone_or_pull https://gh-proxy.com/https://github.com/ltdrdata/ComfyUI-Inspire-Pack.git
+clone_or_pull https://gh-proxy.com/https://github.com/mcmonkeyprojects/sd-dynamic-thresholding.git
+clone_or_pull https://gh-proxy.com/https://github.com/storyicon/comfyui_segment_anything.git
+clone_or_pull https://gh-proxy.com/https://github.com/twri/sdxl_prompt_styler.git
 
 # 视频
-clone_or_pull https://ghp.ci/https://github.com/Fannovel16/ComfyUI-Frame-Interpolation.git
-clone_or_pull https://ghp.ci/https://github.com/FizzleDorf/ComfyUI_FizzNodes.git
-clone_or_pull https://ghp.ci/https://github.com/Kosinkadink/ComfyUI-AnimateDiff-Evolved.git
-clone_or_pull https://ghp.ci/https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git
-clone_or_pull https://ghp.ci/https://github.com/melMass/comfy_mtb.git
+clone_or_pull https://gh-proxy.com/https://github.com/Fannovel16/ComfyUI-Frame-Interpolation.git
+clone_or_pull https://gh-proxy.com/https://github.com/FizzleDorf/ComfyUI_FizzNodes.git
+clone_or_pull https://gh-proxy.com/https://github.com/Kosinkadink/ComfyUI-AnimateDiff-Evolved.git
+clone_or_pull https://gh-proxy.com/https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git
+clone_or_pull https://gh-proxy.com/https://github.com/melMass/comfy_mtb.git
 
 # 更多
-clone_or_pull https://ghp.ci/https://github.com/cubiq/ComfyUI_FaceAnalysis.git
-clone_or_pull https://ghp.ci/https://github.com/pythongosssss/ComfyUI-WD14-Tagger.git
-clone_or_pull https://ghp.ci/https://github.com/SLAPaper/ComfyUI-Image-Selector.git
-clone_or_pull https://ghp.ci/https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git
+clone_or_pull https://gh-proxy.com/https://github.com/cubiq/ComfyUI_FaceAnalysis.git
+clone_or_pull https://gh-proxy.com/https://github.com/pythongosssss/ComfyUI-WD14-Tagger.git
+clone_or_pull https://gh-proxy.com/https://github.com/SLAPaper/ComfyUI-Image-Selector.git
+clone_or_pull https://gh-proxy.com/https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git
 
 # 配置为中文界面
 if [ ! -f "/root/ComfyUI/user/default/comfy.settings.json" ] ; then

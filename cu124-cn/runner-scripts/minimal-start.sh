@@ -25,12 +25,12 @@ if [ ! -f "/root/.download-complete" ] ; then
 
     set +e
 
-    git clone https://ghp.ci/https://github.com/comfyanonymous/ComfyUI.git || git -C ComfyUI pull --ff-only
+    git clone https://gh-proxy.com/https://github.com/comfyanonymous/ComfyUI.git || git -C ComfyUI pull --ff-only
     cd /root/ComfyUI
     git reset --hard "$(git tag | grep -e '^v' | sort -V | tail -1)"
 
     cd /root/ComfyUI/custom_nodes
-    git clone --depth=1 https://ghp.ci/https://github.com/ltdrdata/ComfyUI-Manager.git || git -C ComfyUI-Manager pull --ff-only
+    git clone --depth=1 https://gh-proxy.com/https://github.com/ltdrdata/ComfyUI-Manager.git || git -C ComfyUI-Manager pull --ff-only
 
     set -e
 
