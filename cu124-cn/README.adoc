@@ -32,7 +32,13 @@ image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-cu124-
 
 * 安装好 Docker 或 Podman
 ** Linux 用户可能需要安装 https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html[NVIDIA Container Toolkit] 并进行初始化（使得容器可以访问宿主机的 GPU）。
+
 ** Windows 用户建议使用 https://www.docker.com/products/docker-desktop/[Docker Desktop] 并在安装时启用 WSL2，并 https://zhuanlan.zhihu.com/p/345645621[限制内存用量] 。
+
+** Windows 用户也可使用
+https://podman-desktop.io/[Podman Desktop]
+，在安装时启用 WSL2，并在之后启用
+https://podman-desktop.io/docs/podman/gpu[容器内 GPU 访问] 。
 
 
 ## 运行方法

@@ -26,10 +26,20 @@ https://github.com/YanWenKun/ComfyUI-Docker/tree/main/cu124-cn#%E8%BF%90%E8%A1%8
 ** Either Game or Studio edition will work.
 ** You don't need to install drivers inside containers. Just make sure it's working on your host OS.
 
-* Docker Installed
-** Linux user may need to install https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html[NVIDIA Container Toolkit] (only on host OS). It will enable containers' GPU access.
-** Windows user could use https://www.docker.com/products/docker-desktop/[Docker Desktop] with WSL2 enabled.
-** WSL2 users please note that NTFS <--> ext4 "translation" is very slow (down to <100MB/s), so you probably want to use an in-WSL folder (or Docker volume) to save ComfyUI.
+* Docker/Podman Installed
+
+** Linux user may need to install
+https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html[NVIDIA Container Toolkit]
+(only on host OS). It will enable containers' GPU access.
+
+** Windows user could use 
+https://www.docker.com/products/docker-desktop/[Docker Desktop] 
+with WSL2 enabled, or 
+https://podman-desktop.io/[Podman Desktop]
+with WSL2 and 
+https://podman-desktop.io/docs/podman/gpu[GPU enabled].
+
+** WSL2 users please note that NTFS <--> ext4 “translation” is very slow (down to <100MiB/s), so you probably want to use an in-WSL folder (or Docker volume) to save ComfyUI.
 
 
 ## Usage

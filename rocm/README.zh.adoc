@@ -17,6 +17,15 @@ https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/native_linux/in
 
 ## 构建并运行
 
+需要根据 GPU 添加如下环境变量（感谢
+https://github.com/YanWenKun/ComfyUI-Docker/pull/67[nhtua]
+的 PR）：
+
+- RDNA 及 RDNA 2 : `-e HSA_OVERRIDE_GFX_VERSION=10.3.0 \`
+- RDNA 3 :  `-e HSA_OVERRIDE_GFX_VERSION=11.0.0 \`
+- APU／集显 : `-e HIP_VISIBLE_DEVICES=0 \`
+
+
 .使用 Docker
 [source,sh]
 ----

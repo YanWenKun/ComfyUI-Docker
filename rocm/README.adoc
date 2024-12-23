@@ -20,6 +20,14 @@ is installed on your Linux host.
 
 ## Build & Run
 
+You may need to add these configuration (especially for APUs) into the command of `docker run`, `podman run` below. (Credit to
+https://github.com/YanWenKun/ComfyUI-Docker/pull/67[nhtua]
+)
+
+- For RDNA and RDNA 2 cards: `-e HSA_OVERRIDE_GFX_VERSION=10.3.0 \`
+- For RDNA 3 cards:  `-e HSA_OVERRIDE_GFX_VERSION=11.0.0 \`
+- Integrated graphics on CPU: `-e HIP_VISIBLE_DEVICES=0 \`
+
 .With Docker
 [source,sh]
 ----
@@ -65,12 +73,6 @@ podman run -it --rm \
   -e CLI_ARGS="" \
   yanwk/comfyui-boot:rocm
 ----
-
-If you have lower tiered AMD GPUs or your CPU with an integrated GPU (Ryzen 7000) then you may need to add these configuration into the command of `docker run`, `podman run` above.
-
-- For RDNA and RDNA 2 cards: `-e HSA_OVERRIDE_GFX_VERSION=10.3.0 \`
-- For RDNA 3 cards:  `-e HSA_OVERRIDE_GFX_VERSION=11.0.0 \`
-- Integrated graphic on CPU: `-e HIP_VISIBLE_DEVICES=0 \`
 
 Once the app is loaded, visit http://localhost:8188/
 
