@@ -8,85 +8,132 @@ FROM opensuse/tumbleweed:latest
 
 LABEL maintainer="code@yanwk.fun"
 
-# Note: GCC for InsightFace;
-#       FFmpeg for video (pip[imageio-ffmpeg] will use system FFmpeg instead of bundled);
-#       'half' for ORT on ROCm.
+RUN set -eu
+
+################################################################################
+# Python and tools
+
 # Note: CMake may use different version of Python. Using 'update-alternatives' to ensure default version.
 RUN --mount=type=cache,target=/var/cache/zypp \
-    set -eu \
-    && zypper addrepo --check --refresh --priority 90 \
+    zypper addrepo --check --refresh --priority 90 \
         'https://ftp.gwdg.de/pub/linux/misc/packman/suse/openSUSE_Tumbleweed/Essentials/' packman-essentials \
     && zypper --gpg-auto-import-keys \
-            install --no-confirm \
-        python310 python310-pip python310-wheel python310-setuptools \
-        python310-devel python310-Cython gcc-c++ python310-py-build-cmake \
-        python310-numpy1 python310-opencv \
-        python310-ffmpeg-python ffmpeg x264 x265 \
-        python310-dbm \
-        ghc-half \
-        google-noto-sans-fonts google-noto-sans-cjk-fonts google-noto-coloremoji-fonts \
-        shadow git aria2 \
-        Mesa-libGL1 libgthread-2_0-0 \
-    && rm -f /usr/lib64/python3.10/EXTERNALLY-MANAGED \
-    && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.10 10
+        install --no-confirm --auto-agree-with-licenses \
+python312-devel \
+python312-pip \
+python312-wheel \
+python312-setuptools \
+python312-Cython \
+python312-py-build-cmake \
+python312-aiohttp \
+python312-dbm \
+python312-ffmpeg-python \
+python312-GitPython \
+python312-httpx \
+python312-joblib \
+python312-lark \
+python312-matplotlib \
+python312-mpmath \
+python312-numba-devel \
+python312-numpy1 \
+python312-onnx \
+python312-opencv \
+python312-pandas \
+python312-qrcode \
+python312-rich \
+python312-scikit-build \
+python312-scikit-build-core-pyproject \
+python312-scikit-image \
+python312-scikit-learn \
+python312-scipy \
+python312-svglib \
+python312-tqdm \
+    && rm /usr/lib64/python3.12/EXTERNALLY-MANAGED \
+    && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 100
 
+# Note: 'half' for ORT on ROCm.
+RUN --mount=type=cache,target=/var/cache/zypp \
+    zypper --gpg-auto-import-keys \
+        install --no-confirm --auto-agree-with-licenses \
+Mesa-libGL1 \
+Mesa-libEGL-devel \
+ghc-half \
+libgthread-2_0-0 \
+make \
+ninja \
+shadow \
+git \
+aria2 \
+fish \
+fd \
+vim \
+which \
+opencv \
+opencv-devel \
+ffmpeg \
+x264 \
+x265 \
+google-noto-sans-fonts \
+google-noto-sans-cjk-fonts \
+google-noto-coloremoji-fonts
+
+################################################################################
+# GCC 12
+# GCC 13 does not implicitly include cstdint. Some repo needs fix before compile.
+# So here we just use good old GCC 12.
+
+RUN --mount=type=cache,target=/var/cache/zypp \
+    zypper --gpg-auto-import-keys \
+        install --no-confirm --auto-agree-with-licenses \
+gcc12 \
+gcc12-c++ \
+cpp12 \
+    && update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++-12 90 \
+    && update-alternatives --install /usr/bin/cc  cc  /usr/bin/gcc-12 90 \
+    && update-alternatives --install /usr/bin/cpp cpp /usr/bin/cpp-12 90 \
+    && update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 90 \
+    && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 90 \
+    && update-alternatives --install /usr/bin/gcc-ar gcc-ar /usr/bin/gcc-ar-12 90 \
+    && update-alternatives --install /usr/bin/gcc-nm gcc-nm /usr/bin/gcc-nm-12 90 \
+    && update-alternatives --install /usr/bin/gcc-ranlib gcc-ranlib /usr/bin/gcc-ranlib-12 90 \
+    && update-alternatives --install /usr/bin/gcov gcov /usr/bin/gcov-12 90 \
+    && update-alternatives --install /usr/bin/gcov-dump gcov-dump /usr/bin/gcov-dump-12 90 \
+    && update-alternatives --install /usr/bin/gcov-tool gcov-tool /usr/bin/gcov-tool-12 90 
+
+################################################################################
+# Python Packages
 RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install --break-system-packages \
+    pip list \
+    && pip install \
         --upgrade pip wheel setuptools
 
-# Install PyTorch && ONNX from AMD repo
-# https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/native_linux/install-pytorch.html
-# https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/native_linux/install-onnx.html
-# Using torchaudio CPU for compatibility
-# The extra index of PyTorch has no use here, just a fail-safe.
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install --break-system-packages \
-        https://repo.radeon.com/rocm/manylinux/rocm-rel-6.2.3/torch-2.3.0%2Brocm6.2.3-cp310-cp310-linux_x86_64.whl \
-        https://repo.radeon.com/rocm/manylinux/rocm-rel-6.2.3/torchvision-0.18.0%2Brocm6.2.3-cp310-cp310-linux_x86_64.whl \
-        https://repo.radeon.com/rocm/manylinux/rocm-rel-6.2.3/pytorch_triton_rocm-2.3.0%2Brocm6.2.3.5a02332983-cp310-cp310-linux_x86_64.whl \
-        https://repo.radeon.com/rocm/manylinux/rocm-rel-6.2.3/onnxruntime_rocm-1.18.0-cp310-cp310-linux_x86_64.whl \
-        https://repo.radeon.com/rocm/manylinux/rocm-rel-6.2/jaxlib-0.4.23%2Brocm620-cp310-cp310-manylinux2014_x86_64.whl \
-        https://repo.radeon.com/rocm/manylinux/rocm-rel-6.2/rocpydecode-1.0.0.0-py3-none-manylinux_2_28_x86_64.whl \
-        https://download.pytorch.org/whl/cpu/torchaudio-2.3.0%2Bcpu-cp310-cp310-linux_x86_64.whl \
-        --extra-index-url https://download.pytorch.org/whl/rocm6.2
+# Deps for ComfyUI & custom nodes
+COPY builder-scripts/.  /builder-scripts/
 
-# Dependencies for frequently-used
 RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install --break-system-packages \
-        -r https://raw.githubusercontent.com/comfyanonymous/ComfyUI/master/requirements.txt \
-        -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/requirements.txt \
-        -r https://raw.githubusercontent.com/cubiq/ComfyUI_essentials/main/requirements.txt \
-        -r https://raw.githubusercontent.com/Fannovel16/comfyui_controlnet_aux/main/requirements.txt \
-        -r https://raw.githubusercontent.com/jags111/efficiency-nodes-comfyui/main/requirements.txt \
-        --extra-index-url https://download.pytorch.org/whl/rocm6.2
+    pip install \
+        -r /builder-scripts/pak1.txt
 
-# Dependencies for more, with few hand-pick:
-# 'compel lark' for smZNodes
-# 'torchdiffeq' for DepthFM
-# 'fairscale' for APISR
 RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install --break-system-packages \
-        -r https://raw.githubusercontent.com/crystian/ComfyUI-Crystools/main/requirements.txt \
-        -r https://raw.githubusercontent.com/cubiq/ComfyUI_FaceAnalysis/main/requirements.txt \
-        -r https://raw.githubusercontent.com/cubiq/ComfyUI_InstantID/main/requirements.txt \
-        -r https://raw.githubusercontent.com/Fannovel16/ComfyUI-Frame-Interpolation/main/requirements-no-cupy.txt \
-        -r https://raw.githubusercontent.com/FizzleDorf/ComfyUI_FizzNodes/main/requirements.txt \
-        -r https://raw.githubusercontent.com/kijai/ComfyUI-KJNodes/main/requirements.txt \
-        -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Impact-Pack/Main/requirements.txt \
-        -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Impact-Subpack/main/requirements.txt \
-        -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Inspire-Pack/main/requirements.txt \
-        -r https://raw.githubusercontent.com/melMass/comfy_mtb/main/requirements.txt \
-        -r https://raw.githubusercontent.com/storyicon/comfyui_segment_anything/main/requirements.txt \
-        -r https://raw.githubusercontent.com/ZHO-ZHO-ZHO/ComfyUI-InstantID/main/requirements.txt \
-        compel lark torchdiffeq fairscale \
-        python-ffmpeg \
-        --extra-index-url https://download.pytorch.org/whl/rocm6.2
+    pip install \
+        -r /builder-scripts/pak3.txt
 
-# Fix MediaPipe's broken dep (protobuf<4).
 RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install --break-system-packages \
-        mediapipe \
+    pip install \
+        -r /builder-scripts/pak5.txt
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        -r /builder-scripts/pak7.txt
+
+# Make sure the deps fit the needs for ComfyUI & Manager
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        -r https://github.com/comfyanonymous/ComfyUI/raw/refs/heads/master/requirements.txt \
+        -r https://github.com/ltdrdata/ComfyUI-Manager/raw/refs/heads/main/requirements.txt \
     && pip list
+
+################################################################################
 
 RUN df -h \
     && du -ah /root \
@@ -94,7 +141,9 @@ RUN df -h \
 
 COPY runner-scripts/.  /runner-scripts/
 
-RUN groupadd -r video
+# For ROCm
+RUN groupadd --system video
+
 USER root
 VOLUME /root
 WORKDIR /root
