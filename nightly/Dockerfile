@@ -21,8 +21,8 @@ RUN --mount=type=cache,target=/var/cache/apt \
     apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get upgrade -y \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-python3.12-full \
-python3.12-dev \
+python3.13-full \
+python3.13-dev \
 libegl1-mesa-dev \
 git \
 cmake \
@@ -37,7 +37,7 @@ vim \
 # x264 \
 # x265 \
     && rm -rf /var/lib/apt/lists/* \
-    && rm /usr/lib/python3.12/EXTERNALLY-MANAGED
+    && rm /usr/lib/python3.13/EXTERNALLY-MANAGED
 
 # In Ubuntu/Debian, PIP packages installed by APT were locked.
 # So here we install PIP in a classic way, make it easier to update.
@@ -55,17 +55,17 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         --dry-run --pre torch torchvision torchaudio \
-        --index-url https://download.pytorch.org/whl/nightly/cu124
+        --index-url https://download.pytorch.org/whl/nightly/cu126
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         --no-deps --pre torch torchvision torchaudio \
-        --index-url https://download.pytorch.org/whl/nightly/cu124
+        --index-url https://download.pytorch.org/whl/nightly/cu126
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         --pre torch torchvision torchaudio \
-        --index-url https://download.pytorch.org/whl/nightly/cu124
+        --index-url https://download.pytorch.org/whl/nightly/cu126
 
 ################################################################################
 # Dependencies
@@ -83,9 +83,8 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # kornia \
 # lark \
 # matplotlib \
-# onnxruntime \
+# onnxruntime-gpu \
 # opencv-contrib-python-headless \
-# opencv-python-headless \
 # pandas \
 # pilgram \
 # pillow \
