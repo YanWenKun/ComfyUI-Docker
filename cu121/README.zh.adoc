@@ -173,7 +173,6 @@ gcs='git clone --depth=1 --no-tags --recurse-submodules --shallow-submodules'
 
 # 工作空间
 $gcs https://github.com/11cafe/comfyui-workspace-manager.git
-$gcs https://github.com/AIGODLIKE/AIGODLIKE-ComfyUI-Translation.git
 $gcs https://github.com/crystian/ComfyUI-Crystools-save.git
 $gcs https://github.com/crystian/ComfyUI-Crystools.git
 

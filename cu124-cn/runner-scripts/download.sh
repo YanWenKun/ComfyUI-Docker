@@ -43,7 +43,6 @@ echo "########################################"
 cd /root/ComfyUI/custom_nodes
 
 # 工作空间
-clone_or_pull https://gh-proxy.com/https://github.com/AIGODLIKE/AIGODLIKE-ComfyUI-Translation.git
 clone_or_pull https://gh-proxy.com/https://github.com/crystian/ComfyUI-Crystools.git
 clone_or_pull https://gh-proxy.com/https://github.com/crystian/ComfyUI-Crystools-save.git
 
@@ -86,12 +85,6 @@ clone_or_pull https://gh-proxy.com/https://github.com/cubiq/ComfyUI_FaceAnalysis
 clone_or_pull https://gh-proxy.com/https://github.com/pythongosssss/ComfyUI-WD14-Tagger.git
 clone_or_pull https://gh-proxy.com/https://github.com/SLAPaper/ComfyUI-Image-Selector.git
 clone_or_pull https://gh-proxy.com/https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git
-
-# 配置为中文界面
-if [ ! -f "/root/ComfyUI/user/default/comfy.settings.json" ] ; then
-    mkdir -p /root/ComfyUI/user/default
-    cp /runner-scripts/comfy.settings.json.example  /root/ComfyUI/user/default/comfy.settings.json
-fi ;
 
 echo "########################################"
 echo "[INFO] 下载模型……"

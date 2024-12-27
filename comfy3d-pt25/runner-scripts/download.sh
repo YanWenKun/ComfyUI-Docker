@@ -64,9 +64,6 @@ cd /root/ComfyUI/custom_nodes
 clone_or_pull https://github.com/ltdrdata/ComfyUI-Manager.git
 mv ComfyUI-Manager ComfyUI-Manager.disabled
 
-# GUI Translation
-clone_or_pull https://github.com/AIGODLIKE/AIGODLIKE-ComfyUI-Translation.git
-
 # Nodes used by 3D-Pack
 clone_or_pull https://github.com/cubiq/ComfyUI_IPAdapter_plus.git
 clone_or_pull https://github.com/edenartlab/eden_comfy_pipelines.git

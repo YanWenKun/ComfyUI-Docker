@@ -41,7 +41,6 @@ echo "########################################"
 cd /root/ComfyUI/custom_nodes
 
 # Workspace
-clone_or_pull https://github.com/AIGODLIKE/AIGODLIKE-ComfyUI-Translation.git
 clone_or_pull https://github.com/crystian/ComfyUI-Crystools.git
 clone_or_pull https://github.com/crystian/ComfyUI-Crystools-save.git
 
