@@ -163,10 +163,7 @@ podman run -it \
 export PATH="$PATH:/root/.local/bin"
 
 # 执行一遍编译脚本，耗时10分钟左右
-bash /runner-scripts/build-deps.sh
-
-# 安装依赖项
-pip install gradio==4.44.1 gradio_litmodel3d==0.0.1
+bash /runner-scripts/build-deps-trellis-demo.sh
 
 # 下载模型
 huggingface-cli download JeffreyXiang/TRELLIS-image-large

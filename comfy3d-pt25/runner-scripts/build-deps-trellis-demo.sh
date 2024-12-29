@@ -36,9 +36,6 @@ done
 cd /root
 
 pip install --force-reinstall \
-    "git+https://github.com/ashawkey/diff-gaussian-rasterization.git"
-
-pip install --force-reinstall \
     "git+https://github.com/ashawkey/kiuikit.git"
 
 pip install --force-reinstall \
@@ -48,6 +45,23 @@ pip install --force-reinstall \
 # Note: vox2seq is already included in Comfy3D_Pre_Builds.
 
 pip install git+https://github.com/JeffreyXiang/diffoctreerast.git
+
+mkdir -p /tmp/build
+
+git clone --depth=1 https://github.com/autonomousvision/mip-splatting.git \
+    /tmp/build/mip-splatting
+#pip uninstall --break-system-packages --yes diff-gaussian-rasterization
+pip install --force-reinstall \
+    /tmp/build/mip-splatting/submodules/diff-gaussian-rasterization/
+
+# (Optional) Compile Flash Attention for Ampere and later GPUs.
+# "MAX_JOBS" limits Ninja jobs to avoid OOM.
+# If have >96GB RAM, just remove MAX_JOBS line.
+export MAX_JOBS=4
+pip install flash-attn --no-build-isolation
+
+# For TRELLIS demo
+pip install gradio==4.44.1 gradio_litmodel3d==0.0.1
 
 # Ensure Numpy1
 pip install numpy==1.26.4

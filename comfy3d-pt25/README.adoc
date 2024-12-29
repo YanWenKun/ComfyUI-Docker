@@ -155,10 +155,7 @@ podman run -it \
 export PATH="$PATH:/root/.local/bin"
 
 # Run the compilation script, takes about 10 minutes.
-bash /runner-scripts/build-deps.sh
-
-# Install dependencies
-pip install gradio==4.44.1 gradio_litmodel3d==0.0.1
+bash /runner-scripts/build-deps-trellis-demo.sh
 
 # Download the model
 huggingface-cli download JeffreyXiang/TRELLIS-image-large
