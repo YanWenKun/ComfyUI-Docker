@@ -200,7 +200,13 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        -r /builder-scripts/pak7.txt \
+        -r /builder-scripts/pak7.txt
+
+# Make sure the deps fit the needs for ComfyUI & Manager
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        -r https://github.com/comfyanonymous/ComfyUI/raw/refs/heads/master/requirements.txt \
+        -r https://github.com/ltdrdata/ComfyUI-Manager/raw/refs/heads/main/requirements.txt \
     && pip list
 
 ################################################################################

@@ -46,7 +46,7 @@ https://podman-desktop.io/docs/podman/gpu[容器内 GPU 访问] 。
 * 以下命令均使用了一次性容器 (`--rm`) 来保持环境整洁、配置清晰。
 * 不建议 WSL2 用户把文件存放在 NTFS 分区内，跨文件系统互访性能极低，且会权限混乱。
 * 注意命令中的 `dockerproxy.cn` 为 Docker Hub 镜像站点地址。如果站点失效，可替换为备用地址，
-https://www.coderjia.cn/archives/dba3f94c-a021-468a-8ac6-e840f85867ea[参考列表]
+https://www.coderjia.cn/archives/dba3f94c-a021-468a-8ac6-e840f85867ea[国内可用 Docker 镜像源汇总]
 。
 
 .使用 Docker
@@ -175,7 +175,7 @@ docker build . -t yanwk/comfyui-boot:cu124-cn -f Dockerfile-cn
 
 * Docker Hub 镜像仓库
 ** dockerproxy.cn
-** https://www.coderjia.cn/archives/dba3f94c-a021-468a-8ac6-e840f85867ea[参考列表]
+** https://www.coderjia.cn/archives/dba3f94c-a021-468a-8ac6-e840f85867ea[国内可用 Docker 镜像源汇总]
 ** 替换为 `docker.io` 即为官方源地址
 
 * PyPI
