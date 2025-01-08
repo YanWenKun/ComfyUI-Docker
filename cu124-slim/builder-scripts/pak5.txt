@@ -40,6 +40,7 @@ soundfile
 spandrel
 svglib
 tokenizers
+toml
 torchsde
 tqdm
 transparent-background
