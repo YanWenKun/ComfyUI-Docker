@@ -24,7 +24,7 @@ NOTE: **Currently Not Working on WSL2**.
 
 * Key Components:
 ** torch==2.5.1+cu124
-** xformers==0.0.28.post3
+** xformers==0.0.29.post1
 
 Additionally, compiled wheel files for Comfy3D can be found
 https://github.com/YanWenKun/ComfyUI-3D-Pack-LinuxWheels/releases/tag/v5.1[here]
