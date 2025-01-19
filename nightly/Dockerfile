@@ -174,10 +174,6 @@ WORKDIR /root
 EXPOSE 8188
 ENV CLI_ARGS=""
 
-# For WSL
-ENV MESA_D3D12_DEFAULT_ADAPTER_NAME="NVIDIA"
-ENV LD_LIBRARY_PATH="/usr/lib/wsl/lib:${LD_LIBRARY_PATH}"
-
 # Let .pyc files be stored in one place
 ENV PYTHONPYCACHEPREFIX="/root/.cache/pycache"
 # Let PIP install packages to /root/.local
