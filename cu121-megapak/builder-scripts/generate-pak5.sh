@@ -13,7 +13,7 @@ https://github.com/cubiq/PuLID_ComfyUI/raw/refs/heads/main/requirements.txt
 https://github.com/Fannovel16/comfyui_controlnet_aux/raw/refs/heads/main/requirements.txt
 https://github.com/Fannovel16/ComfyUI-Frame-Interpolation/raw/refs/heads/main/requirements-no-cupy.txt
 https://github.com/FizzleDorf/ComfyUI_FizzNodes/raw/refs/heads/main/requirements.txt
-https://github.com/Gourieff/comfyui-reactor-node/raw/refs/heads/main/requirements.txt
+https://github.com/Gourieff/ComfyUI-ReActor/raw/refs/heads/main/requirements.txt
 https://github.com/huchenlei/ComfyUI-layerdiffuse/raw/refs/heads/main/requirements.txt
 https://github.com/jags111/efficiency-nodes-comfyui/raw/refs/heads/main/requirements.txt
 https://github.com/kijai/ComfyUI-KJNodes/raw/refs/heads/main/requirements.txt

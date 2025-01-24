@@ -63,7 +63,7 @@ clone_or_pull https://github.com/cubiq/ComfyUI_IPAdapter_plus.git
 clone_or_pull https://github.com/cubiq/PuLID_ComfyUI.git
 clone_or_pull https://github.com/Fannovel16/comfyui_controlnet_aux.git
 clone_or_pull https://github.com/florestefano1975/comfyui-portrait-master.git
-clone_or_pull https://github.com/Gourieff/comfyui-reactor-node.git
+clone_or_pull https://github.com/Gourieff/ComfyUI-ReActor.git
 clone_or_pull https://github.com/huchenlei/ComfyUI-layerdiffuse.git
 clone_or_pull https://github.com/Kosinkadink/ComfyUI-Advanced-ControlNet.git
 clone_or_pull https://github.com/ltdrdata/ComfyUI-Impact-Pack.git
