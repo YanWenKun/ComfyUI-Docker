@@ -14,7 +14,8 @@ joblib
 kornia
 lark
 matplotlib
-onnx
+# Temp fix for mediapipe
+onnx==1.16.2
 onnxruntime-gpu
 opencv-contrib-python-headless
 pandas
