@@ -55,17 +55,17 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         --dry-run --pre torch torchvision torchaudio \
-        --index-url https://download.pytorch.org/whl/nightly/cu128
+        --index-url https://download.pytorch.org/whl/nightly/cu126
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         --no-deps --pre torch torchvision torchaudio \
-        --index-url https://download.pytorch.org/whl/nightly/cu128
+        --index-url https://download.pytorch.org/whl/nightly/cu126
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         --pre torch torchvision torchaudio \
-        --index-url https://download.pytorch.org/whl/nightly/cu128
+        --index-url https://download.pytorch.org/whl/nightly/cu126
 
 ################################################################################
 # Dependencies
