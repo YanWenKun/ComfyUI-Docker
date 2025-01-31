@@ -39,7 +39,7 @@ docker run -it --rm \
 ** Using 'root' user within the container (easy for rootless deploy).
 ** Using CUDA 12.4 + Python 3.12.
 
-* link:cu121-megapak/README.adoc[`cu121-megapak`, `megapak`]
+* link:cu121-megapak/README.adoc[`cu121-megapak`]
 
 ** All-in-one bundle, including dev kits.
 ** Using CUDA 12.1 + Python 3.11.
