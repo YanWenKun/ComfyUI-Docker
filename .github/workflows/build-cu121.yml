@@ -51,7 +51,6 @@ jobs:
           context: ./cu121
           file: ./cu121/Dockerfile
           tags: | 
-            yanwk/comfyui-boot:latest
             yanwk/comfyui-boot:cu121
             yanwk/comfyui-boot:cu121-${{ steps.date.outputs.date }}
           push: true

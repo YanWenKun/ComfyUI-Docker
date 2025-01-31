@@ -17,7 +17,7 @@ https://hub.docker.com/r/yanwk/comfyui-boot[Docker 镜像]
 ** 额外提供 `Dockerfile-cn` 以便本地构建
 ** 推荐初次尝试 ComfyUI 的国内用户使用
 
-* link:cu121/README.zh.adoc[`cu121`, `latest`]
+* link:cu121/README.zh.adoc[`cu121`]
 
 ** 经典版本，简洁易上手，但需要良好的网络连接
 ** 默认仅安装基本的 ComfyUI 与 Manager

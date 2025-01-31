@@ -25,7 +25,7 @@ docker run -it --rm \
 
 ## Image tags
 
-* link:cu121/README.adoc[`cu121`, `latest`]
+* link:cu121/README.adoc[`cu121`]
 
 ** Easy for ComfyUI beginners. Starts with ComfyUI, ComfyUI-Manager and the Photon (SD1.5) model.
 ** Using a low-privilege user within the container (easy for WSL2 deploy).

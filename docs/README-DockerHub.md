@@ -26,7 +26,7 @@ Once the app is loaded, visit http://localhost:8188/
 
 ## Image Tags
 
-- `cu121`, `latest` [\[doc\]](https://github.com/YanWenKun/ComfyUI-Docker/tree/main/cu121)
+- `cu121` [\[doc\]](https://github.com/YanWenKun/ComfyUI-Docker/tree/main/cu121)
 
   - Easy for ComfyUI beginners.
   - Starts with ComfyUI, ComfyUI-Manager and the Photon (SD1.5) model.
