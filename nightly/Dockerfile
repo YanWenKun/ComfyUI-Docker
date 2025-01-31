@@ -15,7 +15,7 @@
 # Ref: https://gitlab.com/nvidia/container-images/cuda/-/issues/47
 ################################################################################
 
-FROM nvidia/cuda:12.6.3-cudnn-devel-ubuntu24.04
+FROM nvidia/cuda:12.8.0-cudnn-devel-ubuntu24.04
 
 RUN --mount=type=cache,target=/var/cache/apt \
     apt-get update \
@@ -55,17 +55,17 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         --dry-run --pre torch torchvision torchaudio \
-        --index-url https://download.pytorch.org/whl/nightly/cu126
+        --index-url https://download.pytorch.org/whl/nightly/cu128
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         --no-deps --pre torch torchvision torchaudio \
-        --index-url https://download.pytorch.org/whl/nightly/cu126
+        --index-url https://download.pytorch.org/whl/nightly/cu128
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         --pre torch torchvision torchaudio \
-        --index-url https://download.pytorch.org/whl/nightly/cu126
+        --index-url https://download.pytorch.org/whl/nightly/cu128
 
 ################################################################################
 # Dependencies
