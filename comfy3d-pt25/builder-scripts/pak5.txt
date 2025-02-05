@@ -56,5 +56,6 @@ trimesh
 typer
 typing-extensions
 ultralytics
+uv
 webcolors
 xatlas

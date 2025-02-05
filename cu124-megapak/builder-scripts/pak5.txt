@@ -48,6 +48,7 @@ trimesh[easy]
 typer
 typing-extensions
 ultralytics
+uv
 webcolors
 yacs
 yapf
