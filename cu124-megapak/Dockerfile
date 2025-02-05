@@ -174,6 +174,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # What's more, NVIDIA's openSUSE15 repo didn't provide CuDNN & NCCL, we have to use Python packages anyway.
 ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\
 :/usr/local/lib64/python3.12/site-packages/torch/lib\
+:/usr/local/lib/python3.12/site-packages/cusparselt/lib\
 :/usr/local/lib/python3.12/site-packages/nvidia/cuda_cupti/lib\
 :/usr/local/lib/python3.12/site-packages/nvidia/cuda_runtime/lib\
 :/usr/local/lib/python3.12/site-packages/nvidia/cudnn/lib\

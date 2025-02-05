@@ -58,7 +58,6 @@ RUN --mount=type=cache,target=/var/cache/zypp \
 Mesa-libGL1 \
 Mesa-libEGL-devel \
 libgthread-2_0-0 \
-libcusparselt0 \
 make \
 ninja \
 git \
@@ -127,6 +126,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # Bind libs (.so files)
 ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\
 :/usr/local/lib64/python3.12/site-packages/torch/lib\
+:/usr/local/lib/python3.12/site-packages/cusparselt/lib\
 :/usr/local/lib/python3.12/site-packages/nvidia/cuda_cupti/lib\
 :/usr/local/lib/python3.12/site-packages/nvidia/cuda_runtime/lib\
 :/usr/local/lib/python3.12/site-packages/nvidia/cudnn/lib\
