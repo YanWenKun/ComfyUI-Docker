@@ -1,0 +1,15 @@
+services:
+
+  comfyui:
+    init: true
+    container_name: comfyui-cpu
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: "yanwk/comfyui-boot:cpu"
+    ports:
+      - "8188:8188"
+    volumes:
+      - "./storage:/root"
+    environment:
+      - CLI_ARGS="--cpu"
