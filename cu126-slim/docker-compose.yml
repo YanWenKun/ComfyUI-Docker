@@ -6,7 +6,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: "yanwk/comfyui-boot:cu124-slim"
+    image: "yanwk/comfyui-boot:cu126-slim"
     ports:
       - "8188:8188"
     volumes:
