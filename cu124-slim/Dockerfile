@@ -58,6 +58,7 @@ RUN --mount=type=cache,target=/var/cache/zypp \
 Mesa-libGL1 \
 Mesa-libEGL-devel \
 libgthread-2_0-0 \
+libcusparselt0 \
 make \
 ninja \
 git \
