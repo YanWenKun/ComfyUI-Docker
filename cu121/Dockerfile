@@ -94,6 +94,7 @@ ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\
 :/usr/local/lib/python3.11/site-packages/nvidia/cuda_cupti/lib\
 :/usr/local/lib/python3.11/site-packages/nvidia/cuda_runtime/lib\
 :/usr/local/lib/python3.11/site-packages/nvidia/cudnn/lib\
+:/usr/local/lib/python3.11/site-packages/cusparselt/lib\
 :/usr/local/lib/python3.11/site-packages/nvidia/cufft/lib"
 
 # More libs (not necessary, just in case)
