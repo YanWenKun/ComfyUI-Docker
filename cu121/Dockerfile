@@ -41,15 +41,19 @@ ARG PIP_EXTRA_INDEX_URL="https://pypi.org/simple"
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        --dry-run xformers torchvision torchaudio
+        --dry-run xformers==0.0.29.post1 torch==2.5.1 torchvision torchaudio
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        --no-deps xformers torch torchvision torchaudio
+        --no-deps torch==2.5.1
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        xformers torchvision torchaudio
+        --no-deps xformers==0.0.29.post1 torch==2.5.1
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        xformers==0.0.29.post1 torch==2.5.1 torchvision torchaudio
 
 ARG PIP_INDEX_URL=
 ARG PIP_EXTRA_INDEX_URL=
