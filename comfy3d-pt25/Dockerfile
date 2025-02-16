@@ -12,7 +12,8 @@ RUN set -eu
 
 RUN --mount=type=cache,target=/var/cache/zypp \
     zypper --gpg-auto-import-keys \
-        dist-upgrade --no-confirm --no-recommends --auto-agree-with-licenses
+        dist-upgrade --no-confirm --no-recommends --auto-agree-with-licenses \
+    && rm /usr/lib64/python3.12/EXTERNALLY-MANAGED
 
 ################################################################################
 # Extra Packages
