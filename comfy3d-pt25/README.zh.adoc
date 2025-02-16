@@ -6,8 +6,7 @@ https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=comfy3d-pt25[在 <Docker H
 
 注意：**目前尚不兼容 WSL2 Docker**
 
-* 默认仅安装 ComfyUI、ComfyUI-3D-Pack 以及 3D-Pack 示例工作流所需节点。
-* 会下载安装 ComfyUI-Manager，但默认将其禁用，以避免其自动更新依赖项。
+* 默认安装 ComfyUI、ComfyUI-3D-Pack、ComfyUI-Manager 以及 3D-Pack 示例工作流所需节点。
 * 第一次启动时，在下载步骤完成后，会尝试重新编译 3D-Pack 所需依赖项。
 ** 添加空文件 `.build-complete` 到主目录下即可跳过该步骤（类似 `.download-complete`）。一些工作流（比如 TripoSR）不需要重新编译也能正常运行，这里为了确保兼容性添加了该步骤。
 ** 耗时大约 10 分钟，如果太长（比如半小时以上）建议跳过编译，尝试直接运行。
@@ -15,7 +14,7 @@ https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=comfy3d-pt25[在 <Docker H
 
 ## 版本信息
 
-* ComfyUI-3D-Pack 版本：最新
+* ComfyUI-3D-Pack 版本：最新（ https://github.com/YanWenKun/ComfyUI-3D-Pack[修剪版] ）
 
 * 开发组件：
 ** CUDA dev kit (12.4)

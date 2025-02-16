@@ -6,8 +6,7 @@ https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=comfy3d-pt25[View on <Dock
 
 NOTE: **Currently Not Working on WSL2**.
 
-* By default, only install ComfyUI, ComfyUI-3D-Pack, and any custom nodes required by example workflows.
-* ComfyUI-Manager will be installed but disabled by default.
+* By default, install ComfyUI, ComfyUI-3D-Pack, ComfyUI-Manager, and custom nodes required by 3D-Pack example workflows.
 * After the download is complete, the script will attempt to rebuild dependencies for the 3D-Pack.
 ** This process could take about 10 minutes.
 ** If the rebuild is unnecessary (some workflows such as TripoSR can run directly), add an empty file named `.build-complete` to the storage folder (similar to the `.download-complete` file).
@@ -15,7 +14,7 @@ NOTE: **Currently Not Working on WSL2**.
 
 ## Version Info
 
-* ComfyUI-3D-Pack version: latest
+* ComfyUI-3D-Pack version: latest (https://github.com/YanWenKun/ComfyUI-3D-Pack[fork version])
 
 * Dev kits:
 ** CUDA dev kit (12.4)

@@ -35,7 +35,7 @@ echo "[INFO] Downloading ComfyUI-3D-Pack..."
 echo "########################################"
 
 cd /root/ComfyUI/custom_nodes
-clone_or_pull https://github.com/MrForExample/ComfyUI-3D-Pack.git
+clone_or_pull https://github.com/YanWenKun/ComfyUI-3D-Pack.git
 
 # Copy example files of 3D-Pack
 set +e
@@ -59,10 +59,8 @@ echo "########################################"
 
 cd /root/ComfyUI/custom_nodes
 
-# ComfyUI-Manager can do re-install of dependencies, which is not wanted for 3D-Pack.
-# Here we download it but disable it by default.
+# ComfyUI-Manager
 clone_or_pull https://github.com/ltdrdata/ComfyUI-Manager.git
-mv ComfyUI-Manager ComfyUI-Manager.disabled
 
 # Nodes used by 3D-Pack
 clone_or_pull https://github.com/cubiq/ComfyUI_IPAdapter_plus.git
