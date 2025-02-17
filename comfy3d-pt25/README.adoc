@@ -4,8 +4,6 @@ image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-comfy3
 
 https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=comfy3d-pt25[View on <Docker Hub>]
 
-NOTE: **Currently Not Working on WSL2**.
-
 * By default, install ComfyUI, ComfyUI-3D-Pack, ComfyUI-Manager, and custom nodes required by 3D-Pack example workflows.
 * After the download is complete, the script will attempt to rebuild dependencies for the 3D-Pack.
 ** This process could take about 10 minutes.
