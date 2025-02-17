@@ -13,7 +13,8 @@ RUN set -eu
 RUN --mount=type=cache,target=/var/cache/zypp \
     zypper --gpg-auto-import-keys \
         dist-upgrade --no-confirm --no-recommends --auto-agree-with-licenses \
-    && rm /usr/lib64/python3.12/EXTERNALLY-MANAGED
+        && rm /usr/lib64/python3.12/EXTERNALLY-MANAGED \
+        && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 100
 
 ################################################################################
 # Extra Packages
