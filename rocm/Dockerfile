@@ -107,12 +107,33 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     && pip install \
         --upgrade pip wheel setuptools
 
-# Deps for ComfyUI & custom nodes
-COPY builder-scripts/.  /builder-scripts/
+# PyTorch ROCm
+# Ref: https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/native_linux/install-pytorch.html
+# Ref: https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/native_linux/install-onnx.html
+
+# Break down the steps for smaller image layers.
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+--no-deps https://repo.radeon.com/rocm/manylinux/rocm-rel-6.3.2/torch-2.4.0%2Brocm6.3.2-cp312-cp312-linux_x86_64.whl
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        -r /builder-scripts/pak1.txt
+https://repo.radeon.com/rocm/manylinux/rocm-rel-6.3.2/torch-2.4.0%2Brocm6.3.2-cp312-cp312-linux_x86_64.whl \
+https://repo.radeon.com/rocm/manylinux/rocm-rel-6.3.2/pytorch_triton_rocm-3.0.0%2Brocm6.3.2.75cc27c26a-cp312-cp312-linux_x86_64.whl
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+https://repo.radeon.com/rocm/manylinux/rocm-rel-6.3.2/torchvision-0.19.0%2Brocm6.3.2-cp312-cp312-linux_x86_64.whl \
+https://repo.radeon.com/rocm/manylinux/rocm-rel-6.3.2/torchaudio-2.4.0%2Brocm6.3.2-cp312-cp312-linux_x86_64.whl \
+https://repo.radeon.com/rocm/manylinux/rocm-rel-6.3.2/jaxlib-0.4.31-cp312-cp312-manylinux_2_28_x86_64.whl \
+https://repo.radeon.com/rocm/manylinux/rocm-rel-6.3.2/apex-1.4.0%2Brocm6.3.2-cp312-cp312-linux_x86_64.whl
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+https://repo.radeon.com/rocm/manylinux/rocm-rel-6.3.2/onnxruntime_rocm-1.19.0-cp312-cp312-linux_x86_64.whl
+
+# Deps for ComfyUI & custom nodes
+COPY builder-scripts/.  /builder-scripts/
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
