@@ -75,6 +75,9 @@ google-noto-sans-fonts \
 google-noto-sans-cjk-fonts \
 google-noto-coloremoji-fonts
 
+# Temp fix for OpenCV on openSUSE
+ENV LD_PRELOAD=/usr/lib64/libjpeg.so.8
+
 ################################################################################
 # GCC 13 
 # Required for compiling CUDA 12.4-related code.

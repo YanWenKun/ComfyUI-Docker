@@ -76,6 +76,10 @@ google-noto-sans-fonts \
 google-noto-sans-cjk-fonts \
 google-noto-coloremoji-fonts
 
+# Temp fix for OpenCV on openSUSE
+# 临时修复：其他组件会优先寻找 libjpeg 版本 6 (实际 8)
+ENV LD_PRELOAD=/usr/lib64/libjpeg.so.8
+
 ################################################################################
 # GCC 13 
 # 与 CUDA 12.4 兼容
