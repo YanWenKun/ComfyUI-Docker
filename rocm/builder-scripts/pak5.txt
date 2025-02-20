@@ -1,7 +1,9 @@
 addict
 aiohttp
 albumentations
+av
 cachetools
+chardet
 color-matcher
 colour-science
 dill
@@ -38,6 +40,8 @@ trimesh[easy]
 typer
 typing-extensions
 ultralytics
+uv
 webcolors
 yacs
 yapf
+yarl
