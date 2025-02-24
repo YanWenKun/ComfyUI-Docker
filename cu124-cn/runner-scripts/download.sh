@@ -41,6 +41,23 @@ set -e
 cd /root/ComfyUI/custom_nodes
 clone_or_pull https://gh-proxy.com/https://github.com/ltdrdata/ComfyUI-Manager.git
 
+# 使用镜像站点替换 ComfyUI-Manager 默认仓库地址，避免卡 UI
+# 治标不治本，使用 Manager 全部功能仍需挂代理或魔改 
+mkdir -p /root/ComfyUI/user/default/ComfyUI-Manager
+
+cat <<EOF > /root/ComfyUI/user/default/ComfyUI-Manager/config.ini
+[default]
+channel_url = https://gh-proxy.com/https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main
+EOF
+
+cat <<EOF > /root/ComfyUI/user/default/ComfyUI-Manager/channels.list
+default::https://gh-proxy.com/https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main
+recent::https://gh-proxy.com/https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/node_db/new
+legacy::https://gh-proxy.com/https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/node_db/legacy
+forked::https://gh-proxy.com/https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/node_db/forked
+dev::https://gh-proxy.com/https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/node_db/dev
+tutorial::https://gh-proxy.com/https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/node_db/tutorial
+EOF
 
 echo "########################################"
 echo "[INFO] 下载扩展组件（自定义节点）……"
