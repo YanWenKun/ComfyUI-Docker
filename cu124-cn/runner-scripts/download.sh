@@ -2,16 +2,22 @@
 
 set -euo pipefail
 
-# 使用正则表达式，从链接中查找 REPO_NAME
+# 下载（clone）自定义节点，如已存在，则更新（pull），额外处理含有子模块的节点
+# 其中，正则表达式内容为：从链接中查找仓库名称 REPO_NAME
 # 先匹配 [https://example.com/xyz/REPO_NAME.git] 或 [git@example.com:xyz/REPO_NAME.git]
 # 再匹配 [http(s)://example.com/xyz/REPO_NAME]
 # 查找结果存放在 BASH_REMATCH[2]
 function clone_or_pull () {
     if [[ $1 =~ ^(.*[/:])(.*)(\.git)$ ]] || [[ $1 =~ ^(http.*\/)(.*)$ ]]; then
-        echo "${BASH_REMATCH[2]}" ;
+        echo "正在下载： ${BASH_REMATCH[2]}" ;
         set +e ;
-            git clone --depth=1 --no-tags --recurse-submodules --shallow-submodules "$1" \
-                || git -C "${BASH_REMATCH[2]}" pull --ff-only ;
+            git clone --depth=1 --no-tags "$1" || git -C "${BASH_REMATCH[2]}" pull --ff-only ;
+
+            if [ -f "${BASH_REMATCH[2]}/.gitmodules" ] ; then
+                echo "正在下载 ${BASH_REMATCH[2]} 的子模块..." ;
+                sed -i.bak 's|url = https://github.com/|url = https://gh-proxy.com/https://github.com/|' "${BASH_REMATCH[2]}/.gitmodules" ;
+                git -C "${BASH_REMATCH[2]}" submodule update --init --recursive ;
+            fi ;
         set -e ;
     else
         echo "[ERROR] 无效的 URL: $1" ;
