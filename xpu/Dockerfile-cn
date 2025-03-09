@@ -1,0 +1,94 @@
+# 替换为国内源的 Dockerfile，不再适合 GitHub CI
+
+# 该基础镜像声明不含仓库前缀，因而会先尝试使用本地镜像
+# 该镜像基于 Ubuntu
+FROM intel/intel-extension-for-pytorch:2.6.10-xpu
+
+LABEL maintainer="code@yanwk.fun"
+
+RUN set -eu
+
+# 清理上游遗留的缓存
+RUN rm -rf /root/.cache/pip
+
+# 配置使用国内源，安装 Python 及工具
+RUN --mount=type=cache,target=/var/cache/apt \
+    printf "\
+deb https://mirrors.cernet.edu.cn/ubuntu/ jammy main restricted universe multiverse\n\
+deb https://mirrors.cernet.edu.cn/ubuntu/ jammy-updates main restricted universe multiverse\n\
+deb https://mirrors.cernet.edu.cn/ubuntu/ jammy-backports main restricted universe multiverse\n\
+deb https://mirrors.cernet.edu.cn/ubuntu/ jammy-security main restricted universe multiverse\n" \
+        > /etc/apt/sources.list \
+    && apt-get update \
+    && apt-get install -y \
+fish \
+fd-find \
+vim \
+less \
+aria2 \
+git \
+ninja-build \
+make \
+cmake \
+python3-dev \
+python3-pybind11 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# 配置使用国内源，安装 Python 包
+ENV PIP_INDEX_URL="https://mirrors.cernet.edu.cn/pypi/web/simple"
+ENV PIP_EXTRA_INDEX_URL="https://mirrors.cernet.edu.cn/pypi/web/simple"
+
+ARG PIP_ROOT_USER_ACTION='ignore'
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip list \
+    && pip install \
+        --upgrade pip wheel setuptools
+
+# 安装 ComfyUI 及扩展所需依赖项
+COPY builder-scripts/.  /builder-scripts/
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        -r /builder-scripts/pak3.txt
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        -r /builder-scripts/pak5.txt
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        -r /builder-scripts/pak7.txt
+
+# 确保依赖项匹配 ComfyUI & Manager
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        -r https://gh-proxy.com/https://github.com/comfyanonymous/ComfyUI/raw/refs/heads/master/requirements.txt \
+        -r https://gh-proxy.com/https://github.com/ltdrdata/ComfyUI-Manager/raw/refs/heads/main/requirements.txt
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+intel-extension-for-pytorch==2.6.10+xpu \
+    --extra-index-url https://pytorch-extension.intel.com/release-whl/stable/xpu/cn/
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+oneccl_bind_pt==2.6.0+xpu \
+    --extra-index-url https://pytorch-extension.intel.com/release-whl/stable/xpu/cn/
+
+# HuggingFace 使用国内源
+ENV HF_ENDPOINT=https://hf-mirror.com
+
+RUN df -h \
+    && du -ah /root \
+    && find /root/ -mindepth 1 -delete
+
+COPY runner-scripts-cn/.  /runner-scripts/
+
+USER root
+VOLUME /root
+WORKDIR /root
+EXPOSE 8188
+ENV CLI_ARGS=""
+CMD ["bash","/runner-scripts/entrypoint.sh"]

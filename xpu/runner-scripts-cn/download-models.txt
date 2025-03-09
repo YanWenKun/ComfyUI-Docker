@@ -1,0 +1,13 @@
+# TAESD（用于高质量预览）
+https://gh-proxy.com/https://raw.githubusercontent.com/madebyollin/taesd/main/taesd_decoder.pth
+  dir=vae_approx
+  out=taesd_decoder.pth
+https://gh-proxy.com/https://raw.githubusercontent.com/madebyollin/taesd/main/taesdxl_decoder.pth
+  dir=vae_approx
+  out=taesdxl_decoder.pth
+https://gh-proxy.com/https://raw.githubusercontent.com/madebyollin/taesd/main/taesd3_decoder.pth
+  dir=vae_approx
+  out=taesd3_decoder.pth
+https://gh-proxy.com/https://raw.githubusercontent.com/madebyollin/taesd/main/taef1_decoder.pth
+  dir=vae_approx
+  out=taef1_decoder.pth
