@@ -41,7 +41,7 @@ docker run -it --rm \
   --gpus all \
   -p 8188:8188 \
   -v "$(pwd)"/storage:/root \
-  -e PIP_INDEX_URL="https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple" \
+  -e PIP_INDEX_URL="https://mirrors.cernet.edu.cn/pypi/web/simple" \
   -e HF_ENDPOINT="https://hf-mirror.com" \
   -e CLI_ARGS="" \
   yanwk/comfyui-boot:comfy3d-pt25
@@ -58,7 +58,7 @@ podman run -it --rm \
   --security-opt label=disable \
   -p 8188:8188 \
   -v "$(pwd)"/storage:/root \
-  -e PIP_INDEX_URL="https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple" \
+  -e PIP_INDEX_URL="https://mirrors.cernet.edu.cn/pypi/web/simple" \
   -e HF_ENDPOINT="https://hf-mirror.com" \
   -e CLI_ARGS="" \
   docker.io/yanwk/comfyui-boot:comfy3d-pt25
@@ -79,7 +79,7 @@ http://localhost:1081
 |设置 HTTP 代理。
 
 |PIP_INDEX_URL
-|'https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple'
+|'https://mirrors.cernet.edu.cn/pypi/web/simple'
 |设置 PyPI 镜像站点。
 
 |HF_ENDPOINT
@@ -148,7 +148,7 @@ podman run -it \
   -e PIP_USER=true \
   -e PIP_ROOT_USER_ACTION=ignore \
   -e PYTHONPYCACHEPREFIX="/root/.cache/pycache" \
-  -e PIP_INDEX_URL="https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple" \
+  -e PIP_INDEX_URL="https://mirrors.cernet.edu.cn/pypi/web/simple" \
   -e HF_ENDPOINT="https://hf-mirror.com" \
   docker.io/yanwk/comfyui-boot:comfy3d-pt25 \
   /bin/fish

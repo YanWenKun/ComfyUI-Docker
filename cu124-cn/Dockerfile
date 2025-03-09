@@ -171,16 +171,17 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 
 # 使用国内下载源
 
+# Temp fix: 因镜像大面积故障，故指定南京大学源，待清华源等修复后，应改为联合镜像站 https://mirrors.cernet.edu.cn
 RUN --mount=type=cache,target=/var/cache/zypp \
     zypper modifyrepo --disable --all \
     && zypper addrepo --check --refresh --gpgcheck \
-        'https://mirrors.tuna.tsinghua.edu.cn/opensuse/tumbleweed/repo/oss/' mirror-oss \
+        'https://mirror.nju.edu.cn/opensuse/tumbleweed/repo/oss/' mirror-oss \
     && zypper addrepo --check --refresh --gpgcheck \
-        'https://mirrors.tuna.tsinghua.edu.cn/opensuse/tumbleweed/repo/non-oss/' mirror-non-oss \
+        'https://mirror.nju.edu.cn/opensuse/tumbleweed/repo/non-oss/' mirror-non-oss \
     && zypper addrepo --check --refresh --priority 90 \
-        'https://mirrors.tuna.tsinghua.edu.cn/packman/suse/openSUSE_Tumbleweed/Essentials/' mirror-packman-essentials
+        'https://mirror.nju.edu.cn/packman/suse/openSUSE_Tumbleweed/Essentials/' mirror-packman-essentials
 
-ENV PIP_INDEX_URL="https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple"
+ENV PIP_INDEX_URL="https://mirrors.cernet.edu.cn/pypi/web/simple"
         
 ENV HF_ENDPOINT="https://hf-mirror.com"
 

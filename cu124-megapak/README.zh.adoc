@@ -112,7 +112,7 @@ http://localhost:1081
 |设置 HTTP 代理。
 
 |PIP_INDEX_URL
-|'https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple'
+|'https://mirrors.cernet.edu.cn/pypi/web/simple'
 |设置 PyPI 镜像站点。
 
 |HF_ENDPOINT

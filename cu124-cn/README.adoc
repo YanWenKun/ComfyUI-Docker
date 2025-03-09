@@ -62,7 +62,7 @@ docker run -it --rm \
   -p 8188:8188 \
   -v "$(pwd)"/storage:/root \
   -e CLI_ARGS="--fast" \
-  -e PIP_INDEX_URL="https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple" \
+  -e PIP_INDEX_URL="https://mirrors.cernet.edu.cn/pypi/web/simple" \
   -e HF_ENDPOINT="https://hf-mirror.com" \
   yanwk/comfyui-boot:cu124-cn
 ----
@@ -82,7 +82,7 @@ podman run -it --rm \
   -p 8188:8188 \
   -v "$(pwd)"/storage:/root \
   -e CLI_ARGS="--fast" \
-  -e PIP_INDEX_URL="https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple" \
+  -e PIP_INDEX_URL="https://mirrors.cernet.edu.cn/pypi/web/simple" \
   -e HF_ENDPOINT="https://hf-mirror.com" \
   yanwk/comfyui-boot:cu124-cn
 ----
@@ -179,7 +179,7 @@ docker build . -t yanwk/comfyui-boot:cu124-cn -f Dockerfile-cn
 ** 替换为 `docker.io` 即为官方源地址
 
 * PyPI
-** https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple
+** https://mirrors.cernet.edu.cn/pypi/web/simple
 ** 可按需替换为阿里云源 http://mirrors.aliyun.com/pypi/simple/
 ** 替换启动参数（环境变量）即可
 
@@ -190,8 +190,10 @@ docker build . -t yanwk/comfyui-boot:cu124-cn -f Dockerfile-cn
 ** https://gh-proxy.com
 
 * openSUSE 与 PackMan
-** https://mirrors.tuna.tsinghua.edu.cn/opensuse/tumbleweed/
-** https://mirrors.tuna.tsinghua.edu.cn/packman/suse/openSUSE_Tumbleweed/Essentials/
+** https://mirror.nju.edu.cn/opensuse/tumbleweed/
+** https://mirror.nju.edu.cn/packman/suse/openSUSE_Tumbleweed/Essentials/
+** https://mirrors.cernet.edu.cn/opensuse/tumbleweed/
+** https://mirrors.cernet.edu.cn/packman/suse/openSUSE_Tumbleweed/Essentials/
 
 
 [[pre-start]]
@@ -303,7 +305,7 @@ http://localhost:1081
 |设置 HTTP 代理。
 
 |PIP_INDEX_URL
-|'https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple'
+|'https://mirrors.cernet.edu.cn/pypi/web/simple'
 |设置 PyPI 镜像站点。
 
 |HF_ENDPOINT
