@@ -29,6 +29,7 @@ make \
 cmake \
 python3-dev \
 python3-pybind11 \
+libgl1-mesa-glx \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
