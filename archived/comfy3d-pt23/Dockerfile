@@ -217,7 +217,8 @@ ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\
 ################################################################################
 
 RUN du -ah /root \
-    && find /root/ -mindepth 1 -delete
+    && rm -rf /root/* \
+    && rm -rf /root/.[^.]* /root/.??*
 
 COPY runner-scripts/.  /runner-scripts/
 
