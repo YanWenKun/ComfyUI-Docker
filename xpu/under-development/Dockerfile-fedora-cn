@@ -1,0 +1,204 @@
+################################################################################
+# XPU 镜像，下载地址改用国内源（不再适合 GitHub CI）。
+# 注意：构建时仍需访问 download.pytorch.org 。
+#
+# 使用 Python 3.13, GCC 14, 由 Intel 编译的 PyTorch。
+# 容器内将以 root 用户运行，以便于 rootless 部署。
+################################################################################
+
+# 该基础镜像声明不含仓库前缀，因而会先尝试使用本地镜像
+FROM fedora:42
+
+LABEL maintainer="code@yanwk.fun"
+
+RUN set -eu
+
+################################################################################
+# 配置使用国内源，并安装 Python 及工具
+# 拆分安装步骤，使生成的镜像文件分为更多更小的层，减少单层下载大小。
+
+# Fedora 基本不需要手动配置镜像，这里谨防万一。
+RUN --mount=type=cache,target=/var/cache/dnf \
+    sed -e 's|^metalink=|#metalink=|g' \
+        -e 's|^#baseurl=http://download.example/pub/fedora/linux|baseurl=https://mirrors.cernet.edu.cn/fedora|g' \
+        -i.bak \
+        /etc/yum.repos.d/fedora.repo \
+        /etc/yum.repos.d/fedora-updates.repo \
+    && dnf install -y --nogpgcheck \
+        # 'https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-42.noarch.rpm'
+        'https://mirrors.cernet.edu.cn/rpmfusion/free/fedora/rpmfusion-free-release-42.noarch.rpm' \
+    && sed -e 's!^metalink=!#metalink=!g' \
+        -e 's!^mirrorlist=!#mirrorlist=!g' \
+        -e 's!^#baseurl=!baseurl=!g' \
+        -e 's!https\?://download1\.rpmfusion\.org/!https://mirrors.cernet.edu.cn/rpmfusion/!g' \
+        -i.bak /etc/yum.repos.d/rpmfusion*.repo \
+    && printf "\
+[oneAPI]\n\
+name=Intel® oneAPI repository\n\
+baseurl=https://yum.repos.intel.com/oneapi\n\
+enabled=1\n\
+gpgcheck=1\n\
+repo_gpgcheck=1\n\
+gpgkey=https://yum.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB\n" \
+        > /etc/yum.repos.d/oneAPI.repo
+
+RUN --mount=type=cache,target=/var/cache/dnf \
+    dnf install -y \
+python3.13-devel \
+python3-pip \
+python3-wheel \
+python3-setuptools
+
+RUN --mount=type=cache,target=/var/cache/dnf \
+    dnf install -y \
+python3-cython \
+python3-cmake \
+python3-aiohttp \
+python3-GitPython \
+python3-httpx \
+python3-joblib \
+python3-lark \
+python3-matplotlib \
+python3-mpmath \
+python3-numpy \
+python3-onnx \
+python3-qrcode \
+python3-rich
+
+RUN --mount=type=cache,target=/var/cache/dnf \
+    dnf install -y \
+intel-compute-runtime \
+mesa-libGL \
+mesa-libEGL \
+gcc-c++ \
+make \
+ninja \
+git \
+which
+
+# Fedora 42 defaults to GCC 15
+RUN --mount=type=cache,target=/var/cache/dnf \
+    dnf install -y \
+python3-ffmpeg-python \
+x264 \
+x265 \
+default-fonts-cjk
+
+RUN --mount=type=cache,target=/var/cache/dnf \
+    dnf install -y \
+python3-opencv
+
+RUN --mount=type=cache,target=/var/cache/dnf \
+    dnf install -y \
+python3-pandas \
+python3-scikit-build \
+python3-scikit-build-core \
+python3-scikit-image \
+python3-scikit-learn \
+python3-tqdm
+
+RUN --mount=type=cache,target=/var/cache/dnf \
+    dnf install -y \
+fish \
+aria2 \
+fd-find \
+vim
+
+RUN --mount=type=cache,target=/var/cache/dnf \
+    dnf install -y \
+intel-oneapi-base-toolkit
+
+# ################################################################################
+# # 配置使用国内源，安装 Python 包
+
+ENV PIP_INDEX_URL="https://mirrors.cernet.edu.cn/pypi/web/simple"
+ENV PIP_EXTRA_INDEX_URL="https://mirrors.cernet.edu.cn/pypi/web/simple"
+
+ARG PIP_ROOT_USER_ACTION='ignore'
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip list \
+    && pip install \
+        --upgrade pip wheel setuptools
+
+#https://github.com/intel/intel-extension-for-pytorch/raw/refs/heads/release/xpu/2.6.10/scripts/compile_bundle.sh
+
+# 先安装 PyTorch CPU 作为占位符
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+torch==2.6.0 \
+torchvision==0.21.0 \
+torchaudio==2.6.0 \
+    --index-url https://download.pytorch.org/whl/cpu/
+
+# 安装 ComfyUI 及扩展所需依赖项
+COPY builder-scripts/.  /builder-scripts/
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        -r /builder-scripts/pak3.txt
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        -r /builder-scripts/pak5.txt
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        -r /builder-scripts/pak7.txt
+
+# 确保依赖项匹配 ComfyUI & Manager
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        -r https://gh-proxy.com/https://github.com/comfyanonymous/ComfyUI/raw/refs/heads/master/requirements.txt \
+        -r https://gh-proxy.com/https://github.com/ltdrdata/ComfyUI-Manager/raw/refs/heads/main/requirements.txt \
+    && pip list
+
+# 覆盖安装 PyTorch XPU
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+torch==2.6.0+xpu \
+torchvision==0.21.0+xpu \
+torchaudio==2.6.0+xpu \
+    --index-url https://download.pytorch.org/whl/xpu/
+
+# PyTorch XPU
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+intel-extension-for-pytorch==2.6.10+xpu \
+    --extra-index-url https://pytorch-extension.intel.com/release-whl/stable/xpu/cn/
+
+# PyTorch XPU
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+oneccl_bind_pt==2.6.0+xpu \
+    --extra-index-url https://pytorch-extension.intel.com/release-whl/stable/xpu/cn/
+
+################################################################################
+# 绑定环境变量 (依赖库 .so 文件)
+
+ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\
+:/usr/local/lib64/python3.13/site-packages/torch/lib/\
+:/usr/local/lib"
+
+################################################################################
+# HuggingFace 使用国内源
+
+ENV HF_ENDPOINT=https://hf-mirror.com
+
+################################################################################
+
+RUN df -h \
+    && du -ah /root \
+    && find /root/ -mindepth 1 -delete
+
+COPY runner-scripts/.  /runner-scripts/
+
+# 默认不下载任何模型（避免访问 GitHub 或镜像，前者无法直接访问，后者有可能失效）
+RUN echo '#' > /runner-scripts/download-models.txt
+
+USER root
+VOLUME /root
+WORKDIR /root
+EXPOSE 8188
+ENV CLI_ARGS=""
+CMD ["bash","/runner-scripts/entrypoint.sh"]
