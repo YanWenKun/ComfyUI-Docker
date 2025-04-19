@@ -44,34 +44,9 @@ https://hub.docker.com/r/yanwk/comfyui-boot[Docker 镜像]
 
 ** 使用最新预览版的 PyTorch
 
-* https://github.com/MrForExample/ComfyUI-3D-Pack[ComfyUI-3D-Pack] 专用镜像：
+* link:comfy3d-pt25/README.zh.adoc[`comfy3d-pt25`]
 
-** link:comfy3d-pt22/README.zh.adoc[`comfy3d-pt22`]
-基于 PyTorch 2.2，使用
-https://github.com/MrForExample/ComfyUI-3D-Pack/tree/3b4e715939376634c68aa4c1c7d4ea4a8665c098[2024/06/23]
-版本的 Comfy3D
-
-** link:comfy3d-pt23/README.zh.adoc[`comfy3d-pt23`]
-基于 PyTorch 2.3，使用
-https://github.com/MrForExample/ComfyUI-3D-Pack/tree/bdc5e3029ed96d9fa25e651e12fce1553a4422c4[2024/10/18]
-版本的 Comfy3D
-
-** link:comfy3d-pt25/README.zh.adoc[`comfy3d-pt25`]
-基于 PyTorch 2.5，使用最新版本的 Comfy3D
-
-
-## 2024 九月重大更新
-
-* 新增 `cu124-cn`
-* 新增 `nightly`
-
-## 2024 七月重大更新
-
-* `latest` 更名 `cu121` （保留原名）
-* `megapak` 更名  `cu121-megapak` （保留原名）
-* 新增 `cu124-megapak`
-* 新增 `comfy3d-pt22`, `comfy3d-pt23`
-* 其他镜像移除 comfy3d 支持
+** https://github.com/MrForExample/ComfyUI-3D-Pack[ComfyUI-3D-Pack] 专用镜像
 
 
 ## 声明

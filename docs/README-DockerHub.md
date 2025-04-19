@@ -64,13 +64,9 @@ Once the app is loaded, visit http://localhost:8188/
 
   - Using preview version of PyTorch.
 
-- Images dedicated for [ComfyUI-3D-Pack](https://github.com/MrForExample/ComfyUI-3D-Pack):
+- `comfy3d-pt25` [\[doc\]](https://github.com/YanWenKun/ComfyUI-Docker/tree/main/comfy3d-pt25)
 
-  - `comfy3d-pt22` [\[doc\]](https://github.com/YanWenKun/ComfyUI-Docker/tree/main/comfy3d-pt22) Running the [Jun 23, 2024](https://github.com/MrForExample/ComfyUI-3D-Pack/tree/3b4e715939376634c68aa4c1c7d4ea4a8665c098[) version of Comfy3D based on PyTorch 2.2.
-
-  - `comfy3d-pt23` [\[doc\]](https://github.com/YanWenKun/ComfyUI-Docker/tree/main/comfy3d-pt23) Running the [Oct 18, 2024](https://github.com/MrForExample/ComfyUI-3D-Pack/tree/bdc5e3029ed96d9fa25e651e12fce1553a4422c4) version of Comfy3D based on PyTorch 2.3.
-
-  - `comfy3d-pt25` [\[doc\]](https://github.com/YanWenKun/ComfyUI-Docker/tree/main/comfy3d-pt25) Running the latest version of Comfy3D based on PyTorch 2.5.
+  - Image dedicated for [ComfyUI-3D-Pack](https://github.com/MrForExample/ComfyUI-3D-Pack).
 
 
 For more detailed docs, check [GitHub Page](https://github.com/YanWenKun/ComfyUI-Docker).
