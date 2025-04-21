@@ -42,7 +42,6 @@ cd /root/ComfyUI/custom_nodes
 
 # Workspace
 clone_or_pull https://github.com/crystian/ComfyUI-Crystools.git
-clone_or_pull https://github.com/crystian/ComfyUI-Crystools-save.git
 
 # General
 clone_or_pull https://github.com/bash-j/mikey_nodes.git

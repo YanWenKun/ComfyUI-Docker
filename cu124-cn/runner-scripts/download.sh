@@ -67,7 +67,6 @@ cd /root/ComfyUI/custom_nodes
 
 # 工作空间
 clone_or_pull https://gh-proxy.com/https://github.com/crystian/ComfyUI-Crystools.git
-clone_or_pull https://gh-proxy.com/https://github.com/crystian/ComfyUI-Crystools-save.git
 
 # 综合
 clone_or_pull https://gh-proxy.com/https://github.com/bash-j/mikey_nodes.git
