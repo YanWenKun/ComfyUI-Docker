@@ -5,7 +5,7 @@
 # Using PyTorch built by Intel.
 ################################################################################
 
-FROM intel/intel-extension-for-pytorch:2.6.10-xpu
+FROM intel/intel-extension-for-pytorch:2.7.10-xpu
 
 LABEL maintainer="code@yanwk.fun"
 
@@ -65,12 +65,12 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # Make sure using the right version of Intel packages
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-intel-extension-for-pytorch==2.6.10+xpu \
+intel-extension-for-pytorch==2.7.10+xpu \
     --extra-index-url https://pytorch-extension.intel.com/release-whl/stable/xpu/us/
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-oneccl_bind_pt==2.6.0+xpu \
+oneccl_bind_pt==2.7.0+xpu \
     --extra-index-url https://pytorch-extension.intel.com/release-whl/stable/xpu/us/
 
 ################################################################################
