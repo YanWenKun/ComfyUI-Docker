@@ -114,23 +114,23 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # Break down the steps for smaller image layers.
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
---no-deps https://repo.radeon.com/rocm/manylinux/rocm-rel-6.3.2/torch-2.4.0%2Brocm6.3.2-cp312-cp312-linux_x86_64.whl
+--no-deps https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4/torch-2.6.0%2Brocm6.4.0.git2fb0ac2b-cp312-cp312-linux_x86_64.whl
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-https://repo.radeon.com/rocm/manylinux/rocm-rel-6.3.2/torch-2.4.0%2Brocm6.3.2-cp312-cp312-linux_x86_64.whl \
-https://repo.radeon.com/rocm/manylinux/rocm-rel-6.3.2/pytorch_triton_rocm-3.0.0%2Brocm6.3.2.75cc27c26a-cp312-cp312-linux_x86_64.whl
+https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4/torch-2.6.0%2Brocm6.4.0.git2fb0ac2b-cp312-cp312-linux_x86_64.whl \
+https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4/pytorch_triton_rocm-3.2.0%2Brocm6.4.0.git6da9e660-cp312-cp312-linux_x86_64.whl
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-https://repo.radeon.com/rocm/manylinux/rocm-rel-6.3.2/torchvision-0.19.0%2Brocm6.3.2-cp312-cp312-linux_x86_64.whl \
-https://repo.radeon.com/rocm/manylinux/rocm-rel-6.3.2/torchaudio-2.4.0%2Brocm6.3.2-cp312-cp312-linux_x86_64.whl \
-https://repo.radeon.com/rocm/manylinux/rocm-rel-6.3.2/jaxlib-0.4.31-cp312-cp312-manylinux_2_28_x86_64.whl \
-https://repo.radeon.com/rocm/manylinux/rocm-rel-6.3.2/apex-1.4.0%2Brocm6.3.2-cp312-cp312-linux_x86_64.whl
+https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4/torchvision-0.21.0%2Brocm6.4.0.git4040d51f-cp312-cp312-linux_x86_64.whl \
+https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4/torchaudio-2.6.0%2Brocm6.4.0.gitd8831425-cp312-cp312-linux_x86_64.whl \
+https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4/jaxlib-0.4.35-cp312-cp312-manylinux_2_28_x86_64.whl \
+https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4/apex-1.6.0%2Brocm6.4.0.git69ee42b2-cp312-cp312-linux_x86_64.whl
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-https://repo.radeon.com/rocm/manylinux/rocm-rel-6.3.2/onnxruntime_rocm-1.19.0-cp312-cp312-linux_x86_64.whl
+https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4/onnxruntime_rocm-1.21.0-cp312-cp312-linux_x86_64.whl
 
 # Deps for ComfyUI & custom nodes
 COPY builder-scripts/.  /builder-scripts/
