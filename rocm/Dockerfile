@@ -78,27 +78,27 @@ google-noto-sans-cjk-fonts \
 google-noto-coloremoji-fonts
 
 ################################################################################
-# GCC 12
-# GCC 13 does not implicitly include cstdint. Some repo needs fix before compile.
-# So here we just use good old GCC 12.
+# GCC 13
+# GCC 12 was dropped in 2025 OpenSUSE Tumbleweed updates.
+# Keep in mind that (GCC >= 13) does not implicitly include <cstdint>. Some repos will need fix before compiling.
 
 RUN --mount=type=cache,target=/var/cache/zypp \
     zypper --gpg-auto-import-keys \
         install --no-confirm --auto-agree-with-licenses \
-gcc12 \
-gcc12-c++ \
-cpp12 \
-    && update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++-12 90 \
-    && update-alternatives --install /usr/bin/cc  cc  /usr/bin/gcc-12 90 \
-    && update-alternatives --install /usr/bin/cpp cpp /usr/bin/cpp-12 90 \
-    && update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 90 \
-    && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 90 \
-    && update-alternatives --install /usr/bin/gcc-ar gcc-ar /usr/bin/gcc-ar-12 90 \
-    && update-alternatives --install /usr/bin/gcc-nm gcc-nm /usr/bin/gcc-nm-12 90 \
-    && update-alternatives --install /usr/bin/gcc-ranlib gcc-ranlib /usr/bin/gcc-ranlib-12 90 \
-    && update-alternatives --install /usr/bin/gcov gcov /usr/bin/gcov-12 90 \
-    && update-alternatives --install /usr/bin/gcov-dump gcov-dump /usr/bin/gcov-dump-12 90 \
-    && update-alternatives --install /usr/bin/gcov-tool gcov-tool /usr/bin/gcov-tool-12 90 
+gcc13 \
+gcc13-c++ \
+cpp13 \
+    && update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++-13 90 \
+    && update-alternatives --install /usr/bin/cc  cc  /usr/bin/gcc-13 90 \
+    && update-alternatives --install /usr/bin/cpp cpp /usr/bin/cpp-13 90 \
+    && update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 90 \
+    && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 90 \
+    && update-alternatives --install /usr/bin/gcc-ar gcc-ar /usr/bin/gcc-ar-13 90 \
+    && update-alternatives --install /usr/bin/gcc-nm gcc-nm /usr/bin/gcc-nm-13 90 \
+    && update-alternatives --install /usr/bin/gcc-ranlib gcc-ranlib /usr/bin/gcc-ranlib-13 90 \
+    && update-alternatives --install /usr/bin/gcov gcov /usr/bin/gcov-13 90 \
+    && update-alternatives --install /usr/bin/gcov-dump gcov-dump /usr/bin/gcov-dump-13 90 \
+    && update-alternatives --install /usr/bin/gcov-tool gcov-tool /usr/bin/gcov-tool-13 90 
 
 ################################################################################
 # Python Packages
@@ -130,7 +130,8 @@ https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4/apex-1.6.0%2Brocm6.4.0.git69
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4/onnxruntime_rocm-1.21.0-cp312-cp312-linux_x86_64.whl
+https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4/onnxruntime_rocm-1.21.0-cp312-cp312-linux_x86_64.whl \
+onnxruntime==1.21.0
 
 # Deps for ComfyUI & custom nodes
 COPY builder-scripts/.  /builder-scripts/
