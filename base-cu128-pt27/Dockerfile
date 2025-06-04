@@ -158,20 +158,23 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     && pip install \
         --upgrade pip wheel setuptools
 
-ARG PIP_INDEX_URL="https://download.pytorch.org/whl/test/cu128"
+ARG PIP_INDEX_URL="https://download.pytorch.org/whl/cu128"
 ARG PIP_EXTRA_INDEX_URL="https://pypi.org/simple"
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        --dry-run torch==2.7.1 torchvision torchaudio
+        --dry-run torch==2.7.0 torchvision torchaudio xformers
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        --no-deps torch==2.7.1
+        --no-deps torch==2.7.0
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        torch==2.7.1 torchvision torchaudio
+        torch==2.7.0 torchvision torchaudio xformers
+
+ARG PIP_INDEX_URL=
+ARG PIP_EXTRA_INDEX_URL=
 
 # Bind libs (.so files)
 ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\
@@ -190,12 +193,3 @@ ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\
 :/usr/local/lib/python3.12/site-packages/nvidia/nccl/lib\
 :/usr/local/lib/python3.12/site-packages/nvidia/nvjitlink/lib\
 :/usr/local/lib/python3.12/site-packages/nvidia/nvtx/lib"
-
-# Handle xFormers dev version
-# Installing from source will not specify PyTorch version
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install \
-        --no-binary xformers==0.0.31.dev1033
-
-ARG PIP_INDEX_URL=
-ARG PIP_EXTRA_INDEX_URL=
