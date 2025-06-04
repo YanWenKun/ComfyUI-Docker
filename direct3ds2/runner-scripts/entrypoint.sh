@@ -14,12 +14,10 @@ else
     source /root/user-scripts/set-proxy.sh
 fi ;
 
-# Download D3DS2
+# Download/Update D3DS2
 cd /root
-if [ ! -f "/root/.download-complete" ] ; then
-    chmod +x /runner-scripts/download.sh
-    bash /runner-scripts/download.sh
-fi ;
+chmod +x /runner-scripts/download-repo.sh
+bash /runner-scripts/download-repo.sh
 
 # Run user's pre-start script
 cd /root
@@ -54,6 +52,15 @@ if [ ! -f "/root/.build-complete" ] ; then
     bash /runner-scripts/build-deps.sh
 fi ;
 
+# Download Models
+# Try only once. If first download failed, the Gradio app will download on demand.
 cd /root
+if [ ! -f "/root/.download-complete" ] ; then
+    chmod +x /runner-scripts/download-models.sh
+    bash /runner-scripts/download-models.sh
+    touch /root/.download-complete
+fi ;
 
+# Run the Gradio app
+cd /root
 python3 ./Direct3D-S2/app.py
