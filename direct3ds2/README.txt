@@ -1,0 +1,11 @@
+Env vars
+
+TORCH_CUDA_ARCH_LIST=6.1+PTX;8.6;8.9+PTX
+
+ATTN_BACKEND=xformers
+SPARSE_BACKEND=torchsparse
+SPARSE_ATTN_BACKEND=xformers
+
+ATTN_BACKEND=flash_attn
+SPARSE_BACKEND=torchsparse
+SPARSE_ATTN_BACKEND=flash_attn

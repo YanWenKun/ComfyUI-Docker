@@ -1,0 +1,13 @@
+transformers==4.40.2
+
+cmake
+Cython
+einops
+gradio
+igraph
+open3d
+pymeshfix
+pyvista
+sentencepiece
+tqdm
+trimesh[easy]
