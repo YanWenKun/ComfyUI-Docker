@@ -163,15 +163,15 @@ ARG PIP_EXTRA_INDEX_URL="https://pypi.org/simple"
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        --dry-run torch==2.7.0 torchvision torchaudio xformers
+        --dry-run torch==2.7 torchvision torchaudio xformers
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        --no-deps torch==2.7.0
+        --no-deps torch==2.7
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        torch==2.7.0 torchvision torchaudio xformers
+        torch==2.7 torchvision torchaudio xformers
 
 ARG PIP_INDEX_URL=
 ARG PIP_EXTRA_INDEX_URL=
