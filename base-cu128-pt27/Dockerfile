@@ -1,6 +1,6 @@
 ################################################################################
 # Dockerfile that builds 'yanwk/comfyui-boot:cu128-base'
-# An environment for PyTorch 2.7, CUDA 12.8, Python 3.13
+# An environment for PyTorch 2.7, CUDA 12.8, Python 3.12
 ################################################################################
 
 FROM docker.io/opensuse/tumbleweed:latest
@@ -69,37 +69,37 @@ RUN --mount=type=cache,target=/var/cache/zypp \
         'https://ftp.gwdg.de/pub/linux/misc/packman/suse/openSUSE_Tumbleweed/Essentials/' packman-essentials \
     && zypper --gpg-auto-import-keys \
         install --no-confirm --auto-agree-with-licenses \
-python313-devel \
-python313-pip \
-python313-wheel \
-python313-setuptools \
-python313-Cython \
-python313-py-build-cmake \
-python313-aiohttp \
-python313-dbm \
-python313-ffmpeg-python \
-python313-GitPython \
-python313-httpx \
-python313-joblib \
-python313-lark \
-python313-matplotlib \
-python313-mpmath \
-python313-numba-devel \
-python313-numpy1 \
-python313-onnx \
-python313-opencv \
-python313-pandas \
-python313-qrcode \
-python313-rich \
-python313-scikit-build \
-python313-scikit-build-core-pyproject \
-python313-scikit-image \
-python313-scikit-learn \
-python313-scipy \
-python313-svglib \
-python313-tqdm \
-    && rm /usr/lib64/python3.13/EXTERNALLY-MANAGED \
-    && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.13 100
+python312-devel \
+python312-pip \
+python312-wheel \
+python312-setuptools \
+python312-Cython \
+python312-py-build-cmake \
+python312-aiohttp \
+python312-dbm \
+python312-ffmpeg-python \
+python312-GitPython \
+python312-httpx \
+python312-joblib \
+python312-lark \
+python312-matplotlib \
+python312-mpmath \
+python312-numba-devel \
+python312-numpy1 \
+python312-onnx \
+python312-opencv \
+python312-pandas \
+python312-qrcode \
+python312-rich \
+python312-scikit-build \
+python312-scikit-build-core-pyproject \
+python312-scikit-image \
+python312-scikit-learn \
+python312-scipy \
+python312-svglib \
+python312-tqdm \
+    && rm /usr/lib64/python3.12/EXTERNALLY-MANAGED \
+    && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 100
 
 RUN --mount=type=cache,target=/var/cache/zypp \
     zypper --gpg-auto-import-keys \
@@ -175,21 +175,21 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 
 # Bind libs (.so files)
 ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\
-:/usr/local/lib64/python3.13/site-packages/torch/lib\
-:/usr/local/lib/python3.13/site-packages/cusparselt/lib\
-:/usr/local/lib/python3.13/site-packages/nvidia/cublas/lib\
-:/usr/local/lib/python3.13/site-packages/nvidia/cuda_cupti/lib\
-:/usr/local/lib/python3.13/site-packages/nvidia/cuda_nvrtc/lib\
-:/usr/local/lib/python3.13/site-packages/nvidia/cuda_runtime/lib\
-:/usr/local/lib/python3.13/site-packages/nvidia/cudnn/lib\
-:/usr/local/lib/python3.13/site-packages/nvidia/cufft/lib\
-:/usr/local/lib/python3.13/site-packages/nvidia/cufile/lib\
-:/usr/local/lib/python3.13/site-packages/nvidia/curand/lib\
-:/usr/local/lib/python3.13/site-packages/nvidia/cusolver/lib\
-:/usr/local/lib/python3.13/site-packages/nvidia/cusparse/lib\
-:/usr/local/lib/python3.13/site-packages/nvidia/nccl/lib\
-:/usr/local/lib/python3.13/site-packages/nvidia/nvjitlink/lib\
-:/usr/local/lib/python3.13/site-packages/nvidia/nvtx/lib"
+:/usr/local/lib64/python3.12/site-packages/torch/lib\
+:/usr/local/lib/python3.12/site-packages/cusparselt/lib\
+:/usr/local/lib/python3.12/site-packages/nvidia/cublas/lib\
+:/usr/local/lib/python3.12/site-packages/nvidia/cuda_cupti/lib\
+:/usr/local/lib/python3.12/site-packages/nvidia/cuda_nvrtc/lib\
+:/usr/local/lib/python3.12/site-packages/nvidia/cuda_runtime/lib\
+:/usr/local/lib/python3.12/site-packages/nvidia/cudnn/lib\
+:/usr/local/lib/python3.12/site-packages/nvidia/cufft/lib\
+:/usr/local/lib/python3.12/site-packages/nvidia/cufile/lib\
+:/usr/local/lib/python3.12/site-packages/nvidia/curand/lib\
+:/usr/local/lib/python3.12/site-packages/nvidia/cusolver/lib\
+:/usr/local/lib/python3.12/site-packages/nvidia/cusparse/lib\
+:/usr/local/lib/python3.12/site-packages/nvidia/nccl/lib\
+:/usr/local/lib/python3.12/site-packages/nvidia/nvjitlink/lib\
+:/usr/local/lib/python3.12/site-packages/nvidia/nvtx/lib"
 
 # Handle xFormers dev version
 RUN --mount=type=cache,target=/root/.cache/pip \
