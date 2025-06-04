@@ -7,6 +7,8 @@ on:
     paths-ignore:
       - '**'
       - '!direct3ds2/Dockerfile'
+      - '!direct3ds2/builder-scripts/**'
+      - '!direct3ds2/runner-scripts/**'
       - '!.github/workflows/build-direct3ds2.yml'
 
 
