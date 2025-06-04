@@ -17,12 +17,11 @@ podman run -it \
   --security-opt label=disable \
   -p 7860:7860 \
   -v "$(pwd)"/storage:/root \
-  -e TORCH_CUDA_ARCH_LIST=7.5+PTX \
+  -e TORCH_CUDA_ARCH_LIST="7.5+PTX" \
   -e ATTN_BACKEND="xformers" \
   -e SPARSE_ATTN_BACKEND="xformers" \
   -e SPARSE_BACKEND="torchsparse" \
   -e GRADIO_SERVER_NAME="0.0.0.0" \
-  -e PYTHONPYCACHEPREFIX="/root/.cache/pycache" \
   docker.io/yanwk/comfyui-boot:direct3ds2
 ----
 
@@ -37,11 +36,10 @@ podman run -it \
   --security-opt label=disable \
   -p 7860:7860 \
   -v "$(pwd)"/storage:/root \
-  -e TORCH_CUDA_ARCH_LIST=8.6+PTX \
+  -e TORCH_CUDA_ARCH_LIST="8.6+PTX" \
   -e ATTN_BACKEND="flash_attn" \
   -e SPARSE_ATTN_BACKEND="flash_attn" \
   -e SPARSE_BACKEND="torchsparse" \
   -e GRADIO_SERVER_NAME="0.0.0.0" \
-  -e PYTHONPYCACHEPREFIX="/root/.cache/pycache" \
   docker.io/yanwk/comfyui-boot:direct3ds2
 ----
