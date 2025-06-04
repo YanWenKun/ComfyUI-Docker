@@ -195,7 +195,7 @@ ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\
 # Installing from source will not specify PyTorch version
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        --pre --no-binary xformers
+        --no-binary xformers==0.0.31.dev1033
 
 ARG PIP_INDEX_URL=
 ARG PIP_EXTRA_INDEX_URL=
