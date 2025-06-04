@@ -192,9 +192,10 @@ ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\
 :/usr/local/lib/python3.12/site-packages/nvidia/nvtx/lib"
 
 # Handle xFormers dev version
+# Installing from source will not specify PyTorch version
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        xformers==0.0.31.dev1033
+        --pre --no-binary xformers
 
 ARG PIP_INDEX_URL=
 ARG PIP_EXTRA_INDEX_URL=
