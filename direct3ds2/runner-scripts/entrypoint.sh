@@ -2,6 +2,15 @@
 
 set -e
 
+# Let .pyc files be stored in one place
+export PYTHONPYCACHEPREFIX="/root/.cache/pycache"
+# Let PIP install packages to /root/.local
+export PIP_USER=true
+# Add above to PATH
+export PATH="${PATH}:/root/.local/bin"
+# Suppress [WARNING: Running pip as the 'root' user]
+export PIP_ROOT_USER_ACTION=ignore
+
 # Run user's set-proxy script
 cd /root
 if [ ! -f "/root/user-scripts/set-proxy.sh" ] ; then
@@ -31,20 +40,6 @@ else
     source /root/user-scripts/pre-start.sh
 fi ;
 
-
-echo "########################################"
-echo "[INFO] Starting Direct3D-S2..."
-echo "########################################"
-
-# Let .pyc files be stored in one place
-export PYTHONPYCACHEPREFIX="/root/.cache/pycache"
-# Let PIP install packages to /root/.local
-export PIP_USER=true
-# Add above to PATH
-export PATH="${PATH}:/root/.local/bin"
-# Suppress [WARNING: Running pip as the 'root' user]
-export PIP_ROOT_USER_ACTION=ignore
-
 # Build Dependencies
 cd /root
 if [ ! -f "/root/.build-complete" ] ; then
@@ -61,6 +56,9 @@ if [ ! -f "/root/.download-complete" ] ; then
     touch /root/.download-complete
 fi ;
 
-# Run the Gradio app
+echo "########################################"
+echo "[INFO] Starting Direct3D-S2..."
+echo "########################################"
+
 cd /root
 python3 ./Direct3D-S2/app.py
