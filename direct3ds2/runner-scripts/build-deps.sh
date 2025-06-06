@@ -20,7 +20,7 @@ cd /root
 pip install "git+https://github.com/mit-han-lab/torchsparse.git"
 
 cd /root/Direct3D-S2
-pip install .
+pip install -e .
 
 # (Optional) Compile Flash Attention for Ampere and later GPUs.
 # "MAX_JOBS" limits Ninja jobs to avoid OOM.
