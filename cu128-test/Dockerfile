@@ -129,7 +129,6 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # Bind libs (.so files)
 ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\
 :/usr/local/lib64/python3.12/site-packages/torch/lib\
-:/usr/local/lib/python3.12/site-packages/cusparselt/lib\
 :/usr/local/lib/python3.12/site-packages/nvidia/cublas/lib\
 :/usr/local/lib/python3.12/site-packages/nvidia/cuda_cupti/lib\
 :/usr/local/lib/python3.12/site-packages/nvidia/cuda_nvrtc/lib\
@@ -140,6 +139,7 @@ ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\
 :/usr/local/lib/python3.12/site-packages/nvidia/curand/lib\
 :/usr/local/lib/python3.12/site-packages/nvidia/cusolver/lib\
 :/usr/local/lib/python3.12/site-packages/nvidia/cusparse/lib\
+:/usr/local/lib/python3.12/site-packages/nvidia/cusparselt/lib\
 :/usr/local/lib/python3.12/site-packages/nvidia/nccl/lib\
 :/usr/local/lib/python3.12/site-packages/nvidia/nvjitlink/lib\
 :/usr/local/lib/python3.12/site-packages/nvidia/nvtx/lib"
