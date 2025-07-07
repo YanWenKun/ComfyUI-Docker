@@ -9,7 +9,6 @@ blend-modes
 cachetools
 chardet
 clip-interrogator
-cmake
 color-matcher
 colour-science
 deepdiff
