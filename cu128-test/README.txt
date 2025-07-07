@@ -1,9 +1,11 @@
-This Docker image pre-installed PyTorch 2.7 with libs for CUDA 12.8.
+This Docker image pre-installed PyTorch 2.8 with libs for CUDA 12.8.
 
-Note that xFormers is not installed, as it doesn't provide official support for test-version of PyTorch.
+Notes:
+1. PyTorch, since version 2.7 + CUDA 12.8, had dropped the support for Maxwell, Pascal, and Volta GPUs.
+   If you're using one of them, use CUDA 12.6 builds instead.
+2. xFormers is not installed, as it doesn't provide official support for test-version of PyTorch.
 
-Usage
-
+Usage:
 ----
 mkdir -p storage
 

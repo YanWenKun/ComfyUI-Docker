@@ -127,8 +127,10 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         --extra-index-url https://pypi.org/simple
 
 # Bind libs (.so files)
+# Ref: https://github.com/pytorch/pytorch/blob/main/.ci/manywheel/build_cuda.sh
 ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\
 :/usr/local/lib64/python3.12/site-packages/torch/lib\
+:/usr/local/lib/python3.12/site-packages/cusparselt/lib\
 :/usr/local/lib/python3.12/site-packages/nvidia/cublas/lib\
 :/usr/local/lib/python3.12/site-packages/nvidia/cuda_cupti/lib\
 :/usr/local/lib/python3.12/site-packages/nvidia/cuda_nvrtc/lib\
@@ -142,6 +144,7 @@ ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\
 :/usr/local/lib/python3.12/site-packages/nvidia/cusparselt/lib\
 :/usr/local/lib/python3.12/site-packages/nvidia/nccl/lib\
 :/usr/local/lib/python3.12/site-packages/nvidia/nvjitlink/lib\
+:/usr/local/lib/python3.12/site-packages/nvidia/nvshmem/lib\
 :/usr/local/lib/python3.12/site-packages/nvidia/nvtx/lib"
 
 # Deps for ComfyUI & custom nodes
