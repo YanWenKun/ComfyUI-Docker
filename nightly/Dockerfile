@@ -165,8 +165,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 ################################################################################
 
 RUN du -ah /root \
-    && rm -rfv /root/* \
-    && rm -rfv /root/.[^.]* /root/.??* \
+    && rm -rfv /root/.profile /root/.bashrc \
     && df -h
 
 USER root
