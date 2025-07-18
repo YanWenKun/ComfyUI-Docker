@@ -25,31 +25,18 @@ python311-pip \
 python311-wheel \
 python311-setuptools \
 python311-Cython \
-python311-py-build-cmake \
 python311-aiohttp \
 python311-dbm \
-python311-ffmpeg-python \
 python311-GitPython \
 python311-httpx \
-python311-joblib \
 python311-lark \
 python311-matplotlib \
-python311-mpmath \
-python311-numba-devel \
-python311-numpy1 \
-python311-onnx \
+python311-numpy \
 python311-opencv \
-python311-pandas \
 python311-qrcode \
 python311-rich \
 python311-scikit-build \
-python311-scikit-build-core-pyproject \
-python311-scikit-image \
-python311-scikit-learn \
-python311-scipy \
-python311-svglib \
 python311-tqdm \
-    && rm /usr/lib64/python3.11/EXTERNALLY-MANAGED \
     && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11 100
 
 RUN --mount=type=cache,target=/var/cache/zypp \
@@ -59,21 +46,18 @@ Mesa-libGL1 \
 Mesa-libEGL-devel \
 libgthread-2_0-0 \
 make \
+cmake \
 ninja \
 git \
 aria2 \
 fish \
 fd \
 vim \
-which \
 opencv \
 opencv-devel \
 ffmpeg \
 x264 \
-x265 \
-google-noto-sans-fonts \
-google-noto-sans-cjk-fonts \
-google-noto-coloremoji-fonts
+x265
 
 # Temp fix for OpenCV on openSUSE
 ENV LD_PRELOAD=/usr/lib64/libjpeg.so.8
