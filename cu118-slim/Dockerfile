@@ -163,6 +163,13 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         -r /builder-scripts/pak7.txt
 
+# Install ONNX Runtime for CUDA 11.8
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        --force-reinstall onnxruntime-gpu \
+        --index-url https://aiinfra.pkgs.visualstudio.com/PublicPackages/_packaging/onnxruntime-cuda-11/pypi/simple/ \
+        --extra-index-url https://pypi.org/simple
+
 # Make sure the deps fit the needs for ComfyUI
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
