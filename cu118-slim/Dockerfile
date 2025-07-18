@@ -1,7 +1,7 @@
 ################################################################################
 # Dockerfile that builds 'yanwk/comfyui-boot:cu118-slim'
 # A runtime environment for https://github.com/comfyanonymous/ComfyUI
-# Using CUDA 11.8, Python 3.10, PyTorch 2.7.1
+# Using CUDA 11.8, Python 3.11, PyTorch 2.7.1
 # Using 'root' inside the container (easy for rootless deploy).
 ################################################################################
 
@@ -20,37 +20,37 @@ RUN --mount=type=cache,target=/var/cache/zypp \
         'https://ftp.gwdg.de/pub/linux/misc/packman/suse/openSUSE_Leap_15.6/Essentials/' packman-essentials \
     && zypper --gpg-auto-import-keys \
         install --no-confirm --auto-agree-with-licenses \
-python310-devel \
-python310-pip \
-python310-wheel \
-python310-setuptools \
-python310-Cython \
-python310-py-build-cmake \
-python310-aiohttp \
-python310-dbm \
-python310-ffmpeg-python \
-python310-GitPython \
-python310-httpx \
-python310-joblib \
-python310-lark \
-python310-matplotlib \
-python310-mpmath \
-python310-numba-devel \
-python310-numpy1 \
-python310-onnx \
-python310-opencv \
-python310-pandas \
-python310-qrcode \
-python310-rich \
-python310-scikit-build \
-python310-scikit-build-core-pyproject \
-python310-scikit-image \
-python310-scikit-learn \
-python310-scipy \
-python310-svglib \
-python310-tqdm \
-    && rm /usr/lib64/python3.10/EXTERNALLY-MANAGED \
-    && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.10 100
+python311-devel \
+python311-pip \
+python311-wheel \
+python311-setuptools \
+python311-Cython \
+python311-py-build-cmake \
+python311-aiohttp \
+python311-dbm \
+python311-ffmpeg-python \
+python311-GitPython \
+python311-httpx \
+python311-joblib \
+python311-lark \
+python311-matplotlib \
+python311-mpmath \
+python311-numba-devel \
+python311-numpy1 \
+python311-onnx \
+python311-opencv \
+python311-pandas \
+python311-qrcode \
+python311-rich \
+python311-scikit-build \
+python311-scikit-build-core-pyproject \
+python311-scikit-image \
+python311-scikit-learn \
+python311-scipy \
+python311-svglib \
+python311-tqdm \
+    && rm /usr/lib64/python3.11/EXTERNALLY-MANAGED \
+    && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11 100
 
 RUN --mount=type=cache,target=/var/cache/zypp \
     zypper --gpg-auto-import-keys \
@@ -130,23 +130,23 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # Bind libs (.so files)
 # Ref: https://github.com/pytorch/pytorch/blob/main/.ci/manywheel/build_cuda.sh
 ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\
-:/usr/local/lib64/python3.10/site-packages/torch/lib\
-:/usr/local/lib/python3.10/site-packages/cusparselt/lib\
-:/usr/local/lib/python3.10/site-packages/nvidia/cublas/lib\
-:/usr/local/lib/python3.10/site-packages/nvidia/cuda_cupti/lib\
-:/usr/local/lib/python3.10/site-packages/nvidia/cuda_nvrtc/lib\
-:/usr/local/lib/python3.10/site-packages/nvidia/cuda_runtime/lib\
-:/usr/local/lib/python3.10/site-packages/nvidia/cudnn/lib\
-:/usr/local/lib/python3.10/site-packages/nvidia/cufft/lib\
-:/usr/local/lib/python3.10/site-packages/nvidia/cufile/lib\
-:/usr/local/lib/python3.10/site-packages/nvidia/curand/lib\
-:/usr/local/lib/python3.10/site-packages/nvidia/cusolver/lib\
-:/usr/local/lib/python3.10/site-packages/nvidia/cusparse/lib\
-:/usr/local/lib/python3.10/site-packages/nvidia/cusparselt/lib\
-:/usr/local/lib/python3.10/site-packages/nvidia/nccl/lib\
-:/usr/local/lib/python3.10/site-packages/nvidia/nvjitlink/lib\
-:/usr/local/lib/python3.10/site-packages/nvidia/nvshmem/lib\
-:/usr/local/lib/python3.10/site-packages/nvidia/nvtx/lib"
+:/usr/local/lib64/python3.11/site-packages/torch/lib\
+:/usr/local/lib/python3.11/site-packages/cusparselt/lib\
+:/usr/local/lib/python3.11/site-packages/nvidia/cublas/lib\
+:/usr/local/lib/python3.11/site-packages/nvidia/cuda_cupti/lib\
+:/usr/local/lib/python3.11/site-packages/nvidia/cuda_nvrtc/lib\
+:/usr/local/lib/python3.11/site-packages/nvidia/cuda_runtime/lib\
+:/usr/local/lib/python3.11/site-packages/nvidia/cudnn/lib\
+:/usr/local/lib/python3.11/site-packages/nvidia/cufft/lib\
+:/usr/local/lib/python3.11/site-packages/nvidia/cufile/lib\
+:/usr/local/lib/python3.11/site-packages/nvidia/curand/lib\
+:/usr/local/lib/python3.11/site-packages/nvidia/cusolver/lib\
+:/usr/local/lib/python3.11/site-packages/nvidia/cusparse/lib\
+:/usr/local/lib/python3.11/site-packages/nvidia/cusparselt/lib\
+:/usr/local/lib/python3.11/site-packages/nvidia/nccl/lib\
+:/usr/local/lib/python3.11/site-packages/nvidia/nvjitlink/lib\
+:/usr/local/lib/python3.11/site-packages/nvidia/nvshmem/lib\
+:/usr/local/lib/python3.11/site-packages/nvidia/nvtx/lib"
 
 # Deps for ComfyUI & custom nodes
 COPY builder-scripts/.  /builder-scripts/
