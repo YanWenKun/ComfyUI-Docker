@@ -58,8 +58,8 @@ RUN --mount=type=cache,target=/var/cache/zypp \
 cuda-libraries-devel-11-8
 
 ENV PATH="${PATH}:/usr/local/cuda-11.8/bin" \
-    LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/local/cuda-11.8/lib64" \
-    LIBRARY_PATH="${LIBRARY_PATH}:/usr/local/cuda-11.8/lib64/stubs" \
+    LD_LIBRARY_PATH="/usr/local/cuda-11.8/lib64" \
+    LIBRARY_PATH="/usr/local/cuda-11.8/lib64/stubs" \
     CUDA_HOME="/usr/local/cuda-11.8"
 
 ################################################################################
