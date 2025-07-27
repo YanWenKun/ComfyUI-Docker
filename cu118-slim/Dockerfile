@@ -113,8 +113,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 
 # Bind libs (.so files)
 # Ref: https://github.com/pytorch/pytorch/blob/main/.ci/manywheel/build_cuda.sh
-ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\
-:/usr/local/lib64/python3.11/site-packages/torch/lib\
+ENV LD_LIBRARY_PATH="/usr/local/lib64/python3.11/site-packages/torch/lib\
 :/usr/local/lib/python3.11/site-packages/cusparselt/lib\
 :/usr/local/lib/python3.11/site-packages/nvidia/cublas/lib\
 :/usr/local/lib/python3.11/site-packages/nvidia/cuda_cupti/lib\
