@@ -31,7 +31,6 @@ python313-mpmath \
 python313-numba-devel \
 python313-numpy \
 python313-onnx \
-python313-opencv \
 python313-pandas \
 python313-scikit-build \
 python313-scikit-build-core-pyproject \
@@ -42,6 +41,7 @@ python313-scipy
 RUN --mount=type=cache,target=/var/cache/zypp \
     zypper --gpg-auto-import-keys \
         install --no-confirm --auto-agree-with-licenses \
+python313-opencv \
 python313-addict \
 python313-aenum \
 python313-aiohttp \
