@@ -26,11 +26,6 @@ python313-wheel \
 python313-setuptools \
 python313-Cython \
 python313-py-build-cmake \
-python313-aiohttp \
-python313-dbm \
-python313-ffmpeg-python \
-python313-GitPython \
-python313-httpx \
 python313-matplotlib \
 python313-mpmath \
 python313-numba-devel \
@@ -49,14 +44,19 @@ RUN --mount=type=cache,target=/var/cache/zypp \
         install --no-confirm --auto-agree-with-licenses \
 python313-addict \
 python313-aenum \
+python313-aiohttp \
 python313-alembic \
 python313-black \
 python313-cachetools \
 python313-chardet \
+python313-dbm \
 python313-deepdiff \
 python313-dill \
+python313-ffmpeg-python \
 python313-filelock \
 python313-ftfy \
+python313-GitPython \
+python313-httpx \
 python313-imageio \
 python313-importlib-metadata \
 python313-joblib \
@@ -90,7 +90,7 @@ python313-webcolors \
 python313-yapf \
 python313-yarl
 
-# Note: CMake may use different version of Python. Using 'update-alternatives' to ensure default version.
+# Note: Using 'update-alternatives' to ensure default Python version.
 RUN --mount=type=cache,target=/var/cache/zypp \
     zypper --gpg-auto-import-keys \
         install --no-confirm --auto-agree-with-licenses \
