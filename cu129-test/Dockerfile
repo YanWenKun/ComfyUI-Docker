@@ -78,6 +78,9 @@ google-noto-coloremoji-fonts
 # Temp fix for OpenCV on openSUSE
 ENV LD_PRELOAD=/usr/lib64/libjpeg.so.8
 
+# Temp fix for SentencePiece on CMAKE 4+
+ENV CMAKE_POLICY_VERSION_MINIMUM=3.5
+
 ################################################################################
 # GCC 14 
 # Required for compiling CUDA 12.9-related code.
