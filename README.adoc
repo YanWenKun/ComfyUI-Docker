@@ -10,20 +10,45 @@ a Stable Diffusion GUI powering node-based workflow.
 
 ## Quick Start - NVIDIA GPU
 
+### From Maxwell (GTX 9xx) to Ada Lovelace (RTX 40xx)
+
 ```sh
 mkdir -p storage
 
 docker run -it --rm \
-  --name comfyui-cu124 \
+  --name comfyui-cu126 \
   --gpus all \
   -p 8188:8188 \
   -v "$(pwd)"/storage:/root \
   -e CLI_ARGS="" \
-  yanwk/comfyui-boot:cu124-slim
+  yanwk/comfyui-boot:cu126-slim
+```
+
+### From Turing (RTX 20xx / GTX 16xx) to Blackwell (RTX 50xx)
+
+```sh
+mkdir -p storage
+
+docker run -it --rm \
+  --name comfyui-cu128 \
+  --gpus all \
+  -p 8188:8188 \
+  -v "$(pwd)"/storage:/root \
+  -e CLI_ARGS="--fast" \
+  yanwk/comfyui-boot:cu128-slim
 ```
 
 
-## Image tags
+## More image tags
+
+Note: This repository is currently under heavy development.
+The next two mainly supported image families will be `cu126` and `cu129`.
+
+`cu121` and `cu124` images will be archived soon, as they are no longer supported by PyTorch.
+
+`cu118` will stay for a while for compatibility usage (such as classic SD 1.5 on older hardware), but will not receive any updates.
+
+`cu128` will stop updating after `cu129` is released.
 
 * link:cu121/README.adoc[`cu121`]
 
@@ -56,6 +81,10 @@ docker run -it --rm \
 * link:rocm/README.adoc[`rocm`]
 
 ** For AMD GPUs with ROCm.
+
+* link:xpu/[`xpu`]
+
+** For Intel GPUs with XPU.
 
 * link:nightly/README.adoc[`nightly`]
 
