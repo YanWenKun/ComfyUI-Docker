@@ -36,7 +36,7 @@ python312-lark \
 python312-matplotlib \
 python312-mpmath \
 python312-numba-devel \
-python312-numpy1 \
+python312-numpy \
 python312-onnx \
 python312-opencv \
 python312-pandas \
