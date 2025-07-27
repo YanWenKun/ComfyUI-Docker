@@ -23,6 +23,7 @@ imageio-ffmpeg
 importlib-metadata
 iopath
 loguru
+mediapipe
 mss
 numba
 numexpr

@@ -8,7 +8,6 @@ joblib
 kornia
 matplotlib
 omegaconf
-onnx
 onnxruntime
 opencv-contrib-python-headless
 pandas
@@ -32,3 +31,6 @@ fairscale # For APISR
 lark # For smZNodes
 torchdiffeq # For DepthFM
 triton
+
+# Temp fix for mediapipe
+onnx==1.16.2
