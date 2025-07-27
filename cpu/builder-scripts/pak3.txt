@@ -1,19 +1,14 @@
-# 'compel lark' for smZNodes
-# 'torchdiffeq' for DepthFM
-# 'fairscale' for APISR
+# Essentials
 accelerate
-compel
 diffusers
-fairscale
 ftfy
 huggingface-hub[hf-transfer]
-imageio
+imageio[ffmpeg]
 joblib
 kornia
-lark
 matplotlib
-# Temp fix for mediapipe
-onnx==1.16.2
+omegaconf
+onnx
 onnxruntime
 opencv-contrib-python-headless
 pandas
@@ -27,6 +22,12 @@ scikit-image
 scikit-learn
 scipy
 timm
-torchdiffeq
 torchmetrics
 transformers
+
+# Hand-picks
+compel # For smZNodes
+fairscale # For APISR
+lark # For smZNodes
+torchdiffeq # For DepthFM
+triton
