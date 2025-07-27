@@ -89,7 +89,7 @@ cd ComfyUI
 ```sh
 cd custom_nodes
 git clone --depth=1 --no-tags --recurse-submodules --shallow-submodules \
-    https://github.com/ltdrdata/ComfyUI-Manager.git
+    https://github.com/Comfy-Org/ComfyUI-Manager.git
 cd ..
 ```
 

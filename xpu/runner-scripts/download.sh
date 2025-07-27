@@ -31,7 +31,7 @@ git reset --hard "$(git tag | grep -e '^v' | sort -V | tail -1)"
 set -e
 
 cd /root/ComfyUI/custom_nodes
-clone_or_pull https://github.com/ltdrdata/ComfyUI-Manager.git
+clone_or_pull https://github.com/Comfy-Org/ComfyUI-Manager.git
 
 
 echo "########################################"
