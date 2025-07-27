@@ -31,8 +31,6 @@ python313-dbm \
 python313-ffmpeg-python \
 python313-GitPython \
 python313-httpx \
-python313-joblib \
-python313-lark \
 python313-matplotlib \
 python313-mpmath \
 python313-numba-devel \
@@ -40,18 +38,59 @@ python313-numpy \
 python313-onnx \
 python313-opencv \
 python313-pandas \
-python313-qrcode \
-python313-rich \
 python313-scikit-build \
 python313-scikit-build-core-pyproject \
 python313-scikit-image \
 python313-scikit-learn \
-python313-scipy \
-python313-svglib \
-python313-tqdm \
-    && rm /usr/lib64/python3.13/EXTERNALLY-MANAGED \
-    && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.13 100
+python313-scipy
 
+RUN --mount=type=cache,target=/var/cache/zypp \
+    zypper --gpg-auto-import-keys \
+        install --no-confirm --auto-agree-with-licenses \
+python313-addict \
+python313-aenum \
+python313-alembic \
+python313-black \
+python313-cachetools \
+python313-chardet \
+python313-deepdiff \
+python313-dill \
+python313-filelock \
+python313-ftfy \
+python313-imageio \
+python313-importlib-metadata \
+python313-joblib \
+python313-lark \
+python313-loguru \
+python313-mss \
+python313-numexpr \
+python313-piexif \
+python313-protobuf \
+python313-py-cpuinfo \
+python313-pydantic \
+python313-pydantic-settings \
+python313-pydub \
+python313-pygit2 \
+python313-PyGithub \
+python313-PyYAML \
+python313-regex \
+python313-qrcode \
+python313-rich \
+python313-safetensors \
+python313-simpleeval \
+python313-SoundFile \
+python313-SQLAlchemy \
+python313-svglib \
+python313-tokenizers \
+python313-toml \
+python313-tqdm \
+python313-typer \
+python313-uv \
+python313-webcolors \
+python313-yapf \
+python313-yarl
+
+# Note: CMake may use different version of Python. Using 'update-alternatives' to ensure default version.
 RUN --mount=type=cache,target=/var/cache/zypp \
     zypper --gpg-auto-import-keys \
         install --no-confirm --auto-agree-with-licenses \
@@ -73,7 +112,9 @@ x264 \
 x265 \
 google-noto-sans-fonts \
 google-noto-sans-cjk-fonts \
-google-noto-coloremoji-fonts
+google-noto-coloremoji-fonts \
+    && rm -v /usr/lib64/python3.13/EXTERNALLY-MANAGED \
+    && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.13 100
 
 # Temp fix for OpenCV on openSUSE
 ENV LD_PRELOAD=/usr/lib64/libjpeg.so.8
