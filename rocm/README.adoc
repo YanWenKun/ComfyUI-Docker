@@ -21,12 +21,26 @@ is installed on your Linux host.
 ## Build & Run
 
 You may need to add these configuration (especially for APUs) into the command of `docker run`, `podman run` below. (Credit to
-https://github.com/YanWenKun/ComfyUI-Docker/pull/67[nhtua]
-)
+https://github.com/YanWenKun/ComfyUI-Docker/pull/67[nhtua])
 
-- For RDNA and RDNA 2 cards: `-e HSA_OVERRIDE_GFX_VERSION=10.3.0 \`
-- For RDNA 3 cards:  `-e HSA_OVERRIDE_GFX_VERSION=11.0.0 \`
-- Integrated graphics on CPU: `-e HIP_VISIBLE_DEVICES=0 \`
+* For RDNA and RDNA 2 cards:
+** `-e HSA_OVERRIDE_GFX_VERSION=10.3.0 \`
+
+* For RDNA 3 cards:
+** `-e HSA_OVERRIDE_GFX_VERSION=11.0.0 \`
+
+* Integrated graphics on CPU:
+** `-e HIP_VISIBLE_DEVICES=0 \`
+
+You may also want to add more environment variable(s):
+
+* Enable tunable operations (slow first run, but faster subsequent runs.
+https://github.com/ROCm/pytorch/tree/main/aten/src/ATen/cuda/tunable[Doc1],
+https://github.com/Comfy-Org/docs/blob/main/troubleshooting/overview.mdx#amd-gpu-issues[Doc2]).
+(Thanks to
+https://github.com/YanWenKun/ComfyUI-Docker/pull/114[SergeyFilippov])
+
+** `-e PYTORCH_TUNABLEOP_ENABLED=1 \`
 
 .With Docker
 [source,sh]

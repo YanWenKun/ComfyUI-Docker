@@ -1,6 +1,7 @@
 addict
 aiohttp
 albumentations
+alembic
 av
 cachetools
 chardet
@@ -13,13 +14,14 @@ fvcore
 GitPython
 imageio-ffmpeg
 importlib-metadata
-matrix-client==0.4.0
-mediapipe
+matrix-nio
 numba
 omegaconf
 piexif
 pixeloe
 psutil
+pydantic
+pydantic-settings
 PyGithub
 python-dateutil
 pyyaml
@@ -30,6 +32,7 @@ segment-anything
 sentencepiece
 soundfile
 spandrel
+SQLAlchemy
 svglib
 tokenizers
 toml

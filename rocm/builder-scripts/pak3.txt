@@ -12,8 +12,7 @@ joblib
 kornia
 lark
 matplotlib
-# Temp fix for mediapipe
-onnx==1.16.2
+onnx
 opencv-contrib-python-headless
 pandas
 pilgram

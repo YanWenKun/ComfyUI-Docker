@@ -21,10 +21,25 @@ https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/native_linux/in
 https://github.com/YanWenKun/ComfyUI-Docker/pull/67[nhtua]
 的 PR）：
 
-- RDNA 及 RDNA 2 : `-e HSA_OVERRIDE_GFX_VERSION=10.3.0 \`
-- RDNA 3 :  `-e HSA_OVERRIDE_GFX_VERSION=11.0.0 \`
-- APU／集显 : `-e HIP_VISIBLE_DEVICES=0 \`
+* RDNA 及 RDNA 2 :
+** `-e HSA_OVERRIDE_GFX_VERSION=10.3.0 \`
 
+* RDNA 3 :
+** `-e HSA_OVERRIDE_GFX_VERSION=11.0.0 \`
+
+* APU／集显 :
+** `-e HIP_VISIBLE_DEVICES=0 \`
+
+额外还可添加环境变量：
+
+* 启用可调优操作（首次运行较慢，但之后运行更快，
+https://github.com/ROCm/pytorch/tree/main/aten/src/ATen/cuda/tunable[文档1] ，
+https://github.com/Comfy-Org/docs/blob/main/troubleshooting/overview.mdx#amd-gpu-issues[文档2] 。
+感谢
+https://github.com/YanWenKun/ComfyUI-Docker/pull/114[SergeyFilippov]
+的 PR）：
+
+** `-e PYTORCH_TUNABLEOP_ENABLED=1 \`
 
 .使用 Docker
 [source,sh]
