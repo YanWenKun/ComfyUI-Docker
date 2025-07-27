@@ -157,6 +157,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         -r https://github.com/comfyanonymous/ComfyUI/raw/refs/heads/master/requirements.txt \
+    && pip install mediapipe \
     && pip list
 
 ################################################################################

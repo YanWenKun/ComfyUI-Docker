@@ -208,7 +208,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         -r https://github.com/comfyanonymous/ComfyUI/raw/refs/heads/master/requirements.txt \
-    && pip install numpy==1.26.4 \
+    && pip install mediapipe \
     && pip list
 
 ################################################################################
