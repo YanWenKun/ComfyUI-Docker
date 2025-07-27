@@ -26,32 +26,71 @@ python312-wheel \
 python312-setuptools \
 python312-Cython \
 python312-py-build-cmake \
-python312-aiohttp \
-python312-dbm \
-python312-ffmpeg-python \
-python312-GitPython \
-python312-httpx \
-python312-joblib \
-python312-lark \
 python312-matplotlib \
 python312-mpmath \
 python312-numba-devel \
 python312-numpy \
 python312-onnx \
-python312-opencv \
 python312-pandas \
-python312-qrcode \
-python312-rich \
 python312-scikit-build \
 python312-scikit-build-core-pyproject \
 python312-scikit-image \
 python312-scikit-learn \
-python312-scipy \
-python312-svglib \
-python312-tqdm \
-    && rm /usr/lib64/python3.12/EXTERNALLY-MANAGED \
-    && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 100
+python312-scipy
 
+RUN --mount=type=cache,target=/var/cache/zypp \
+    zypper --gpg-auto-import-keys \
+        install --no-confirm --auto-agree-with-licenses \
+python312-opencv \
+python312-addict \
+python312-aenum \
+python312-aiohttp \
+python312-alembic \
+python312-black \
+python312-cachetools \
+python312-chardet \
+python312-dbm \
+python312-deepdiff \
+python312-dill \
+python312-ffmpeg-python \
+python312-filelock \
+python312-ftfy \
+python312-GitPython \
+python312-httpx \
+python312-imageio \
+python312-importlib-metadata \
+python312-joblib \
+python312-lark \
+python312-loguru \
+python312-mss \
+python312-numexpr \
+python312-piexif \
+python312-protobuf \
+python312-py-cpuinfo \
+python312-pydantic \
+python312-pydantic-settings \
+python312-pydub \
+python312-pygit2 \
+python312-PyGithub \
+python312-PyYAML \
+python312-regex \
+python312-qrcode \
+python312-rich \
+python312-safetensors \
+python312-simpleeval \
+python312-SoundFile \
+python312-SQLAlchemy \
+python312-svglib \
+python312-tokenizers \
+python312-toml \
+python312-tqdm \
+python312-typer \
+python312-uv \
+python312-webcolors \
+python312-yapf \
+python312-yarl
+
+# Note: Using 'update-alternatives' to ensure default Python version.
 RUN --mount=type=cache,target=/var/cache/zypp \
     zypper --gpg-auto-import-keys \
         install --no-confirm --auto-agree-with-licenses \
@@ -73,10 +112,15 @@ x264 \
 x265 \
 google-noto-sans-fonts \
 google-noto-sans-cjk-fonts \
-google-noto-coloremoji-fonts
+google-noto-coloremoji-fonts \
+    && rm -v /usr/lib64/python3.12/EXTERNALLY-MANAGED \
+    && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 100
 
 # Temp fix for OpenCV on openSUSE
 ENV LD_PRELOAD=/usr/lib64/libjpeg.so.8
+
+# Temp fix for SentencePiece on CMAKE 4+
+ENV CMAKE_POLICY_VERSION_MINIMUM=3.5
 
 ################################################################################
 # GCC 13 
@@ -128,8 +172,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 
 # Bind libs (.so files)
 # Ref: https://github.com/pytorch/pytorch/blob/main/.ci/manywheel/build_cuda.sh
-ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\
-:/usr/local/lib64/python3.12/site-packages/torch/lib\
+ENV LD_LIBRARY_PATH="/usr/local/lib64/python3.12/site-packages/torch/lib\
 :/usr/local/lib/python3.12/site-packages/cusparselt/lib\
 :/usr/local/lib/python3.12/site-packages/nvidia/cublas/lib\
 :/usr/local/lib/python3.12/site-packages/nvidia/cuda_cupti/lib\
@@ -145,7 +188,8 @@ ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\
 :/usr/local/lib/python3.12/site-packages/nvidia/nccl/lib\
 :/usr/local/lib/python3.12/site-packages/nvidia/nvjitlink/lib\
 :/usr/local/lib/python3.12/site-packages/nvidia/nvshmem/lib\
-:/usr/local/lib/python3.12/site-packages/nvidia/nvtx/lib"
+:/usr/local/lib/python3.12/site-packages/nvidia/nvtx/lib\
+${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
 
 # Deps for ComfyUI & custom nodes
 COPY builder-scripts/.  /builder-scripts/
