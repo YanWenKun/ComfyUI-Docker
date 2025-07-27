@@ -1,6 +1,6 @@
 ################################################################################
 # Dockerfile that builds 'yanwk/comfyui-boot:cu128-base'
-# An environment for PyTorch 2.7, CUDA 12.8, Python 3.12
+# An environment for PyTorch 2.7.1, CUDA 12.8, Python 3.12
 ################################################################################
 
 FROM docker.io/opensuse/tumbleweed:latest
@@ -163,15 +163,15 @@ ARG PIP_EXTRA_INDEX_URL="https://pypi.org/simple"
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        --dry-run torch==2.7 torchvision torchaudio xformers
+        --dry-run torch==2.7.1 torchvision torchaudio xformers==0.0.31.post1
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        --no-deps torch==2.7
+        --no-deps torch==2.7.1
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        torch==2.7 torchvision torchaudio xformers
+        torch==2.7.1 torchvision torchaudio xformers==0.0.31.post1
 
 ARG PIP_INDEX_URL=
 ARG PIP_EXTRA_INDEX_URL=
