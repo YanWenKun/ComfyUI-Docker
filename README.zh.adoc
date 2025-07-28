@@ -10,21 +10,21 @@ https://hub.docker.com/r/yanwk/comfyui-boot[Docker 镜像]
 
 GPU 架构与对应支持的 CUDA 版本如下表：
 
-[cols="1,1,1,1,1,1,1,1,1,1", options="header"]
+[cols="1,1,1,1,1,1,1,1,1", options="header"]
 |===
-| GPU 架构 | Blackwell | Hopper | Ada Lovelace | Ampere | Turing | Volta | Pascal | Maxwell | Kepler
+| GPU 架构 | Blackwell | Hopper | Ada Lovelace | Ampere | Turing | Volta | Pascal | Maxwell
 
 | 示例GPU
-| RTX 5090 | H20 | RTX 4090 | RTX 3090 | RTX 2080 | TITAN V | GTX 1080 | GTX 980 | - 
+| RTX 5090 | H20 | RTX 4090 | RTX 3090 | RTX 2080 | TITAN V | GTX 1080 | GTX 980
 
 | cu128
-| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌
+| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌
 
 | cu126
-| ❌ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ❌
+| ❌ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️
 
 | cu118
-| ❌ | ❌ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | 仅 Tesla K80
+| ❌ | ❌ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️
 
 |===
 

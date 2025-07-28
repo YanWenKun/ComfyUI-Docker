@@ -12,21 +12,21 @@ a Stable Diffusion GUI powering node-based workflow.
 
 The supported CUDA versions for each GPU architecture are shown in the table below:
 
-[cols="1,1,1,1,1,1,1,1,1,1", options="header"]
+[cols="1,1,1,1,1,1,1,1,1", options="header"]
 |===
-| GPU Architecture | Blackwell | Hopper | Ada Lovelace | Ampere | Turing | Volta | Pascal | Maxwell | Kepler
+| GPU Architecture | Blackwell | Hopper | Ada Lovelace | Ampere | Turing | Volta | Pascal | Maxwell
 
 | Example GPU
-| RTX 5090 | H20 | RTX 4090 | RTX 3090 | RTX 2080 | TITAN V | GTX 1080 | GTX 980 | -
+| RTX 5090 | H20 | RTX 4090 | RTX 3090 | RTX 2080 | TITAN V | GTX 1080 | GTX 980
 
 | cu128
-| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌
+| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌
 
 | cu126
-| ❌ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ❌
+| ❌ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️
 
 | cu118
-| ❌ | ❌ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | Tesla K80 only
+| ❌ | ❌ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️
 
 |===
 
