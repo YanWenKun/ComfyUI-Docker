@@ -14,19 +14,19 @@ The supported CUDA versions for each GPU architecture are shown in the table bel
 
 [cols="1,1,1,1,1,1,1,1,1,1", options="header"]
 |===
-| GPU Architecture | Kepler | Maxwell | Pascal | Volta | Turing | Ampere | Ada Lovelace | Hopper | Blackwell
+| GPU Architecture | Blackwell | Hopper | Ada Lovelace | Ampere | Turing | Volta | Pascal | Maxwell | Kepler
 
 | Example GPU
-| - | GTX 980 | GTX 1080 | TITAN V | RTX 2080 | RTX 3090 | RTX 4090 | H20 | RTX 5090
+| RTX 5090 | H20 | RTX 4090 | RTX 3090 | RTX 2080 | TITAN V | GTX 1080 | GTX 980 | -
 
 | cu128
-| ❌ | ❌ | ❌ | ❌ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️
+| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌ | ❌
 
 | cu126
 | ❌ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ❌
 
 | cu118
-| Tesla K80 only | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ❌ | ❌
+| ❌ | ❌ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | Tesla K80 only
 
 |===
 
