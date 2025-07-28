@@ -1,0 +1,34 @@
+# Essentials
+accelerate
+diffusers
+ftfy
+huggingface-hub[hf-transfer]
+imageio[ffmpeg]
+joblib
+kornia
+matplotlib
+omegaconf
+onnx
+onnxruntime-gpu
+opencv-contrib-python-headless
+pandas
+pilgram
+pillow
+pygit2
+python-ffmpeg
+regex
+scikit-build-core
+scikit-image
+scikit-learn
+scipy
+timm
+torchmetrics
+transformers
+
+# Hand-picks
+compel # For smZNodes
+cupy-cuda12x # For Frame Interpolation
+fairscale # For APISR
+lark # For smZNodes
+torchdiffeq # For DepthFM
+triton
