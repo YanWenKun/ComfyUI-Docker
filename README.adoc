@@ -10,6 +10,30 @@ a Stable Diffusion GUI powering node-based workflow.
 
 ## Quick Start - NVIDIA GPU
 
+The supported CUDA versions for each GPU architecture are shown in the table below:
+
+[cols="1,1,1,1,1,1,1,1,1,1", options="header"]
+|===
+| GPU Architecture | Kepler | Maxwell | Pascal | Volta | Turing | Ampere | Ada Lovelace | Hopper | Blackwell
+
+| Example GPU
+| - | GTX 980 | GTX 1080 | TITAN V | RTX 2080 | RTX 3090 | RTX 4090 | H20 | RTX 5090
+
+| cu128
+| ❌ | ❌ | ❌ | ❌ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️
+
+| cu126
+| ❌ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ❌
+
+| cu118
+| Tesla K80 only | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ❌ | ❌
+
+|===
+
+"Supported" in the table refers to the GPU/CUDA combination officially supported by PyTorch, which may differ from NVIDIA's official CUDA support. For details, see the PyTorch
+https://github.com/pytorch/pytorch/blob/main/.ci/manywheel/build_cuda.sh[related code]
+.
+
 ### From Maxwell (GTX 9xx) to Ada Lovelace (RTX 40xx)
 
 ```sh

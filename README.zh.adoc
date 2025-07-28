@@ -6,6 +6,31 @@ https://github.com/comfyanonymous/ComfyUI[ComfyUI]
 https://hub.docker.com/r/yanwk/comfyui-boot[Docker 镜像]
 包含其依赖项，及下载／启动脚本。
 
+## 我该用哪个版本？
+
+GPU 架构与对应支持的 CUDA 版本如下表：
+
+[cols="1,1,1,1,1,1,1,1,1,1", options="header"]
+|===
+| GPU 架构 | Kepler | Maxwell | Pascal | Volta | Turing | Ampere | Ada Lovelace | Hopper | Blackwell
+
+| 示例GPU
+|  | GTX 980 | GTX 1080 | TITAN V | RTX 2080 | RTX 3090 | RTX 4090 | H20 | RTX 5090
+
+| cu128
+| ❌ | ❌ | ❌ | ❌ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️
+
+| cu126
+| ❌ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ❌
+
+| cu118
+| 仅 Tesla K80 | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ❌ | ❌
+
+|===
+
+表中“支持”是指 PyTorch 官方所支持的 CUDA 版本／架构，与 NVIDIA 官方的支持范围略有出入，可参考 PyTorch
+https://github.com/pytorch/pytorch/blob/main/.ci/manywheel/build_cuda.sh[相关代码]
+。
 
 ## 镜像标签
 
