@@ -57,8 +57,18 @@ RUN --mount=type=cache,target=/var/cache/zypp \
         install --no-confirm --no-recommends --auto-agree-with-licenses \
 cuda-libraries-devel-12-6
 
+RUN --mount=type=cache,target=/var/cache/zypp \
+    zypper --gpg-auto-import-keys \
+        install --no-confirm --no-recommends --auto-agree-with-licenses \
+libcusparselt-devel
+
+RUN --mount=type=cache,target=/var/cache/zypp \
+    zypper --gpg-auto-import-keys \
+        install --no-confirm --no-recommends --auto-agree-with-licenses \
+cudnn9-cuda-12-6
+
 ENV PATH="${PATH}:/usr/local/cuda-12.6/bin" \
-    LD_LIBRARY_PATH="/usr/local/cuda-12.6/lib64" \
+    LD_LIBRARY_PATH="/usr/lib64:/usr/local/cuda-12.6/lib64" \
     LIBRARY_PATH="/usr/local/cuda-12.6/lib64/stubs" \
     CUDA_HOME="/usr/local/cuda-12.6"
 
@@ -152,6 +162,7 @@ make \
 ninja \
 git \
 aria2 \
+findutils \
 fish \
 fd \
 vim \
@@ -206,23 +217,22 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         --upgrade pip wheel setuptools \
     && pip install \
         --dry-run xformers torchvision torchaudio \
-        --index-url https://download.pytorch.org/whl/cpu \
+        --index-url https://download.pytorch.org/whl/cu126 \
         --extra-index-url https://pypi.org/simple
 
+# Install PyTorch, then uninstall redundant NVIDIA packages
+# (except NCCL which is not in the openSUSE repo).
+# Do this in one step to reduce image layer size.
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        --no-deps xformers torch torchvision torchaudio \
-        --index-url https://download.pytorch.org/whl/cpu \
-        --extra-index-url https://pypi.org/simple
-
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install \
-        xformers torchvision torchaudio \
-        --index-url https://download.pytorch.org/whl/cpu \
-        --extra-index-url https://pypi.org/simple
+        xformers torch torchvision torchaudio \
+        --index-url https://download.pytorch.org/whl/cu126 \
+        --extra-index-url https://pypi.org/simple \
+&& pip list | grep '^nvidia-' | grep -v '^nvidia-nccl' | awk '{print $1}' | xargs -n1 pip uninstall -y
 
 ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\
-/usr/local/lib64/python3.12/site-packages/torch/lib"
+:/usr/local/lib64/python3.12/site-packages/torch/lib\
+:/usr/local/lib/python3.12/site-packages/nvidia/nccl/lib"
 
 # Deps for ComfyUI & custom nodes
 COPY builder-scripts/.  /builder-scripts/
