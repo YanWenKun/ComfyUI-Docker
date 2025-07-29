@@ -220,7 +220,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         --index-url https://download.pytorch.org/whl/cu126 \
         --extra-index-url https://pypi.org/simple
 
-# Install PyTorch, then uninstall redundant NVIDIA packages
+# Install PyTorch, then delete NVIDIA libs
 # (except NCCL which is not in the openSUSE repo).
 # Do this in one step to reduce image layer size.
 RUN --mount=type=cache,target=/root/.cache/pip \
@@ -228,7 +228,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         xformers torch torchvision torchaudio \
         --index-url https://download.pytorch.org/whl/cu126 \
         --extra-index-url https://pypi.org/simple \
-&& pip list | grep '^nvidia-' | grep -v '^nvidia-nccl' | awk '{print $1}' | xargs -n1 pip uninstall -y
+&& find /usr/local/lib/python3.12/site-packages/nvidia/ -mindepth 1 -maxdepth 1 ! -name 'nccl' -exec rm -rf {} +
 
 ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\
 :/usr/local/lib64/python3.12/site-packages/torch/lib\
