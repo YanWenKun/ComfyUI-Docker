@@ -36,7 +36,7 @@ and
 https://arnon.dk/matching-sm-architectures-arch-and-gencode-for-various-nvidia-cards/[this article]
 .
 
-### From Maxwell (GTX 9xx) to Ada Lovelace (RTX 40xx)
+### CUDA 12.6: From Maxwell (GTX 9xx) to Ada Lovelace (RTX 40xx)
 
 ```sh
 mkdir -p storage
@@ -50,7 +50,7 @@ docker run -it --rm \
   yanwk/comfyui-boot:cu126-slim
 ```
 
-### From Turing (RTX 20xx / GTX 16xx) to Blackwell (RTX 50xx)
+### CUDA 12.8: From Turing (RTX 20xx / GTX 16xx) to Blackwell (RTX 50xx)
 
 ```sh
 mkdir -p storage
@@ -75,6 +75,18 @@ The next two mainly supported image families will be `cu126` and `cu129`.
 `cu118` will stay for a while for compatibility usage (such as classic SD 1.5 on older hardware), but will not receive any updates.
 
 `cu128` will stop updating after `cu129` is released.
+
+* link:rocm/README.adoc[`rocm`]
+
+** For AMD GPUs with ROCm.
+
+* link:xpu/[`xpu`]
+
+** For Intel GPUs with XPU.
+
+* link:nightly/README.adoc[`nightly`]
+
+** Using preview version of PyTorch (CUDA).
 
 * link:cu121/README.adoc[`cu121`]
 
@@ -103,18 +115,6 @@ The next two mainly supported image families will be `cu126` and `cu129`.
 * link:cu124-cn/README.adoc[`cu124-cn`]
 
 ** For users in mainland China. Using mirror sites for all download links.
-
-* link:rocm/README.adoc[`rocm`]
-
-** For AMD GPUs with ROCm.
-
-* link:xpu/[`xpu`]
-
-** For Intel GPUs with XPU.
-
-* link:nightly/README.adoc[`nightly`]
-
-** Using preview version of PyTorch.
 
 * link:comfy3d-pt25/README.adoc[`comfy3d-pt25`]
 
