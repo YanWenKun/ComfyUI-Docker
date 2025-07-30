@@ -26,6 +26,11 @@ https://github.com/YanWenKun/ComfyUI-Docker/pull/67[nhtua]
 
 * RDNA 3 :
 ** `-e HSA_OVERRIDE_GFX_VERSION=11.0.0 \`
+** 参看 https://rocm.docs.amd.com/en/latest/reference/gpu-arch-specs.html[AMD文档] ，部分型号可改用 `11.0.1`
+
+* RDNA 4 :
+** `-e HSA_OVERRIDE_GFX_VERSION=12.0.0 \`
+** 参看 https://rocm.docs.amd.com/en/latest/reference/gpu-arch-specs.html[AMD文档] ，部分型号可改用 `12.0.1`
 
 * APU／集显 :
 ** `-e HIP_VISIBLE_DEVICES=0 \`

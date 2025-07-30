@@ -28,8 +28,13 @@ https://github.com/YanWenKun/ComfyUI-Docker/pull/67[nhtua])
 
 * For RDNA 3 cards:
 ** `-e HSA_OVERRIDE_GFX_VERSION=11.0.0 \`
+** Check the https://rocm.docs.amd.com/en/latest/reference/gpu-arch-specs.html[AMD doc] to see if your GPU can use `11.0.1`.
 
-* Integrated graphics on CPU:
+* For RDNA 4 cards:
+** `-e HSA_OVERRIDE_GFX_VERSION=12.0.0 \`
+** Check the https://rocm.docs.amd.com/en/latest/reference/gpu-arch-specs.html[AMD doc] to see if your GPU can use `12.0.1`.
+
+* For integrated graphics on CPU:
 ** `-e HIP_VISIBLE_DEVICES=0 \`
 
 You may also want to add more environment variable(s):
