@@ -32,6 +32,8 @@ The supported CUDA versions for each GPU architecture are shown in the table bel
 
 "Supported" in the table refers to the GPU/CUDA combination officially supported by PyTorch, which may differ from NVIDIA's official CUDA support. For details, see the PyTorch
 https://github.com/pytorch/pytorch/blob/main/.ci/manywheel/build_cuda.sh[related code]
+and
+https://arnon.dk/matching-sm-architectures-arch-and-gencode-for-various-nvidia-cards/[this article]
 .
 
 ### From Maxwell (GTX 9xx) to Ada Lovelace (RTX 40xx)

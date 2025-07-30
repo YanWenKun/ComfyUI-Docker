@@ -30,6 +30,8 @@ GPU 架构与对应支持的 CUDA 版本如下表：
 
 表中“支持”是指 PyTorch 官方所支持的 CUDA 版本／架构，与 NVIDIA 官方的支持范围略有出入，可参考 PyTorch
 https://github.com/pytorch/pytorch/blob/main/.ci/manywheel/build_cuda.sh[相关代码]
+和
+https://arnon.dk/matching-sm-architectures-arch-and-gencode-for-various-nvidia-cards/[这篇文章]
 。
 
 ## 镜像标签
