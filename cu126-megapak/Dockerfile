@@ -185,7 +185,9 @@ google-noto-sans-fonts \
 google-noto-sans-cjk-fonts \
 google-noto-coloremoji-fonts \
     && rm -v /usr/lib64/python3.12/EXTERNALLY-MANAGED \
-    && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 100
+    && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 100 \
+    # Temp fix for OpenCV
+    && zypper remove --no-confirm libQt5Core5
 
 # Temp fix for OpenCV on openSUSE
 ENV LD_PRELOAD=/usr/lib64/libjpeg.so.8
@@ -272,7 +274,14 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         -r https://github.com/comfyanonymous/ComfyUI/raw/refs/heads/master/requirements.txt \
-        -r https://github.com/Comfy-Org/ComfyUI-Manager/raw/refs/heads/main/requirements.txt \
+        -r https://github.com/Comfy-Org/ComfyUI-Manager/raw/refs/heads/main/requirements.txt
+
+# Temp fixes
+RUN --mount=type=cache,target=/root/.cache/pip \
+# For UV    
+    pip install -U uv \
+# For xFormers (0.0.31.post1 requires [2.7.1, 2.8.0])
+    && pip install flash-attn==2.8.0.post2 \
     && pip list
 
 ################################################################################
