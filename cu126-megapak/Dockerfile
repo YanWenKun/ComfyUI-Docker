@@ -220,15 +220,25 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         --index-url https://download.pytorch.org/whl/cu126 \
         --extra-index-url https://pypi.org/simple
 
-# Install PyTorch, then delete NVIDIA libs
-# (except NCCL which is not in the openSUSE repo).
-# Do this in one step to reduce image layer size.
+# Here's some hack. To reduce image's single layer size, we:
+# 1. Install PyTorch and all its dependencies.
+# 2. Uninstall PyTorch only,
+# 3. Delete NVIDIA libs (except NCCL which is not in the openSUSE repo).
+# 4. Install PyTorch again in another layer.
+# Note: xFormers is not always released with latest PyTorch, so using `pip install --no-deps` is not a good idea.
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        xformers torch torchvision torchaudio \
+        xformers torchvision torchaudio \
         --index-url https://download.pytorch.org/whl/cu126 \
         --extra-index-url https://pypi.org/simple \
-&& find /usr/local/lib/python3.12/site-packages/nvidia/ -mindepth 1 -maxdepth 1 ! -name 'nccl' -exec rm -rf {} +
+&& pip uninstall -y torch \
+&& find /usr/local/lib/python3.12/site-packages/nvidia/ -mindepth 1 -maxdepth 1 ! -name 'nccl' -exec rm -rfv {} +
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        xformers torchvision torchaudio \
+        --index-url https://download.pytorch.org/whl/cu126 \
+        --extra-index-url https://pypi.org/simple
 
 ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\
 :/usr/local/lib64/python3.12/site-packages/torch/lib\
