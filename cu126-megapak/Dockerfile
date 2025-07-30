@@ -34,7 +34,11 @@ cuda-cudart-12-6 \
 cuda-minimal-build-12-6 \
 cuda-nvcc-12-6 \
 cuda-nvprof-12-6 \
-cuda-nvtx-12-6 \
+cuda-nvtx-12-6
+
+RUN --mount=type=cache,target=/var/cache/zypp \
+    zypper --gpg-auto-import-keys \
+        install --no-confirm --no-recommends --auto-agree-with-licenses \
 libcublas-12-6 \
 libnpp-12-6
 
@@ -61,6 +65,11 @@ RUN --mount=type=cache,target=/var/cache/zypp \
     zypper --gpg-auto-import-keys \
         install --no-confirm --no-recommends --auto-agree-with-licenses \
 libcusparselt-devel
+
+RUN --mount=type=cache,target=/var/cache/zypp \
+    zypper --gpg-auto-import-keys \
+        install --no-confirm --no-recommends --auto-agree-with-licenses \
+libcudnn9-cuda-12
 
 RUN --mount=type=cache,target=/var/cache/zypp \
     zypper --gpg-auto-import-keys \
@@ -231,7 +240,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         xformers torchvision torchaudio \
         --index-url https://download.pytorch.org/whl/cu126 \
         --extra-index-url https://pypi.org/simple \
-&& pip uninstall -y torch \
+&& pip uninstall --yes torch \
 && find /usr/local/lib/python3.12/site-packages/nvidia/ -mindepth 1 -maxdepth 1 ! -name 'nccl' -exec rm -rfv {} +
 
 RUN --mount=type=cache,target=/root/.cache/pip \
