@@ -88,14 +88,14 @@ cpp11 \
 ################################################################################
 # Python Packages
 
-# PyTorch (No xFormers for test-version)
+# PyTorch (No xFormers)
 # Break down the steps, so we have more but smaller image layers.
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip list \
     && pip install \
         --upgrade pip wheel setuptools \
     && pip install \
-        --dry-run xformers==0.0.31.post1 torch==2.7.1 torchvision torchaudio \
+        --dry-run torch==2.7.1 torchvision torchaudio \
         --index-url https://download.pytorch.org/whl/cu118 \
         --extra-index-url https://pypi.org/simple
 
@@ -107,7 +107,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        xformers==0.0.31.post1 torch==2.7.1 torchvision torchaudio \
+        torch==2.7.1 torchvision torchaudio \
         --index-url https://download.pytorch.org/whl/cu118 \
         --extra-index-url https://pypi.org/simple
 
