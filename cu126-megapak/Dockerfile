@@ -69,7 +69,7 @@ libcusparselt-devel
 RUN --mount=type=cache,target=/var/cache/zypp \
     zypper --gpg-auto-import-keys \
         install --no-confirm --no-recommends --auto-agree-with-licenses \
-libcudnn9-cuda-12
+libcudnn9-cuda-12-9.6.0.74
 
 RUN --mount=type=cache,target=/var/cache/zypp \
     zypper --gpg-auto-import-keys \
