@@ -19,4 +19,5 @@ jobs:
           docker run --rm \
             --name comfyui-quick-test \
             -e CLI_ARGS="--quick-test-for-ci --cpu" \
-            docker.io/yanwk/comfyui-boot:cu126-megapak
+            docker.io/yanwk/comfyui-boot:cu126-megapak \
+            python3 -c 'import torch ; print(torch.cuda.device_count())'
