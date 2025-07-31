@@ -46,7 +46,8 @@ opencv \
 opencv-devel \
 Mesa-libGL1 \
 Mesa-libEGL-devel \
-libgthread-2_0-0
+libgthread-2_0-0 \
+libQt5OpenGL5
 
 RUN --mount=type=cache,target=/var/cache/zypp \
     zypper --gpg-auto-import-keys \
