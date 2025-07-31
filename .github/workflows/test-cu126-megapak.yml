@@ -17,6 +17,7 @@ jobs:
       - name: Run container with quick-test
         run: |
           docker run --rm \
+            --gpus all \
             --name comfyui-quick-test \
             -e CLI_ARGS="--quick-test-for-ci --cpu" \
             docker.io/yanwk/comfyui-boot:cu126-megapak \
