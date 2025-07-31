@@ -88,28 +88,25 @@ cpp11 \
 ################################################################################
 # Python Packages
 
-# PyTorch (No xFormers)
+# PyTorch, xFormers
 # Break down the steps, so we have more but smaller image layers.
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip list \
     && pip install \
         --upgrade pip wheel setuptools \
     && pip install \
-        --dry-run torch==2.7.1 torchvision torchaudio \
-        --index-url https://download.pytorch.org/whl/cu118 \
-        --extra-index-url https://pypi.org/simple
+        --dry-run xformers==0.0.31.post1 torch==2.7.1 torchvision torchaudio \
+        --index-url https://download.pytorch.org/whl/cu118
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         --no-deps torch==2.7.1 \
-        --index-url https://download.pytorch.org/whl/cu118 \
-        --extra-index-url https://pypi.org/simple
+        --index-url https://download.pytorch.org/whl/cu118
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        torch==2.7.1 torchvision torchaudio \
-        --index-url https://download.pytorch.org/whl/cu118 \
-        --extra-index-url https://pypi.org/simple
+        xformers==0.0.31.post1 torch==2.7.1 torchvision torchaudio \
+        --index-url https://download.pytorch.org/whl/cu118
 
 # Bind libs (.so files)
 # Ref: https://github.com/pytorch/pytorch/blob/main/.ci/manywheel/build_cuda.sh
