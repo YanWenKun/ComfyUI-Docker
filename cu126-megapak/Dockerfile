@@ -112,6 +112,15 @@ RUN --mount=type=cache,target=/var/cache/zypp \
     zypper --gpg-auto-import-keys \
         install --no-confirm --auto-agree-with-licenses \
 python312-opencv \
+opencv \
+opencv-devel \
+Mesa-libGL1 \
+Mesa-libEGL-devel \
+libgthread-2_0-0
+
+RUN --mount=type=cache,target=/var/cache/zypp \
+    zypper --gpg-auto-import-keys \
+        install --no-confirm --auto-agree-with-licenses \
 python312-addict \
 python312-aenum \
 python312-aiohttp \
@@ -160,13 +169,9 @@ python312-webcolors \
 python312-yapf \
 python312-yarl
 
-# Note: Using 'update-alternatives' to ensure default Python version.
 RUN --mount=type=cache,target=/var/cache/zypp \
     zypper --gpg-auto-import-keys \
         install --no-confirm --auto-agree-with-licenses \
-Mesa-libGL1 \
-Mesa-libEGL-devel \
-libgthread-2_0-0 \
 make \
 ninja \
 git \
@@ -176,8 +181,6 @@ fish \
 fd \
 vim \
 which \
-opencv \
-opencv-devel \
 ffmpeg \
 x264 \
 x265 \
@@ -185,9 +188,8 @@ google-noto-sans-fonts \
 google-noto-sans-cjk-fonts \
 google-noto-coloremoji-fonts \
     && rm -v /usr/lib64/python3.12/EXTERNALLY-MANAGED \
-    && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 100 \
-    # Temp fix for OpenCV
-    && zypper remove --no-confirm libQt5Core5
+    # Ensure default Python version
+    && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 100
 
 # Temp fix for OpenCV on openSUSE
 ENV LD_PRELOAD=/usr/lib64/libjpeg.so.8

@@ -42,78 +42,40 @@ RUN --mount=type=cache,target=/var/cache/zypp \
     zypper --gpg-auto-import-keys \
         install --no-confirm --auto-agree-with-licenses \
 python312-opencv \
-python312-addict \
-python312-aenum \
-python312-aiohttp \
-python312-alembic \
-python312-black \
-python312-cachetools \
-python312-chardet \
-python312-dbm \
-python312-deepdiff \
-python312-dill \
-python312-ffmpeg-python \
-python312-filelock \
-python312-ftfy \
-python312-GitPython \
-python312-httpx \
-python312-imageio \
-python312-importlib-metadata \
-python312-joblib \
-python312-lark \
-python312-loguru \
-python312-mss \
-python312-numexpr \
-python312-piexif \
-python312-protobuf \
-python312-py-cpuinfo \
-python312-pydantic \
-python312-pydantic-settings \
-python312-pydub \
-python312-pygit2 \
-python312-PyGithub \
-python312-PyYAML \
-python312-regex \
-python312-qrcode \
-python312-rich \
-python312-safetensors \
-python312-simpleeval \
-python312-SoundFile \
-python312-SQLAlchemy \
-python312-svglib \
-python312-tokenizers \
-python312-toml \
-python312-tqdm \
-python312-typer \
-python312-uv \
-python312-webcolors \
-python312-yapf \
-python312-yarl
+opencv \
+opencv-devel \
+Mesa-libGL1 \
+Mesa-libEGL-devel \
+libgthread-2_0-0
 
-# Note: Using 'update-alternatives' to ensure default Python version.
 RUN --mount=type=cache,target=/var/cache/zypp \
     zypper --gpg-auto-import-keys \
         install --no-confirm --auto-agree-with-licenses \
-Mesa-libGL1 \
-Mesa-libEGL-devel \
-libgthread-2_0-0 \
-make \
-ninja \
-git \
-aria2 \
-fish \
-fd \
-vim \
-which \
-opencv \
-opencv-devel \
+python312-ffmpeg-python \
+python312-imageio \
+python312-svglib \
 ffmpeg \
 x264 \
 x265 \
+python312-GitPython \
+python312-pygit2 \
+git
+
+RUN --mount=type=cache,target=/var/cache/zypp \
+    zypper --gpg-auto-import-keys \
+        install --no-confirm --auto-agree-with-licenses \
+make \
+ninja \
+aria2 \
+findutils \
+fish \
+fd \
+fuse \
+vim \
+which \
 google-noto-sans-fonts \
-google-noto-sans-cjk-fonts \
-google-noto-coloremoji-fonts \
     && rm -v /usr/lib64/python3.12/EXTERNALLY-MANAGED \
+    # Ensure default Python version
     && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 100
 
 # Temp fix for OpenCV on openSUSE
