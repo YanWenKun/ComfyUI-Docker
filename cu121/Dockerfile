@@ -37,7 +37,6 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # Break down the steps, so we have more but smaller image layers.
 
 ARG PIP_INDEX_URL="https://download.pytorch.org/whl/cu121"
-ARG PIP_EXTRA_INDEX_URL="https://pypi.org/simple"
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
@@ -56,7 +55,6 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         xformers==0.0.29.post1 torch==2.5.1 torchvision torchaudio
 
 ARG PIP_INDEX_URL=
-ARG PIP_EXTRA_INDEX_URL=
 
 # Dependencies for frequently-used
 # (Do this firstly so PIP won't be solving too many deps at one time)

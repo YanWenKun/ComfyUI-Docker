@@ -1,13 +1,7 @@
 name: Publish 'base-cu128-pt27' to Docker Hub
 
 on: 
-  workflow_dispatch: # Can be manually triggered
-  push: 
-    branches: [ main ]
-    paths-ignore:
-      - '**'
-      - '!base-cu128-pt27/Dockerfile'
-      - '!.github/workflows/build-base-cu128-pt27.yml'
+  workflow_dispatch: # Can only be triggered manually
 
 
 jobs:

@@ -147,8 +147,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         --force-reinstall onnxruntime-gpu \
-        --index-url https://aiinfra.pkgs.visualstudio.com/PublicPackages/_packaging/onnxruntime-cuda-11/pypi/simple/ \
-        --extra-index-url https://pypi.org/simple
+        --index-url https://aiinfra.pkgs.visualstudio.com/PublicPackages/_packaging/onnxruntime-cuda-11/pypi/simple/
 
 # Make sure the deps fit the needs for ComfyUI
 RUN --mount=type=cache,target=/root/.cache/pip \

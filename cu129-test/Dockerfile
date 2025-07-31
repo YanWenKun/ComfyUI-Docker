@@ -114,20 +114,17 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         --upgrade pip wheel setuptools \
     && pip install \
         --dry-run torch torchvision torchaudio \
-        --index-url https://download.pytorch.org/whl/test/cu129 \
-        --extra-index-url https://pypi.org/simple
+        --index-url https://download.pytorch.org/whl/test/cu129
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         --no-deps torch \
-        --index-url https://download.pytorch.org/whl/test/cu129 \
-        --extra-index-url https://pypi.org/simple
+        --index-url https://download.pytorch.org/whl/test/cu129
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         torch torchvision torchaudio \
-        --index-url https://download.pytorch.org/whl/test/cu129 \
-        --extra-index-url https://pypi.org/simple
+        --index-url https://download.pytorch.org/whl/test/cu129
 
 # Bind libs (.so files)
 # Ref: https://github.com/pytorch/pytorch/blob/main/.ci/manywheel/build_cuda.sh

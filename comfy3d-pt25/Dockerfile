@@ -157,7 +157,6 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         --upgrade pip wheel setuptools
 
 ARG PIP_INDEX_URL="https://download.pytorch.org/whl/cu124"
-ARG PIP_EXTRA_INDEX_URL="https://pypi.org/simple"
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
@@ -176,7 +175,6 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         xformers==0.0.29.post1 torch==2.5.1 torchvision torchaudio
 
 ARG PIP_INDEX_URL=
-ARG PIP_EXTRA_INDEX_URL=
 
 # Bind libs (.so files)
 # Even we have CUDA installed by Zypper, we still need to install CUDA libs for Python in order to run PyTorch.

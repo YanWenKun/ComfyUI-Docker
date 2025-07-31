@@ -231,8 +231,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         --upgrade pip wheel setuptools \
     && pip install \
         --dry-run xformers torchvision torchaudio \
-        --index-url https://download.pytorch.org/whl/cu126 \
-        --extra-index-url https://pypi.org/simple
+        --index-url https://download.pytorch.org/whl/cu126
 
 # Here's some hack. To reduce image size & single layer size, we:
 # 1. Install PyTorch and all its dependencies.
@@ -244,15 +243,13 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         xformers torchvision torchaudio \
         --index-url https://download.pytorch.org/whl/cu126 \
-        --extra-index-url https://pypi.org/simple \
 && pip uninstall --yes torch \
 && find /usr/local/lib/python3.12/site-packages/nvidia/ -mindepth 1 -maxdepth 1 ! -name 'nccl' -exec rm -rfv {} +
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         xformers torchvision torchaudio \
-        --index-url https://download.pytorch.org/whl/cu126 \
-        --extra-index-url https://pypi.org/simple
+        --index-url https://download.pytorch.org/whl/cu126
 
 ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\
 :/usr/local/lib64/python3.12/site-packages/torch/lib\

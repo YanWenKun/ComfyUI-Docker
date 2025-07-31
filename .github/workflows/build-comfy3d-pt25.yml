@@ -1,15 +1,7 @@
 name: Publish 'comfy3d-pt25' to Docker Hub
 
 on: 
-  workflow_dispatch: # Can be manually triggered
-  push: 
-    branches: [ main ]
-    paths-ignore:
-      - '**'
-      - '!comfy3d-pt25/Dockerfile'
-      - '!comfy3d-pt25/runner-scripts/**'
-      - '!.github/workflows/build-comfy3d-pt25.yml'
-
+  workflow_dispatch: # Can only be triggered manually
 
 jobs:
 

@@ -111,20 +111,17 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         --upgrade pip wheel setuptools \
     && pip install \
         --dry-run xformers torchvision torchaudio \
-        --index-url https://download.pytorch.org/whl/cu128 \
-        --extra-index-url https://pypi.org/simple
+        --index-url https://download.pytorch.org/whl/cu128
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         --no-deps xformers torch torchvision torchaudio \
-        --index-url https://download.pytorch.org/whl/cu128 \
-        --extra-index-url https://pypi.org/simple
+        --index-url https://download.pytorch.org/whl/cu128
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         xformers torch torchvision torchaudio \
-        --index-url https://download.pytorch.org/whl/cu128 \
-        --extra-index-url https://pypi.org/simple
+        --index-url https://download.pytorch.org/whl/cu128
 
 # Bind libs (.so files)
 # Ref: https://github.com/pytorch/pytorch/blob/main/.ci/manywheel/build_cuda.sh

@@ -159,7 +159,6 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         --upgrade pip wheel setuptools
 
 ARG PIP_INDEX_URL="https://download.pytorch.org/whl/cu128"
-ARG PIP_EXTRA_INDEX_URL="https://pypi.org/simple"
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
@@ -174,7 +173,6 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         torch==2.7.1 torchvision torchaudio xformers==0.0.31.post1
 
 ARG PIP_INDEX_URL=
-ARG PIP_EXTRA_INDEX_URL=
 
 # Bind libs (.so files)
 ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\

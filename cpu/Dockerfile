@@ -155,20 +155,17 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         --upgrade pip wheel setuptools \
     && pip install \
         --dry-run torch torchvision torchaudio \
-        --index-url https://download.pytorch.org/whl/cpu \
-        --extra-index-url https://pypi.org/simple
+        --index-url https://download.pytorch.org/whl/cpu
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         --no-deps torch torchvision torchaudio \
-        --index-url https://download.pytorch.org/whl/cpu \
-        --extra-index-url https://pypi.org/simple
+        --index-url https://download.pytorch.org/whl/cpu
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         torch torchvision torchaudio \
-        --index-url https://download.pytorch.org/whl/cpu \
-        --extra-index-url https://pypi.org/simple
+        --index-url https://download.pytorch.org/whl/cpu
 
 # Bind libs (.so files)
 ENV LD_LIBRARY_PATH="/usr/local/lib64/python3.13/site-packages/torch/lib\

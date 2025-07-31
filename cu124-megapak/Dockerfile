@@ -157,26 +157,22 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         --upgrade pip wheel setuptools \
     && pip install \
         --dry-run xformers==0.0.29.post3 torch==2.6.0 torchvision torchaudio \
-        --index-url https://download.pytorch.org/whl/cu124 \
-        --extra-index-url https://pypi.org/simple
+        --index-url https://download.pytorch.org/whl/cu124
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         --no-deps torch==2.6.0 \
-        --index-url https://download.pytorch.org/whl/cu124 \
-        --extra-index-url https://pypi.org/simple
+        --index-url https://download.pytorch.org/whl/cu124
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         torch==2.6.0 \
-        --index-url https://download.pytorch.org/whl/cu124 \
-        --extra-index-url https://pypi.org/simple
+        --index-url https://download.pytorch.org/whl/cu124
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         xformers==0.0.29.post3 torch==2.6.0 torchvision torchaudio \
-        --index-url https://download.pytorch.org/whl/cu124 \
-        --extra-index-url https://pypi.org/simple
+        --index-url https://download.pytorch.org/whl/cu124
 
 # Bind libs (.so files)
 # Even we have CUDA installed by Zypper, we still need to install CUDA libs for Python in order to run PyTorch.
