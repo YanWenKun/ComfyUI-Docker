@@ -200,7 +200,6 @@ RUN du -ah /root \
     && rm -rf /root/.[^.]* /root/.??*
 
 COPY runner-scripts/.  /runner-scripts/
-COPY tester-scripts/.  /tester-scripts/
 
 USER root
 VOLUME /root
