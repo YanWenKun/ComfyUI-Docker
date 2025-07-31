@@ -11,6 +11,7 @@ on:
       - '!cpu/Dockerfile'
       - '!cpu/builder-scripts/**'
       - '!cpu/runner-scripts/**'
+      - '!cpu/tester-scripts/**'
       - '!.github/workflows/build-cpu.yml'
 
 jobs:

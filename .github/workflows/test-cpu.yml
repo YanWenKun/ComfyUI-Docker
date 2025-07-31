@@ -19,4 +19,5 @@ jobs:
           docker run --rm \
             --name comfyui-quick-test \
             -e CLI_ARGS="--quick-test-for-ci --cpu" \
-            docker.io/yanwk/comfyui-boot:cpu
+            docker.io/yanwk/comfyui-boot:cpu \
+            bash /tester-scripts/entrypoint.sh
