@@ -84,8 +84,6 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         -r https://raw.githubusercontent.com/FizzleDorf/ComfyUI_FizzNodes/main/requirements.txt \
         -r https://raw.githubusercontent.com/kijai/ComfyUI-KJNodes/main/requirements.txt \
         -r https://raw.githubusercontent.com/melMass/comfy_mtb/main/requirements.txt \
-        -r https://raw.githubusercontent.com/MrForExample/ComfyUI-3D-Pack/main/requirements.txt \
-        -r https://raw.githubusercontent.com/storyicon/comfyui_segment_anything/main/requirements.txt \
         -r https://raw.githubusercontent.com/ZHO-ZHO-ZHO/ComfyUI-InstantID/main/requirements.txt \
         compel lark torchdiffeq fairscale \
         python-ffmpeg
