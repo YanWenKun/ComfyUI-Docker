@@ -55,6 +55,7 @@ SQLAlchemy
 svglib
 tokenizers
 toml
+tomli
 torchsde
 tqdm
 transparent-background

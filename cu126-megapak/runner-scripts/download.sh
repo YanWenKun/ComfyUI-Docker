@@ -82,6 +82,8 @@ clone_or_pull https://github.com/cubiq/ComfyUI_FaceAnalysis.git
 clone_or_pull https://github.com/pythongosssss/ComfyUI-WD14-Tagger.git
 clone_or_pull https://github.com/SLAPaper/ComfyUI-Image-Selector.git
 clone_or_pull https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git
+clone_or_pull https://github.com/welltop-cn/ComfyUI-TeaCache.git
+clone_or_pull https://github.com/nunchaku-tech/ComfyUI-nunchaku.git
 
 
 echo "########################################"
