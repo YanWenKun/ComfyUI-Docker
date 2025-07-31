@@ -115,16 +115,53 @@ cpp13 \
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip list \
     && pip install \
-        --upgrade pip wheel setuptools \
-    && pip install \
-        --dry-run xformers torchvision torchaudio \
-        --index-url https://download.pytorch.org/whl/cu126
+        --upgrade pip wheel setuptools
 
+# 1. Dry run pip install to get the list of packages
+#    (first run to show logs, then grep the output)
+# 2. Extract the package names and versions from the output
+#    Example: nvidia-cuda-runtime-cu12-12.6.77 -> nvidia-cuda-runtime-cu12==12.6.77
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        --no-deps xformers torch torchvision torchaudio \
-        --index-url https://download.pytorch.org/whl/cu126
+        --dry-run xformers torchvision torchaudio \
+        --index-url https://download.pytorch.org/whl/cu126 \
+    && pip install \
+        --dry-run xformers torchvision torchaudio \
+        --index-url https://download.pytorch.org/whl/cu126 \
+            | grep -oP '(?<=Would install ).*' > /tmp/packages.txt \
+    && grep -oP 'nvidia-\S+-\S+' /tmp/packages.txt \
+        | sed 's/\(.*\)-\([^-]*\)$/\1==\2/' > /tmp/packages-nvidia.txt \
+    && echo "========== NVIDIA Packages ==========" \
+    && cat /tmp/packages-nvidia.txt \
+    && echo "====================================="
 
+# Install 'nvidia-' packages, 5 at a time
+RUN --mount=type=cache,target=/root/.cache/pip \
+    head -n 5 /tmp/packages-nvidia.txt | while read -r pkg; do \
+        pip install --no-deps "$pkg" \
+            --index-url https://download.pytorch.org/whl/cu126; \
+    done
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    sed -n '6,10p' /tmp/packages-nvidia.txt | while read -r pkg; do \
+        pip install --no-deps "$pkg" \
+            --index-url https://download.pytorch.org/whl/cu126; \
+    done
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    tail -n +11 /tmp/packages-nvidia.txt | while read -r pkg; do \
+        pip install --no-deps "$pkg" \
+            --index-url https://download.pytorch.org/whl/cu126; \
+    done
+
+# Install PyTorch alone
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install --no-deps \
+        "$(grep -oP 'torch-\S+' /tmp/packages.txt | sed 's/\(.*\)-\([^-]*\)$/\1==\2/')" \
+        --index-url https://download.pytorch.org/whl/cu126 \
+    && rm -v /tmp/packages.txt /tmp/packages-nvidia.txt
+
+# Install everything else, also works as a fail-safe
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         xformers torchvision torchaudio \
