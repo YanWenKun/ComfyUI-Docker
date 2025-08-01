@@ -4,12 +4,6 @@ image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-rocm.y
 
 https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=rocm[在 <Docker Hub> 上查看]
 
-## 注意：需要自行构建镜像
-
-由于 ROCm PyTorch 太大， GitHub Actions 总是报错“存储空间不足”，导致无法利用 GitHub 自动构建发布镜像，所以不再提供成品镜像。用户运行前需要先构建镜像（基本就是下载，加上少量编译）。
-
-如将来 AMD 缩减 PyTorch 包大小，会将再次启用自动构建。
-
 ## 准备工作
 
 * 确保 Linux 宿主机上正确安装了
@@ -21,7 +15,7 @@ https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/native_linux/in
 https://github.com/YanWenKun/ComfyUI-Docker/pull/67[nhtua]
 的 PR）：
 
-* RDNA 及 RDNA 2 :
+* RDNA 2 :
 ** `-e HSA_OVERRIDE_GFX_VERSION=10.3.0 \`
 
 * RDNA 3 :
@@ -49,12 +43,6 @@ https://github.com/YanWenKun/ComfyUI-Docker/pull/114[SergeyFilippov]
 .使用 Docker
 [source,sh]
 ----
-git clone https://github.com/YanWenKun/ComfyUI-Docker.git
-
-cd ComfyUI-Docker/rocm
-
-docker build . -t yanwk/comfyui-boot:rocm
-
 mkdir -p storage
 
 docker run -it --rm \
@@ -72,12 +60,6 @@ docker run -it --rm \
 .使用 Podman
 [source,sh]
 ----
-git clone https://github.com/YanWenKun/ComfyUI-Docker.git
-
-cd ComfyUI-Docker/rocm
-
-podman build . -t yanwk/comfyui-boot:rocm
-
 mkdir -p storage
 
 podman run -it --rm \
@@ -99,13 +81,16 @@ podman run -it --rm \
 
 （以下内容介绍另外的安装使用方式，与本镜像无关）
 
-ROCm 有一个 PyTorch 镜像：
+使用由 AMD 构建的 ROCm PyTorch 镜像：
 
 https://hub.docker.com/r/rocm/pytorch
 
+这个镜像很大，但如果你运行容器遇到困难，可以尝试用这个镜像手动安装运行 ComfyUI。
+它已经安装好了最重要的 PyTorch，你只需要再安装少量 Python 包即可运行 ComfyUI。
+
 [source,sh]
 ----
-docker pull rocm/pytorch:rocm6.2.3_ubuntu22.04_py3.10_pytorch_release_2.3.0
+docker pull rocm/pytorch:rocm6.4.2_ubuntu24.04_py3.12_pytorch_release_2.6.0
 
 mkdir -p storage
 
@@ -119,20 +104,19 @@ docker run -it --rm \
   --user root \
   --workdir /root/workdir \
   -v "$(pwd)"/storage:/root/workdir \
-  rocm/pytorch:rocm6.2.3_ubuntu22.04_py3.10_pytorch_release_2.3.0 \
+  rocm/pytorch:rocm6.4.2_ubuntu24.04_py3.12_pytorch_release_2.6.0 \
   /bin/bash
 
 git clone https://github.com/comfyanonymous/ComfyUI.git
 
-# Or use conda
 pip install -r ComfyUI/requirements.txt
+# 或使用 Conda:
+# conda install --yes --file ComfyUI/requirements.txt
 
-# Or python3
 python ComfyUI/main.py --listen --port 8188
+# 或使用 python3:
+# python3 ComfyUI/main.py --listen --port 8188
 ----
-
-这个镜像很大，但如果你运行遇到困难，可以尝试用这个镜像手动安装运行 ComfyUI。
-它已经安装好了最重要的 PyTorch，你只需要再安装少量 Python 包即可运行 ComfyUI。
 
 ## 备注： Windows 用户
 

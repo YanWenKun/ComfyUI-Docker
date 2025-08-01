@@ -6,12 +6,6 @@ image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-rocm.y
 
 https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=rocm[View on <Docker Hub>]
 
-## Note: Image building is required
-
-This Docker image is too big to build on GitHub Actions (will throw error "No space left on device").
-So before running, a building step (basically downloading) is needed.
-The commands below contain the steps.
-
 ## Prepare
 
 * Make sure
@@ -23,7 +17,7 @@ is installed on your Linux host.
 You may need to add these configuration (especially for APUs) into the command of `docker run`, `podman run` below. (Credit to
 https://github.com/YanWenKun/ComfyUI-Docker/pull/67[nhtua])
 
-* For RDNA and RDNA 2 cards:
+* For RDNA 2 cards:
 ** `-e HSA_OVERRIDE_GFX_VERSION=10.3.0 \`
 
 * For RDNA 3 cards:
@@ -50,12 +44,6 @@ https://github.com/YanWenKun/ComfyUI-Docker/pull/114[SergeyFilippov])
 .With Docker
 [source,sh]
 ----
-git clone https://github.com/YanWenKun/ComfyUI-Docker.git
-
-cd ComfyUI-Docker/rocm
-
-docker build . -t yanwk/comfyui-boot:rocm
-
 mkdir -p storage
 
 docker run -it --rm \
@@ -73,12 +61,6 @@ docker run -it --rm \
 .With Podman
 [source,sh]
 ----
-git clone https://github.com/YanWenKun/ComfyUI-Docker.git
-
-cd ComfyUI-Docker/rocm
-
-podman build . -t yanwk/comfyui-boot:rocm
-
 mkdir -p storage
 
 podman run -it --rm \
@@ -96,17 +78,18 @@ podman run -it --rm \
 Once the app is loaded, visit http://localhost:8188/
 
 [[hint]]
-## If you want to dive in...
+## ROCm: If you want to dive in...
 
-(Just side notes. Nothing to do with this Docker image)
+__(Just side notes. Nothing to do with this Docker image)__
 
-ROCm has a PyTorch image:
+The commands below use the 
+https://hub.docker.com/r/rocm/pytorch[AMD prebuilt ROCm PyTorch image].
 
-https://hub.docker.com/r/rocm/pytorch
+This image is large in filesize. But if you have hard time to run the container, it may be helpful. As it takes care of PyTorch, the most important part, and you just need to install few more Python packages in order to run ComfyUI.
 
 [source,sh]
 ----
-docker pull rocm/pytorch:rocm6.2.3_ubuntu22.04_py3.10_pytorch_release_2.3.0
+docker pull rocm/pytorch:rocm6.4.2_ubuntu24.04_py3.12_pytorch_release_2.6.0
 
 mkdir -p storage
 
@@ -120,23 +103,23 @@ docker run -it --rm \
   --user root \
   --workdir /root/workdir \
   -v "$(pwd)"/storage:/root/workdir \
-  rocm/pytorch:rocm6.2.3_ubuntu22.04_py3.10_pytorch_release_2.3.0 \
+  rocm/pytorch:rocm6.4.2_ubuntu24.04_py3.12_pytorch_release_2.6.0 \
   /bin/bash
 
 git clone https://github.com/comfyanonymous/ComfyUI.git
 
-# Or use conda
 pip install -r ComfyUI/requirements.txt
+# Or:
+# conda install --yes --file ComfyUI/requirements.txt
 
-# Or python3
 python ComfyUI/main.py --listen --port 8188
+# Or:
+# python3 ComfyUI/main.py --listen --port 8188
 ----
-
-It's big, but if you find it hard to run the container, it may be helpful. As it takes care of PyTorch, the most important part, and you just need to install few more Python packages in order to run ComfyUI.
 
 ## Additional notes for Windows users
 
-(Just side notes. Nothing to do with this Docker image)
+__(Just side notes. Nothing to do with this Docker image)__
 
 WSL2 supports ROCm and DirectML.
 
