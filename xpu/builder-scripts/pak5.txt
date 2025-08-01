@@ -1,6 +1,7 @@
 addict
 aiohttp
 albumentations
+alembic
 av
 cachetools
 chardet
@@ -18,6 +19,8 @@ omegaconf
 piexif
 pixeloe
 psutil
+pydantic-settings
+pydantic
 PyGithub
 python-dateutil
 pyyaml
@@ -28,6 +31,7 @@ segment-anything
 sentencepiece
 soundfile
 spandrel
+SQLAlchemy
 svglib
 tokenizers
 toml
