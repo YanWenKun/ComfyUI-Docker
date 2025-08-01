@@ -6,7 +6,7 @@ Tested on an Intel Arc B580 GPU:
 * SDXL: GOOD
 * Stable Cascade: FAST
 * Flux1: FAILED
-* SD 3.5: FAILED
+* SD 3.5: OK
 
 Usage:
 
@@ -28,3 +28,17 @@ podman run -it --rm \
   -e CLI_ARGS="" \
   yanwk/comfyui-boot:xpu
 ----
+
+Notes: 
+
+1. Disabling IPEX may work if you have compatibility issues.
+   But most of time this just downgrade performance.
+
+  -e CLI_ARGS="--disable-ipex-optimize" \
+
+2. In some cases, using fp8 models could cause compatibility issues.
+   Try fp16 as a back up resort.
+
+3. Comfy-Org integrated single model files (all-in-one safetensors)
+   may not always work on XPU. Sometimes you have to use 'exploded' workflows
+   (e.g. UNET workflow).

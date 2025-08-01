@@ -3,7 +3,7 @@ compel
 diffusers
 fairscale
 ftfy
-huggingface-hub[hf-transfer]
+huggingface-hub[hf-transfer,cli]
 imageio
 joblib
 kornia
@@ -25,3 +25,6 @@ timm
 torchdiffeq
 torchmetrics
 transformers
+
+# For XPU
+onnxruntime-openvino
