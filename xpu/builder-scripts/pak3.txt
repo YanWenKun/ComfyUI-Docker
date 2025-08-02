@@ -3,17 +3,20 @@ compel
 diffusers
 fairscale
 ftfy
+gguf
 huggingface-hub[hf-transfer,cli]
 imageio
 joblib
 kornia
 lark
 matplotlib
+omegaconf
 onnx
 opencv-contrib-python-headless
 pandas
 pilgram
 pillow
+protobuf
 pygit2
 python-ffmpeg
 regex
@@ -25,6 +28,3 @@ timm
 torchdiffeq
 torchmetrics
 transformers
-
-# For XPU
-onnxruntime-openvino

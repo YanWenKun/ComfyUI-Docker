@@ -41,6 +41,11 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     && pip install \
         --upgrade pip wheel setuptools
 
+# Override original XPU image's PyTorch, from 2.7.0 to 2.7.1
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        torch==2.7.1 torchvision==0.22.1 torchaudio==2.7.1 --index-url https://download.pytorch.org/whl/xpu
+
 # Deps for ComfyUI & custom nodes
 COPY builder-scripts/.  /builder-scripts/
 
@@ -56,11 +61,22 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         -r /builder-scripts/pak7.txt
 
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        -r /builder-scripts/pak9.txt
+
 # Make sure the deps fit the needs for ComfyUI & Manager
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         -r https://github.com/comfyanonymous/ComfyUI/raw/refs/heads/master/requirements.txt \
         -r https://github.com/Comfy-Org/ComfyUI-Manager/raw/refs/heads/main/requirements.txt
+
+# Optional: Install Intel Python packages (accelerated NumPy, SciPy)
+# Mostly for Intel CPUs. Skipped here.
+# https://www.intel.com/content/www/us/en/developer/tools/oneapi/distribution-for-python.html
+# RUN --mount=type=cache,target=/root/.cache/pip \
+#         pip install --index-url https://software.repos.intel.com/python/pypi \
+#             numpy scipy dpnp dpctl tbb4py
 
 # Make sure using the right version of Intel packages
 RUN --mount=type=cache,target=/root/.cache/pip \

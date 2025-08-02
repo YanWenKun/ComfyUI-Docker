@@ -8,14 +8,16 @@ Tested on an Intel Arc B580 GPU:
 * Flux1: FAILED
 * SD 3.5: OK
 
-Usage:
+
+Usage
+-----
 
 You need to install Intel GPU drivers on your host OS.
 
 You may also need to install `intel-compute-runtime` (or equivalent) on your host OS.
 If not found, just ignore it and run directly.
 
-----
+====
 mkdir -p storage
 
 podman run -it --rm \
@@ -27,9 +29,11 @@ podman run -it --rm \
   -v "$(pwd)"/storage:/root \
   -e CLI_ARGS="" \
   yanwk/comfyui-boot:xpu
-----
+====
 
-Notes: 
+
+Notes
+-----
 
 1. Disabling IPEX may work if you have compatibility issues.
    But most of time this just downgrade performance.
@@ -42,3 +46,13 @@ Notes:
 3. Comfy-Org integrated single model files (all-in-one safetensors)
    may not always work on XPU. Sometimes you have to use 'exploded' workflows
    (e.g. UNET workflow).
+
+
+For Windows Users
+-----------------
+
+Just use Intel AI Playground:
+https://game.intel.com/us/stories/introducing-ai-playground/
+
+Or yet another ComfyUI portable:
+https://github.com/YanWenKun/ComfyUI-WinPortable-XPU
