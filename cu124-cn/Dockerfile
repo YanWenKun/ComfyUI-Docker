@@ -14,8 +14,8 @@ LABEL maintainer="YAN Wenkun <code@yanwk.fun>"
 RUN set -eu
 
 ################################################################################
-# Python 及工具
-# 利用 openSUSE 软件仓库的 PIP 包，以确保兼容性以及更多的系统级支持。后续仍可使用 PIP 更新。
+# 安装 Python 及工具
+# 使用 openSUSE 软件仓库的 Python 包，以确保兼容性以及更多的系统级支持。后续仍可使用 PIP 更新。
 
 RUN --mount=type=cache,target=/var/cache/zypp \
     zypper addrepo --check --refresh --priority 90 \
@@ -28,57 +28,69 @@ python312-wheel \
 python312-setuptools \
 python312-Cython \
 python312-py-build-cmake \
-python312-aiohttp \
-python312-dbm \
-python312-ffmpeg-python \
-python312-GitPython \
-python312-httpx \
-python312-joblib \
-python312-lark \
 python312-matplotlib \
 python312-mpmath \
 python312-numba-devel \
-python312-numpy1 \
+python312-numpy \
 python312-onnx \
-python312-opencv \
 python312-pandas \
-python312-qrcode \
-python312-rich \
 python312-scikit-build \
 python312-scikit-build-core-pyproject \
 python312-scikit-image \
 python312-scikit-learn \
-python312-scipy \
-python312-svglib \
-python312-tqdm \
-    && rm /usr/lib64/python3.12/EXTERNALLY-MANAGED \
-    && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 100
+python312-scipy
 
 RUN --mount=type=cache,target=/var/cache/zypp \
     zypper --gpg-auto-import-keys \
         install --no-confirm --auto-agree-with-licenses \
+python312-opencv \
+opencv \
+opencv-devel \
 Mesa-libGL1 \
 Mesa-libEGL-devel \
 libgthread-2_0-0 \
-make \
-ninja \
-git \
-aria2 \
-fish \
-fd \
-vim \
-opencv \
-opencv-devel \
+libQt5OpenGL5
+
+RUN --mount=type=cache,target=/var/cache/zypp \
+    zypper --gpg-auto-import-keys \
+        install --no-confirm --auto-agree-with-licenses \
+python312-ffmpeg-python \
+python312-imageio \
+python312-svglib \
 ffmpeg \
 x264 \
 x265 \
+python312-GitPython \
+python312-pygit2 \
+git
+
+RUN --mount=type=cache,target=/var/cache/zypp \
+    zypper --gpg-auto-import-keys \
+        install --no-confirm --auto-agree-with-licenses \
+make \
+ninja \
+aria2 \
+findutils \
+fish \
+fd \
+fuse \
+vim \
+which \
 google-noto-sans-fonts \
 google-noto-sans-cjk-fonts \
-google-noto-coloremoji-fonts
+google-noto-coloremoji-fonts \
+    # 解除锁定，使得 PIP 默认可以安装修改系统级 Python 包
+    && rm -v /usr/lib64/python3.12/EXTERNALLY-MANAGED \
+    # 确保默认 Python 版本不被覆盖
+    && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 100
 
 # Temp fix for OpenCV on openSUSE
 # 临时修复：其他组件会优先寻找 libjpeg 版本 6 (实际 8)
 ENV LD_PRELOAD=/usr/lib64/libjpeg.so.8
+
+# Temp fix for SentencePiece on CMAKE 4+
+# 临时修复：解决 CMAKE 4+ 编译 SentencePiece 报错，强制最低版本 3.5
+ENV CMAKE_POLICY_VERSION_MINIMUM=3.5
 
 ################################################################################
 # GCC 13 
@@ -131,8 +143,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         --index-url https://download.pytorch.org/whl/cu124
 
 # 绑定环境变量 (依赖库 .so 文件)
-ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\
-:/usr/local/lib64/python3.12/site-packages/torch/lib\
+ENV LD_LIBRARY_PATH="/usr/local/lib64/python3.12/site-packages/torch/lib\
 :/usr/local/lib/python3.12/site-packages/cusparselt/lib\
 :/usr/local/lib/python3.12/site-packages/nvidia/cublas/lib\
 :/usr/local/lib/python3.12/site-packages/nvidia/cuda_cupti/lib\
@@ -144,9 +155,12 @@ ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\
 :/usr/local/lib/python3.12/site-packages/nvidia/curand/lib\
 :/usr/local/lib/python3.12/site-packages/nvidia/cusolver/lib\
 :/usr/local/lib/python3.12/site-packages/nvidia/cusparse/lib\
+:/usr/local/lib/python3.12/site-packages/nvidia/cusparselt/lib\
 :/usr/local/lib/python3.12/site-packages/nvidia/nccl/lib\
 :/usr/local/lib/python3.12/site-packages/nvidia/nvjitlink/lib\
-:/usr/local/lib/python3.12/site-packages/nvidia/nvtx/lib"
+:/usr/local/lib/python3.12/site-packages/nvidia/nvshmem/lib\
+:/usr/local/lib/python3.12/site-packages/nvidia/nvtx/lib\
+${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
 
 COPY builder-scripts/.  /builder-scripts/
 
@@ -167,7 +181,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         -r https://github.com/comfyanonymous/ComfyUI/raw/refs/heads/master/requirements.txt \
-        -r https://github.com/ltdrdata/ComfyUI-Manager/raw/refs/heads/main/requirements.txt \
+        -r https://github.com/Comfy-Org/ComfyUI-Manager/raw/refs/heads/main/requirements.txt \
     && pip list
 
 ################################################################################

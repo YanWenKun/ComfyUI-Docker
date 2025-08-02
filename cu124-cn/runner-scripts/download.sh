@@ -42,7 +42,7 @@ cd /root/ComfyUI/custom_nodes
 clone_or_pull https://gh-proxy.com/https://github.com/ltdrdata/ComfyUI-Manager.git
 
 # 使用镜像站点替换 ComfyUI-Manager 默认仓库地址，避免卡 UI
-# 治标不治本，使用 Manager 全部功能仍需挂代理或魔改 
+# 治标但不治本，使用 Manager 全部功能仍需挂代理或魔改
 mkdir -p /root/ComfyUI/user/default/ComfyUI-Manager
 
 cat <<EOF > /root/ComfyUI/user/default/ComfyUI-Manager/config.ini
@@ -68,6 +68,11 @@ cd /root/ComfyUI/custom_nodes
 # 工作空间
 clone_or_pull https://gh-proxy.com/https://github.com/crystian/ComfyUI-Crystools.git
 
+# 性能
+clone_or_pull https://gh-proxy.com/https://github.com/welltop-cn/ComfyUI-TeaCache.git
+clone_or_pull https://gh-proxy.com/https://github.com/nunchaku-tech/ComfyUI-nunchaku.git
+clone_or_pull https://gh-proxy.com/https://github.com/city96/ComfyUI-GGUF.git
+
 # 综合
 clone_or_pull https://gh-proxy.com/https://github.com/bash-j/mikey_nodes.git
 clone_or_pull https://gh-proxy.com/https://github.com/chrisgoringe/cg-use-everywhere.git
@@ -78,6 +83,7 @@ clone_or_pull https://gh-proxy.com/https://github.com/pythongosssss/ComfyUI-Cust
 clone_or_pull https://gh-proxy.com/https://github.com/rgthree/rgthree-comfy.git
 clone_or_pull https://gh-proxy.com/https://github.com/shiimizu/ComfyUI_smZNodes.git
 clone_or_pull https://gh-proxy.com/https://github.com/WASasquatch/was-node-suite-comfyui.git
+clone_or_pull https://gh-proxy.com/https://github.com/yolain/ComfyUI-Easy-Use.git
 
 # 控制
 clone_or_pull https://gh-proxy.com/https://github.com/cubiq/ComfyUI_InstantID.git
@@ -92,7 +98,7 @@ clone_or_pull https://gh-proxy.com/https://github.com/ltdrdata/ComfyUI-Impact-Pa
 clone_or_pull https://gh-proxy.com/https://github.com/ltdrdata/ComfyUI-Impact-Subpack.git
 clone_or_pull https://gh-proxy.com/https://github.com/ltdrdata/ComfyUI-Inspire-Pack.git
 clone_or_pull https://gh-proxy.com/https://github.com/mcmonkeyprojects/sd-dynamic-thresholding.git
-clone_or_pull https://gh-proxy.com/https://github.com/storyicon/comfyui_segment_anything.git
+clone_or_pull https://gh-proxy.com/https://github.com/neverbiasu/ComfyUI-SAM2.git
 clone_or_pull https://gh-proxy.com/https://github.com/twri/sdxl_prompt_styler.git
 
 # 视频
