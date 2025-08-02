@@ -53,6 +53,7 @@ clone_or_pull https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git
 clone_or_pull https://github.com/rgthree/rgthree-comfy.git
 clone_or_pull https://github.com/shiimizu/ComfyUI_smZNodes.git
 clone_or_pull https://github.com/WASasquatch/was-node-suite-comfyui.git
+clone_or_pull https://github.com/yolain/ComfyUI-Easy-Use.git
 
 # Control
 clone_or_pull https://github.com/cubiq/ComfyUI_InstantID.git
@@ -67,7 +68,6 @@ clone_or_pull https://github.com/ltdrdata/ComfyUI-Impact-Pack.git
 clone_or_pull https://github.com/ltdrdata/ComfyUI-Impact-Subpack.git
 clone_or_pull https://github.com/ltdrdata/ComfyUI-Inspire-Pack.git
 clone_or_pull https://github.com/mcmonkeyprojects/sd-dynamic-thresholding.git
-clone_or_pull https://github.com/storyicon/comfyui_segment_anything.git
 clone_or_pull https://github.com/twri/sdxl_prompt_styler.git
 
 # Video
@@ -82,6 +82,9 @@ clone_or_pull https://github.com/cubiq/ComfyUI_FaceAnalysis.git
 clone_or_pull https://github.com/pythongosssss/ComfyUI-WD14-Tagger.git
 clone_or_pull https://github.com/SLAPaper/ComfyUI-Image-Selector.git
 clone_or_pull https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git
+clone_or_pull https://github.com/welltop-cn/ComfyUI-TeaCache.git
+clone_or_pull https://github.com/nunchaku-tech/ComfyUI-nunchaku.git
+
 
 echo "########################################"
 echo "[INFO] Downloading Models..."
