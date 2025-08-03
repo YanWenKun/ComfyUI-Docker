@@ -1,6 +1,6 @@
 ################################################################################
 # Dockerfile that builds 'yanwk/comfyui-boot:xpu-test'
-# Using Python 3.12, GCC 13, PyTorch Test (Release Candidate).
+# Using Python 3.12, GCC 13.
 # Using 'root' inside the container.
 ################################################################################
 
@@ -126,20 +126,20 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 #         --force-reinstall numpy scipy dpnp dpctl tbb4py \
 #         --index-url https://software.repos.intel.com/python/pypi
 
-# PyTorch (No IPEX for test version)
+# PyTorch (No IPEX)
 # Break down the steps, so we have more but smaller image layers.
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         --dry-run torch torchvision torchaudio \
-        --index-url https://download.pytorch.org/whl/test/xpu \
+        --index-url https://download.pytorch.org/whl/xpu \
     && pip install \
         --no-deps torch \
-        --index-url https://download.pytorch.org/whl/test/xpu
+        --index-url https://download.pytorch.org/whl/xpu
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         torch torchvision torchaudio \
-        --index-url https://download.pytorch.org/whl/test/xpu
+        --index-url https://download.pytorch.org/whl/xpu
 
 # Bind libs (.so files)
 ENV LD_LIBRARY_PATH="/usr/local/lib/"
@@ -167,7 +167,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         torch torchvision torchaudio \
-        --index-url https://download.pytorch.org/whl/test/xpu
+        --index-url https://download.pytorch.org/whl/xpu
 
 ################################################################################
 # Download ComfyUI & Manager as cached source (copy on first run),
