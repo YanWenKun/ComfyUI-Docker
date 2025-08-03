@@ -16,6 +16,15 @@ RUN set -eu
 RUN --mount=type=cache,target=/var/cache/zypp \
     zypper addrepo --check --refresh --priority 90 \
         'https://ftp.gwdg.de/pub/linux/misc/packman/suse/openSUSE_Tumbleweed/Essentials/' packman-essentials \
+    && printf "\
+[oneAPI]\n\
+name=Intel® oneAPI repository\n\
+baseurl=https://yum.repos.intel.com/oneapi\n\
+enabled=1\n\
+gpgcheck=1\n\
+repo_gpgcheck=1\n\
+gpgkey=https://yum.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB\n" \
+        > /etc/zypp/repos.d/oneAPI.repo \
     && zypper --gpg-auto-import-keys \
         install --no-confirm --auto-agree-with-licenses \
 python312-devel \
@@ -65,7 +74,10 @@ RUN --mount=type=cache,target=/var/cache/zypp \
         install --no-confirm --auto-agree-with-licenses \
 # Key to run PyTorch on XPU
 level-zero \
+level-zero-devel \
 libze_intel_gpu1 \
+clinfo \
+onednn-devel \
 intel-opencl \
 intel-opencl-devel \
 make \
