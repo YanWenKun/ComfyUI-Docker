@@ -1,0 +1,204 @@
+################################################################################
+# XPU 镜像，下载地址改用国内源（不再适合 GitHub CI）。
+# 注意：构建时仍需访问 download.pytorch.org 。
+#
+# 使用 Python 3.13, GCC 14, 由 Intel 编译的 PyTorch。
+# 容器内将以 root 用户运行，以便于 rootless 部署。
+################################################################################
+
+# 该基础镜像声明不含仓库前缀，因而会先尝试使用本地镜像
+FROM fedora:42
+
+LABEL maintainer="code@yanwk.fun"
+
+RUN set -eu
+
+################################################################################
+# 配置使用国内源，并安装 Python 及工具
+# 拆分安装步骤，使生成的镜像文件分为更多更小的层，减少单层下载大小。
+
+# Fedora 基本不需要手动配置镜像，这里谨防万一。
+RUN --mount=type=cache,target=/var/cache/dnf \
+    sed -e 's|^metalink=|#metalink=|g' \
+        -e 's|^#baseurl=http://download.example/pub/fedora/linux|baseurl=https://mirrors.cernet.edu.cn/fedora|g' \
+        -i.bak \
+        /etc/yum.repos.d/fedora.repo \
+        /etc/yum.repos.d/fedora-updates.repo \
+    && dnf install -y --nogpgcheck \
+        # 'https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-42.noarch.rpm'
+        'https://mirrors.cernet.edu.cn/rpmfusion/free/fedora/rpmfusion-free-release-42.noarch.rpm' \
+    && sed -e 's!^metalink=!#metalink=!g' \
+        -e 's!^mirrorlist=!#mirrorlist=!g' \
+        -e 's!^#baseurl=!baseurl=!g' \
+        -e 's!https\?://download1\.rpmfusion\.org/!https://mirrors.cernet.edu.cn/rpmfusion/!g' \
+        -i.bak /etc/yum.repos.d/rpmfusion*.repo 
+
+RUN --mount=type=cache,target=/var/cache/dnf \
+    dnf install -y \
+python3.13-devel \
+python3-pip \
+python3-wheel \
+python3-setuptools \
+python3-cython \
+make \
+ninja \
+python3-cmake
+
+RUN --mount=type=cache,target=/var/cache/dnf \
+    dnf install -y \
+python3-matplotlib \
+python3-mpmath \
+python3-numpy \
+python3-onnx
+
+RUN --mount=type=cache,target=/var/cache/dnf \
+    dnf install -y \
+x264 \
+x265 \
+default-fonts-cjk
+
+RUN --mount=type=cache,target=/var/cache/dnf \
+    dnf install -y \
+python3-opencv
+
+RUN --mount=type=cache,target=/var/cache/dnf \
+    dnf install -y \
+mesa-libGL \
+mesa-libEGL \
+python3-GitPython \
+git \
+python3-pandas \
+python3-scikit-build \
+python3-scikit-build-core \
+python3-scikit-image \
+python3-scikit-learn \
+fish \
+aria2 \
+fd-find \
+vim \
+which
+
+RUN --mount=type=cache,target=/var/cache/dnf \
+    dnf install -y \
+intel-compute-runtime \
+intel-level-zero \
+intel-level-zero-devel \
+oneapi-level-zero \
+intel-ocloc \
+intel-opencl \
+intel-igc \
+clinfo
+
+################################################################################
+# GCC 14
+# Fedora 42 defaults to GCC 15
+
+RUN --mount=type=cache,target=/var/cache/dnf \
+    dnf install -y \
+gcc14 \
+gcc14-c++ \
+    && update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++-14 90 \
+    && update-alternatives --install /usr/bin/cc  cc  /usr/bin/gcc-14 90 \
+    && update-alternatives --install /usr/bin/cpp cpp /usr/bin/cpp-14 90 \
+    && update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-14 90 \
+    && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-14 90 \
+    && update-alternatives --install /usr/bin/gcc-ar gcc-ar /usr/bin/gcc-ar-14 90 \
+    && update-alternatives --install /usr/bin/gcc-nm gcc-nm /usr/bin/gcc-nm-14 90 \
+    && update-alternatives --install /usr/bin/gcc-ranlib gcc-ranlib /usr/bin/gcc-ranlib-14 90 \
+    && update-alternatives --install /usr/bin/gcov gcov /usr/bin/gcov-14 90 \
+    && update-alternatives --install /usr/bin/gcov-dump gcov-dump /usr/bin/gcov-dump-14 90 \
+    && update-alternatives --install /usr/bin/gcov-tool gcov-tool /usr/bin/gcov-tool-14 90 
+
+# ################################################################################
+# # 配置使用国内源，安装 Python 包
+
+ARG PIP_ROOT_USER_ACTION='ignore'
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip list \
+    && pip install \
+        --upgrade pip wheel setuptools
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        --dry-run torch torchvision torchaudio \
+        --index-url https://download.pytorch.org/whl/test/xpu \
+    && pip install \
+        --no-deps torch \
+        --index-url https://download.pytorch.org/whl/test/xpu
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        torch torchvision torchaudio \
+        --index-url https://download.pytorch.org/whl/test/xpu
+
+ENV PIP_INDEX_URL="https://mirrors.cernet.edu.cn/pypi/web/simple"
+ENV PIP_EXTRA_INDEX_URL="https://mirrors.cernet.edu.cn/pypi/web/simple"
+
+# 安装 ComfyUI 及扩展所需依赖项
+COPY builder-scripts/.  /builder-scripts/
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        -r /builder-scripts/pak3.txt
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        -r /builder-scripts/pak5.txt
+
+# Temp fix for SentencePiece on CMAKE 4+
+# 临时修复：解决 CMAKE 4+ 编译 SentencePiece 报错，强制最低版本 3.5
+ENV CMAKE_POLICY_VERSION_MINIMUM=3.5
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        -r /builder-scripts/pak7.txt
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        -r /builder-scripts/pak9.txt
+
+# 确保依赖项匹配
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        torch torchvision torchaudio \
+        --index-url https://download.pytorch.org/whl/test/xpu
+
+################################################################################
+
+WORKDIR /default-comfyui-bundle
+
+RUN bash /builder-scripts/preload-cache.sh
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        -r '/default-comfyui-bundle/ComfyUI/requirements.txt' \
+        -r '/default-comfyui-bundle/ComfyUI/custom_nodes/ComfyUI-Manager/requirements.txt' \
+    && pip list
+
+################################################################################
+# 绑定环境变量 (依赖库 .so 文件)
+
+ENV LD_LIBRARY_PATH="/usr/local/lib\
+:/usr/local/lib64/python3.13/site-packages/torch/lib/\
+${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
+
+################################################################################
+# HuggingFace 使用国内源
+
+ENV HF_ENDPOINT=https://hf-mirror.com
+
+################################################################################
+
+RUN df -h \
+    && du -ah /root \
+    && find /root/ -mindepth 1 -delete
+
+COPY runner-scripts/.  /runner-scripts/
+
+USER root
+VOLUME /root
+WORKDIR /root
+EXPOSE 8188
+ENV CLI_ARGS=""
+CMD ["bash","/runner-scripts/entrypoint.sh"]
