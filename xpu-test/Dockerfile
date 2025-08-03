@@ -64,6 +64,7 @@ RUN --mount=type=cache,target=/var/cache/zypp \
     zypper --gpg-auto-import-keys \
         install --no-confirm --auto-agree-with-licenses \
 # Key to run PyTorch on XPU
+level-zero \
 libze_intel_gpu1 \
 intel-opencl \
 intel-opencl-devel \
