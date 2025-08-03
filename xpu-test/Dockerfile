@@ -1,10 +1,10 @@
 ################################################################################
 # Dockerfile that builds 'yanwk/comfyui-boot:xpu-test'
-# Using Python 3.11, GCC 11, PyTorch Test (Release Candidate).
+# Using Python 3.12, GCC 13, PyTorch Test (Release Candidate).
 # Using 'root' inside the container.
 ################################################################################
 
-FROM docker.io/opensuse/leap:15.6
+FROM docker.io/opensuse/tumbleweed:latest
 
 LABEL maintainer="YAN Wenkun <code@yanwk.fun>"
 
@@ -15,40 +15,59 @@ RUN set -eu
 
 RUN --mount=type=cache,target=/var/cache/zypp \
     zypper addrepo --check --refresh --priority 90 \
-        'https://ftp.gwdg.de/pub/linux/misc/packman/suse/openSUSE_Leap_15.6/Essentials/' packman-essentials \
+        'https://ftp.gwdg.de/pub/linux/misc/packman/suse/openSUSE_Tumbleweed/Essentials/' packman-essentials \
     && zypper --gpg-auto-import-keys \
         install --no-confirm --auto-agree-with-licenses \
-python311-devel \
-python311-pip \
-python311-wheel \
-python311-setuptools \
-python311-Cython \
-python311-matplotlib \
-python311-scikit-build
+python312-devel \
+python312-pip \
+python312-wheel \
+python312-setuptools \
+python312-Cython \
+python312-py-build-cmake \
+python312-matplotlib \
+python312-mpmath \
+python312-numba-devel \
+python312-numpy \
+python312-onnx \
+python312-pandas \
+python312-scikit-build \
+python312-scikit-build-core-pyproject \
+python312-scikit-image \
+python312-scikit-learn \
+python312-scipy
 
 RUN --mount=type=cache,target=/var/cache/zypp \
     zypper --gpg-auto-import-keys \
         install --no-confirm --auto-agree-with-licenses \
-python311-opencv \
+python312-opencv \
 opencv \
+opencv-devel \
 Mesa-libGL1 \
-libgthread-2_0-0
+Mesa-libEGL-devel \
+libgthread-2_0-0 \
+libQt5OpenGL5
 
 RUN --mount=type=cache,target=/var/cache/zypp \
     zypper --gpg-auto-import-keys \
         install --no-confirm --auto-agree-with-licenses \
+python312-ffmpeg-python \
+python312-imageio \
+python312-svglib \
 ffmpeg \
 x264 \
 x265 \
-python311-GitPython \
-python311-pygit2 \
+python312-GitPython \
+python312-pygit2 \
 git
 
 RUN --mount=type=cache,target=/var/cache/zypp \
     zypper --gpg-auto-import-keys \
         install --no-confirm --auto-agree-with-licenses \
+# Key to run PyTorch on XPU
+libze_intel_gpu1 \
+intel-opencl \
+intel-opencl-devel \
 make \
-cmake \
 ninja \
 aria2 \
 findutils \
@@ -56,29 +75,38 @@ fish \
 fd \
 fuse \
 vim \
+which \
+google-noto-sans-fonts \
+    && rm -v /usr/lib64/python3.12/EXTERNALLY-MANAGED \
     # Ensure default Python version
-    && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11 100
+    && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 100
+
+# Temp fix for OpenCV on openSUSE
+ENV LD_PRELOAD=/usr/lib64/libjpeg.so.8
+
+# Temp fix for SentencePiece on CMAKE 4+
+ENV CMAKE_POLICY_VERSION_MINIMUM=3.5
 
 ################################################################################
-# GCC 11 
+# GCC 13
 
 RUN --mount=type=cache,target=/var/cache/zypp \
     zypper --gpg-auto-import-keys \
         install --no-confirm --auto-agree-with-licenses \
-gcc11 \
-gcc11-c++ \
-cpp11 \
-    && update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++-11 90 \
-    && update-alternatives --install /usr/bin/cc  cc  /usr/bin/gcc-11 90 \
-    && update-alternatives --install /usr/bin/cpp cpp /usr/bin/cpp-11 90 \
-    && update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-11 90 \
-    && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 90 \
-    && update-alternatives --install /usr/bin/gcc-ar gcc-ar /usr/bin/gcc-ar-11 90 \
-    && update-alternatives --install /usr/bin/gcc-nm gcc-nm /usr/bin/gcc-nm-11 90 \
-    && update-alternatives --install /usr/bin/gcc-ranlib gcc-ranlib /usr/bin/gcc-ranlib-11 90 \
-    && update-alternatives --install /usr/bin/gcov gcov /usr/bin/gcov-11 90 \
-    && update-alternatives --install /usr/bin/gcov-dump gcov-dump /usr/bin/gcov-dump-11 90 \
-    && update-alternatives --install /usr/bin/gcov-tool gcov-tool /usr/bin/gcov-tool-11 90 
+gcc13 \
+gcc13-c++ \
+cpp13 \
+    && update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++-13 90 \
+    && update-alternatives --install /usr/bin/cc  cc  /usr/bin/gcc-13 90 \
+    && update-alternatives --install /usr/bin/cpp cpp /usr/bin/cpp-13 90 \
+    && update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 90 \
+    && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 90 \
+    && update-alternatives --install /usr/bin/gcc-ar gcc-ar /usr/bin/gcc-ar-13 90 \
+    && update-alternatives --install /usr/bin/gcc-nm gcc-nm /usr/bin/gcc-nm-13 90 \
+    && update-alternatives --install /usr/bin/gcc-ranlib gcc-ranlib /usr/bin/gcc-ranlib-13 90 \
+    && update-alternatives --install /usr/bin/gcov gcov /usr/bin/gcov-13 90 \
+    && update-alternatives --install /usr/bin/gcov-dump gcov-dump /usr/bin/gcov-dump-13 90 \
+    && update-alternatives --install /usr/bin/gcov-tool gcov-tool /usr/bin/gcov-tool-13 90 
 
 ################################################################################
 # Python Packages
@@ -88,13 +116,14 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     && pip install \
         --upgrade pip wheel setuptools
 
-# Install Intel accelerated NumPy, SciPy
+# Intel accelerated NumPy, SciPy
 # Potential marginal performance gain (for ComfyUI / Stable Diffusion).
+# But sure to have compatibility issues with other Intel packages.
 # https://www.intel.com/content/www/us/en/developer/tools/oneapi/distribution-for-python.html
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install \
-        --force-reinstall numpy scipy dpnp dpctl tbb4py \
-        --index-url https://software.repos.intel.com/python/pypi
+# RUN --mount=type=cache,target=/root/.cache/pip \
+#     pip install \
+#         --force-reinstall numpy scipy dpnp dpctl tbb4py \
+#         --index-url https://software.repos.intel.com/python/pypi
 
 # PyTorch (No IPEX for test version)
 # Break down the steps, so we have more but smaller image layers.
