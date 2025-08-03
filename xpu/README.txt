@@ -12,10 +12,20 @@ Tested on an Intel Arc B580 GPU:
 Usage
 -----
 
-You need to install Intel GPU drivers on your host OS.
+1. Check if the Linux Kernel Module for Intel GPU is installed:
 
-You may also need to install `intel-compute-runtime` (or equivalent) on your host OS.
+   lsmod | grep -i xe
+
+For a modern desktop distro with a 2025 Kernel, it should be already included.
+If you are using an older Linux kernel, you may need to install Intel GPU drivers on your host OS.
+
+iGPUs are not supported, per the Intel doc:
+https://pytorch-extension.intel.com/installation?platform=gpu&version=v2.7.10%2Bxpu&os=linux%2Fwsl2&package=pip
+
+2. You may also need to install `intel-compute-runtime` (or equivalent) on your host OS.
 If not found, just ignore it and run directly.
+
+3. Run the container:
 
 ====
 mkdir -p storage

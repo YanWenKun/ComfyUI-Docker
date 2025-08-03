@@ -18,7 +18,6 @@ https://github.com/ltdrdata/ComfyUI-Inspire-Pack/raw/refs/heads/main/requirement
 https://github.com/WASasquatch/was-node-suite-comfyui/raw/refs/heads/main/requirements.txt
 https://github.com/openvino-dev-samples/comfyui_openvino/raw/refs/heads/main/requirements.txt
 https://github.com/city96/ComfyUI-GGUF/raw/refs/heads/main/requirements.txt
-https://github.com/nunchaku-tech/nunchaku/raw/refs/heads/main/requirements.txt
 https://github.com/welltop-cn/ComfyUI-TeaCache/raw/refs/heads/main/requirements.txt
 )
 

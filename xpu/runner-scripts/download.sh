@@ -48,7 +48,6 @@ clone_or_pull https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git
 # Performance
 clone_or_pull https://github.com/openvino-dev-samples/comfyui_openvino.git
 clone_or_pull https://github.com/welltop-cn/ComfyUI-TeaCache.git
-clone_or_pull https://github.com/nunchaku-tech/ComfyUI-nunchaku.git
 clone_or_pull https://github.com/city96/ComfyUI-GGUF.git
 
 echo "########################################"
