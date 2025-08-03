@@ -56,9 +56,6 @@ fish \
 fd \
 fuse \
 vim \
-which \
-google-noto-sans-fonts \
-    && rm -v /usr/lib64/python3.11/EXTERNALLY-MANAGED \
     # Ensure default Python version
     && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11 100
 
@@ -86,12 +83,16 @@ cpp11 \
 ################################################################################
 # Python Packages
 
-# Use Intel accelerated NumPy, SciPy
-# Potential performance gain, marginal for Stable Diffusion.
-# https://www.intel.com/content/www/us/en/developer/tools/oneapi/distribution-for-python.html
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip list \
     && pip install \
+        --upgrade pip wheel setuptools
+
+# Install Intel accelerated NumPy, SciPy
+# Potential marginal performance gain (for ComfyUI / Stable Diffusion).
+# https://www.intel.com/content/www/us/en/developer/tools/oneapi/distribution-for-python.html
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
         --force-reinstall numpy scipy dpnp dpctl tbb4py \
         --index-url https://software.repos.intel.com/python/pypi
 
@@ -99,13 +100,9 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # Break down the steps, so we have more but smaller image layers.
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        --upgrade pip wheel setuptools \
-    && pip install \
         --dry-run torch torchvision torchaudio \
-        --index-url https://download.pytorch.org/whl/test/xpu
-
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install \
+        --index-url https://download.pytorch.org/whl/test/xpu \
+    && pip install \
         --no-deps torch \
         --index-url https://download.pytorch.org/whl/test/xpu
 
@@ -132,6 +129,12 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         -r /builder-scripts/pak9.txt
+
+# Fix dependencies
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        torch torchvision torchaudio \
+        --index-url https://download.pytorch.org/whl/test/xpu
 
 # Make sure the deps fit the needs for ComfyUI & Manager
 RUN --mount=type=cache,target=/root/.cache/pip \

@@ -1,5 +1,4 @@
 accelerate
-cmake
 compel
 diffusers
 fairscale

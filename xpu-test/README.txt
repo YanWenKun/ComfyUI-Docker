@@ -1,4 +1,5 @@
 Tested on an Intel Arc B580 GPU:
+--------------------------------
 
 (PyTorch 2.8 RC, No IPEX)
 
@@ -9,7 +10,8 @@ Tested on an Intel Arc B580 GPU:
 * SD 3.5: OK
 
 
-Run the container:
+To run the container:
+---------------------
 
 ====
 mkdir -p storage

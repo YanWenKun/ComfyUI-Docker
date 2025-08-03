@@ -4,5 +4,3 @@ numba-dpex
 onnxruntime-openvino
 openvino
 openvino-genai
-scikit-learn-intelex
-optimum-intel[openvino]@git+https://github.com/huggingface/optimum-intel.git
