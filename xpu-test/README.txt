@@ -44,6 +44,3 @@ What's not OK
 1. Once OOM, ComfyUI won't crash, but GPU will stop responding
    for future prompt (UR_RESULT_ERROR_DEVICE_LOST).
    In that case, you need to restart ComfyUI.
-
-2. On Linux, I have no idea how to monitor VRAM usage. The xpu-smi
-   only works for enterprise GPUs.
