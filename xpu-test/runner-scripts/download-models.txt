@@ -1,0 +1,17 @@
+# Since SD models are so diverse now (SD 1.5, SDXL, FLUX.1, etc.),
+# I have commented out most download links to give the choice to users.
+
+# TAESD
+
+https://raw.githubusercontent.com/madebyollin/taesd/main/taesd_decoder.pth
+  dir=vae_approx
+  out=taesd_decoder.pth
+https://raw.githubusercontent.com/madebyollin/taesd/main/taesdxl_decoder.pth
+  dir=vae_approx
+  out=taesdxl_decoder.pth
+https://raw.githubusercontent.com/madebyollin/taesd/main/taesd3_decoder.pth
+  dir=vae_approx
+  out=taesd3_decoder.pth
+https://raw.githubusercontent.com/madebyollin/taesd/main/taef1_decoder.pth
+  dir=vae_approx
+  out=taef1_decoder.pth

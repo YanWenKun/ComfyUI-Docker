@@ -1,4 +1,4 @@
-name: Publish 'xpu' to Docker Hub
+name: Publish 'xpu-test' to Docker Hub
 
 on: 
   workflow_dispatch: # Can be manually triggered
@@ -6,14 +6,14 @@ on:
     branches: [ main ]
     paths-ignore:
       - '**'
-      - '!xpu/Dockerfile'
-      - '!xpu/builder-scripts/**'
-      - '!xpu/runner-scripts/**'
-      - '!.github/workflows/build-xpu.yml'
+      - '!xpu-test/Dockerfile'
+      - '!xpu-test/builder-scripts/**'
+      - '!xpu-test/runner-scripts/**'
+      - '!.github/workflows/build-xpu-test.yml'
 
 jobs:
 
-  build-publish-xpu:
+  build-publish-xpu-test:
     environment: Publish to Docker Hub
     runs-on: ubuntu-latest
     steps:
@@ -46,12 +46,12 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_ACCESSTOKEN }}
       -
-        name: Build and push 'xpu'
+        name: Build and push 'xpu-test'
         uses: docker/build-push-action@v6
         with:
-          context: ./xpu
-          file: ./xpu/Dockerfile
+          context: ./xpu-test
+          file: ./xpu-test/Dockerfile
           tags: |
-            yanwk/comfyui-boot:xpu
-            yanwk/comfyui-boot:xpu-${{ steps.date.outputs.date }}
+            yanwk/comfyui-boot:xpu-test
+            yanwk/comfyui-boot:xpu-test-${{ steps.date.outputs.date }}
           push: true

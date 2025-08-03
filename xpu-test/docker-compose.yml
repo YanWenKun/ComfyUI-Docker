@@ -1,0 +1,22 @@
+# Compose file for Intel GPU
+
+services:
+
+  comfyui:
+    init: true
+    container_name: comfyui-xpu-test
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: "yanwk/comfyui-boot:xpu-test"
+    ports:
+      - "8188:8188"
+    volumes:
+      - "./storage:/root"
+    environment:
+      - CLI_ARGS=
+    devices:
+      - /dev/dri
+    ipc: host
+    security_opt:
+      - label:disable
