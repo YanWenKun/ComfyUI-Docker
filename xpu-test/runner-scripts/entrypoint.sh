@@ -2,6 +2,8 @@
 
 set -e
 
+echo "########################################"
+
 # Run user's set-proxy script
 cd /root
 if [ ! -f "/root/user-scripts/set-proxy.sh" ] ; then
@@ -14,12 +16,20 @@ else
     source /root/user-scripts/set-proxy.sh
 fi ;
 
-# Install ComfyUI
+# Copy ComfyUI from cache to workdir if it doesn't exist
 cd /root
-if [ ! -f "/root/.download-complete" ] ; then
-    chmod +x /runner-scripts/download.sh
-    bash /runner-scripts/download.sh
-fi ;
+if [ ! -f "/root/ComfyUI/main.py" ] ; then
+    mkdir -p /root/ComfyUI
+    # Note we use 'cp -a' here, all file timestamps and permissions will be preserved
+    if cp -a "/default-comfyui-bundle/ComfyUI/." "/root/ComfyUI/" ; then
+        echo "[INFO] Copying image's default ComfyUI bundle..."
+    else
+        echo "[ERROR] Failed to copy ComfyUI bundle to '/root/ComfyUI'" >&2
+        exit 1
+    fi
+else
+    echo "[INFO] Using existing ComfyUI in user storage..."
+fi
 
 # Run user's pre-start script
 cd /root
@@ -33,8 +43,6 @@ else
     source /root/user-scripts/pre-start.sh
 fi ;
 
-
-echo "########################################"
 echo "[INFO] Starting ComfyUI..."
 echo "########################################"
 

@@ -111,6 +111,9 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         torch torchvision torchaudio \
         --index-url https://download.pytorch.org/whl/test/xpu
 
+# Bind libs (.so files)
+ENV LD_LIBRARY_PATH="/usr/local/lib/"
+
 # Deps for ComfyUI & custom nodes
 COPY builder-scripts/.  /builder-scripts/
 
@@ -136,11 +139,19 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         torch torchvision torchaudio \
         --index-url https://download.pytorch.org/whl/test/xpu
 
-# Make sure the deps fit the needs for ComfyUI & Manager
+################################################################################
+# Download ComfyUI & Manager as cached source (copy on first run),
+# Using ComfyUI stable version (has a release tag).
+# Then install their versioned dependencies.
+
+WORKDIR /default-comfyui-bundle
+
+RUN bash /builder-scripts/preload-cache.sh
+
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        -r https://github.com/comfyanonymous/ComfyUI/raw/refs/heads/master/requirements.txt \
-        -r https://github.com/Comfy-Org/ComfyUI-Manager/raw/refs/heads/main/requirements.txt \
+        -r '/default-comfyui-bundle/ComfyUI/requirements.txt' \
+        -r '/default-comfyui-bundle/ComfyUI/custom_nodes/ComfyUI-Manager/requirements.txt' \
     && pip list
 
 ################################################################################
