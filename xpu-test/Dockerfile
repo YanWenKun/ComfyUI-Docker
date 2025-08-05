@@ -35,6 +35,7 @@ python3-onnx
 
 RUN --mount=type=cache,target=/var/cache/dnf \
     dnf install -y \
+ffmpeg \
 x264 \
 x265 \
 default-fonts-cjk

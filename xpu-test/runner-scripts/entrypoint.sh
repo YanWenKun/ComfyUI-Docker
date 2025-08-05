@@ -20,9 +20,10 @@ fi ;
 cd /root
 if [ ! -f "/root/ComfyUI/main.py" ] ; then
     mkdir -p /root/ComfyUI
-    # Note we use 'cp -a' here, all file timestamps and permissions will be preserved
-    if cp -a "/default-comfyui-bundle/ComfyUI/." "/root/ComfyUI/" ; then
-        echo "[INFO] Copying image's default ComfyUI bundle..."
+    # 'cp --archive': all file timestamps and permissions will be preserved
+    # 'cp --update=none': do not overwrite
+    if cp --archive --update=none "/default-comfyui-bundle/ComfyUI/." "/root/ComfyUI/" ; then
+        echo "[INFO] Setting up ComfyUI..."
     else
         echo "[ERROR] Failed to copy ComfyUI bundle to '/root/ComfyUI'" >&2
         exit 1

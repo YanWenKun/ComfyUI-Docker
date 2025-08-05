@@ -25,6 +25,8 @@ To run the container:
 
 ====
 mkdir -p storage
+mkdir -p storage-models/models storage-models/hf-hub storage-models/torch-hub
+mkdir -p storage-user/input storage-user/output storage-user/workflows
 
 podman run -it --rm \
   --name comfyui-xpu-test \
@@ -33,6 +35,12 @@ podman run -it --rm \
   --security-opt label=disable \
   -p 8188:8188 \
   -v "$(pwd)"/storage:/root \
+  -v "$(pwd)"/storage-models/models:/root/ComfyUI/models \
+  -v "$(pwd)"/storage-models/hf-hub:/root/.cache/huggingface/hub \
+  -v "$(pwd)"/storage-models/torch-hub:/root/.cache/torch/hub \
+  -v "$(pwd)"/storage-user/input:/root/ComfyUI/input \
+  -v "$(pwd)"/storage-user/output:/root/ComfyUI/output \
+  -v "$(pwd)"/storage-user/workflows:/root/ComfyUI/user/default/workflows \
   -e CLI_ARGS="" \
   yanwk/comfyui-boot:xpu-test
 ====
