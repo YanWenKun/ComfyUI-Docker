@@ -52,7 +52,6 @@ jobs:
           context: ./xpu-test
           file: ./xpu-test/Dockerfile
           tags: |
-            yanwk/comfyui-boot:xpu-pt28rc
             yanwk/comfyui-boot:xpu-test
             yanwk/comfyui-boot:xpu-test-${{ steps.date.outputs.date }}
           push: true
