@@ -46,8 +46,8 @@ podman run -it --rm \
 ====
 
 
-What's not OK
--------------
+Known Issue(s)
+--------------
 
 1. Once OOM, ComfyUI won't crash, but GPU will stop responding
    for future prompt (UR_RESULT_ERROR_DEVICE_LOST).

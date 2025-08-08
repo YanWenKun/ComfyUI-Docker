@@ -1,5 +1,8 @@
 ################################################################################
 # Dockerfile that builds 'yanwk/comfyui-boot:xpu-test'
+# A runtime environment for https://github.com/comfyanonymous/ComfyUI
+# Running on XPU (Intel GPU).
+# Using PyTorch Test (Release Candidate) without IPEX (Intel Extension for PyTorch).
 # Using Python 3.13, GCC 14.
 # Using 'root' inside the container.
 ################################################################################
