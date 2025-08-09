@@ -20,7 +20,7 @@ Usage
    If you are using an older Linux kernel, you may need to install Intel GPU drivers on your host OS.
 
    iGPUs are not supported, according to the Intel doc:
-   https://pytorch-extension.intel.com/installation?platform=gpu&version=v2.7.10%2Bxpu&os=linux%2Fwsl2&package=pip
+   https://pytorch-extension.intel.com/installation?platform=gpu&version=v2.8.10%2Bxpu&os=linux%2Fwsl2&package=pip
 
 2. You may also need to install `intel-compute-runtime` (or equivalent) on your host OS.
    If not found, just ignore it and run directly.
@@ -29,6 +29,8 @@ Usage
 
 ====
 mkdir -p storage
+mkdir -p storage-models/models storage-models/hf-hub storage-models/torch-hub
+mkdir -p storage-user/input storage-user/output storage-user/workflows
 
 podman run -it --rm \
   --name comfyui-xpu \
@@ -37,6 +39,12 @@ podman run -it --rm \
   --security-opt label=disable \
   -p 8188:8188 \
   -v "$(pwd)"/storage:/root \
+  -v "$(pwd)"/storage-models/models:/root/ComfyUI/models \
+  -v "$(pwd)"/storage-models/hf-hub:/root/.cache/huggingface/hub \
+  -v "$(pwd)"/storage-models/torch-hub:/root/.cache/torch/hub \
+  -v "$(pwd)"/storage-user/input:/root/ComfyUI/input \
+  -v "$(pwd)"/storage-user/output:/root/ComfyUI/output \
+  -v "$(pwd)"/storage-user/workflows:/root/ComfyUI/user/default/workflows \
   -e CLI_ARGS="" \
   yanwk/comfyui-boot:xpu
 ====
