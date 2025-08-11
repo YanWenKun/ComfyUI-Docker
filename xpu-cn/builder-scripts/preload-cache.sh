@@ -82,6 +82,6 @@ cd /default-comfyui-bundle/ComfyUI/custom_nodes
 
 for D in *; do
     if [ -d "${D}" ]; then
-        set_repo "${D}" &
+        set_repo "${D}"
     fi
 done
