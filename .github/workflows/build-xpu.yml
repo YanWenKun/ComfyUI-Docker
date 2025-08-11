@@ -2,6 +2,8 @@ name: Publish 'xpu' to Docker Hub
 
 on: 
   workflow_dispatch: # Can be manually triggered
+  schedule: # Runs on every Monday, 07:00 UTC
+    - cron: '0 7 * * 1'
   push: 
     branches: [ main ]
     paths-ignore:
@@ -46,7 +48,24 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_ACCESSTOKEN }}
       -
-        name: Build and push 'xpu'
+        name: Build 'xpu'
+        uses: docker/build-push-action@v6
+        with:
+          context: ./xpu
+          file: ./xpu/Dockerfile
+          tags: |
+            yanwk/comfyui-boot:xpu
+            yanwk/comfyui-boot:xpu-${{ steps.date.outputs.date }}
+          load: true
+      - 
+        name: Test 'xpu'
+        run: |
+          docker run --rm \
+            --name comfyui-quick-test \
+            -e CLI_ARGS="--quick-test-for-ci --cpu" \
+            yanwk/comfyui-boot:xpu-${{ steps.date.outputs.date }}
+      -
+        name: Push 'xpu'
         uses: docker/build-push-action@v6
         with:
           context: ./xpu
