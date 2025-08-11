@@ -1,0 +1,4 @@
+# https://www.intel.com/content/www/us/en/developer/tools/openvino-toolkit/download.html
+onnxruntime-openvino
+openvino
+openvino-genai
