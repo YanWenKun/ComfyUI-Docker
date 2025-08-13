@@ -1,4 +1,5 @@
 #!/bin/bash
+# 先从 GitHub 下载仓库，再修改仓库远程地址到镜像站
 
 set -euo pipefail
 
@@ -10,7 +11,7 @@ function set_repo () {
     git_remote_url=$(git -C "$1" remote get-url origin) ;
 
     if [[ $git_remote_url =~ ^(https:\/\/github\.com\/)(.*)(\.git)$ ]]; then
-        echo "正在修改URL并更新: $1" ;
+        echo "正在替换为 GitHub 代理地址: $1" ;
         git -C "$1" remote set-url origin "https://gh-proxy.com/$git_remote_url" ;
     fi ;
 }
@@ -50,13 +51,52 @@ echo "########################################"
 echo "[INFO] 下载扩展组件（自定义节点）……"
 echo "########################################"
 
-gcs 'https://github.com/chrisgoringe/cg-use-everywhere.git'
-gcs 'https://github.com/cubiq/ComfyUI_essentials.git'
-gcs 'https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git'
+# 性能
+gcs https://github.com/openvino-dev-samples/comfyui_openvino.git
+gcs https://github.com/welltop-cn/ComfyUI-TeaCache.git
+gcs https://github.com/city96/ComfyUI-GGUF.git
 
-gcs 'https://github.com/openvino-dev-samples/comfyui_openvino.git'
-gcs 'https://github.com/welltop-cn/ComfyUI-TeaCache.git'
-gcs 'https://github.com/city96/ComfyUI-GGUF.git'
+# 工作空间
+gcs https://github.com/crystian/ComfyUI-Crystools.git
+
+# 综合
+gcs https://github.com/ltdrdata/was-node-suite-comfyui.git
+gcs https://github.com/kijai/ComfyUI-KJNodes.git
+gcs https://github.com/bash-j/mikey_nodes.git
+gcs https://github.com/chrisgoringe/cg-use-everywhere.git
+gcs https://github.com/jags111/efficiency-nodes-comfyui.git
+gcs https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git
+gcs https://github.com/rgthree/rgthree-comfy.git
+gcs https://github.com/shiimizu/ComfyUI_smZNodes.git
+gcs https://github.com/yolain/ComfyUI-Easy-Use.git
+
+# 控制
+gcs https://github.com/ltdrdata/ComfyUI-Impact-Pack.git
+gcs https://github.com/ltdrdata/ComfyUI-Impact-Subpack.git
+gcs https://github.com/ltdrdata/ComfyUI-Inspire-Pack.git
+gcs https://github.com/Fannovel16/comfyui_controlnet_aux.git
+gcs https://github.com/florestefano1975/comfyui-portrait-master.git
+gcs https://github.com/Gourieff/ComfyUI-ReActor.git
+gcs https://github.com/huchenlei/ComfyUI-layerdiffuse.git
+gcs https://github.com/kijai/ComfyUI-Florence2.git
+gcs https://github.com/Kosinkadink/ComfyUI-Advanced-ControlNet.git
+gcs https://github.com/mcmonkeyprojects/sd-dynamic-thresholding.git
+gcs https://github.com/twri/sdxl_prompt_styler.git
+
+# 视频
+gcs https://github.com/Fannovel16/ComfyUI-Frame-Interpolation.git
+gcs https://github.com/Kosinkadink/ComfyUI-AnimateDiff-Evolved.git
+gcs https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git
+gcs https://github.com/melMass/comfy_mtb.git
+
+# 其他
+gcs https://github.com/pythongosssss/ComfyUI-WD14-Tagger.git
+gcs https://github.com/SLAPaper/ComfyUI-Image-Selector.git
+gcs https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git
+
+# 已停更，待删除
+gcs https://github.com/cubiq/ComfyUI_essentials.git
+
 
 echo "########################################"
 echo "[INFO] 下载模型文件..."

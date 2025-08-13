@@ -6,19 +6,31 @@ echo '#' > pak5.txt
 array=(
 https://gh-proxy.com/https://github.com/comfyanonymous/ComfyUI/raw/refs/heads/master/requirements.txt
 https://gh-proxy.com/https://github.com/Comfy-Org/ComfyUI-Manager/raw/refs/heads/main/requirements.txt
-https://gh-proxy.com/https://github.com/cubiq/ComfyUI_essentials/raw/refs/heads/main/requirements.txt
-https://gh-proxy.com/https://github.com/cubiq/ComfyUI_FaceAnalysis/raw/refs/heads/main/requirements.txt
-https://gh-proxy.com/https://github.com/cubiq/ComfyUI_InstantID/raw/refs/heads/main/requirements.txt
-https://gh-proxy.com/https://github.com/cubiq/PuLID_ComfyUI/raw/refs/heads/main/requirements.txt
-https://gh-proxy.com/https://github.com/Fannovel16/comfyui_controlnet_aux/raw/refs/heads/main/requirements.txt
-https://gh-proxy.com/https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite/raw/refs/heads/main/requirements.txt
+# 性能
+https://gh-proxy.com/https://github.com/openvino-dev-samples/comfyui_openvino/raw/refs/heads/main/requirements.txt
+https://gh-proxy.com/https://github.com/welltop-cn/ComfyUI-TeaCache/raw/refs/heads/main/requirements.txt
+https://gh-proxy.com/https://github.com/city96/ComfyUI-GGUF/raw/refs/heads/main/requirements.txt
+# 工作空间
+https://gh-proxy.com/https://github.com/crystian/ComfyUI-Crystools/raw/refs/heads/main/requirements.txt
+# 综合
+https://gh-proxy.com/https://github.com/ltdrdata/was-node-suite-comfyui/raw/refs/heads/main/requirements.txt
+https://gh-proxy.com/https://github.com/kijai/ComfyUI-KJNodes/raw/refs/heads/main/requirements.txt
+https://gh-proxy.com/https://github.com/jags111/efficiency-nodes-comfyui/raw/refs/heads/main/requirements.txt
+https://gh-proxy.com/https://github.com/yolain/ComfyUI-Easy-Use/raw/refs/heads/main/requirements.txt
+# 控制
 https://gh-proxy.com/https://github.com/ltdrdata/ComfyUI-Impact-Pack/raw/refs/heads/Main/requirements.txt
 https://gh-proxy.com/https://github.com/ltdrdata/ComfyUI-Impact-Subpack/raw/refs/heads/main/requirements.txt
 https://gh-proxy.com/https://github.com/ltdrdata/ComfyUI-Inspire-Pack/raw/refs/heads/main/requirements.txt
-https://gh-proxy.com/https://github.com/WASasquatch/was-node-suite-comfyui/raw/refs/heads/main/requirements.txt
-https://gh-proxy.com/https://github.com/openvino-dev-samples/comfyui_openvino/raw/refs/heads/main/requirements.txt
-https://gh-proxy.com/https://github.com/city96/ComfyUI-GGUF/raw/refs/heads/main/requirements.txt
-https://gh-proxy.com/https://github.com/welltop-cn/ComfyUI-TeaCache/raw/refs/heads/main/requirements.txt
+https://gh-proxy.com/https://github.com/Fannovel16/comfyui_controlnet_aux/raw/refs/heads/main/requirements.txt
+https://gh-proxy.com/https://github.com/Gourieff/ComfyUI-ReActor/raw/refs/heads/main/requirements.txt
+https://gh-proxy.com/https://github.com/huchenlei/ComfyUI-layerdiffuse/raw/refs/heads/main/requirements.txt
+https://gh-proxy.com/https://github.com/kijai/ComfyUI-Florence2/raw/refs/heads/main/requirements.txt
+# 视频
+https://gh-proxy.com/https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite/raw/refs/heads/main/requirements.txt
+https://gh-proxy.com/https://github.com/Fannovel16/ComfyUI-Frame-Interpolation/raw/refs/heads/main/requirements-no-cupy.txt
+https://gh-proxy.com/https://github.com/melMass/comfy_mtb/raw/refs/heads/main/requirements.txt
+# 待删除
+https://gh-proxy.com/https://github.com/cubiq/ComfyUI_essentials/raw/refs/heads/main/requirements.txt
 )
 
 for line in "${array[@]}";
