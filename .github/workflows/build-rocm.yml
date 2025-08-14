@@ -25,12 +25,6 @@ jobs:
         id: date
         run: echo "date=$(date +'%Y%m%d')" >> $GITHUB_OUTPUT
       -
-        name: Maximize build disk space
-        uses: easimon/maximize-build-space@master
-        with:
-          overprovision-lvm: 'true'
-          remove-android: 'true'
-      -
         name: Git checkout
         uses: actions/checkout@v5
       -
