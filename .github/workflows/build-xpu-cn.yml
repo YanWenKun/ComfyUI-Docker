@@ -20,15 +20,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       -
-        name: Get current date
-        id: date
-        run: echo "date=$(date +'%Y%m%d')" >> $GITHUB_OUTPUT
-      -
         name: Maximize build disk space
         uses: easimon/maximize-build-space@master
         with:
-          overprovision-lvm: 'true'
+          # overprovision-lvm: 'true'
           remove-android: 'true'
+          remove-dotnet: 'true'
+          remove-haskell: 'true'
+          remove-codeql: 'true'
+          remove-docker-images: 'true'
+          swap-size-mb: 512
+      -
+        name: Get current date
+        id: date
+        run: echo "date=$(date +'%Y%m%d')" >> $GITHUB_OUTPUT
       -
         name: Git checkout
         uses: actions/checkout@v5
@@ -38,12 +43,6 @@ jobs:
       -
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-      -
-        name: Login to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_ACCESSTOKEN }}
       -
         name: Build 'xpu-cn'
         uses: docker/build-push-action@v6
@@ -63,6 +62,12 @@ jobs:
             --name comfyui-quick-test \
             -e CLI_ARGS="--quick-test-for-ci --cpu" \
             yanwk/comfyui-boot:xpu-cn-${{ steps.date.outputs.date }}
+      -
+        name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_ACCESSTOKEN }}
       -
         name: Push 'xpu-cn'
         uses: docker/build-push-action@v6
