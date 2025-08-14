@@ -13,13 +13,23 @@ on:
       - '!rocm/runner-scripts/**'
       - '!.github/workflows/build-rocm.yml'
 
-
 jobs:
 
   build-publish-rocm:
     environment: Publish to Docker Hub
     runs-on: ubuntu-latest
     steps:
+      -
+        name: Maximize build disk space
+        uses: easimon/maximize-build-space@master
+        with:
+          overprovision-lvm: 'true'
+          remove-android: 'true'
+          remove-dotnet: 'true'
+          remove-haskell: 'true'
+          remove-codeql: 'true'
+          remove-docker-images: 'true'
+          swap-size-mb: 512
       -
         name: Get current date
         id: date
@@ -40,7 +50,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_ACCESSTOKEN }}
       -
-        name: Build and push 'rocm'
+        name: Build and Push 'rocm'
         uses: docker/build-push-action@v6
         with:
           context: ./rocm

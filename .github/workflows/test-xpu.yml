@@ -1,0 +1,23 @@
+name: Test 'xpu' from Docker Hub
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["Publish 'xpu' to Docker Hub"]
+    types:
+      - completed
+    conclusion: success
+
+jobs:
+  test-image-xpu:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pull image from Docker Hub
+        run: docker pull docker.io/yanwk/comfyui-boot:xpu
+
+      - name: Run container with quick-test
+        run: |
+          docker run --rm \
+            --name comfyui-quick-test \
+            -e CLI_ARGS="--quick-test-for-ci --cpu" \
+            docker.io/yanwk/comfyui-boot:xpu
