@@ -29,8 +29,6 @@ jobs:
         with:
           overprovision-lvm: 'true'
           remove-android: 'true'
-          remove-dotnet: 'true'
-          swap-size-mb: 512
       -
         name: Git checkout
         uses: actions/checkout@v5
