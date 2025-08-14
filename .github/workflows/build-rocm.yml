@@ -31,7 +31,6 @@ jobs:
           overprovision-lvm: 'true'
           remove-android: 'true'
           remove-dotnet: 'true'
-          remove-docker-images: 'true'
           swap-size-mb: 512
       -
         name: Git checkout
