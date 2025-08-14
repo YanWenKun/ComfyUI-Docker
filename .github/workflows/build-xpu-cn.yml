@@ -24,7 +24,6 @@ jobs:
         uses: easimon/maximize-build-space@master
         with:
           overprovision-lvm: 'true'
-          root-reserve-mb: 61440
           remove-android: 'true'
           remove-dotnet: 'true'
           remove-haskell: 'true'
