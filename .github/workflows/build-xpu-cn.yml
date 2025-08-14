@@ -23,7 +23,8 @@ jobs:
         name: Maximize build disk space
         uses: easimon/maximize-build-space@master
         with:
-          # overprovision-lvm: 'true'
+          overprovision-lvm: 'true'
+          root-reserve-mb: 81920
           remove-android: 'true'
           remove-dotnet: 'true'
           remove-haskell: 'true'
