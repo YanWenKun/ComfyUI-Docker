@@ -6,6 +6,15 @@ image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-rocm.y
 
 https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=rocm[View on <Docker Hub>]
 
+## Note: Image Building
+
+This Docker image is too big to build on GitHub Actions (often throw "No space left on device" error).
+So the commands below contain the steps for building Docker image (basically downloading packages).
+
+You can skip those steps if the `rocm` image on
+https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=rocm[Docker Hub]
+is recently built.
+
 ## Prepare
 
 * Make sure
@@ -44,6 +53,12 @@ https://github.com/YanWenKun/ComfyUI-Docker/pull/114[SergeyFilippov])
 .With Docker
 [source,sh]
 ----
+# Build the image
+git clone https://github.com/YanWenKun/ComfyUI-Docker.git
+cd ComfyUI-Docker/rocm
+docker build . -t yanwk/comfyui-boot:rocm
+
+# Run the container
 mkdir -p storage
 
 docker run -it --rm \
@@ -61,6 +76,12 @@ docker run -it --rm \
 .With Podman
 [source,sh]
 ----
+# Build the image
+git clone https://github.com/YanWenKun/ComfyUI-Docker.git
+cd ComfyUI-Docker/rocm
+podman build . -t yanwk/comfyui-boot:rocm
+
+# Run the container
 mkdir -p storage
 
 podman run -it --rm \

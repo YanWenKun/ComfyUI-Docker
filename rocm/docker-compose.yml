@@ -21,6 +21,8 @@ services:
       - "./storage:/root"
     environment:
       - CLI_ARGS=--use-pytorch-cross-attention
+      # - HSA_OVERRIDE_GFX_VERSION=11.0.0
+      # - HIP_VISIBLE_DEVICES=0
     devices:
       - /dev/kfd
       - /dev/dri
