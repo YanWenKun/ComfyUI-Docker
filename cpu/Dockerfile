@@ -29,7 +29,7 @@ python313-py-build-cmake \
 python313-matplotlib \
 python313-mpmath \
 python313-numba-devel \
-python313-numpy \
+# python313-numpy \ # Latest NumPy conflicts with Numba
 python313-onnx \
 python313-pandas \
 python313-scikit-build \
