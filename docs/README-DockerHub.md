@@ -14,12 +14,12 @@ Docker images for [ComfyUI](https://github.com/comfyanonymous/ComfyUI) - a Stabl
 mkdir -p storage
 
 docker run -it --rm \
-  --name comfyui-cu124 \
+  --name comfyui-cu126 \
   --gpus all \
   -p 8188:8188 \
   -v "$(pwd)"/storage:/root \
   -e CLI_ARGS="" \
-  yanwk/comfyui-boot:cu124-slim
+  yanwk/comfyui-boot:cu126-slim
 ```
 
 Once the app is loaded, visit http://localhost:8188/

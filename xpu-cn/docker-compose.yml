@@ -1,4 +1,4 @@
-# Compose file for Intel GPU
+# 用于 Intel GPU 的 Compose 文件
 
 services:
 
