@@ -1,11 +1,8 @@
 addict
-aenum
 aiohttp
 albumentations
 alembic
 av
-black
-blend-modes
 cachetools
 chardet
 clip-interrogator
@@ -18,11 +15,8 @@ filelock
 fvcore
 gguf
 GitPython
-hydra-core
 imageio-ffmpeg
 importlib-metadata
-iopath
-loguru
 mss
 numba
 numexpr
@@ -34,9 +28,7 @@ psutil
 py-cpuinfo
 pydantic-settings
 pydantic
-pydub
 PyGithub
-pymatting
 pynvml
 python-dateutil
 pyyaml

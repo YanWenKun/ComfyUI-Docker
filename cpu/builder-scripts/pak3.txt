@@ -26,8 +26,12 @@ torchmetrics
 transformers
 
 # Hand-picks
-compel # For smZNodes
-fairscale # For APISR
-lark # For smZNodes
-torchdiffeq # For DepthFM
+# For smZNodes
+compel
+# For APISR
+fairscale
+# For smZNodes
+lark
+# For DepthFM
+torchdiffeq
 triton
