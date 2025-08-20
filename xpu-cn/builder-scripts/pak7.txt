@@ -1,7 +1,7 @@
 dlib
 facexlib
 insightface
-git+https://gh-proxy.com/https://github.com/facebookresearch/sam2.git
-git+https://gh-proxy.com/https://github.com/ltdrdata/cstr.git
-git+https://gh-proxy.com/https://github.com/ltdrdata/ffmpy.git
-git+https://gh-proxy.com/https://github.com/ltdrdata/img2texture.git
+git+https://github.com/facebookresearch/sam2.git
+git+https://github.com/ltdrdata/cstr.git
+git+https://github.com/ltdrdata/ffmpy.git
+git+https://github.com/ltdrdata/img2texture.git

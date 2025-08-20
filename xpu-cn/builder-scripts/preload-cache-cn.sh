@@ -59,7 +59,6 @@ gcs https://gh-proxy.com/https://github.com/jags111/efficiency-nodes-comfyui.git
 gcs https://gh-proxy.com/https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git
 gcs https://gh-proxy.com/https://github.com/rgthree/rgthree-comfy.git
 gcs https://gh-proxy.com/https://github.com/shiimizu/ComfyUI_smZNodes.git
-gcs https://gh-proxy.com/https://github.com/yolain/ComfyUI-Easy-Use.git
 
 # 控制
 gcs https://gh-proxy.com/https://github.com/ltdrdata/ComfyUI-Impact-Pack.git
@@ -87,6 +86,7 @@ gcs https://gh-proxy.com/https://github.com/SLAPaper/ComfyUI-Image-Selector.git
 gcs https://gh-proxy.com/https://github.com/cubiq/ComfyUI_essentials.git
 
 # 这些节点需要额外克隆 Git 子模块（GitHub 仓库），可能下载失败，故不在 CN 脚本中下载
+#gcs https://gh-proxy.com/https://github.com/yolain/ComfyUI-Easy-Use.git
 #gcs https://gh-proxy.com/https://github.com/melMass/comfy_mtb.git
 #gcs https://gh-proxy.com/https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git
 

@@ -164,8 +164,11 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 ENV CMAKE_POLICY_VERSION_MINIMUM=3.5
 
 RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install \
-        -r /builder-scripts/pak7.txt
+    if [ "${USING_GITHUB_ACTIONS}" = "false" ]; then \
+        pip install -r /builder-scripts/pak7-cn.txt ; \
+    else \
+        pip install -r /builder-scripts/pak7.txt ; \
+    fi
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
