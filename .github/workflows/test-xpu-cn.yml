@@ -6,7 +6,6 @@ on:
     workflows: ["Publish 'xpu-cn' to Docker Hub"]
     types:
       - completed
-    conclusion: success
 
 jobs:
   test-image-xpu-cn:
