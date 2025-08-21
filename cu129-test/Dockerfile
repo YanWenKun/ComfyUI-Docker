@@ -36,7 +36,7 @@ python313-lark \
 python313-matplotlib \
 python313-mpmath \
 python313-numba-devel \
-python313-numpy \
+# python313-numpy \ # Numba conflicts with latest NumPy
 python313-onnx \
 python313-opencv \
 python313-pandas \
