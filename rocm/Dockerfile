@@ -114,23 +114,23 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # Break down the steps for smaller image layers.
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
---no-deps https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.2/torch-2.6.0%2Brocm6.4.2.git76481f7c-cp312-cp312-linux_x86_64.whl
+--no-deps https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.3/torch-2.6.0+rocm6.4.3.gitf7873067-cp312-cp312-linux_x86_64.whl
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.2/torch-2.6.0%2Brocm6.4.2.git76481f7c-cp312-cp312-linux_x86_64.whl \
-https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.2/pytorch_triton_rocm-3.2.0%2Brocm6.4.2.git7e948ebf-cp312-cp312-linux_x86_64.whl
+https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.3/torch-2.6.0+rocm6.4.3.gitf7873067-cp312-cp312-linux_x86_64.whl \
+https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.3/pytorch_triton_rocm-3.2.0+rocm6.4.3.git7e948ebf-cp312-cp312-linux_x86_64.whl
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.2/torchvision-0.21.0%2Brocm6.4.2.git4040d51f-cp312-cp312-linux_x86_64.whl \
-https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.2/torchaudio-2.6.0%2Brocm6.4.2.gitd8831425-cp312-cp312-linux_x86_64.whl \
-https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.2/jaxlib-0.4.35-cp312-cp312-manylinux_2_28_x86_64.whl \
-https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.2/apex-1.6.0%2Brocm6.4.2.git14c8025e-cp312-cp312-linux_x86_64.whl
+https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.3/torchvision-0.21.0+rocm6.4.3.git4040d51f-cp312-cp312-linux_x86_64.whl \
+# https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.2/torchaudio-2.6.0%2Brocm6.4.2.gitd8831425-cp312-cp312-linux_x86_64.whl \
+# https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.2/apex-1.6.0%2Brocm6.4.2.git14c8025e-cp312-cp312-linux_x86_64.whl \
+https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.3/jaxlib-0.4.35-cp312-cp312-manylinux_2_28_x86_64.whl
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.2/onnxruntime_rocm-1.21.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl \
+https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.3/onnxruntime_rocm-1.21.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl \
 onnxruntime==1.21.0
 
 # Deps for ComfyUI & custom nodes
