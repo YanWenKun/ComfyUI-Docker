@@ -154,7 +154,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     cd /builder-scripts \
     && git clone https://github.com/facebookresearch/sam2.git \
     && cd sam2 \
-    SAM2_BUILD_CUDA=0 pip install \
+    && SAM2_BUILD_CUDA=0 pip install \
         -e . --no-deps --no-build-isolation \
     && cd /
 
