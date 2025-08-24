@@ -148,9 +148,11 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         -r /builder-scripts/pak7.txt
 
+# Preventing SAM-2 from installing CUDA packages
 RUN --mount=type=cache,target=/root/.cache/pip \
+    SAM2_BUILD_CUDA=0 \
     pip install \
---no-deps --no-build-isolation git+https://github.com/facebookresearch/sam2
+        --no-deps --no-build-isolation git+https://github.com/facebookresearch/sam2
 
 # Make sure the deps fit the needs for ComfyUI & Manager
 RUN --mount=type=cache,target=/root/.cache/pip \
