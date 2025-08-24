@@ -148,6 +148,10 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         -r /builder-scripts/pak7.txt
 
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+--no-deps git+https://github.com/facebookresearch/sam2
+
 # Make sure the deps fit the needs for ComfyUI & Manager
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
