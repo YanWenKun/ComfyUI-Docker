@@ -150,7 +150,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
---no-deps git+https://github.com/facebookresearch/sam2
+--no-deps --no-build-isolation git+https://github.com/facebookresearch/sam2
 
 # Make sure the deps fit the needs for ComfyUI & Manager
 RUN --mount=type=cache,target=/root/.cache/pip \
