@@ -17,14 +17,16 @@
 
 FROM nvidia/cuda:13.0.0-cudnn-devel-ubuntu24.04
 
-# Note: gnupg2 and ca-certificates are already installed in the base image.
 RUN --mount=type=cache,target=/var/cache/apt \
-    echo "deb http://ppa.launchpad.net/deadsnakes/ppa/ubuntu noble main" \
+    apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get upgrade -y \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        gnupg2 ca-certificates curl \
+    && echo "deb http://ppa.launchpad.net/deadsnakes/ppa/ubuntu noble main" \
         > /etc/apt/sources.list.d/deadsnakes.list \
     && curl -fsSL 'https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x6a755776' \
        | gpg --dearmor -o /etc/apt/trusted.gpg.d/deadsnakes.gpg \
     && apt-get update \
-    && DEBIAN_FRONTEND=noninteractive apt-get upgrade -y \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
 python3.14-full \
 python3.14-dev \
