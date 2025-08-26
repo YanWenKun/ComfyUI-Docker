@@ -21,7 +21,8 @@ FROM nvidia/cuda:13.0.0-cudnn-devel-ubuntu24.04
 RUN --mount=type=cache,target=/var/cache/apt \
     echo "deb http://ppa.launchpad.net/deadsnakes/ppa/ubuntu noble main" \
         > /etc/apt/sources.list.d/deadsnakes.list \
-    && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 6A755776 \
+    && curl -fsSL 'https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x6a755776' \
+       | gpg --dearmor -o /etc/apt/trusted.gpg.d/deadsnakes.gpg \
     && apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get upgrade -y \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
@@ -40,8 +41,8 @@ vim \
 # ffmpeg \
 # x264 \
 # x265 \
-    && rm -rf /var/lib/apt/lists/* \
-    && rm /usr/lib/python3.14/EXTERNALLY-MANAGED
+    && rm -vrf /var/lib/apt/lists/* \
+    && rm -vf /usr/lib/python3.14/EXTERNALLY-MANAGED
 
 # In Ubuntu/Debian, PIP packages installed by APT were locked.
 # So here we install PIP in a classic way, make it easier to update.

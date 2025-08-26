@@ -31,6 +31,11 @@ jobs:
         with:
           overprovision-lvm: 'true'
           remove-android: 'true'
+          remove-dotnet: 'true'
+          remove-haskell: 'true'
+          remove-codeql: 'true'
+          remove-docker-images: 'true'
+          swap-size-mb: 512
       -
         name: Git checkout
         uses: actions/checkout@v5
