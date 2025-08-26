@@ -17,12 +17,16 @@
 
 FROM nvidia/cuda:13.0.0-cudnn-devel-ubuntu24.04
 
+# Note: gnupg2 and ca-certificates are already installed in the base image.
 RUN --mount=type=cache,target=/var/cache/apt \
-    apt-get update \
+    echo "deb http://ppa.launchpad.net/deadsnakes/ppa/ubuntu noble main" \
+        > /etc/apt/sources.list.d/deadsnakes.list \
+    && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 6A755776 \
+    && apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get upgrade -y \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-python3.12-full \
-python3.12-dev \
+python3.14-full \
+python3.14-dev \
 libegl1-mesa-dev \
 git \
 cmake \
@@ -37,13 +41,13 @@ vim \
 # x264 \
 # x265 \
     && rm -rf /var/lib/apt/lists/* \
-    && rm /usr/lib/python3.12/EXTERNALLY-MANAGED
+    && rm /usr/lib/python3.14/EXTERNALLY-MANAGED
 
 # In Ubuntu/Debian, PIP packages installed by APT were locked.
 # So here we install PIP in a classic way, make it easier to update.
 RUN --mount=type=cache,target=/root/.cache/pip \
     aria2c https://bootstrap.pypa.io/get-pip.py \
-    && python3 get-pip.py \
+    && python3.14 get-pip.py \
     && rm get-pip.py \
     && pip install \
         wheel setuptools \
@@ -57,19 +61,19 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # 3. Delete redundant NVIDIA Python libs (they are already installed as OS packages).
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        --dry-run --pre torch torchvision \
+        --dry-run --pre torch torchvision torchaudio \
         --index-url https://download.pytorch.org/whl/nightly/cu130
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        --no-deps --pre torch torchvision \
+        --no-deps --pre torch torchvision torchaudio \
         --index-url https://download.pytorch.org/whl/nightly/cu130
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        --pre torch torchvision \
+        --pre torch torchvision torchaudio \
         --index-url https://download.pytorch.org/whl/nightly/cu130 \
-    && find /usr/local/lib/python3.12/site-packages/nvidia/ -mindepth 1 -maxdepth 1 -exec rm -rfv {} +
+    && find /usr/local/lib/python3.14/site-packages/nvidia/ -mindepth 1 -maxdepth 1 -exec rm -rfv {} +
 
 ################################################################################
 # Dependencies
@@ -186,4 +190,4 @@ ENV PATH="${PATH}:/root/.local/bin"
 # Suppress [WARNING: Running pip as the 'root' user]
 ENV PIP_ROOT_USER_ACTION=ignore
 
-CMD ["python3","./ComfyUI/main.py","--listen","--port 8188","${CLI_ARGS}"]
+CMD ["python3.14","./ComfyUI/main.py","--listen","--port 8188","${CLI_ARGS}"]
