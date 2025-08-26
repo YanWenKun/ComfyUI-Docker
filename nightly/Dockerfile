@@ -15,7 +15,7 @@
 # Ref: https://gitlab.com/nvidia/container-images/cuda/-/issues/47
 ################################################################################
 
-FROM nvidia/cuda:12.9.1-cudnn-devel-ubuntu24.04
+FROM nvidia/cuda:13.0.0-cudnn-devel-ubuntu24.04
 
 RUN --mount=type=cache,target=/var/cache/apt \
     apt-get update \
@@ -51,21 +51,25 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     && df -h
 
 # PyTorch
-# Break down the steps, so we have more but smaller image layers.
+# To reduce image size & single layer size, we:
+# 1. Install PyTorch only.
+# 2. Install all its dependencies.
+# 3. Delete redundant NVIDIA Python libs (they are already installed as OS packages).
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        --dry-run --pre torch torchvision torchaudio \
-        --index-url https://download.pytorch.org/whl/nightly/cu129
+        --dry-run --pre torch torchvision \
+        --index-url https://download.pytorch.org/whl/nightly/cu130
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        --no-deps --pre torch torchvision torchaudio \
-        --index-url https://download.pytorch.org/whl/nightly/cu129
+        --no-deps --pre torch torchvision \
+        --index-url https://download.pytorch.org/whl/nightly/cu130
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        --pre torch torchvision torchaudio \
-        --index-url https://download.pytorch.org/whl/nightly/cu129
+        --pre torch torchvision \
+        --index-url https://download.pytorch.org/whl/nightly/cu130 \
+    && find /usr/local/lib/python3.12/site-packages/nvidia/ -mindepth 1 -maxdepth 1 -exec rm -rfv {} +
 
 ################################################################################
 # Dependencies
@@ -74,7 +78,6 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 #     pip install \
 # accelerate \
 # compel \
-# cupy-cuda12x \
 # diffusers \
 # fairscale \
 # ftfy \
