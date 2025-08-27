@@ -279,6 +279,16 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         -r /builder-scripts/pak7.txt
 
+# Prevent SAM-2 from installing CUDA packages
+# SAM-2 is used by ComfyUI-Impact-Pack
+RUN --mount=type=cache,target=/root/.cache/pip \
+    cd /builder-scripts \
+    && git clone https://github.com/facebookresearch/sam2.git \
+    && cd sam2 \
+    && SAM2_BUILD_CUDA=1 pip install \
+        -e . --no-deps --no-build-isolation \
+    && cd /
+
 ################################################################################
 # Pre-download a ComfyUI bundle in the image
 
