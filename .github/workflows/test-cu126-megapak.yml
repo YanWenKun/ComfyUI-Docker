@@ -6,7 +6,6 @@ on:
     workflows: ["Publish 'cu126-megapak' to Docker Hub"]
     types:
       - completed
-    conclusion: success
 
 jobs:
   test-image-cu126-megapak:
