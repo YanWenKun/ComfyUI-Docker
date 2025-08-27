@@ -1,0 +1,30 @@
+services:
+
+  comfyui:
+    init: true
+    container_name: comfyui
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: "yanwk/comfyui-boot:cu129-megapak"
+    ports:
+      - "8188:8188"
+    volumes:
+      - "./storage:/root"
+      - "./storage-models/models:/root/ComfyUI/models"
+      - "./storage-models/hf-hub:/root/.cache/huggingface/hub"
+      - "./storage-models/torch-hub:/root/.cache/torch/hub"
+      - "./storage-user/input:/root/ComfyUI/input"
+      - "./storage-user/output:/root/ComfyUI/output"
+      - "./storage-user/workflows:/root/ComfyUI/user/default/workflows"
+    environment:
+      - CLI_ARGS=
+    security_opt:
+      - "label=type:nvidia_container_t"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ['0']
+              capabilities: [gpu]

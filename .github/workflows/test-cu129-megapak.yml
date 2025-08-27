@@ -1,0 +1,22 @@
+name: Test 'cu129-megapak' from Docker Hub
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["Publish 'cu129-megapak' to Docker Hub"]
+    types:
+      - completed
+
+jobs:
+  test-image-cu129-megapak:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pull image from Docker Hub
+        run: docker pull docker.io/yanwk/comfyui-boot:cu129-megapak
+
+      - name: Run container with quick-test
+        run: |
+          docker run --rm \
+            --name comfyui-quick-test \
+            -e CLI_ARGS="--quick-test-for-ci --cpu" \
+            docker.io/yanwk/comfyui-boot:cu129-megapak
