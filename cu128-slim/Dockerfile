@@ -26,61 +26,69 @@ python312-wheel \
 python312-setuptools \
 python312-Cython \
 python312-py-build-cmake \
-python312-aiohttp \
-python312-dbm \
-python312-ffmpeg-python \
-python312-GitPython \
-python312-httpx \
-python312-joblib \
-python312-lark \
 python312-matplotlib \
 python312-mpmath \
 python312-numba-devel \
 # python312-numpy \ # Numba conflicts with latest NumPy
 python312-onnx \
-python312-opencv \
 python312-pandas \
-python312-qrcode \
-python312-rich \
 python312-scikit-build \
 python312-scikit-build-core-pyproject \
 python312-scikit-image \
 python312-scikit-learn \
-python312-scipy \
-python312-svglib \
-python312-tqdm \
-    && rm /usr/lib64/python3.12/EXTERNALLY-MANAGED \
-    && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 100
+python312-scipy
 
 RUN --mount=type=cache,target=/var/cache/zypp \
     zypper --gpg-auto-import-keys \
         install --no-confirm --auto-agree-with-licenses \
+python312-opencv \
+opencv \
+opencv-devel \
 Mesa-libGL1 \
 Mesa-libEGL-devel \
 libgthread-2_0-0 \
-make \
-ninja \
-git \
-aria2 \
-fish \
-fd \
-vim \
-which \
-opencv \
-opencv-devel \
+libQt5OpenGL5
+
+RUN --mount=type=cache,target=/var/cache/zypp \
+    zypper --gpg-auto-import-keys \
+        install --no-confirm --auto-agree-with-licenses \
+python312-ffmpeg-python \
+python312-imageio \
+python312-svglib \
 ffmpeg \
 x264 \
 x265 \
+python312-GitPython \
+python312-pygit2 \
+git
+
+RUN --mount=type=cache,target=/var/cache/zypp \
+    zypper --gpg-auto-import-keys \
+        install --no-confirm --auto-agree-with-licenses \
+make \
+ninja \
+aria2 \
+findutils \
+fish \
+fd \
+fuse \
+vim \
+which \
 google-noto-sans-fonts \
-google-noto-sans-cjk-fonts \
-google-noto-coloremoji-fonts
+    && rm -v /usr/lib64/python3.12/EXTERNALLY-MANAGED \
+    # Ensure default Python version
+    && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 100
 
 # Temp fix for OpenCV on openSUSE
 ENV LD_PRELOAD=/usr/lib64/libjpeg.so.8
 
+# Temp fix for SentencePiece on CMAKE 4+
+ENV CMAKE_POLICY_VERSION_MINIMUM=3.5
+
 ################################################################################
 # GCC 14 
-# Required for compiling CUDA 12.8-related code.
+# Compatible with CUDA 12.8.
+# https://docs.nvidia.com/cuda/archive/12.8.1/cuda-installation-guide-linux/index.html#host-compiler-support-policy
 
 RUN --mount=type=cache,target=/var/cache/zypp \
     zypper --gpg-auto-import-keys \
@@ -103,30 +111,89 @@ cpp14 \
 ################################################################################
 # Python Packages
 
-# PyTorch (No xFormers for test-version)
+# PyTorch, xFormers
 # Break down the steps, so we have more but smaller image layers.
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip list \
     && pip install \
-        --upgrade pip wheel setuptools \
+        --upgrade pip wheel setuptools
+
+# 1. Dry run pip install to get the list of packages
+#    (first run to show logs, then grep the output)
+# 2. Extract the package names and versions from the output
+#    Example: nvidia-cuda-runtime-cu12-12.6.77 -> nvidia-cuda-runtime-cu12==12.6.77
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        --dry-run xformers torchvision torchaudio \
+        --index-url https://download.pytorch.org/whl/cu128 \
     && pip install \
         --dry-run xformers torchvision torchaudio \
+        --index-url https://download.pytorch.org/whl/cu128 \
+            | grep -oP '(?<=Would install ).*' > /tmp/packages.txt \
+    && grep -oP 'nvidia-\S+-\S+' /tmp/packages.txt \
+        | sed 's/\(.*\)-\([^-]*\)$/\1==\2/' > /tmp/packages-nvidia.txt \
+    && echo "========== NVIDIA Packages ==========" \
+    && cat /tmp/packages-nvidia.txt \
+    && echo "====================================="
+
+# Install big 'nvidia-' packages first
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install --no-deps \
+        "$(grep '^nvidia-cublas' /tmp/packages-nvidia.txt)" \
         --index-url https://download.pytorch.org/whl/cu128
 
 RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install \
-        --no-deps xformers torch torchvision torchaudio \
+    pip install --no-deps \
+        "$(grep '^nvidia-cudnn' /tmp/packages-nvidia.txt)" \
         --index-url https://download.pytorch.org/whl/cu128
 
 RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install --no-deps \
+        "$(grep '^nvidia-cusparse-' /tmp/packages-nvidia.txt)" \
+        --index-url https://download.pytorch.org/whl/cu128
+
+# Install all 'nvidia-' packages, 5 at a time
+RUN --mount=type=cache,target=/root/.cache/pip \
+    head -n 5 /tmp/packages-nvidia.txt | while read -r pkg; do \
+        pip install --no-deps "$pkg" \
+            --index-url https://download.pytorch.org/whl/cu128; \
+    done
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    sed -n '6,10p' /tmp/packages-nvidia.txt | while read -r pkg; do \
+        pip install --no-deps "$pkg" \
+            --index-url https://download.pytorch.org/whl/cu128; \
+    done
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    tail -n +11 /tmp/packages-nvidia.txt | while read -r pkg; do \
+        pip install --no-deps "$pkg" \
+            --index-url https://download.pytorch.org/whl/cu128; \
+    done
+
+# Install PyTorch alone
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install --no-deps \
+        "$(grep -oP 'torch-\S+' /tmp/packages.txt | sed 's/\(.*\)-\([^-]*\)$/\1==\2/')" \
+        --index-url https://download.pytorch.org/whl/cu128 \
+    && rm -v /tmp/packages.txt /tmp/packages-nvidia.txt
+
+# Install everything else, also works as a fail-safe
+RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        xformers torch torchvision torchaudio \
+        xformers torchvision torchaudio \
+        --index-url https://download.pytorch.org/whl/cu128
+
+# Install Triton 
+# pytorch-triton is redundant, but will be compressed well for its duplicity
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        triton pytorch-triton \
         --index-url https://download.pytorch.org/whl/cu128
 
 # Bind libs (.so files)
 # Ref: https://github.com/pytorch/pytorch/blob/main/.ci/manywheel/build_cuda.sh
-ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\
-:/usr/local/lib64/python3.12/site-packages/torch/lib\
+ENV LD_LIBRARY_PATH="/usr/local/lib64/python3.12/site-packages/torch/lib\
 :/usr/local/lib/python3.12/site-packages/cusparselt/lib\
 :/usr/local/lib/python3.12/site-packages/nvidia/cublas/lib\
 :/usr/local/lib/python3.12/site-packages/nvidia/cuda_cupti/lib\
@@ -142,7 +209,8 @@ ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\
 :/usr/local/lib/python3.12/site-packages/nvidia/nccl/lib\
 :/usr/local/lib/python3.12/site-packages/nvidia/nvjitlink/lib\
 :/usr/local/lib/python3.12/site-packages/nvidia/nvshmem/lib\
-:/usr/local/lib/python3.12/site-packages/nvidia/nvtx/lib"
+:/usr/local/lib/python3.12/site-packages/nvidia/nvtx/lib\
+${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
 
 # Deps for ComfyUI & custom nodes
 COPY builder-scripts/.  /builder-scripts/
@@ -159,18 +227,25 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         -r /builder-scripts/pak7.txt
 
-# Make sure the deps fit the needs for ComfyUI & Manager
+################################################################################
+# Pre-download a ComfyUI bundle in the image
+
+WORKDIR /default-comfyui-bundle
+
+RUN bash /builder-scripts/preload-cache.sh
+
+# Install deps (comfyui-frontend-package, etc) pair to the preloaded ComfyUI version
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        -r https://github.com/comfyanonymous/ComfyUI/raw/refs/heads/master/requirements.txt \
-        -r https://github.com/Comfy-Org/ComfyUI-Manager/raw/refs/heads/main/requirements.txt \
+        -r '/default-comfyui-bundle/ComfyUI/requirements.txt' \
+        -r '/default-comfyui-bundle/ComfyUI/custom_nodes/ComfyUI-Manager/requirements.txt' \
     && pip list
 
 ################################################################################
 
 RUN du -ah /root \
-    && rm -rf /root/* \
-    && rm -rf /root/.[^.]* /root/.??*
+    && rm -rfv /root/* \
+    && rm -rfv /root/.[^.]* /root/.??*
 
 COPY runner-scripts/.  /runner-scripts/
 
