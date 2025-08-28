@@ -15,9 +15,9 @@ GPU 架构与对应支持的 CUDA 版本如下表：
 | GPU 架构 | Blackwell | Hopper | Ada Lovelace | Ampere | Turing | Volta | Pascal | Maxwell
 
 | 示例GPU
-| RTX 5090 | H20 | RTX 4090 | RTX 3090 | RTX 2080 | TITAN V | GTX 1080 | GTX 980
+| RTX 5090 | H100 | RTX 4090 | RTX 3090 | RTX 2080 | TITAN V | GTX 1080 | GTX 980
 
-| cu128
+| cu129
 | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌
 
 | cu126

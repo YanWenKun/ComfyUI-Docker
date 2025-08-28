@@ -260,7 +260,7 @@ ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\
 :/usr/local/lib/python3.12/site-packages/nvidia/nccl/lib"
 
 # Install Triton 
-# pytorch-triton is redundant, but only ~150MiB
+# pytorch-triton is redundant, but will be compressed well for its duplicity
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         triton pytorch-triton \
@@ -307,13 +307,13 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     && pip install -U uv \
     && pip list
 
-# Clean cache to avoid "No space left on device" on GitHub Actions
+################################################################################
+
+# Clean cache to avoid GitHub Actions "No space left on device"
 RUN --mount=type=cache,target=/root/.cache/pip \
     if [ "${USING_GITHUB_ACTIONS}" = "true" ]; then \
         rm -rf /root/.cache/pip/* ; \
     fi
-
-################################################################################
 
 RUN du -ah /root \
     && rm -rfv /root/* \

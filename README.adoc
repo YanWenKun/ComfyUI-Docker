@@ -17,9 +17,9 @@ The supported CUDA versions for each GPU architecture are shown in the table bel
 | GPU Architecture | Blackwell | Hopper | Ada Lovelace | Ampere | Turing | Volta | Pascal | Maxwell
 
 | Example GPU
-| RTX 5090 | H20 | RTX 4090 | RTX 3090 | RTX 2080 | TITAN V | GTX 1080 | GTX 980
+| RTX 5090 | H100 | RTX 4090 | RTX 3090 | RTX 2080 | TITAN V | GTX 1080 | GTX 980
 
-| cu128
+| cu129
 | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌
 
 | cu126
