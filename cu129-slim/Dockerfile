@@ -184,8 +184,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         xformers torchvision torchaudio \
         --index-url https://download.pytorch.org/whl/cu129
 
-# Install Triton 
-# pytorch-triton is redundant, but will be compressed well for its duplicity
+# Install Triton (redundant)
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         triton pytorch-triton \

@@ -259,8 +259,7 @@ ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\
 :/usr/local/lib64/python3.12/site-packages/torch/lib\
 :/usr/local/lib/python3.12/site-packages/nvidia/nccl/lib"
 
-# Install Triton 
-# pytorch-triton is redundant, but will be compressed well for its duplicity
+# Install Triton (redundant)
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         triton pytorch-triton \
