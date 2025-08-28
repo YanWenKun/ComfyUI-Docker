@@ -280,6 +280,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         -r /builder-scripts/pak7.txt
 
+# Temp fixes
 # Prevent SAM-2 from installing CUDA packages
 # SAM-2 is used by ComfyUI-Impact-Pack
 RUN --mount=type=cache,target=/root/.cache/pip \
@@ -290,8 +291,17 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         -e . --no-deps --no-build-isolation \
     && cd /
 
+RUN --mount=type=cache,target=/root/.cache/pip \
+    # Temp fix for outdated UV
+    pip install -U uv \
+    # <xformers 0.0.32.post2> requires <flash-attn [2.7.1, 2.8.2]>
+    && pip install flash-attn==2.8.2 \
+    # Nunchaku version needs to sync with PyTorch version
+    && pip install \
+https://github.com/nunchaku-tech/nunchaku/releases/download/v0.3.2/nunchaku-0.3.2+torch2.8-cp312-cp312-linux_x86_64.whl
+
 ################################################################################
-# Pre-download a ComfyUI bundle in the image
+# Bundle ComfyUI in the image
 
 WORKDIR /default-comfyui-bundle
 
@@ -302,13 +312,6 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         -r '/default-comfyui-bundle/ComfyUI/requirements.txt' \
         -r '/default-comfyui-bundle/ComfyUI/custom_nodes/ComfyUI-Manager/requirements.txt' \
-    # Temp fix for UV
-    && pip install -U uv \
-    # <xformers 0.0.32.post2> requires <flash-attn [2.7.1, 2.8.2]>
-    && pip install flash-attn==2.8.2 \
-    # Nunchaku version needs to sync with PyTorch version
-    && pip install \
-https://github.com/nunchaku-tech/nunchaku/releases/download/v0.3.2/nunchaku-0.3.2+torch2.8-cp312-cp312-linux_x86_64.whl \
     && pip list
 
 ################################################################################
