@@ -11,6 +11,8 @@ LABEL maintainer="YAN Wenkun <code@yanwk.fun>"
 
 RUN set -eu
 
+ARG USING_GITHUB_ACTIONS=false
+
 ################################################################################
 # NVIDIA CUDA devel
 # Ref: https://gitlab.com/nvidia/container-images/cuda/
@@ -304,6 +306,12 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     # Temp fix for UV
     && pip install -U uv \
     && pip list
+
+# Clean cache to avoid "No space left on device" on GitHub Actions
+RUN --mount=type=cache,target=/root/.cache/pip \
+    if [ "${USING_GITHUB_ACTIONS}" = "true" ]; then \
+        rm -rf /root/.cache/pip/* ; \
+    fi
 
 ################################################################################
 

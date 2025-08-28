@@ -55,6 +55,8 @@ jobs:
         with:
           context: ./cu129-megapak
           file: ./cu129-megapak/Dockerfile
+          build-args: |
+            USING_GITHUB_ACTIONS=true
           tags:  |
             yanwk/comfyui-boot:cu129-megapak
             yanwk/comfyui-boot:cu129-megapak-${{ steps.date.outputs.date }}
