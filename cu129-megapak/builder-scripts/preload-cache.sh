@@ -23,12 +23,18 @@ gcs https://github.com/Comfy-Org/ComfyUI-Manager.git
 # Performance
 gcs https://github.com/welltop-cn/ComfyUI-TeaCache.git
 gcs https://github.com/city96/ComfyUI-GGUF.git
+gcs https://github.com/nunchaku-tech/ComfyUI-nunchaku.git
 
 # Workspace
 gcs https://github.com/crystian/ComfyUI-Crystools.git
+gcs https://github.com/Amorano/Jovi_Colorizer.git
+gcs https://github.com/Amorano/Jovi_Help.git
+gcs https://github.com/Amorano/Jovi_Measure.git
+gcs https://github.com/Amorano/Jovi_Preset.git
 
 # General
 gcs https://github.com/ltdrdata/was-node-suite-comfyui.git
+gcs https://github.com/Amorano/Jovimetrix.git
 gcs https://github.com/bash-j/mikey_nodes.git
 gcs https://github.com/chrisgoringe/cg-use-everywhere.git
 gcs https://github.com/jags111/efficiency-nodes-comfyui.git
@@ -42,6 +48,7 @@ gcs https://github.com/yolain/ComfyUI-Easy-Use.git
 gcs https://github.com/ltdrdata/ComfyUI-Impact-Pack.git
 gcs https://github.com/ltdrdata/ComfyUI-Impact-Subpack.git
 gcs https://github.com/ltdrdata/ComfyUI-Inspire-Pack.git
+gcs https://github.com/chflame163/ComfyUI_LayerStyle.git
 gcs https://github.com/Fannovel16/comfyui_controlnet_aux.git
 gcs https://github.com/florestefano1975/comfyui-portrait-master.git
 gcs https://github.com/Gourieff/ComfyUI-ReActor.git
@@ -65,10 +72,10 @@ gcs https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git
 
 # To be removed in future
 gcs https://github.com/cubiq/ComfyUI_essentials.git
+gcs https://github.com/cubiq/ComfyUI_FaceAnalysis.git
 gcs https://github.com/cubiq/ComfyUI_InstantID.git
 gcs https://github.com/cubiq/ComfyUI_IPAdapter_plus.git
 gcs https://github.com/cubiq/PuLID_ComfyUI.git
-gcs https://github.com/cubiq/ComfyUI_FaceAnalysis.git
 
 
 echo "########################################"
