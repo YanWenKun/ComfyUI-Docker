@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-# Note: the "${BASH_REMATCH[2]}" here is REPO_NAME
+# Regex note: the "${BASH_REMATCH[2]}" here is REPO_NAME
 # from [https://example.com/somebody/REPO_NAME.git] or [git@example.com:somebody/REPO_NAME.git]
 function clone_or_pull () {
     if [[ $1 =~ ^(.*[/:])(.*)(\.git)$ ]] || [[ $1 =~ ^(http.*\/)(.*)$ ]]; then
