@@ -281,6 +281,23 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         -r /builder-scripts/pak7.txt
 
 # Temp fixes
+# Fix for CUDA headers not align with glibc 2.41+
+# Shouldn't be a problem for CUDA 13.
+RUN for f in /usr/local/cuda-12.9/targets/x86_64-linux/include/crt/math_functions.h \
+             /usr/local/cuda-12.9/include/crt/math_functions.h; do \
+        if [ -f "$f" ]; then \
+            sed -i.bak \
+                -e 's/\(\<double[[:space:]]\+sinpi([^(;)]*)\)[[:space:]]*;/\1 noexcept (true);/g' \
+                -e 's/\(\<float[[:space:]]\+sinpif([^(;)]*)\)[[:space:]]*;/\1 noexcept (true);/g' \
+                -e 's/\(\<double[[:space:]]\+cospi([^(;)]*)\)[[:space:]]*;/\1 noexcept (true);/g' \
+                -e 's/\(\<float[[:space:]]\+cospif([^(;)]*)\)[[:space:]]*;/\1 noexcept (true);/g' \
+                -e 's/\(\<double[[:space:]]\+rsqrt([^(;)]*)\)[[:space:]]*;/\1 noexcept (true);/g' \
+                -e 's/\(\<float[[:space:]]\+rsqrtf([^(;)]*)\)[[:space:]]*;/\1 noexcept (true);/g' \
+                "$f" \
+            && echo "Patched $f" ; \
+        fi \
+    done
+
 # Prevent SAM-2 from installing CUDA packages
 # SAM-2 is used by ComfyUI-Impact-Pack
 RUN --mount=type=cache,target=/root/.cache/pip \
