@@ -50,18 +50,18 @@ docker run -it --rm \
   yanwk/comfyui-boot:cu126-slim
 ```
 
-### CUDA 12.8: From Turing (RTX 20xx / GTX 16xx) to Blackwell (RTX 50xx)
+### CUDA 12.9: From Turing (RTX 20xx / GTX 16xx) to Blackwell (RTX 50xx)
 
 ```sh
 mkdir -p storage
 
 docker run -it --rm \
-  --name comfyui-cu128 \
+  --name comfyui-cu129 \
   --gpus all \
   -p 8188:8188 \
   -v "$(pwd)"/storage:/root \
   -e CLI_ARGS="--fast" \
-  yanwk/comfyui-boot:cu128-slim
+  yanwk/comfyui-boot:cu129-slim
 ```
 
 
