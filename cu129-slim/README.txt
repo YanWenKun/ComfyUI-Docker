@@ -9,7 +9,7 @@ mkdir -p storage-user/input
 mkdir -p storage-user/output
 mkdir -p storage-user/workflows
 
-podman run -it --rm \
+docker run -it --rm \
   --name comfyui \
   --gpus all \
   -p 8188:8188 \
