@@ -87,7 +87,8 @@ ENV CMAKE_POLICY_VERSION_MINIMUM=3.5
 
 ################################################################################
 # GCC 13 
-# Required for compiling CUDA 12.6-related code.
+# Compatible with CUDA 12.6.
+# https://docs.nvidia.com/cuda/archive/12.6.3/cuda-installation-guide-linux/index.html#host-compiler-support-policy
 
 RUN --mount=type=cache,target=/var/cache/zypp \
     zypper --gpg-auto-import-keys \
@@ -135,7 +136,23 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     && cat /tmp/packages-nvidia.txt \
     && echo "====================================="
 
-# Install 'nvidia-' packages, 5 at a time
+# Install big 'nvidia-' packages first
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install --no-deps \
+        "$(grep '^nvidia-cublas' /tmp/packages-nvidia.txt)" \
+        --index-url https://download.pytorch.org/whl/cu126
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install --no-deps \
+        "$(grep '^nvidia-cudnn' /tmp/packages-nvidia.txt)" \
+        --index-url https://download.pytorch.org/whl/cu126
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install --no-deps \
+        "$(grep '^nvidia-cusparse-' /tmp/packages-nvidia.txt)" \
+        --index-url https://download.pytorch.org/whl/cu126
+
+# Install all 'nvidia-' packages, 5 at a time
 RUN --mount=type=cache,target=/root/.cache/pip \
     head -n 5 /tmp/packages-nvidia.txt | while read -r pkg; do \
         pip install --no-deps "$pkg" \
@@ -165,6 +182,12 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         xformers torchvision torchaudio \
+        --index-url https://download.pytorch.org/whl/cu126
+
+# Install Triton (redundant)
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        triton pytorch-triton \
         --index-url https://download.pytorch.org/whl/cu126
 
 # Bind libs (.so files)
@@ -203,18 +226,25 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         -r /builder-scripts/pak7.txt
 
-# Make sure the deps fit the needs for ComfyUI & Manager
+################################################################################
+# Pre-download a ComfyUI bundle in the image
+
+WORKDIR /default-comfyui-bundle
+
+RUN bash /builder-scripts/preload-cache.sh
+
+# Install deps (comfyui-frontend-package, etc) pair to the preloaded ComfyUI version
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        -r https://github.com/comfyanonymous/ComfyUI/raw/refs/heads/master/requirements.txt \
-        -r https://github.com/Comfy-Org/ComfyUI-Manager/raw/refs/heads/main/requirements.txt \
+        -r '/default-comfyui-bundle/ComfyUI/requirements.txt' \
+        -r '/default-comfyui-bundle/ComfyUI/custom_nodes/ComfyUI-Manager/requirements.txt' \
     && pip list
 
 ################################################################################
 
 RUN du -ah /root \
-    && rm -rf /root/* \
-    && rm -rf /root/.[^.]* /root/.??*
+    && rm -rfv /root/* \
+    && rm -rfv /root/.[^.]* /root/.??*
 
 COPY runner-scripts/.  /runner-scripts/
 
