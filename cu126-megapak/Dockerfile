@@ -11,6 +11,8 @@ LABEL maintainer="YAN Wenkun <code@yanwk.fun>"
 
 RUN set -eu
 
+ARG USING_GITHUB_ACTIONS=false
+
 ################################################################################
 # NVIDIA CUDA devel
 # Ref: https://gitlab.com/nvidia/container-images/cuda/
@@ -66,6 +68,7 @@ RUN --mount=type=cache,target=/var/cache/zypp \
         install --no-confirm --no-recommends --auto-agree-with-licenses \
 libcusparselt-devel
 
+# Note the version is specified
 RUN --mount=type=cache,target=/var/cache/zypp \
     zypper --gpg-auto-import-keys \
         install --no-confirm --no-recommends --auto-agree-with-licenses \
@@ -200,7 +203,8 @@ ENV CMAKE_POLICY_VERSION_MINIMUM=3.5
 
 ################################################################################
 # GCC 13 
-# Required for compiling CUDA 12.6-related code.
+# Compatible with CUDA 12.6.
+# https://docs.nvidia.com/cuda/archive/12.6.3/cuda-installation-guide-linux/index.html#host-compiler-support-policy
 
 RUN --mount=type=cache,target=/var/cache/zypp \
     zypper --gpg-auto-import-keys \
@@ -255,6 +259,12 @@ ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\
 :/usr/local/lib64/python3.12/site-packages/torch/lib\
 :/usr/local/lib/python3.12/site-packages/nvidia/nccl/lib"
 
+# Install Triton (redundant)
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        triton pytorch-triton \
+        --index-url https://download.pytorch.org/whl/cu126
+
 # Deps for ComfyUI & custom nodes
 COPY builder-scripts/.  /builder-scripts/
 
@@ -270,23 +280,56 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         -r /builder-scripts/pak7.txt
 
-# Make sure the deps fit the needs for ComfyUI & Manager
+# Temp fixes
+# Prevent SAM-2 from installing CUDA packages
+# SAM-2 is used by ComfyUI-Impact-Pack
+RUN --mount=type=cache,target=/root/.cache/pip \
+    cd /builder-scripts \
+    && git clone https://github.com/facebookresearch/sam2.git \
+    && cd sam2 \
+    && SAM2_BUILD_CUDA=1 pip install \
+        -e . --no-deps --no-build-isolation \
+    && cd /
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    # Update UV
+    pip install -U uv \
+    # Nunchaku version needs to sync with PyTorch version
+    && pip install \
+https://github.com/nunchaku-tech/nunchaku/releases/download/v0.3.2/nunchaku-0.3.2+torch2.8-cp312-cp312-linux_x86_64.whl
+
+# Notes on FlashAttention:
+# <xformers 0.0.32.post2> requires <flash-attn [2.7.1, 2.8.2]>,
+# but flash-attn 2.8.2 does not have binary wheel for PyTorch 2.8.
+# Now using xformers embbeded flash-attn.
+# May need to suppress some custom nodes that explicit depends on flash-attn.
+# Wait for xFormers to update.
+
+################################################################################
+# Bundle ComfyUI in the image
+
+WORKDIR /default-comfyui-bundle
+
+RUN bash /builder-scripts/preload-cache.sh
+
+# Install deps (comfyui-frontend-package, etc) pair to the preloaded ComfyUI version
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        -r https://github.com/comfyanonymous/ComfyUI/raw/refs/heads/master/requirements.txt \
-        -r https://github.com/Comfy-Org/ComfyUI-Manager/raw/refs/heads/main/requirements.txt
-
-# Temp fixes
-RUN --mount=type=cache,target=/root/.cache/pip \
-# For UV    
-    pip install -U uv \
+        -r '/default-comfyui-bundle/ComfyUI/requirements.txt' \
+        -r '/default-comfyui-bundle/ComfyUI/custom_nodes/ComfyUI-Manager/requirements.txt' \
     && pip list
 
 ################################################################################
 
+# Clean cache to avoid GitHub Actions "No space left on device"
+RUN --mount=type=cache,target=/root/.cache/pip \
+    if [ "${USING_GITHUB_ACTIONS}" = "true" ]; then \
+        rm -rf /root/.cache/pip/* ; \
+    fi
+
 RUN du -ah /root \
-    && rm -rf /root/* \
-    && rm -rf /root/.[^.]* /root/.??*
+    && rm -rfv /root/* \
+    && rm -rfv /root/.[^.]* /root/.??*
 
 COPY runner-scripts/.  /runner-scripts/
 
