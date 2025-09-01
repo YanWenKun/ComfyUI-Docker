@@ -101,7 +101,7 @@ cmake \
 ninja \
 git \
 aria2 \
-fish \
+# fish \
 fd \
 vim \
 opencv \
