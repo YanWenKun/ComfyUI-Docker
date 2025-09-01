@@ -112,9 +112,11 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # transformers
 
 RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install \
--r https://raw.githubusercontent.com/comfyanonymous/ComfyUI/master/requirements.txt \
--r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/requirements.txt
+    curl -o /root/requirements.txt \
+        -L https://github.com/comfyanonymous/ComfyUI/raw/refs/heads/master/requirements.txt \
+    && awk '/^#non essential dependencies:/{exit} {print}' /root/requirements.txt > /root/essential.txt \
+    && pip install -r /root/essential.txt \
+    && pip install -r https://github.com/Comfy-Org/ComfyUI-Manager/raw/refs/heads/main/requirements.txt
 
 # RUN --mount=type=cache,target=/root/.cache/pip \
 #     pip install \
@@ -178,6 +180,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 
 RUN du -ah /root \
     && rm -rfv /root/.profile /root/.bashrc \
+    && rm -rfv /root/* \
     && df -h
 
 USER root
