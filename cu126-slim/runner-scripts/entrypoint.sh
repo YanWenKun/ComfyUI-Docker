@@ -24,6 +24,7 @@ if [ ! -f "/root/ComfyUI/main.py" ] ; then
     # 'cp --update=none': do not overwrite
     if cp --archive --update=none "/default-comfyui-bundle/ComfyUI/." "/root/ComfyUI/" ; then
         echo "[INFO] Setting up ComfyUI..."
+        echo "[INFO] Using image-bundled ComfyUI (copied to workdir)."
     else
         echo "[ERROR] Failed to copy ComfyUI bundle to '/root/ComfyUI'" >&2
         exit 1
