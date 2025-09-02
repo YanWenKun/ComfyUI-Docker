@@ -99,10 +99,12 @@ intel-compute-runtime \
 intel-level-zero \
 intel-level-zero-devel \
 oneapi-level-zero \
+oneapi-level-zero-devel \
 intel-ocloc \
 intel-opencl \
 intel-igc \
-clinfo
+clinfo \
+openssl
 
 ################################################################################
 # GCC 14
