@@ -33,9 +33,26 @@ podman run -it --rm \
   -v "$(pwd)"/storage-user/input:/root/ComfyUI/input \
   -v "$(pwd)"/storage-user/output:/root/ComfyUI/output \
   -v "$(pwd)"/storage-user/workflows:/root/ComfyUI/user/default/workflows \
-  -e CLI_ARGS="" \
+  -e CLI_ARGS="--disable-smart-memory --async-offload" \
   yanwk/comfyui-boot:xpu
 ====
+
+Note:
+
+1. "--disable-smart-memory" is useful for XPU, although it consumes more RAM.
+2. "--async-offload" gives subtle improvement and no visible harm.
+
+More CLI_ARGS:
+
+--lowvram
+--bf16-unet
+--bf16-vae
+--bf16-text-enc
+--mmap-torch-files
+--reserve-vram 1
+
+Check the doc before use:
+https://github.com/comfyanonymous/ComfyUI/blob/master/comfy/cli_args.py
 
 
 Test result on Arc B580
