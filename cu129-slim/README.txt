@@ -20,8 +20,10 @@ docker run -it --rm \
   -v "$(pwd)"/storage-user/input:/root/ComfyUI/input \
   -v "$(pwd)"/storage-user/output:/root/ComfyUI/output \
   -v "$(pwd)"/storage-user/workflows:/root/ComfyUI/user/default/workflows \
-  -e CLI_ARGS="--fast" \
+  -e CLI_ARGS="--fast --use-pytorch-cross-attention" \
   yanwk/comfyui-boot:cu129-slim
 ====
 
-Note: CLI_ARGS="--fast" for 40 series and newer GPUs.
+Note for CLI_ARGS:
+"--fast" - For 40 series and newer GPUs.
+"--use-pytorch-cross-attention" - Disable xFormers. Recommended for Blackwell GPUs.
