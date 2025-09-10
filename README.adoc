@@ -60,7 +60,7 @@ docker run -it --rm \
   --gpus all \
   -p 8188:8188 \
   -v "$(pwd)"/storage:/root \
-  -e CLI_ARGS="--fast" \
+  -e CLI_ARGS="--fast --use-pytorch-cross-attention" \
   yanwk/comfyui-boot:cu129-slim
 ```
 
