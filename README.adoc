@@ -10,77 +10,77 @@ a Stable Diffusion GUI powering node-based workflow.
 
 ## Quick Start - NVIDIA GPU
 
+```sh
+mkdir -p storage
+mkdir -p storage-models/models
+mkdir -p storage-models/hf-hub
+mkdir -p storage-models/torch-hub
+mkdir -p storage-user/input
+mkdir -p storage-user/output
+mkdir -p storage-user/workflows
+
+docker run -it --rm \
+  --name comfyui \
+  --gpus all \
+  -p 8188:8188 \
+  -v "$(pwd)"/storage:/root \
+  -v "$(pwd)"/storage-models/models:/root/ComfyUI/models \
+  -v "$(pwd)"/storage-models/hf-hub:/root/.cache/huggingface/hub \
+  -v "$(pwd)"/storage-models/torch-hub:/root/.cache/torch/hub \
+  -v "$(pwd)"/storage-user/input:/root/ComfyUI/input \
+  -v "$(pwd)"/storage-user/output:/root/ComfyUI/output \
+  -v "$(pwd)"/storage-user/workflows:/root/ComfyUI/user/default/workflows \
+  -e CLI_ARGS="--disable-xformers" \
+  yanwk/comfyui-boot:cu128-slim
+```
+
+## Support Matrix
+
 The supported CUDA versions for each GPU architecture are shown in the table below:
 
 [cols="1,1,1,1,1,1,1,1,1", options="header"]
 |===
-| GPU Architecture | Blackwell | Hopper | Ada Lovelace | Ampere | Turing | Volta | Pascal | Maxwell
+| GPU Architecture
+| Blackwell | Hopper | Ada Lovelace | Ampere | Turing | Volta | Pascal | Maxwell
 
 | Example GPU
-| RTX 5090 | H100 | RTX 4090 | RTX 3090 | RTX 2080 | TITAN V | GTX 1080 | GTX 980
+| RTX 5090 | H100 | RTX 4090 | RTX 3090 
+| RTX 2080 +
+GTX 1660 
+| TITAN V | GTX 1080 | GTX 980
+
+| cu130
+| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌
 
 | cu129
 | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌
 
-| cu128
-| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌
+| cu128 ⭐
+| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ❌ | ❌
 
 | cu126
 | ❌ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️
 
-| cu118 (discontinued)
-| ❌ | ❌ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️
-
 |===
 
-__ Note: This CUDA compatibility limitation comes from
-https://github.com/pytorch/pytorch/releases/tag/v2.8.0[PyTorch],
-not NVIDIA CUDA Toolkit.
-Details can be found in 
-https://github.com/pytorch/pytorch/blob/main/.ci/manywheel/build_cuda.sh[PyTorch build script]. __
+* CUDA 12.8 images are currently recommended, in line with PyTorch’s 
+https://github.com/pytorch/pytorch/issues/159980[development plan].
 
-__ If you have an NVIDIA GPU and don't know its architecture, see
-https://arnon.dk/matching-sm-architectures-arch-and-gencode-for-various-nvidia-cards/[this article]. __
+* CUDA 12.9 images will remain on PyTorch 2.8.0 and will be discontinued, as PyTorch does not plan to build 2.9.0+cu129.
 
-### CUDA 12.9: From Turing (RTX 20xx / GTX 16xx) to Blackwell (RTX 50xx)
+* CUDA 13.0 images are experimental, using PyTorch 2.9 RC and Python 3.14 RC.
 
-```sh
-mkdir -p storage
+* __If you are unsure about your NVIDIA GPU architecture, see
+https://arnon.dk/matching-sm-architectures-arch-and-gencode-for-various-nvidia-cards/[this article].__
 
-docker run -it --rm \
-  --name comfyui-cu129 \
-  --gpus all \
-  -p 8188:8188 \
-  -v "$(pwd)"/storage:/root \
-  -e CLI_ARGS="--fast --use-pytorch-cross-attention" \
-  yanwk/comfyui-boot:cu129-slim
-```
-
-### CUDA 12.6: From Maxwell (GTX 9xx) to Ada Lovelace (RTX 40xx)
-
-```sh
-mkdir -p storage
-
-docker run -it --rm \
-  --name comfyui-cu126 \
-  --gpus all \
-  -p 8188:8188 \
-  -v "$(pwd)"/storage:/root \
-  -e CLI_ARGS="" \
-  yanwk/comfyui-boot:cu126-slim
-```
+* __Note: These CUDA compatibility limitations are due to the
+https://github.com/pytorch/pytorch/releases/tag/v2.8.0[PyTorch] toolchain,
+not the NVIDIA CUDA Toolkit.
+For more information, refer to the 
+https://github.com/pytorch/pytorch/blob/main/.ci/manywheel/build_cuda.sh[PyTorch build script].__
 
 
 ## More image tags
-
-Note: This repository is currently under heavy development.
-The next two mainly supported image families will be `cu126` and `cu129`.
-
-`cu121` and `cu124` images will be archived soon, as they are no longer supported by PyTorch.
-
-`cu118` will stay for a while for compatibility usage (such as classic SD 1.5 on older hardware), but will not receive any updates.
-
-`cu128` will stop updating after `cu129` is released.
 
 * link:rocm/README.adoc[`rocm`]
 
