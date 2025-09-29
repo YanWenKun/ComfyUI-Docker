@@ -34,7 +34,7 @@ docker run -it --rm \
   yanwk/comfyui-boot:cu128-slim
 ```
 
-## Support Matrix
+## CUDA Compatibility
 
 The supported CUDA versions for each GPU architecture are shown in the table below:
 
@@ -63,22 +63,26 @@ GTX 1660
 
 |===
 
-* CUDA 12.8 images are currently recommended, in line with PyTorch’s 
+* CUDA 12.6 images are compatible with older GPU architectures.
+
+* **CUDA 12.8 images are currently recommended**, in line with PyTorch’s 
 https://github.com/pytorch/pytorch/issues/159980[development plan].
 
 * CUDA 12.9 images will remain on PyTorch 2.8.0 and will be discontinued, as PyTorch does not plan to build 2.9.0+cu129.
 
 * CUDA 13.0 images are experimental, using PyTorch 2.9 RC and Python 3.14 RC.
 
-* __If you are unsure about your NVIDIA GPU architecture, see
-https://arnon.dk/matching-sm-architectures-arch-and-gencode-for-various-nvidia-cards/[this article].__
+TIP: If you are unsure about your NVIDIA GPU architecture, see
+https://arnon.dk/matching-sm-architectures-arch-and-gencode-for-various-nvidia-cards/[this article].
 
-* __Note: These CUDA compatibility limitations are due to the
+NOTE: __These CUDA compatibility limitations are due to the
 https://github.com/pytorch/pytorch/releases/tag/v2.8.0[PyTorch] toolchain,
 not the NVIDIA CUDA Toolkit.
 For more information, refer to the 
 https://github.com/pytorch/pytorch/blob/main/.ci/manywheel/build_cuda.sh[PyTorch build script].__
 
+
+## CUDA image tags
 
 ## More image tags
 
