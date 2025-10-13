@@ -6,9 +6,6 @@
 # Using image from NVIDIA as base image:
 # https://catalog.ngc.nvidia.com/orgs/nvidia/containers/cuda/tags
 #
-# Note about Python:
-# Using No-GIL build, note the 't' suffix in python3.14t.
-#
 # Note about GCC:
 # Ubuntu 24.04 comes with GCC 13, so no additional config here.
 #
@@ -35,7 +32,6 @@ RUN --mount=type=cache,target=/var/cache/apt \
     && apt-get install -y --no-install-recommends \
 python3.14-full \
 python3.14-dev \
-python3.14-nogil \
 libegl1-mesa-dev \
 git \
 cmake \
@@ -56,7 +52,7 @@ vim \
 # So here we install PIP in a classic way, make it easier to update.
 RUN --mount=type=cache,target=/root/.cache/pip \
     aria2c https://bootstrap.pypa.io/get-pip.py \
-    && python3.14t get-pip.py \
+    && python3.14 get-pip.py \
     && rm get-pip.py \
     && pip install \
         wheel setuptools \
@@ -82,7 +78,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         --pre torch torchvision torchaudio \
         --index-url https://download.pytorch.org/whl/nightly/cu130 \
-    && find /usr/local/lib/python3.14t/dist-packages/nvidia/ -mindepth 1 -maxdepth 1 -exec rm -rfv {} +
+    && find /usr/local/lib/python3.14/dist-packages/nvidia/ -mindepth 1 -maxdepth 1 -exec rm -rfv {} +
 
 ################################################################################
 # Dependencies
@@ -202,4 +198,4 @@ ENV PATH="${PATH}:/root/.local/bin"
 # Suppress [WARNING: Running pip as the 'root' user]
 ENV PIP_ROOT_USER_ACTION=ignore
 
-CMD ["python3.14t","./ComfyUI/main.py","--listen","--port 8188","${CLI_ARGS}"]
+CMD ["python3.14","./ComfyUI/main.py","--listen","--port 8188","${CLI_ARGS}"]
