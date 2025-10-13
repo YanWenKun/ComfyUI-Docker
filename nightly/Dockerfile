@@ -32,6 +32,7 @@ RUN --mount=type=cache,target=/var/cache/apt \
     && apt-get install -y --no-install-recommends \
 python3.14-full \
 python3.14-dev \
+python3.14-nogil \
 libegl1-mesa-dev \
 git \
 cmake \
@@ -52,7 +53,7 @@ vim \
 # So here we install PIP in a classic way, make it easier to update.
 RUN --mount=type=cache,target=/root/.cache/pip \
     aria2c https://bootstrap.pypa.io/get-pip.py \
-    && python3.14 get-pip.py \
+    && python3.14-nogil get-pip.py \
     && rm get-pip.py \
     && pip install \
         wheel setuptools \
@@ -198,4 +199,4 @@ ENV PATH="${PATH}:/root/.local/bin"
 # Suppress [WARNING: Running pip as the 'root' user]
 ENV PIP_ROOT_USER_ACTION=ignore
 
-CMD ["python3.14","./ComfyUI/main.py","--listen","--port 8188","${CLI_ARGS}"]
+CMD ["python3.14-nogil","./ComfyUI/main.py","--listen","--port 8188","${CLI_ARGS}"]
