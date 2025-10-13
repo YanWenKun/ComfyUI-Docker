@@ -1,0 +1,14 @@
+dlib
+facexlib
+insightface
+git+https://github.com/openai/CLIP.git
+git+https://github.com/cozy-comfyui/cozy_comfyui@main#egg=cozy_comfyui
+git+https://github.com/ltdrdata/cstr.git
+git+https://github.com/ltdrdata/ffmpy.git
+git+https://github.com/ltdrdata/img2texture.git
+
+# SageAttention 1, conflicts with SageAttention 2
+#sageattention
+
+# SageAttention 2 (pre-compiled)
+https://huggingface.co/Kijai/PrecompiledWheels/resolve/main/sageattention-2.2.0-cp312-cp312-linux_x86_64.whl
