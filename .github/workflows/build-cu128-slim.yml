@@ -20,15 +20,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       -
-        name: Get current date
-        id: date
-        run: echo "date=$(date +'%Y%m%d')" >> $GITHUB_OUTPUT
-      -
         name: Maximize build disk space
         uses: easimon/maximize-build-space@master
         with:
           overprovision-lvm: 'true'
           remove-android: 'true'
+          remove-dotnet: 'true'
+          remove-haskell: 'true'
+          remove-codeql: 'true'
+          remove-docker-images: 'true'
+          swap-size-mb: 512
+      -
+        name: Get current date
+        id: date
+        run: echo "date=$(date +'%Y%m%d')" >> $GITHUB_OUTPUT
       -
         name: Git checkout
         uses: actions/checkout@v5
