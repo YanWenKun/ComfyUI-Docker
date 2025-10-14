@@ -1,0 +1,9 @@
+dlib
+facexlib
+insightface
+git+https://github.com/openai/CLIP.git
+git+https://github.com/cozy-comfyui/cozy_comfyui@main#egg=cozy_comfyui
+git+https://github.com/facebookresearch/sam2.git
+git+https://github.com/ltdrdata/cstr.git
+git+https://github.com/ltdrdata/ffmpy.git
+git+https://github.com/ltdrdata/img2texture.git
