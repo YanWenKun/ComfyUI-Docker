@@ -1,0 +1,165 @@
+# MEGAPAK image for ComfyUI
+
+image::../docs/concept-v6-megapak.svg["Concept Design"]
+
+image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-cu128-megapak.yml/badge.svg["GitHub Workflow Status",link="https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-cu128-megapak.yml"]
+
+https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=cu128-megapak[View on <Docker Hub>]
+
+
+**MEGAPAK** uses the same base mechanism as the `slim` images. The key differences are:
+
+* Includes 40+ custom nodes. See link:./builder-scripts/preload-cache.sh[the full list].
+* Includes CUDA development kit for compiling PyTorch C++ extensions, `.cu` files, etc.
+* Includes performance optimization libraries such as Nunchaku and SageAttention (powerful but may have compatibility issues).
+* Includes additional packages/dependencies.
+* As a result, the image is larger and receives updates later than the `slim` images, especially during PyTorch version changes, since some packages are specific to particular PyTorch versions.
+
+
+## Usage
+
+Please successfully run the `slim` image before attempting the `megapak` image. The prerequisites/setup sections are omitted from this document.
+
+### Run with Docker
+
+[source,sh]
+----
+mkdir -p storage
+mkdir -p storage-models/models
+mkdir -p storage-models/hf-hub
+mkdir -p storage-models/torch-hub
+mkdir -p storage-user/input
+mkdir -p storage-user/output
+mkdir -p storage-user/workflows
+
+docker run -it --rm \
+  --name comfyui-megapak \
+  --gpus all \
+  -p 8188:8188 \
+  -v "$(pwd)"/storage:/root \
+  -v "$(pwd)"/storage-models/models:/root/ComfyUI/models \
+  -v "$(pwd)"/storage-models/hf-hub:/root/.cache/huggingface/hub \
+  -v "$(pwd)"/storage-models/torch-hub:/root/.cache/torch/hub \
+  -v "$(pwd)"/storage-user/input:/root/ComfyUI/input \
+  -v "$(pwd)"/storage-user/output:/root/ComfyUI/output \
+  -v "$(pwd)"/storage-user/workflows:/root/ComfyUI/user/default/workflows \
+  -e CLI_ARGS="--fast --disable-xformers" \
+  yanwk/comfyui-boot:cu128-megapak
+----
+
+### Run with Podman
+
+[source,bash]
+----
+mkdir -p storage
+mkdir -p storage-models/models
+mkdir -p storage-models/hf-hub
+mkdir -p storage-models/torch-hub
+mkdir -p storage-user/input
+mkdir -p storage-user/output
+mkdir -p storage-user/workflows
+
+podman run -it --rm \
+  --name comfyui-megapak \
+  --device nvidia.com/gpu=all \
+  --security-opt label=disable \
+  -p 8188:8188 \
+  -v "$(pwd)"/storage:/root \
+  -v "$(pwd)"/storage-models/models:/root/ComfyUI/models \
+  -v "$(pwd)"/storage-models/hf-hub:/root/.cache/huggingface/hub \
+  -v "$(pwd)"/storage-models/torch-hub:/root/.cache/torch/hub \
+  -v "$(pwd)"/storage-user/input:/root/ComfyUI/input \
+  -v "$(pwd)"/storage-user/output:/root/ComfyUI/output \
+  -v "$(pwd)"/storage-user/workflows:/root/ComfyUI/user/default/workflows \
+  -e CLI_ARGS="--fast --disable-xformers" \
+  docker.io/yanwk/comfyui-boot:cu128-megapak
+----
+
+
+[[cli-args]]
+## CLI_ARGS Reference
+
+[%autowidth,cols=2]
+|===
+|args |description
+
+|--disable-xformers
+|Disable xFormers. Enabling xFormers can cause 
+https://github.com/YanWenKun/ComfyUI-Docker/issues/128[issues] 
+on Blackwell GPUs, but may be required for some video workflows (e.g. SVD).
+
+|--use-pytorch-cross-attention
+|Works the same as `--disable-xformers` for NVIDIA GPUs.
+
+|--fast
+|Enable experimental optimizations.
+(e.g. 
+https://github.com/comfyanonymous/ComfyUI/commit/9953f22fce0ba899da0676a0b374e5d1f72bf259[float8_e4m3fn] 
+matrix multiplication on Ada Lovelace and later GPUs).
+Might lower image quality. +
+Turn it off if you want stability over speed.
+
+|--disable-smart-memory
+|Force ComfyUI to offload models from VRAM to RAM more frequently. Slows performance but reduce memory leaks.
+
+|--lowvram
+|Force ComfyUI to split the model (UNET) into parts to use less VRAM, at the cost of speed. Use only if your GPU has less than 6 GB of VRAM.
+
+|--novram
+|Use system RAM only, no VRAM at all. Very slow.
+
+|--cpu
+|Run on CPU. Very slow. Used for testing purposes.
+
+|===
+
+More `CLI_ARGS` available at ComyfyUI's
+https://github.com/comfyanonymous/ComfyUI/blob/master/comfy/cli_args.py[cli_args.py].
+
+
+[[env-vars]]
+## Environment Variables Reference
+
+[cols="2,2,3"]
+|===
+|Variable|Example Value|Memo
+
+|HTTP_PROXY +
+HTTPS_PROXY
+|http://localhost:1081 +
+http://localhost:1081
+|Set HTTP proxy. Works the same as `set-proxy.sh`.
+
+|PIP_INDEX_URL
+|'https://pypi.org/simple'
+|Set mirror site for Python Package Index.
+
+|HF_ENDPOINT
+|'https://huggingface.co'
+|Set mirror site for HuggingFace Hub.
+
+|HF_TOKEN
+|'hf_your_token'
+|Set HuggingFace Access Token.
+https://huggingface.co/settings/tokens[More info]
+
+|HF_HUB_ENABLE_HF_TRANSFER
+|1
+|Enable HuggingFace Hub experimental high-speed file transfers.
+Only make sense if you have >1Gbps and VERY STABLE connection (e.g. cloud server).
+https://huggingface.co/docs/huggingface_hub/hf_transfer[More info]
+
+|TORCH_CUDA_ARCH_LIST
+|7.5 +
+or +
+'5.2+PTX;6.0;6.1+PTX;7.5;8.0;8.6;8.9+PTX'
+|Build target for PyTorch and its extensions.
+For most users, no setup is needed as it will be automatically selected on Linux.
+When needed, you only need to set one build target just for your GPU.
+https://arnon.dk/matching-sm-architectures-arch-and-gencode-for-various-nvidia-cards/[More info]
+
+|CMAKE_ARGS
+|'-DBUILD_opencv_world=ON -DWITH_CUDA=ON -DCUDA_FAST_MATH=ON -DWITH_CUBLAS=ON -DWITH_NVCUVID=ON'
+|Build options for CMAKE projects using CUDA.
+
+|===
