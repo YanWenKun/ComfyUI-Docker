@@ -52,9 +52,6 @@ GTX 1660
 | cu130
 | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌
 
-| cu129
-| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌
-
 | cu128 ⭐
 | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ❌ | ❌
 
@@ -63,16 +60,10 @@ GTX 1660
 
 |===
 
-* CUDA 12.6 images are compatible with older GPU architectures.
-
 * **CUDA 12.8 images are currently recommended**, in line with PyTorch’s 
 https://github.com/pytorch/pytorch/issues/159980[development plan].
 
-* CUDA 12.9 images will remain on PyTorch 2.8.0 and will be discontinued, as PyTorch does not plan to build 2.9.0+cu129.
-
-* CUDA 13.0 images are experimental, using PyTorch 2.9 RC and Python 3.14 RC.
-
-TIP: If you are unsure about your NVIDIA GPU architecture, see
+* If you are unsure about your NVIDIA GPU architecture, see
 https://arnon.dk/matching-sm-architectures-arch-and-gencode-for-various-nvidia-cards/[this article].
 
 NOTE: __These CUDA compatibility limitations are due to the
@@ -82,9 +73,38 @@ For more information, refer to the
 https://github.com/pytorch/pytorch/blob/main/.ci/manywheel/build_cuda.sh[PyTorch build script].__
 
 
-## CUDA image tags
+## CUDA Image Tags
 
-## More image tags
+### Slim
+
+The `slim` images start with only ComfyUI and ComfyUI-Manager, yet include many dependencies to make future Custom Node installation easier. Recommended for beginners.
+
+* link:cu126-slim/README.adoc[`cu126-slim`]
+** CUDA 12.6, Python 3.12
+
+* link:cu128-slim/README.adoc[`cu128-slim`] ⭐
+** CUDA 12.8, Python 3.12
+
+* link:cu130-slim/README.adoc[`cu130-slim`]
+** CUDA 13.0, Python 3.13 (with GIL), no xFormers by default
+
+### MEGAPAK
+
+The `megapak` images are all-in-one bundles, including dev kits and many Custom Nodes for ComfyUI.
+
+* link:cu126-megapak/README.adoc[`cu126-megapak`]
+** CUDA 12.6, Python 3.12, GCC 13
+
+* link:cu128-megapak/README.adoc[`cu128-megapak`]
+** CUDA 12.8, Python 3.12, GCC 14
+
+### Testing
+
+* link:nightly/README.adoc[`nightly`]
+** Using development version of PyTorch. For testing latest features.
+
+
+## More Image Tags
 
 * link:rocm/README.adoc[`rocm`]
 
@@ -94,42 +114,13 @@ https://github.com/pytorch/pytorch/blob/main/.ci/manywheel/build_cuda.sh[PyTorch
 
 ** For Intel GPUs with XPU.
 
-* link:nightly/README.adoc[`nightly`]
+* link:cpu/[`cpu`]
 
-** Using preview version of PyTorch (CUDA).
+** A smaller image for CPU only.
 
-* link:cu121/README.adoc[`cu121`]
+* link:archived/[archived]
 
-** Easy for ComfyUI beginners. Starts with ComfyUI, ComfyUI-Manager and the Photon (SD1.5) model.
-** Using a low-privilege user within the container (easy for WSL2 deploy).
-** Not recommended for Podman or rootless deploy (use any image below instead).
-** Using CUDA 12.1 + Python 3.11.
-
-* link:cu124-slim/README.adoc[`cu124-slim`]
-
-** Similar to `cu121`, equipped with many dependencies, starts with ComfyUI and ComfyUI-Manager only.
-** Downloads less. No SD model included.
-** Using 'root' user within the container (easy for rootless deploy).
-** Using CUDA 12.4 + Python 3.12.
-
-* link:cu121-megapak/README.adoc[`cu121-megapak`]
-
-** All-in-one bundle, including dev kits.
-** Using CUDA 12.1 + Python 3.11.
-
-* link:cu124-megapak/README.adoc[`cu124-megapak`]
-
-** All-in-one bundle, including dev kits.
-** Using CUDA 12.4 + Python 3.12.
-
-* link:cu124-cn/README.adoc[`cu124-cn`]
-
-** For users in mainland China. Using mirror sites for all download links.
-
-* link:comfy3d-pt25/README.adoc[`comfy3d-pt25`]
-
-** Image dedicated for https://github.com/MrForExample/ComfyUI-3D-Pack[ComfyUI-3D-Pack].
-
+** Archived Dockerfiles of retired image tags.
 
 ## License
 

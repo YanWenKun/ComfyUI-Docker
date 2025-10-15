@@ -6,74 +6,121 @@ https://github.com/comfyanonymous/ComfyUI[ComfyUI]
 https://hub.docker.com/r/yanwk/comfyui-boot[Docker 镜像]
 包含其依赖项，及下载／启动脚本。
 
-## 我该用哪个版本？
+## 快速开始 - NVIDIA GPU
 
-GPU 架构与对应支持的 CUDA 版本如下表：
+```sh
+mkdir -p storage
+mkdir -p storage-models/models
+mkdir -p storage-models/hf-hub
+mkdir -p storage-models/torch-hub
+mkdir -p storage-user/input
+mkdir -p storage-user/output
+mkdir -p storage-user/workflows
+
+docker run -it --rm \
+  --name comfyui \
+  --gpus all \
+  -p 8188:8188 \
+  -v "$(pwd)"/storage:/root \
+  -v "$(pwd)"/storage-models/models:/root/ComfyUI/models \
+  -v "$(pwd)"/storage-models/hf-hub:/root/.cache/huggingface/hub \
+  -v "$(pwd)"/storage-models/torch-hub:/root/.cache/torch/hub \
+  -v "$(pwd)"/storage-user/input:/root/ComfyUI/input \
+  -v "$(pwd)"/storage-user/output:/root/ComfyUI/output \
+  -v "$(pwd)"/storage-user/workflows:/root/ComfyUI/user/default/workflows \
+  -e CLI_ARGS="--disable-xformers" \
+  yanwk/comfyui-boot:cu128-slim
+```
+
+
+## CUDA 兼容性列表
 
 [cols="1,1,1,1,1,1,1,1,1", options="header"]
 |===
 | GPU 架构 | Blackwell | Hopper | Ada Lovelace | Ampere | Turing | Volta | Pascal | Maxwell
 
-| 示例GPU
-| RTX 5090 | H100 | RTX 4090 | RTX 3090 | RTX 2080 | TITAN V | GTX 1080 | GTX 980
 
-| cu129
+| 示例GPU
+| RTX 5090 | H100 | RTX 4090 | RTX 3090 
+| RTX 2080 +
+GTX 1660 
+| TITAN V | GTX 1080 | GTX 980
+
+| cu130
 | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌
+
+| cu128 ⭐
+| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ❌ | ❌
 
 | cu126
 | ❌ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️
 
-| cu118
-| ❌ | ❌ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️
-
 |===
 
-表中“支持”是指 PyTorch 官方所支持的 CUDA 版本／架构，与 NVIDIA 官方的支持范围略有出入，可参考 PyTorch
-https://github.com/pytorch/pytorch/blob/main/.ci/manywheel/build_cuda.sh[相关代码]
-和
+* **推荐 CUDA 12.8**，这也是 PyTorch 当前的
+https://github.com/pytorch/pytorch/issues/159980[稳定版本]
+。
+
+* 如果你不清楚 GPU 是哪一代架构（如 Quadro、Tesla），参考
 https://arnon.dk/matching-sm-architectures-arch-and-gencode-for-various-nvidia-cards/[这篇文章]
 。
 
-## 镜像标签
+NOTE: __这些兼容性限制与 NVIDIA CUDA Toolkit 无直接关联，而是 PyTorch 官方为了避免二进制包过大而做出的取舍。可以参考其
+https://github.com/pytorch/pytorch/releases/tag/v2.8.0[发布说明]
+与
+https://github.com/pytorch/pytorch/blob/main/.ci/manywheel/build_cuda.sh[编译脚本]
+。__
 
-* link:cu124-cn/README.adoc[`cu124-cn`]
 
-** 针对国内网络环境重写
-** 从下载到首次启动均无需代理
-** 提供整合与精简两种安装方式
-** 额外提供 `Dockerfile-cn` 以便本地构建
-** 推荐初次尝试 ComfyUI 的国内用户使用
+## CUDA 镜像标签
 
-* link:cu121/README.zh.adoc[`cu121`]
+### Slim
 
-** 经典版本，简洁易上手，但需要良好的网络连接
-** 默认仅安装基本的 ComfyUI 与 Manager
-** 镜像中预装大量依赖项，方便后续无痛安装热门自定义节点（扩展插件）
-** 容器内使用低特权用户运行（便于 WSL2 部署，仅该镜像如此设计）
-** 不推荐 Podman 与 rootless 用户使用（改用本仓库内其他镜像均可）
-** 使用 CUDA 12.1 与 Python 3.11
+`slim` 镜像仅预装基本的 ComfyUI 与 Manager，同时预装大量依赖项，方便后续无痛安装热门自定义节点（扩展插件）。推荐初学者使用。
 
-* link:cu121-megapak/README.zh.adoc[`cu121-megapak`]
+* link:cu126-slim/README.adoc[`cu126-slim`]
+** CUDA 12.6, Python 3.12
 
-** 大型整合包，包含开发组件
-** 容器内使用 root 用户运行（便于 rootless 部署）
-** 使用 CUDA 12.1 与 Python 3.11
+* link:cu128-slim/README.adoc[`cu128-slim`] ⭐
+** CUDA 12.8, Python 3.12
 
-* link:cu124-megapak/README.zh.adoc[`cu124-megapak`]
+* link:cu130-slim/README.adoc[`cu130-slim`]
+** CUDA 13.0, Python 3.13 (GIL 版本), 默认未装 xFormers
 
-** 同上，但使用 CUDA 12.4 与 Python 3.12（在新 GPU 上可能性能更佳）
+### MEGAPAK
+
+`megapak` 镜像为大型整合包，包含开发组件与常用自定义节点（扩展插件）。
+
+* link:cu126-megapak/README.adoc[`cu126-megapak`]
+** CUDA 12.6, Python 3.12, GCC 13
+
+* link:cu128-megapak/README.adoc[`cu128-megapak`]
+** CUDA 12.8, Python 3.12, GCC 14
+
+### 测试镜像
+
+* link:nightly/README.adoc[`nightly`]
+** 使用最新开发预览版的 PyTorch
+
+
+## 更多镜像标签
 
 * link:rocm/README.zh.adoc[`rocm`]
 
 ** 适用于 AMD GPU
 
-* link:nightly/README.adoc[`nightly`]
+* link:xpu-cn/[`xpu-cn`]
 
-** 使用最新预览版的 PyTorch
+** 适用于 Intel GPU
+** 针对国内网络环境重写，尽量使用镜像源，减少代理需求
 
-* link:comfy3d-pt25/README.zh.adoc[`comfy3d-pt25`]
+* link:cpu/[`cpu`]
 
-** https://github.com/MrForExample/ComfyUI-3D-Pack[ComfyUI-3D-Pack] 专用镜像
+** 仅适用于 CPU，镜像体积较小
+
+* link:archived/[archived]
+
+** 已退役的旧版本镜像
 
 
 ## 声明

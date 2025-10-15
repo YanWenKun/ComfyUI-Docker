@@ -31,7 +31,7 @@ docker run -it --rm \
   --gpus all \
   -p 8188:8188 \
   -v "$(pwd)"/storage:/root \
-  -e CLI_ARGS="--fast --preview-method taesd --front-end-version Comfy-Org/ComfyUI_frontend@latest" \
+  -e CLI_ARGS="--fast --front-end-version Comfy-Org/ComfyUI_frontend@latest" \
   -e PIP_INDEX_URL="https://pypi.org/simple" \
   -e HF_ENDPOINT="https://huggingface.co" \
   yanwk/comfyui-boot:nightly
@@ -49,7 +49,7 @@ podman run -it --rm \
   --security-opt seccomp=unconfined \
   -p 8188:8188 \
   -v "$(pwd)"/storage:/root \
-  -e CLI_ARGS="--fast --preview-method taesd --front-end-version Comfy-Org/ComfyUI_frontend@latest" \
+  -e CLI_ARGS="--fast --front-end-version Comfy-Org/ComfyUI_frontend@latest" \
   -e PIP_INDEX_URL="https://pypi.org/simple" \
   -e HF_ENDPOINT="https://huggingface.co" \
   yanwk/comfyui-boot:nightly
