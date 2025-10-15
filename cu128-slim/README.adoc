@@ -44,13 +44,14 @@ https://podman-desktop.io/docs/podman/gpu[GPU enabled].
 
 [source,sh]
 ----
-mkdir -p storage
-mkdir -p storage-models/models
-mkdir -p storage-models/hf-hub
-mkdir -p storage-models/torch-hub
-mkdir -p storage-user/input
-mkdir -p storage-user/output
-mkdir -p storage-user/workflows
+mkdir -p \
+  storage \
+  storage-models/models \
+  storage-models/hf-hub \
+  storage-models/torch-hub \
+  storage-user/input \
+  storage-user/output \
+  storage-user/workflows
 
 docker run -it --rm \
   --name comfyui-cu128 \
@@ -71,13 +72,14 @@ docker run -it --rm \
 
 [source,bash]
 ----
-mkdir -p storage
-mkdir -p storage-models/models
-mkdir -p storage-models/hf-hub
-mkdir -p storage-models/torch-hub
-mkdir -p storage-user/input
-mkdir -p storage-user/output
-mkdir -p storage-user/workflows
+mkdir -p \
+  storage \
+  storage-models/models \
+  storage-models/hf-hub \
+  storage-models/torch-hub \
+  storage-user/input \
+  storage-user/output \
+  storage-user/workflows
 
 podman run -it --rm \
   --name comfyui-cu128 \

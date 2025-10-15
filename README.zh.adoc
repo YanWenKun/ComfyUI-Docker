@@ -9,13 +9,14 @@ https://hub.docker.com/r/yanwk/comfyui-boot[Docker 镜像]
 ## 快速开始 - NVIDIA GPU
 
 ```sh
-mkdir -p storage
-mkdir -p storage-models/models
-mkdir -p storage-models/hf-hub
-mkdir -p storage-models/torch-hub
-mkdir -p storage-user/input
-mkdir -p storage-user/output
-mkdir -p storage-user/workflows
+mkdir -p \
+  storage \
+  storage-models/models \
+  storage-models/hf-hub \
+  storage-models/torch-hub \
+  storage-user/input \
+  storage-user/output \
+  storage-user/workflows
 
 docker run -it --rm \
   --name comfyui \

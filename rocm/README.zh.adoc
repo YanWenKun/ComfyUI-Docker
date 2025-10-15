@@ -59,7 +59,8 @@ cd ComfyUI-Docker/rocm
 docker build . -t yanwk/comfyui-boot:rocm
 
 # 运行容器
-mkdir -p storage \
+mkdir -p \
+  storage \
   storage-models/models \
   storage-models/hf-hub \
   storage-models/torch-hub \
@@ -94,7 +95,8 @@ cd ComfyUI-Docker/rocm
 podman build . -t yanwk/comfyui-boot:rocm
 
 # 运行容器
-mkdir -p storage \
+mkdir -p \
+  storage \
   storage-models/models \
   storage-models/hf-hub \
   storage-models/torch-hub \

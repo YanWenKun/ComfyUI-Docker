@@ -16,9 +16,14 @@ Usage
 3. Run the container:
 
 ====
-mkdir -p storage
-mkdir -p storage-models/models storage-models/hf-hub storage-models/torch-hub
-mkdir -p storage-user/input storage-user/output storage-user/workflows
+mkdir -p \
+  storage \
+  storage-models/models \
+  storage-models/hf-hub \
+  storage-models/torch-hub \
+  storage-user/input \
+  storage-user/output \
+  storage-user/workflows
 
 podman run -it --rm \
   --name comfyui-xpu \

@@ -12,7 +12,7 @@ https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=cu128-megapak[View on <Doc
 * Includes 40+ custom nodes. See link:./builder-scripts/preload-cache.sh[the full list].
 * Includes CUDA development kit for compiling PyTorch C++ extensions, `.cu` files, etc.
 * Includes performance optimization libraries such as Nunchaku and SageAttention (powerful but may have compatibility issues).
-* Includes additional packages/dependencies.
+* Includes additional tools and dependencies.
 * As a result, the image is larger and receives updates later than the `slim` images, especially during PyTorch version changes, since some packages are specific to particular PyTorch versions.
 
 
@@ -24,13 +24,14 @@ Please successfully run the `slim` image before attempting the `megapak` image. 
 
 [source,sh]
 ----
-mkdir -p storage
-mkdir -p storage-models/models
-mkdir -p storage-models/hf-hub
-mkdir -p storage-models/torch-hub
-mkdir -p storage-user/input
-mkdir -p storage-user/output
-mkdir -p storage-user/workflows
+mkdir -p \
+  storage \
+  storage-models/models \
+  storage-models/hf-hub \
+  storage-models/torch-hub \
+  storage-user/input \
+  storage-user/output \
+  storage-user/workflows
 
 docker run -it --rm \
   --name comfyui-megapak \
@@ -51,13 +52,14 @@ docker run -it --rm \
 
 [source,bash]
 ----
-mkdir -p storage
-mkdir -p storage-models/models
-mkdir -p storage-models/hf-hub
-mkdir -p storage-models/torch-hub
-mkdir -p storage-user/input
-mkdir -p storage-user/output
-mkdir -p storage-user/workflows
+mkdir -p \
+  storage \
+  storage-models/models \
+  storage-models/hf-hub \
+  storage-models/torch-hub \
+  storage-user/input \
+  storage-user/output \
+  storage-user/workflows
 
 podman run -it --rm \
   --name comfyui-megapak \

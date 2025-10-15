@@ -5,7 +5,7 @@
 
       lsmod | grep -i xe
 
-   常见桌面发行版基本无需手动安装，如果没有 xe 模块，建议搜索教程／排查错误。
+   常见桌面发行版基本无需手动安装。如果没有 xe 模块，建议搜索教程／排查错误。
 
 2. 在宿主系统（物理机）上搜索安装 `intel-compute-runtime` 或相似名称的软件包。如果没有，可忽略并执行下一步。
 
@@ -15,9 +15,14 @@
 3. 启动容器：
 
 ====
-mkdir -p storage
-mkdir -p storage-models/models storage-models/hf-hub storage-models/torch-hub
-mkdir -p storage-user/input storage-user/output storage-user/workflows
+mkdir -p \
+  storage \
+  storage-models/models \
+  storage-models/hf-hub \
+  storage-models/torch-hub \
+  storage-user/input \
+  storage-user/output \
+  storage-user/workflows
 
 podman run -it --rm \
   --name comfyui-xpu \
@@ -33,7 +38,7 @@ podman run -it --rm \
   -v "$(pwd)"/storage-user/output:/root/ComfyUI/output \
   -v "$(pwd)"/storage-user/workflows:/root/ComfyUI/user/default/workflows \
   -e CLI_ARGS="--disable-smart-memory --async-offload" \
-  yanwk/comfyui-boot:xpu
+  yanwk/comfyui-boot:xpu-cn
 ====
 
 备注：
