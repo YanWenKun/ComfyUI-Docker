@@ -8,7 +8,7 @@ https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=rocm[View on <Docker Hub>]
 
 ## Note: Image Building
 
-This Docker image is too big to build on GitHub Actions (often throw "No space left on device" error).
+This Docker image is often too big to build on GitHub Actions (throw "No space left on device" error).
 So the commands below contain the steps for building Docker image (basically downloading packages).
 
 You can skip those steps if the `rocm` image on
@@ -59,7 +59,13 @@ cd ComfyUI-Docker/rocm
 docker build . -t yanwk/comfyui-boot:rocm
 
 # Run the container
-mkdir -p storage
+mkdir -p storage \
+  storage-models/models \
+  storage-models/hf-hub \
+  storage-models/torch-hub \
+  storage-user/input \
+  storage-user/output \
+  storage-user/workflows
 
 docker run -it --rm \
   --name comfyui-rocm \
@@ -69,6 +75,12 @@ docker run -it --rm \
   --security-opt label=disable \
   -p 8188:8188 \
   -v "$(pwd)"/storage:/root \
+  -v "$(pwd)"/storage-models/models:/root/ComfyUI/models \
+  -v "$(pwd)"/storage-models/hf-hub:/root/.cache/huggingface/hub \
+  -v "$(pwd)"/storage-models/torch-hub:/root/.cache/torch/hub \
+  -v "$(pwd)"/storage-user/input:/root/ComfyUI/input \
+  -v "$(pwd)"/storage-user/output:/root/ComfyUI/output \
+  -v "$(pwd)"/storage-user/workflows:/root/ComfyUI/user/default/workflows \
   -e CLI_ARGS="" \
   yanwk/comfyui-boot:rocm
 ----
@@ -82,7 +94,13 @@ cd ComfyUI-Docker/rocm
 podman build . -t yanwk/comfyui-boot:rocm
 
 # Run the container
-mkdir -p storage
+mkdir -p storage \
+  storage-models/models \
+  storage-models/hf-hub \
+  storage-models/torch-hub \
+  storage-user/input \
+  storage-user/output \
+  storage-user/workflows
 
 podman run -it --rm \
   --name comfyui-rocm \
@@ -92,6 +110,12 @@ podman run -it --rm \
   --security-opt label=disable \
   -p 8188:8188 \
   -v "$(pwd)"/storage:/root \
+  -v "$(pwd)"/storage-models/models:/root/ComfyUI/models \
+  -v "$(pwd)"/storage-models/hf-hub:/root/.cache/huggingface/hub \
+  -v "$(pwd)"/storage-models/torch-hub:/root/.cache/torch/hub \
+  -v "$(pwd)"/storage-user/input:/root/ComfyUI/input \
+  -v "$(pwd)"/storage-user/output:/root/ComfyUI/output \
+  -v "$(pwd)"/storage-user/workflows:/root/ComfyUI/user/default/workflows \
   -e CLI_ARGS="" \
   yanwk/comfyui-boot:rocm
 ----
@@ -110,7 +134,7 @@ This image is large in filesize. But if you have hard time to run the container,
 
 [source,sh]
 ----
-docker pull rocm/pytorch:rocm6.4.3_ubuntu24.04_py3.12_pytorch_release_2.6.0
+docker pull rocm/pytorch:rocm7.0.2_ubuntu24.04_py3.12_pytorch_release_2.8.0
 
 mkdir -p storage
 
@@ -124,7 +148,7 @@ docker run -it --rm \
   --user root \
   --workdir /root/workdir \
   -v "$(pwd)"/storage:/root/workdir \
-  rocm/pytorch:rocm6.4.3_ubuntu24.04_py3.12_pytorch_release_2.6.0 \
+  rocm/pytorch:rocm7.0.2_ubuntu24.04_py3.12_pytorch_release_2.8.0 \
   /bin/bash
 
 git clone https://github.com/comfyanonymous/ComfyUI.git
@@ -142,11 +166,11 @@ python ComfyUI/main.py --listen --port 8188
 
 __(Just side notes. Nothing to do with this Docker image)__
 
-WSL2 supports ROCm and DirectML.
+WSL2 supports ROCm and DirectML:
 
 * ROCm
 
-If your GPU is in the
+** If your GPU is in the
 https://rocm.docs.amd.com/projects/radeon/en/latest/docs/compatibility/wsl/wsl_compatibility.html[Compatibility List],
 you can either install
 https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/wsl/install-radeon.html[Radeon software]
@@ -156,11 +180,11 @@ or use
 
 * DirectML
 
-DirectML works for most GPUs (including AMD APU, Intel GPU).
+** DirectML works for most GPUs (including AMD APU, Intel GPU).
 It's slower than ROCm but still faster than CPU.
 See: 
 link:../docs/wsl-directml.adoc[Run ComfyUI on WSL2 with DirectML]. 
 
 * ZLUDA
 
-This is not using WSL2, it's running natively on Windows. ZLUDA can "translate" CUDA codes to run on AMD GPUs. But as the first step, I recommend to try running SD-WebUI with ZLUDA, it's easier to start with.
+** This is not using WSL2, it's running natively on Windows. ZLUDA can "translate" CUDA codes to run on AMD GPUs. But as the first step, I recommend to try running SD-WebUI with ZLUDA, it's easier to start with.

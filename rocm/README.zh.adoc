@@ -7,11 +7,12 @@ https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=rocm[在 <Docker Hub> 上�
 ## 注：构建镜像
 
 本仓库会定期自动发布最新镜像到 Docker Hub，但由于 ROCm PyTorch 太大，GitHub Actions 经常报错“存储空间不足”，导致发布失败。
-因此下文中的运行命令先在本地构建镜像（构建过程基本就是下载软件包，加上少量编译）。
+
+因此，下文中的运行命令会先在本地构建镜像（构建过程基本就是下载软件包，加上少量编译）。
 
 但如果当前
 https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=rocm[Docker Hub]
-上的 `rocm` 镜像发布日期较新，则可以跳过“构建镜像”步骤以节约时间。
+上的 `rocm` 镜像发布日期较新，你也可以跳过“构建镜像”步骤以节约时间。
 
 ## 准备工作
 
@@ -58,7 +59,13 @@ cd ComfyUI-Docker/rocm
 docker build . -t yanwk/comfyui-boot:rocm
 
 # 运行容器
-mkdir -p storage
+mkdir -p storage \
+  storage-models/models \
+  storage-models/hf-hub \
+  storage-models/torch-hub \
+  storage-user/input \
+  storage-user/output \
+  storage-user/workflows
 
 docker run -it --rm \
   --name comfyui-rocm \
@@ -68,6 +75,12 @@ docker run -it --rm \
   --security-opt label=disable \
   -p 8188:8188 \
   -v "$(pwd)"/storage:/root \
+  -v "$(pwd)"/storage-models/models:/root/ComfyUI/models \
+  -v "$(pwd)"/storage-models/hf-hub:/root/.cache/huggingface/hub \
+  -v "$(pwd)"/storage-models/torch-hub:/root/.cache/torch/hub \
+  -v "$(pwd)"/storage-user/input:/root/ComfyUI/input \
+  -v "$(pwd)"/storage-user/output:/root/ComfyUI/output \
+  -v "$(pwd)"/storage-user/workflows:/root/ComfyUI/user/default/workflows \
   -e CLI_ARGS="" \
   yanwk/comfyui-boot:rocm
 ----
@@ -81,7 +94,13 @@ cd ComfyUI-Docker/rocm
 podman build . -t yanwk/comfyui-boot:rocm
 
 # 运行容器
-mkdir -p storage
+mkdir -p storage \
+  storage-models/models \
+  storage-models/hf-hub \
+  storage-models/torch-hub \
+  storage-user/input \
+  storage-user/output \
+  storage-user/workflows
 
 podman run -it --rm \
   --name comfyui-rocm \
@@ -91,6 +110,12 @@ podman run -it --rm \
   --security-opt label=disable \
   -p 8188:8188 \
   -v "$(pwd)"/storage:/root \
+  -v "$(pwd)"/storage-models/models:/root/ComfyUI/models \
+  -v "$(pwd)"/storage-models/hf-hub:/root/.cache/huggingface/hub \
+  -v "$(pwd)"/storage-models/torch-hub:/root/.cache/torch/hub \
+  -v "$(pwd)"/storage-user/input:/root/ComfyUI/input \
+  -v "$(pwd)"/storage-user/output:/root/ComfyUI/output \
+  -v "$(pwd)"/storage-user/workflows:/root/ComfyUI/user/default/workflows \
   -e CLI_ARGS="" \
   yanwk/comfyui-boot:rocm
 ----
@@ -111,7 +136,7 @@ https://hub.docker.com/r/rocm/pytorch
 
 [source,sh]
 ----
-docker pull rocm/pytorch:rocm6.4.3_ubuntu24.04_py3.12_pytorch_release_2.6.0
+docker pull rocm/pytorch:rocm7.0.2_ubuntu24.04_py3.12_pytorch_release_2.8.0
 
 mkdir -p storage
 
@@ -125,7 +150,7 @@ docker run -it --rm \
   --user root \
   --workdir /root/workdir \
   -v "$(pwd)"/storage:/root/workdir \
-  rocm/pytorch:rocm6.4.3_ubuntu24.04_py3.12_pytorch_release_2.6.0 \
+  rocm/pytorch:rocm7.0.2_ubuntu24.04_py3.12_pytorch_release_2.8.0 \
   /bin/bash
 
 git clone https://github.com/comfyanonymous/ComfyUI.git
@@ -143,11 +168,11 @@ python ComfyUI/main.py --listen --port 8188
 
 （以下内容介绍另外的安装使用方式，与本镜像无关）
 
-WSL2 支持 ROCm 与 DirectML。
+WSL2 支持 ROCm 与 DirectML：
 
 * ROCm
 
-如果你的 AMD GPU 在
+** 如果你的 AMD GPU 在
 https://rocm.docs.amd.com/projects/radeon/en/latest/docs/compatibility/wsl/wsl_compatibility.html[兼容性列表]
 中，你可以在 WSL2 环境中安装
 https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/wsl/install-radeon.html[Radeon software]
@@ -156,14 +181,14 @@ https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/wsl/install-rad
 
 * DirectML
 
-DirectML 支持大多数 GPU（包括 AMD APU 与 Intel GPU）。
+** DirectML 支持大多数 GPU（包括 AMD APU 与 Intel GPU）。
 该方法比纯 CPU 快，比 Linux 下的 ROCm 慢，且支持的 GPU 型号更多（甚至核显也能跑）。
 
-见：
+** 见：
 link:../docs/wsl-directml.zh.adoc[在 WSL2 环境下通过 DirectML 运行 ComfyUI]。
 
 * ZLUDA
 
-这里 ZLUDA 不是跑在 WSL2 上，而是 Windows 原生运行。ZLUDA 能“翻译”CUDA 指令给 AMD GPU 运行。
+** 这里 ZLUDA 不是跑在 WSL2 上，而是 Windows 原生运行。ZLUDA 能“翻译”CUDA 指令给 AMD GPU 运行。
 这里不写详细了，因为老方法很可能一更新就不能用了，还请搜索教程。
 但还是提一点建议，先试着跑 SD-WebUI，这个起手要容易不少。

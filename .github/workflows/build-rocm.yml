@@ -55,6 +55,8 @@ jobs:
         with:
           context: ./rocm
           file: ./rocm/Dockerfile
+          build-args: |
+            USING_GITHUB_ACTIONS=true
           tags: |
             yanwk/comfyui-boot:rocm
             yanwk/comfyui-boot:rocm-${{ steps.date.outputs.date }}
