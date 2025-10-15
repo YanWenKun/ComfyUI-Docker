@@ -1,0 +1,206 @@
+# Docker image for ComfyUI
+
+image::../docs/concept-v6-cu130-slim.svg["Concept Design"]
+
+image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-cu130-slim.yml/badge.svg["GitHub Workflow Status",link="https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-cu130-slim.yml"]
+
+https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=cu130-slim[View on <Docker Hub>]
+
+
+## How it works
+
+1. On first start, the entrypoint script will copy the ComfyUI instance bundled in the image to a local storage directory, and run the copied local instance.
+2. The whole ComfyUI will be stored in a local folder (`./storage/ComfyUI`).
+3. If you already have an existing ComfyUI bundle, place it in the directory above, and the entrypoint script will skip the copy step.
+4. Use ComfyUI-Manager (in ComfyUI web page) to update ComfyUI, manage custom nodes, and download models.
+5. Models and user files are mounted separately (`storage-models` and `storage-user`).
+** These mounts are optional, if not provided, all files will be stored in `storage`. This was designed to be backward-compatible with previous versions of ComfyUI-Docker images.
+
+## Prerequisites
+
+* NVIDIA GPU with latest driver
+** Either Game or Studio edition will work.
+** You don't need to install drivers inside containers. Just make sure it's working on your host OS.
+
+* Docker/Podman Installed
+
+** Linux user may need to install
+https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html[NVIDIA Container Toolkit]
+(only on host OS). It will enable containers' GPU access.
+
+** Windows user could use 
+https://www.docker.com/products/docker-desktop/[Docker Desktop] 
+with WSL2 enabled, or 
+https://podman-desktop.io/[Podman Desktop]
+with WSL2 and 
+https://podman-desktop.io/docs/podman/gpu[GPU enabled].
+
+** WSL2 users please note that NTFS ⇆ ext4 “translation” is very slow (down to <100MiB/s), so you may want to use an in-WSL folder (or Docker volume) to store ComfyUI.
+
+
+## Usage
+
+### Run with Docker
+
+[source,sh]
+----
+mkdir -p storage
+mkdir -p storage-models/models
+mkdir -p storage-models/hf-hub
+mkdir -p storage-models/torch-hub
+mkdir -p storage-user/input
+mkdir -p storage-user/output
+mkdir -p storage-user/workflows
+
+docker run -it --rm \
+  --name comfyui-cu130 \
+  --gpus all \
+  -p 8188:8188 \
+  -v "$(pwd)"/storage:/root \
+  -v "$(pwd)"/storage-models/models:/root/ComfyUI/models \
+  -v "$(pwd)"/storage-models/hf-hub:/root/.cache/huggingface/hub \
+  -v "$(pwd)"/storage-models/torch-hub:/root/.cache/torch/hub \
+  -v "$(pwd)"/storage-user/input:/root/ComfyUI/input \
+  -v "$(pwd)"/storage-user/output:/root/ComfyUI/output \
+  -v "$(pwd)"/storage-user/workflows:/root/ComfyUI/user/default/workflows \
+  -e CLI_ARGS="--fast" \
+  yanwk/comfyui-boot:cu130-slim
+----
+
+### Run with Podman
+
+[source,bash]
+----
+mkdir -p storage
+mkdir -p storage-models/models
+mkdir -p storage-models/hf-hub
+mkdir -p storage-models/torch-hub
+mkdir -p storage-user/input
+mkdir -p storage-user/output
+mkdir -p storage-user/workflows
+
+podman run -it --rm \
+  --name comfyui-cu130 \
+  --device nvidia.com/gpu=all \
+  --security-opt label=disable \
+  -p 8188:8188 \
+  -v "$(pwd)"/storage:/root \
+  -v "$(pwd)"/storage-models/models:/root/ComfyUI/models \
+  -v "$(pwd)"/storage-models/hf-hub:/root/.cache/huggingface/hub \
+  -v "$(pwd)"/storage-models/torch-hub:/root/.cache/torch/hub \
+  -v "$(pwd)"/storage-user/input:/root/ComfyUI/input \
+  -v "$(pwd)"/storage-user/output:/root/ComfyUI/output \
+  -v "$(pwd)"/storage-user/workflows:/root/ComfyUI/user/default/workflows \
+  -e CLI_ARGS="--fast" \
+  docker.io/yanwk/comfyui-boot:cu130-slim
+----
+
+Note the `CLI_ARGS`, see <<cli-args, CLI_ARGS Reference>> below for details.
+
+Once the app is loaded, visit http://localhost:8188/
+
+
+## Tips and Tricks
+
+### Pre-start scripts
+
+The entrypoint script will create two example user script files at first start:
+
+----
+./storage/user-scripts/set-proxy.sh
+./storage/user-scripts/pre-start.sh
+----
+
+The `set-proxy.sh` is for setting up proxy, it will start before everything else.
+
+The `pre-start.sh` is for user operations, it will start just before ComfyUI starts.
+
+NOTE: The entrypoint script no longer downloads anything from the Internet to speed up startup time, but `set-proxy.sh` is retained for backward compatibility.
+
+### Major Update
+
+You can perform a major update (e.g. to a new PyTorch version) by swapping the Docker image:
+
+[source,sh]
+----
+docker pull yanwk/comfyui-boot:cu130-slim
+
+# remove the container if not using an ephemeral one
+docker rm comfyui-cu130
+
+# Then 'docker run' again
+----
+
+
+[[cli-args]]
+## CLI_ARGS Reference
+
+[%autowidth,cols=2]
+|===
+|args |description
+
+|--fast
+|Enable experimental optimizations.
+(e.g. 
+https://github.com/comfyanonymous/ComfyUI/commit/9953f22fce0ba899da0676a0b374e5d1f72bf259[float8_e4m3fn] 
+matrix multiplication on Ada Lovelace and later GPUs).
+Might lower image quality. +
+Turn it off if you want stability over speed.
+
+|--disable-smart-memory
+|Force ComfyUI to offload models from VRAM to RAM more frequently. Slows performance but reduce memory leaks.
+
+|--lowvram
+|Force ComfyUI to split the model (UNET) into parts to use less VRAM, at the cost of speed. Use only if your GPU has less than 6 GB of VRAM.
+
+|--novram
+|Use system RAM only, no VRAM at all. Very slow.
+
+|--cpu
+|Run on CPU. Very slow. Used for testing purposes.
+
+|--disable-xformers
+|Disable xFormers. xFormers is not installed in this image by default.
+
+|--use-pytorch-cross-attention
+|Use PyTorch's built-in cross-attention. Works the same as `--disable-xformers` for NVIDIA GPUs.
+
+|===
+
+More `CLI_ARGS` available at ComyfyUI's
+https://github.com/comfyanonymous/ComfyUI/blob/master/comfy/cli_args.py[cli_args.py].
+
+
+[[env-vars]]
+## Environment Variables Reference
+
+[cols="2,2,3"]
+|===
+|Variable|Example Value|Memo
+
+|HTTP_PROXY +
+HTTPS_PROXY
+|http://localhost:1081 +
+http://localhost:1081
+|Set HTTP proxy. Works the same as `set-proxy.sh`.
+
+|PIP_INDEX_URL
+|'https://pypi.org/simple'
+|Set mirror site for Python Package Index.
+
+|HF_ENDPOINT
+|'https://huggingface.co'
+|Set mirror site for HuggingFace Hub.
+
+|HF_TOKEN
+|'hf_your_token'
+|Set HuggingFace Access Token.
+https://huggingface.co/settings/tokens[More info]
+
+|HF_HUB_ENABLE_HF_TRANSFER
+|1
+|Enable HuggingFace Hub experimental high-speed file transfers.
+Only make sense if you have >1Gbps and VERY STABLE connection (e.g. cloud server).
+https://huggingface.co/docs/huggingface_hub/hf_transfer[More info]
+
+|===
