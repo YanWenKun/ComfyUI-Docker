@@ -87,7 +87,7 @@ The `slim` images start with only ComfyUI and ComfyUI-Manager, yet include many 
 ** CUDA 12.8, Python 3.12
 
 * link:cu130-slim/README.adoc[`cu130-slim`]
-** CUDA 13.0, Python 3.13 (with GIL), no xFormers by default
+** CUDA 13.0, Python 3.13 (with GIL). No xFormers by default
 
 ### MEGAPAK
 

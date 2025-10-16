@@ -86,7 +86,7 @@ https://github.com/pytorch/pytorch/blob/main/.ci/manywheel/build_cuda.sh[编译�
 ** CUDA 12.8, Python 3.12
 
 * link:cu130-slim/README.adoc[`cu130-slim`]
-** CUDA 13.0, Python 3.13 (GIL 版本), 默认未装 xFormers
+** CUDA 13.0, Python 3.13 (GIL 版本), 默认无 xFormers
 
 ### MEGAPAK
 
