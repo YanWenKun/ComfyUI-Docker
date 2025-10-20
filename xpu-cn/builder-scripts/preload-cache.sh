@@ -36,6 +36,7 @@ mkdir -p /default-comfyui-bundle/ComfyUI/user/default/ComfyUI-Manager
 cat <<EOF > /default-comfyui-bundle/ComfyUI/user/default/ComfyUI-Manager/config.ini
 [default]
 channel_url = https://gh-proxy.com/https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main
+use_uv = False
 EOF
 
 cat <<EOF > /default-comfyui-bundle/ComfyUI/user/default/ComfyUI-Manager/channels.list

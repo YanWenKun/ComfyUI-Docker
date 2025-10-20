@@ -20,6 +20,14 @@ git reset --hard "$(git tag | grep -e '^v' | sort -V | tail -1)"
 cd /default-comfyui-bundle/ComfyUI/custom_nodes
 gcs https://github.com/Comfy-Org/ComfyUI-Manager.git
 
+# Force ComfyUI-Manager to use PIP instead of UV
+mkdir -p /default-comfyui-bundle/ComfyUI/user/default/ComfyUI-Manager
+
+cat <<EOF > /default-comfyui-bundle/ComfyUI/user/default/ComfyUI-Manager/config.ini
+[default]
+use_uv = False
+EOF
+
 # Performance
 gcs https://github.com/welltop-cn/ComfyUI-TeaCache.git
 gcs https://github.com/city96/ComfyUI-GGUF.git
