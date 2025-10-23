@@ -12,6 +12,7 @@ einops
 filelock
 fvcore
 GitPython
+hydra-core
 imageio-ffmpeg
 importlib-metadata
 matrix-nio

@@ -23,6 +23,8 @@ is installed on your Linux host.
 
 ## Build & Run
 
+### Essential Environment Variables
+
 You may need to add these configuration (especially for APUs) into the command of `docker run`, `podman run` below. (Credit to
 https://github.com/YanWenKun/ComfyUI-Docker/pull/67[nhtua])
 
@@ -40,9 +42,23 @@ https://github.com/YanWenKun/ComfyUI-Docker/pull/67[nhtua])
 * For integrated graphics on CPU:
 ** `-e HIP_VISIBLE_DEVICES=0 \`
 
+### Optional Environment Variables
+
 You may also want to add more environment variable(s):
 
-* Enable tunable operations (slow first run, but faster subsequent runs.
+* Force ComfyUI to offload model weights from VRAM to RAM more frequently to reduce memory leaks
+(https://github.com/comfyanonymous/ComfyUI/blob/master/comfy/cli_args.py[Doc]).
+
+** `-e CLI_ARGS="--disable-smart-memory" \`
+
+* Disable internal memory fragment caching (to mitigate memory faults.
+https://rocm.docs.amd.com/projects/ROCR-Runtime/en/latest/api-reference/environment_variables.html[Doc]).
+(Thanks to
+https://github.com/YanWenKun/ComfyUI-Docker/issues/134[SergeyFilippov])
+
+** `-e HSA_DISABLE_FRAGMENT_ALLOCATOR=1 \`
+
+* Enable tunable operations (slower first run, faster subsequent runs.
 https://github.com/ROCm/pytorch/tree/main/aten/src/ATen/cuda/tunable[Doc1],
 https://github.com/Comfy-Org/docs/blob/main/troubleshooting/overview.mdx#amd-gpu-issues[Doc2]).
 (Thanks to
@@ -50,7 +66,8 @@ https://github.com/YanWenKun/ComfyUI-Docker/pull/114[SergeyFilippov])
 
 ** `-e PYTORCH_TUNABLEOP_ENABLED=1 \`
 
-.With Docker
+### With Docker
+
 [source,sh]
 ----
 # Build the image
@@ -82,11 +99,13 @@ docker run -it --rm \
   -v "$(pwd)"/storage-user/input:/root/ComfyUI/input \
   -v "$(pwd)"/storage-user/output:/root/ComfyUI/output \
   -v "$(pwd)"/storage-user/workflows:/root/ComfyUI/user/default/workflows \
+  -e HSA_OVERRIDE_GFX_VERSION="" \
   -e CLI_ARGS="" \
   yanwk/comfyui-boot:rocm
 ----
 
-.With Podman
+### With Podman
+
 [source,sh]
 ----
 # Build the image
@@ -118,6 +137,7 @@ podman run -it --rm \
   -v "$(pwd)"/storage-user/input:/root/ComfyUI/input \
   -v "$(pwd)"/storage-user/output:/root/ComfyUI/output \
   -v "$(pwd)"/storage-user/workflows:/root/ComfyUI/user/default/workflows \
+  -e HSA_OVERRIDE_GFX_VERSION="" \
   -e CLI_ARGS="" \
   yanwk/comfyui-boot:rocm
 ----

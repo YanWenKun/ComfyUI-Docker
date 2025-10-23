@@ -21,36 +21,61 @@ https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/native_linux/in
 
 ## 构建并运行
 
-需要根据 GPU 添加如下环境变量（感谢
+### 必要的环境变量
+
+需根据 GPU 型号添加如下环境变量（感谢
 https://github.com/YanWenKun/ComfyUI-Docker/pull/67[nhtua]
 的 PR）：
 
-* RDNA 2 :
+* **RDNA 2** :
 ** `-e HSA_OVERRIDE_GFX_VERSION=10.3.0 \`
 
-* RDNA 3 :
+* **RDNA 3** :
 ** `-e HSA_OVERRIDE_GFX_VERSION=11.0.0 \`
 ** 参看 https://rocm.docs.amd.com/en/latest/reference/gpu-arch-specs.html[AMD文档] ，部分型号可改用 `11.0.1`
 
-* RDNA 4 :
+* **RDNA 4** :
 ** `-e HSA_OVERRIDE_GFX_VERSION=12.0.0 \`
 ** 参看 https://rocm.docs.amd.com/en/latest/reference/gpu-arch-specs.html[AMD文档] ，部分型号可改用 `12.0.1`
 
-* APU／集显 :
+* APU／集显再额外添加 :
 ** `-e HIP_VISIBLE_DEVICES=0 \`
 
-额外还可添加环境变量：
+### 可选的环境变量
 
-* 启用可调优操作（首次运行较慢，但之后运行更快，
-https://github.com/ROCm/pytorch/tree/main/aten/src/ATen/cuda/tunable[文档1] ，
-https://github.com/Comfy-Org/docs/blob/main/troubleshooting/overview.mdx#amd-gpu-issues[文档2] 。
+注意以下调优均有一定代价，按需使用：
+
+* 强制 ComfyUI 更频繁地将模型权重从显存卸载到内存：
+
+** `-e CLI_ARGS="--disable-smart-memory" \`
+
+** 有效减少显存泄漏，代价是更慢、占用更多系统内存（
+https://github.com/comfyanonymous/ComfyUI/blob/master/comfy/cli_args.py[文档]
+）
+
+* 禁用显存碎片缓存机制：
+
+** `-e HSA_DISABLE_FRAGMENT_ALLOCATOR=1 \`
+
+** 缓解部分显存访问失败的问题，代价是占用显存升高、性能下降（
+https://rocm.docs.amd.com/projects/ROCR-Runtime/en/latest/api-reference/environment_variables.html[文档] ；
 感谢
-https://github.com/YanWenKun/ComfyUI-Docker/pull/114[SergeyFilippov]
-的 PR）：
+https://github.com/YanWenKun/ComfyUI-Docker/issues/134[SergeyFilippov]
+的 PR）
+
+* 启用可调优操作（操作自调优）：
 
 ** `-e PYTORCH_TUNABLEOP_ENABLED=1 \`
 
-.使用 Docker
+** 首次运行较慢，但之后运行更快（
+https://github.com/ROCm/pytorch/tree/main/aten/src/ATen/cuda/tunable[文档1] ，
+https://github.com/Comfy-Org/docs/blob/main/troubleshooting/overview.mdx#amd-gpu-issues[文档2] ；
+感谢
+https://github.com/YanWenKun/ComfyUI-Docker/pull/114[SergeyFilippov]
+的 PR）
+
+### 使用 Docker
+
 [source,sh]
 ----
 # 构建镜像
@@ -82,11 +107,13 @@ docker run -it --rm \
   -v "$(pwd)"/storage-user/input:/root/ComfyUI/input \
   -v "$(pwd)"/storage-user/output:/root/ComfyUI/output \
   -v "$(pwd)"/storage-user/workflows:/root/ComfyUI/user/default/workflows \
+  -e HSA_OVERRIDE_GFX_VERSION="" \
   -e CLI_ARGS="" \
   yanwk/comfyui-boot:rocm
 ----
 
-.使用 Podman
+### 使用 Podman
+
 [source,sh]
 ----
 # 构建镜像
@@ -118,6 +145,7 @@ podman run -it --rm \
   -v "$(pwd)"/storage-user/input:/root/ComfyUI/input \
   -v "$(pwd)"/storage-user/output:/root/ComfyUI/output \
   -v "$(pwd)"/storage-user/workflows:/root/ComfyUI/user/default/workflows \
+  -e HSA_OVERRIDE_GFX_VERSION="" \
   -e CLI_ARGS="" \
   yanwk/comfyui-boot:rocm
 ----
