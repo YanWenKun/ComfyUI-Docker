@@ -22,6 +22,7 @@ mkdir -p \
   storage-user/workflows
 
 docker run -it --rm \
+  --runtime nvidia \
   --gpus all \
   -p 8188:8188 \
   -v "$(pwd)"/storage:/root \

@@ -28,6 +28,7 @@ docker pull yanwk/comfyui-boot:nightly
 
 docker run -it --rm \
   --name comfyui-nightly \
+  --runtime nvidia \
   --gpus all \
   -p 8188:8188 \
   -v "$(pwd)"/storage:/root \

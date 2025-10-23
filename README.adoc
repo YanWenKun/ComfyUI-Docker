@@ -22,6 +22,7 @@ mkdir -p \
 
 docker run -it --rm \
   --name comfyui \
+  --runtime nvidia \
   --gpus all \
   -p 8188:8188 \
   -v "$(pwd)"/storage:/root \
