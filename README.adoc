@@ -109,7 +109,11 @@ The `megapak` images are all-in-one bundles, including dev kits and many Custom 
 
 * link:rocm/README.adoc[`rocm`]
 
-** For AMD GPUs with ROCm.
+** For AMD GPUs with ROCm 7 (latest version).
+
+* link:rocm6/README.adoc[`rocm6`]
+
+** For AMD GPUs with ROCm 6 (stable version).
 
 * link:xpu/[`xpu`]
 

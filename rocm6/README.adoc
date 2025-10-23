@@ -1,0 +1,192 @@
+# Run ComfyUI with ROCm on AMD GPU
+
+*link:README.zh.adoc[中文说明]*
+
+image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-rocm6.yml/badge.svg["GitHub Workflow Status",link="https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-rocm6.yml"]
+
+https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=rocm6[View on <Docker Hub>]
+
+## Note: Image Building
+
+This Docker image is often too big to build on GitHub Actions (throw "No space left on device" error).
+So the commands below contain the steps for building Docker image (basically downloading packages).
+
+You can skip those steps if the `rocm6` image on
+https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=rocm6[Docker Hub]
+is recently built.
+
+## Prepare
+
+* Make sure
+https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/native_linux/install-radeon.html[Radeon software for Linux with ROCm]
+is installed on your Linux host.
+
+## Build & Run
+
+You may need to add these configuration (especially for APUs) into the command of `docker run`, `podman run` below. (Credit to
+https://github.com/YanWenKun/ComfyUI-Docker/pull/67[nhtua])
+
+* For RDNA 2 cards:
+** `-e HSA_OVERRIDE_GFX_VERSION=10.3.0 \`
+
+* For RDNA 3 cards:
+** `-e HSA_OVERRIDE_GFX_VERSION=11.0.0 \`
+** Check the https://rocm.docs.amd.com/en/latest/reference/gpu-arch-specs.html[AMD doc] to see if your GPU can use `11.0.1`.
+
+* For RDNA 4 cards:
+** `-e HSA_OVERRIDE_GFX_VERSION=12.0.0 \`
+** Check the https://rocm.docs.amd.com/en/latest/reference/gpu-arch-specs.html[AMD doc] to see if your GPU can use `12.0.1`.
+
+* For integrated graphics on CPU:
+** `-e HIP_VISIBLE_DEVICES=0 \`
+
+You may also want to add more environment variable(s):
+
+* Enable tunable operations (slow first run, but faster subsequent runs.
+https://github.com/ROCm/pytorch/tree/main/aten/src/ATen/cuda/tunable[Doc1],
+https://github.com/Comfy-Org/docs/blob/main/troubleshooting/overview.mdx#amd-gpu-issues[Doc2]).
+(Thanks to
+https://github.com/YanWenKun/ComfyUI-Docker/pull/114[SergeyFilippov])
+
+** `-e PYTORCH_TUNABLEOP_ENABLED=1 \`
+
+.With Docker
+[source,sh]
+----
+# Build the image
+git clone https://github.com/YanWenKun/ComfyUI-Docker.git
+cd ComfyUI-Docker/rocm6
+docker build . -t yanwk/comfyui-boot:rocm6
+
+# Run the container
+mkdir -p \
+  storage \
+  storage-models/models \
+  storage-models/hf-hub \
+  storage-models/torch-hub \
+  storage-user/input \
+  storage-user/output \
+  storage-user/workflows
+
+docker run -it --rm \
+  --name comfyui-rocm6 \
+  --device=/dev/kfd --device=/dev/dri \
+  --group-add=video --ipc=host --cap-add=SYS_PTRACE \
+  --security-opt seccomp=unconfined \
+  --security-opt label=disable \
+  -p 8188:8188 \
+  -v "$(pwd)"/storage:/root \
+  -v "$(pwd)"/storage-models/models:/root/ComfyUI/models \
+  -v "$(pwd)"/storage-models/hf-hub:/root/.cache/huggingface/hub \
+  -v "$(pwd)"/storage-models/torch-hub:/root/.cache/torch/hub \
+  -v "$(pwd)"/storage-user/input:/root/ComfyUI/input \
+  -v "$(pwd)"/storage-user/output:/root/ComfyUI/output \
+  -v "$(pwd)"/storage-user/workflows:/root/ComfyUI/user/default/workflows \
+  -e CLI_ARGS="" \
+  yanwk/comfyui-boot:rocm6
+----
+
+.With Podman
+[source,sh]
+----
+# Build the image
+git clone https://github.com/YanWenKun/ComfyUI-Docker.git
+cd ComfyUI-Docker/rocm6
+podman build . -t yanwk/comfyui-boot:rocm6
+
+# Run the container
+mkdir -p \
+  storage \
+  storage-models/models \
+  storage-models/hf-hub \
+  storage-models/torch-hub \
+  storage-user/input \
+  storage-user/output \
+  storage-user/workflows
+
+podman run -it --rm \
+  --name comfyui-rocm6 \
+  --device=/dev/kfd --device=/dev/dri \
+  --group-add=video --ipc=host --cap-add=SYS_PTRACE \
+  --security-opt seccomp=unconfined \
+  --security-opt label=disable \
+  -p 8188:8188 \
+  -v "$(pwd)"/storage:/root \
+  -v "$(pwd)"/storage-models/models:/root/ComfyUI/models \
+  -v "$(pwd)"/storage-models/hf-hub:/root/.cache/huggingface/hub \
+  -v "$(pwd)"/storage-models/torch-hub:/root/.cache/torch/hub \
+  -v "$(pwd)"/storage-user/input:/root/ComfyUI/input \
+  -v "$(pwd)"/storage-user/output:/root/ComfyUI/output \
+  -v "$(pwd)"/storage-user/workflows:/root/ComfyUI/user/default/workflows \
+  -e CLI_ARGS="" \
+  yanwk/comfyui-boot:rocm6
+----
+
+Once the app is loaded, visit http://localhost:8188/
+
+[[hint]]
+## ROCm: If you want to dive in...
+
+__(Just side notes. Nothing to do with this Docker image)__
+
+The commands below use the 
+https://hub.docker.com/r/rocm/pytorch[AMD prebuilt ROCm PyTorch image].
+
+This image is large in filesize. But if you have hard time to run the container, it may be helpful. As it takes care of PyTorch, the most important part, and you just need to install few more Python packages in order to run ComfyUI.
+
+[source,sh]
+----
+docker pull rocm/pytorch:rocm6.4.4_ubuntu24.04_py3.12_pytorch_release_2.7.1
+
+mkdir -p storage
+
+docker run -it --rm \
+  --name comfyui-rocm6 \
+  --device=/dev/kfd --device=/dev/dri \
+  --group-add=video --ipc=host --cap-add=SYS_PTRACE \
+  --security-opt seccomp=unconfined \
+  --security-opt label=disable \
+  -p 8188:8188 \
+  --user root \
+  --workdir /root/workdir \
+  -v "$(pwd)"/storage:/root/workdir \
+  rocm/pytorch:rocm6.4.4_ubuntu24.04_py3.12_pytorch_release_2.7.1 \
+  /bin/bash
+
+git clone https://github.com/comfyanonymous/ComfyUI.git
+
+pip install -r ComfyUI/requirements.txt
+# Or:
+# conda install --yes --file ComfyUI/requirements.txt
+
+python ComfyUI/main.py --listen --port 8188
+# Or:
+# python3 ComfyUI/main.py --listen --port 8188
+----
+
+## Additional notes for Windows users
+
+__(Just side notes. Nothing to do with this Docker image)__
+
+WSL2 supports ROCm and DirectML:
+
+* ROCm
+
+** If your GPU is in the
+https://rocm.docs.amd.com/projects/radeon/en/latest/docs/compatibility/wsl/wsl_compatibility.html[Compatibility List],
+you can either install
+https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/wsl/install-radeon.html[Radeon software]
+in your WSL2 distro,
+or use
+<<hint, ROCm PyTorch image>>.
+
+* DirectML
+
+** DirectML works for most GPUs (including AMD APU, Intel GPU).
+It's slower than ROCm but still faster than CPU.
+See: 
+link:../docs/wsl-directml.adoc[Run ComfyUI on WSL2 with DirectML]. 
+
+* ZLUDA
+
+** This is not using WSL2, it's running natively on Windows. ZLUDA can "translate" CUDA codes to run on AMD GPUs. But as the first step, I recommend to try running SD-WebUI with ZLUDA, it's easier to start with.

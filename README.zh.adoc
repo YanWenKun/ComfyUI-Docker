@@ -108,7 +108,11 @@ https://github.com/pytorch/pytorch/blob/main/.ci/manywheel/build_cuda.sh[编译�
 
 * link:rocm/README.zh.adoc[`rocm`]
 
-** 适用于 AMD GPU
+** 适用于 AMD GPU，使用最新的 ROCm 7。
+
+* link:rocm6/README.zh.adoc[`rocm6`]
+
+** 适用于 AMD GPU，使用稳定的 ROCm 6。
 
 * link:xpu-cn/[`xpu-cn`]
 

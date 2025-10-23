@@ -1,0 +1,40 @@
+# Compose file for AMD GPU
+
+services:
+
+# Ref: https://hub.docker.com/r/rocm/pytorch
+# Ref: https://rocm.docs.amd.com/projects/install-on-linux/en/latest/how-to/docker.html
+
+  comfyui:
+    init: true
+    container_name: comfyui-rocm6
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: "yanwk/comfyui-boot:rocm6"
+    ports:
+      - "8188:8188"
+    volumes:
+      - "./storage:/root"
+      - "./storage-models/models:/root/ComfyUI/models"
+      - "./storage-models/hf-hub:/root/.cache/huggingface/hub"
+      - "./storage-models/torch-hub:/root/.cache/torch/hub"
+      - "./storage-user/input:/root/ComfyUI/input"
+      - "./storage-user/output:/root/ComfyUI/output"
+      - "./storage-user/workflows:/root/ComfyUI/user/default/workflows"
+    environment:
+      - CLI_ARGS=
+      # - CLI_ARGS=--use-pytorch-cross-attention
+      # - HSA_OVERRIDE_GFX_VERSION=11.0.0
+      # - HIP_VISIBLE_DEVICES=0
+    devices:
+      - /dev/kfd
+      - /dev/dri
+    group_add:
+      - video
+    ipc: host
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - seccomp:unconfined
+      - label:disable
