@@ -57,11 +57,11 @@ https://github.com/comfyanonymous/ComfyUI/blob/master/comfy/cli_args.py[文档]
 
 ** `-e HSA_DISABLE_FRAGMENT_ALLOCATOR=1 \`
 
-** 缓解部分显存访问失败的问题，代价是占用显存升高、性能下降（
+** 缓解部分显存访问失败的问题，代价是更慢、占用更多显存（
 https://rocm.docs.amd.com/projects/ROCR-Runtime/en/latest/api-reference/environment_variables.html[文档] ；
 感谢
 https://github.com/YanWenKun/ComfyUI-Docker/issues/134[SergeyFilippov]
-的 PR）
+的 Issue）
 
 * 启用可调优操作（操作自调优）：
 
