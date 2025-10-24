@@ -146,7 +146,7 @@ https://github.com/YanWenKun/ComfyUI-Docker/issues/128[issues]
 on Blackwell GPUs, but may be required for some video workflows (e.g. SVD).
 
 |--use-pytorch-cross-attention
-|Works the same as `--disable-xformers` for NVIDIA GPUs.
+|Use PyTorch's built-in cross-attention. Works the same as `--disable-xformers` for this image.
 
 |--fast
 |Enable experimental optimizations.

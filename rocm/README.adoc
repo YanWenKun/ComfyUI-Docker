@@ -46,8 +46,9 @@ https://github.com/YanWenKun/ComfyUI-Docker/pull/67[nhtua])
 
 You may also want to add more environment variable(s):
 
-* Force ComfyUI to offload model weights from VRAM to RAM more frequently to reduce memory leaks
-(https://github.com/comfyanonymous/ComfyUI/blob/master/comfy/cli_args.py[Doc]).
+* Force ComfyUI to offload model weights from VRAM to RAM more frequently.
+Slows performance but reduce memory leaks
+(https://github.com/comfyanonymous/ComfyUI/blob/master/comfy/cli_args.py[Source]).
 
 ** `-e CLI_ARGS="--disable-smart-memory" \`
 

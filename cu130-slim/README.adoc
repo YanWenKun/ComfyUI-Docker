@@ -166,7 +166,7 @@ Turn it off if you want stability over speed.
 |Disable xFormers. xFormers is not installed in this image by default.
 
 |--use-pytorch-cross-attention
-|Use PyTorch's built-in cross-attention. Works the same as `--disable-xformers` for NVIDIA GPUs.
+|Use PyTorch's built-in cross-attention. Disable xFormers, FlashAttention and SageAttention.
 
 |===
 

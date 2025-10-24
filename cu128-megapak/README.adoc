@@ -49,6 +49,8 @@ docker run -it --rm \
   yanwk/comfyui-boot:cu128-megapak
 ----
 
+Note the `--fast` in `CLI_ARGS`. Remove it if you meet quality issues.
+
 ### Run with Podman
 
 [source,bash]
@@ -78,6 +80,7 @@ podman run -it --rm \
   docker.io/yanwk/comfyui-boot:cu128-megapak
 ----
 
+Note the `--fast` in `CLI_ARGS`. Remove it if you meet quality issues.
 
 [[cli-args]]
 ## CLI_ARGS Reference
@@ -92,7 +95,7 @@ https://github.com/YanWenKun/ComfyUI-Docker/issues/128[issues]
 on Blackwell GPUs, but may be required for some video workflows (e.g. SVD).
 
 |--use-pytorch-cross-attention
-|Works the same as `--disable-xformers` for NVIDIA GPUs.
+|Use PyTorch's built-in cross-attention. Disable xFormers, FlashAttention and SageAttention.
 
 |--fast
 |Enable experimental optimizations.
