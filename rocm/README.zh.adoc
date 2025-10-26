@@ -21,7 +21,7 @@ https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/native_linux/in
 
 ## 构建并运行
 
-### 必要的环境变量
+### 必要环境变量
 
 需根据 GPU 型号添加如下环境变量（感谢
 https://github.com/YanWenKun/ComfyUI-Docker/pull/67[nhtua]
@@ -41,7 +41,7 @@ https://github.com/YanWenKun/ComfyUI-Docker/pull/67[nhtua]
 * APU／集显再额外添加 :
 ** `-e HIP_VISIBLE_DEVICES=0 \`
 
-### 可选的环境变量
+### 可选环境变量
 
 注意以下调优均有一定代价，按需使用：
 

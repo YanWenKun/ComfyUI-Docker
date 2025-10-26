@@ -6,27 +6,34 @@ image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-rocm.y
 
 https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=rocm[View on <Docker Hub>]
 
-## Note: Image Building
+// ## Note: Image Building
 
-This Docker image is often too big to build on GitHub Actions (throw "No space left on device" error).
-So the commands below contain the steps for building Docker image (basically downloading packages).
+// This Docker image is often too big to build on GitHub Actions (throw "No space left on device" error).
+// So the commands below contain the steps for building Docker image (basically downloading packages).
 
-You can skip those steps if the `rocm` image on
-https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=rocm[Docker Hub]
-is recently built.
+// You can skip those steps if the `rocm` image on
+// https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=rocm[Docker Hub]
+// is recently built.
 
-## Prepare
+TIP: This image is using the latest ROCm 7, which is in 
+https://rocm.docs.amd.com/projects/radeon-ryzen/en/latest/[preview stage].
+You may want to use the
+link:../rocm6/README.adoc[`rocm6`]
+image for more stable experience.
 
-* Make sure
-https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/native_linux/install-radeon.html[Radeon software for Linux with ROCm]
-is installed on your Linux host.
+## Prequisites
 
-## Build & Run
+* Make sure ROCm Software Stack is installed on your Linux host:
 
-### Essential Environment Variables
+** https://rocm.docs.amd.com/projects/radeon-ryzen/en/latest/docs/install/installrad/native_linux/install-radeon.html[For Radeon (discrete GPU)].
 
-You may need to add these configuration (especially for APUs) into the command of `docker run`, `podman run` below. (Credit to
-https://github.com/YanWenKun/ComfyUI-Docker/pull/67[nhtua])
+** https://rocm.docs.amd.com/projects/radeon-ryzen/en/latest/docs/install/installryz/native_linux/install-ryzen.html[For Ryzen (APU)].
+
+## Essential Environment Variables
+
+You need to add these configuration (especially for APUs) into the command of `docker run` or `podman run` below.
+__(Thanks to
+https://github.com/YanWenKun/ComfyUI-Docker/pull/67[nhtua])__
 
 * For RDNA 2 cards:
 ** `-e HSA_OVERRIDE_GFX_VERSION=10.3.0 \`
@@ -42,41 +49,20 @@ https://github.com/YanWenKun/ComfyUI-Docker/pull/67[nhtua])
 * For integrated graphics on CPU:
 ** `-e HIP_VISIBLE_DEVICES=0 \`
 
-### Optional Environment Variables
 
-You may also want to add more environment variable(s):
+## Run
 
-* Force ComfyUI to offload model weights from VRAM to RAM more frequently.
-Slows performance but reduce memory leaks
-(https://github.com/comfyanonymous/ComfyUI/blob/master/comfy/cli_args.py[Source]).
+### Using Docker
 
-** `-e CLI_ARGS="--disable-smart-memory" \`
+// # Build the image
+// git clone https://github.com/YanWenKun/ComfyUI-Docker.git
+// cd ComfyUI-Docker/rocm
+// docker build . -t yanwk/comfyui-boot:rocm
 
-* Disable internal memory fragment caching (to mitigate memory faults.
-https://rocm.docs.amd.com/projects/ROCR-Runtime/en/latest/api-reference/environment_variables.html[Doc]).
-(Thanks to
-https://github.com/YanWenKun/ComfyUI-Docker/issues/134[SergeyFilippov])
-
-** `-e HSA_DISABLE_FRAGMENT_ALLOCATOR=1 \`
-
-* Enable tunable operations (slower first run, faster subsequent runs.
-https://github.com/ROCm/pytorch/tree/main/aten/src/ATen/cuda/tunable[Doc1],
-https://github.com/Comfy-Org/docs/blob/main/troubleshooting/overview.mdx#amd-gpu-issues[Doc2]).
-(Thanks to
-https://github.com/YanWenKun/ComfyUI-Docker/pull/114[SergeyFilippov])
-
-** `-e PYTORCH_TUNABLEOP_ENABLED=1 \`
-
-### With Docker
+// # Run the container
 
 [source,sh]
 ----
-# Build the image
-git clone https://github.com/YanWenKun/ComfyUI-Docker.git
-cd ComfyUI-Docker/rocm
-docker build . -t yanwk/comfyui-boot:rocm
-
-# Run the container
 mkdir -p \
   storage \
   storage-models/models \
@@ -105,16 +91,17 @@ docker run -it --rm \
   yanwk/comfyui-boot:rocm
 ----
 
-### With Podman
+### Using Podman
+
+// # Build the image
+// git clone https://github.com/YanWenKun/ComfyUI-Docker.git
+// cd ComfyUI-Docker/rocm
+// podman build . -t yanwk/comfyui-boot:rocm
+
+// # Run the container
 
 [source,sh]
 ----
-# Build the image
-git clone https://github.com/YanWenKun/ComfyUI-Docker.git
-cd ComfyUI-Docker/rocm
-podman build . -t yanwk/comfyui-boot:rocm
-
-# Run the container
 mkdir -p \
   storage \
   storage-models/models \
@@ -140,74 +127,100 @@ podman run -it --rm \
   -v "$(pwd)"/storage-user/workflows:/root/ComfyUI/user/default/workflows \
   -e HSA_OVERRIDE_GFX_VERSION="" \
   -e CLI_ARGS="" \
-  yanwk/comfyui-boot:rocm
+  docker.io/yanwk/comfyui-boot:rocm
 ----
 
 Once the app is loaded, visit http://localhost:8188/
 
-[[hint]]
-## ROCm: If you want to dive in...
 
-__(Just side notes. Nothing to do with this Docker image)__
+## Optional Environment Variables
 
-The commands below use the 
-https://hub.docker.com/r/rocm/pytorch[AMD prebuilt ROCm PyTorch image].
+You may also want to add more environment variables:
 
-This image is large in filesize. But if you have hard time to run the container, it may be helpful. As it takes care of PyTorch, the most important part, and you just need to install few more Python packages in order to run ComfyUI.
+* Force ComfyUI to offload model weights from VRAM to RAM more frequently.
+Slows performance but reduce memory leaks
+(https://github.com/comfyanonymous/ComfyUI/blob/master/comfy/cli_args.py[Source]).
 
-[source,sh]
-----
-docker pull rocm/pytorch:rocm7.0.2_ubuntu24.04_py3.12_pytorch_release_2.8.0
+** `-e CLI_ARGS="--disable-smart-memory" \`
 
-mkdir -p storage
+* Disable internal memory fragment caching (to mitigate memory faults.
+https://rocm.docs.amd.com/projects/ROCR-Runtime/en/latest/api-reference/environment_variables.html[Doc]).
+__(Thanks to
+https://github.com/YanWenKun/ComfyUI-Docker/issues/134[SergeyFilippov])__
 
-docker run -it --rm \
-  --name comfyui-rocm \
-  --device=/dev/kfd --device=/dev/dri \
-  --group-add=video --ipc=host --cap-add=SYS_PTRACE \
-  --security-opt seccomp=unconfined \
-  --security-opt label=disable \
-  -p 8188:8188 \
-  --user root \
-  --workdir /root/workdir \
-  -v "$(pwd)"/storage:/root/workdir \
-  rocm/pytorch:rocm7.0.2_ubuntu24.04_py3.12_pytorch_release_2.8.0 \
-  /bin/bash
+** `-e HSA_DISABLE_FRAGMENT_ALLOCATOR=1 \`
 
-git clone https://github.com/comfyanonymous/ComfyUI.git
+* Enable tunable operations (slower first run, faster subsequent runs.
+https://github.com/ROCm/pytorch/tree/main/aten/src/ATen/cuda/tunable[Doc1],
+https://github.com/Comfy-Org/docs/blob/main/troubleshooting/overview.mdx#amd-gpu-issues[Doc2]).
+__(Thanks to
+https://github.com/YanWenKun/ComfyUI-Docker/pull/114[SergeyFilippov])__
 
-pip install -r ComfyUI/requirements.txt
-# Or:
-# conda install --yes --file ComfyUI/requirements.txt
+** `-e PYTORCH_TUNABLEOP_ENABLED=1 \`
 
-python ComfyUI/main.py --listen --port 8188
-# Or:
-# python3 ComfyUI/main.py --listen --port 8188
-----
+// [[hint]]
+// ## ROCm: If you want to dive in...
 
-## Additional notes for Windows users
+// __(Just side notes. Nothing to do with this Docker image)__
 
-__(Just side notes. Nothing to do with this Docker image)__
+// The commands below use the 
+// https://hub.docker.com/r/rocm/pytorch[AMD prebuilt ROCm PyTorch image].
 
-WSL2 supports ROCm and DirectML:
+// This image is large in filesize. But if you have hard time to run the container, it may be helpful. As it takes care of PyTorch, the most important part, and you just need to install few more Python packages in order to run ComfyUI.
 
-* ROCm
+// [source,sh]
+// ----
+// docker pull rocm/pytorch:rocm7.0.2_ubuntu24.04_py3.12_pytorch_release_2.8.0
 
-** If your GPU is in the
-https://rocm.docs.amd.com/projects/radeon/en/latest/docs/compatibility/wsl/wsl_compatibility.html[Compatibility List],
-you can either install
-https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/wsl/install-radeon.html[Radeon software]
-in your WSL2 distro,
-or use
-<<hint, ROCm PyTorch image>>.
+// mkdir -p storage
 
-* DirectML
+// docker run -it --rm \
+//   --name comfyui-rocm \
+//   --device=/dev/kfd --device=/dev/dri \
+//   --group-add=video --ipc=host --cap-add=SYS_PTRACE \
+//   --security-opt seccomp=unconfined \
+//   --security-opt label=disable \
+//   -p 8188:8188 \
+//   --user root \
+//   --workdir /root/workdir \
+//   -v "$(pwd)"/storage:/root/workdir \
+//   rocm/pytorch:rocm7.0.2_ubuntu24.04_py3.12_pytorch_release_2.8.0 \
+//   /bin/bash
 
-** DirectML works for most GPUs (including AMD APU, Intel GPU).
-It's slower than ROCm but still faster than CPU.
-See: 
-link:../docs/wsl-directml.adoc[Run ComfyUI on WSL2 with DirectML]. 
+// git clone https://github.com/comfyanonymous/ComfyUI.git
 
-* ZLUDA
+// pip install -r ComfyUI/requirements.txt
+// # Or:
+// # conda install --yes --file ComfyUI/requirements.txt
 
-** This is not using WSL2, it's running natively on Windows. ZLUDA can "translate" CUDA codes to run on AMD GPUs. But as the first step, I recommend to try running SD-WebUI with ZLUDA, it's easier to start with.
+// python ComfyUI/main.py --listen --port 8188
+// # Or:
+// # python3 ComfyUI/main.py --listen --port 8188
+// ----
+
+// ## Additional notes for Windows users
+
+// __(Just side notes. Nothing to do with this Docker image)__
+
+// WSL2 supports ROCm and DirectML:
+
+// * ROCm
+
+// ** If your GPU is in the
+// https://rocm.docs.amd.com/projects/radeon/en/latest/docs/compatibility/wsl/wsl_compatibility.html[Compatibility List],
+// you can either install
+// https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/wsl/install-radeon.html[Radeon software]
+// in your WSL2 distro,
+// or use
+// <<hint, ROCm PyTorch image>>.
+
+// * DirectML
+
+// ** DirectML works for most GPUs (including AMD APU, Intel GPU).
+// It's slower than ROCm but still faster than CPU.
+// See: 
+// link:../docs/wsl-directml.adoc[Run ComfyUI on WSL2 with DirectML]. 
+
+// * ZLUDA
+
+// ** This is not using WSL2, it's running natively on Windows. ZLUDA can "translate" CUDA codes to run on AMD GPUs. But as the first step, I recommend to try running SD-WebUI with ZLUDA, it's easier to start with.

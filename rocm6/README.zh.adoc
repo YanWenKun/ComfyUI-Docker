@@ -17,7 +17,7 @@ https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=rocm6[Docker Hub]
 ## 准备工作
 
 * 确保 Linux 宿主机上正确安装了
-https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/native_linux/install-radeon.html[Radeon software for Linux with ROCm]。
+https://rocm.docs.amd.com/projects/radeon-ryzen/en/docs-6.4.4/docs/install/installrad/native_linux/install-radeon.html[Radeon software for Linux with ROCm]。
 
 ## 构建并运行
 
