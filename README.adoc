@@ -88,11 +88,11 @@ The `slim` images start with only ComfyUI and ComfyUI-Manager, yet include many 
 ** CUDA 12.8, Python 3.12
 
 * link:cu130-slim/README.adoc[`cu130-slim`]
-** CUDA 13.0, Python 3.13 (with GIL). No xFormers by default
+** CUDA 13.0, Python 3.13 (with GIL), No xFormers
 
 ### MEGAPAK
 
-The `megapak` images are all-in-one bundles, including dev kits and many Custom Nodes for ComfyUI.
+The `megapak` images are all-in-one bundles, including development kits and dozens of Custom Nodes for ComfyUI.
 
 * link:cu126-megapak/README.adoc[`cu126-megapak`]
 ** CUDA 12.6, Python 3.12, GCC 13

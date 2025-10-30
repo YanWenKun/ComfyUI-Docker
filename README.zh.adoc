@@ -65,7 +65,7 @@ GTX 1660
 https://github.com/pytorch/pytorch/issues/159980[稳定版本]
 。
 
-* 如果你不清楚 GPU 是哪一代架构（如 Quadro、Tesla），参考
+* 如果你不清楚 GPU（如 Quadro、Tesla）是哪一代架构，参考
 https://arnon.dk/matching-sm-architectures-arch-and-gencode-for-various-nvidia-cards/[这篇文章]
 。
 
@@ -89,11 +89,11 @@ https://github.com/pytorch/pytorch/blob/main/.ci/manywheel/build_cuda.sh[编译�
 ** CUDA 12.8, Python 3.12
 
 * link:cu130-slim/README.adoc[`cu130-slim`]
-** CUDA 13.0, Python 3.13 (GIL 版本), 默认无 xFormers
+** CUDA 13.0, Python 3.13 (GIL 版本), 无 xFormers
 
 ### MEGAPAK
 
-`megapak` 镜像为大型整合包，包含开发组件与常用自定义节点（扩展插件）。
+`megapak` 镜像为整合包，包含开发套件与常用自定义节点（扩展插件）。
 
 * link:cu126-megapak/README.adoc[`cu126-megapak`]
 ** CUDA 12.6, Python 3.12, GCC 13
@@ -111,11 +111,11 @@ https://github.com/pytorch/pytorch/blob/main/.ci/manywheel/build_cuda.sh[编译�
 
 * link:rocm/README.zh.adoc[`rocm`]
 
-** 适用于 AMD GPU，使用最新的 ROCm 7。
+** 适用于 AMD GPU，使用最新的 ROCm 7
 
 * link:rocm6/README.zh.adoc[`rocm6`]
 
-** 适用于 AMD GPU，使用稳定的 ROCm 6。
+** 适用于 AMD GPU，使用稳定的 ROCm 6
 
 * link:xpu-cn/[`xpu-cn`]
 
