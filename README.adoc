@@ -1,6 +1,6 @@
 # Docker images for ComfyUI
 
-*link:README.zh.adoc[＞💡中文说明点我💡＜]*
+English | 🀄 *link:README.zh.adoc[中文说明]*
 
 This repo is for 
 https://hub.docker.com/r/yanwk/comfyui-boot[Docker images] 

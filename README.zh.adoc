@@ -1,5 +1,7 @@
 # 用于 ComfyUI 的 Docker 镜像
 
+中文 | ℹ️ *link:README.adoc[English]*
+
 https://github.com/comfyanonymous/ComfyUI[ComfyUI]
 是一套使用节点工作流的 Stable Diffusion 图形界面。 +
 本仓库所构建的

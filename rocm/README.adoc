@@ -1,6 +1,6 @@
 # Run ComfyUI with ROCm on AMD GPU
 
-*link:README.zh.adoc[中文说明]*
+English | 🀄 *link:README.zh.adoc[中文说明]*
 
 image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-rocm.yml/badge.svg["GitHub Workflow Status",link="https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-rocm.yml"]
 
