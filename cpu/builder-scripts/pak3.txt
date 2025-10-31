@@ -2,7 +2,7 @@
 accelerate
 diffusers
 ftfy
-huggingface-hub[hf-transfer]
+huggingface-hub
 imageio[ffmpeg]
 joblib
 kornia

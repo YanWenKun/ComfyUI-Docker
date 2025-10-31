@@ -4,7 +4,7 @@ diffusers
 fairscale
 ftfy
 gguf
-huggingface-hub[hf-transfer,cli]
+huggingface-hub[cli]
 imageio
 joblib
 kornia

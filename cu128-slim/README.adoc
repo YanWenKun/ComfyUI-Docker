@@ -202,10 +202,10 @@ http://localhost:1081
 |Set HuggingFace Access Token.
 https://huggingface.co/settings/tokens[More info]
 
-|HF_HUB_ENABLE_HF_TRANSFER
+|HF_XET_HIGH_PERFORMANCE
 |1
-|Enable HuggingFace Hub experimental high-speed file transfers.
-Only make sense if you have >1Gbps and VERY STABLE connection (e.g. cloud server).
-https://huggingface.co/docs/huggingface_hub/hf_transfer[More info]
+|Enable HuggingFace Hub's high performance mode.
+Only make sense if you have >5Gbps and VERY STABLE connection (e.g. cloud server).
+https://huggingface.co/docs/huggingface_hub/main/en/package_reference/environment_variables#hfxethighperformance[More info]
 
 |===

@@ -6,7 +6,7 @@ compel
 diffusers
 fairscale
 ftfy
-huggingface-hub[hf-transfer]
+huggingface-hub
 imageio
 joblib
 kornia
