@@ -295,6 +295,8 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 RUN --mount=type=cache,target=/root/.cache/pip \
     # Update UV
     pip install -U uv \
+    # SageAttention needs PyTorch to build with
+    && pip install sageattention --no-build-isolation \
     # Nunchaku version needs to sync with PyTorch version
     && pip install \
 https://github.com/nunchaku-tech/nunchaku/releases/download/v1.0.1/nunchaku-1.0.1+torch2.8-cp312-cp312-linux_x86_64.whl

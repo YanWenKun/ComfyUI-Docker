@@ -1,7 +1,6 @@
 dlib
 facexlib
 insightface
-sageattention
 git+https://github.com/openai/CLIP.git
 git+https://github.com/cozy-comfyui/cozy_comfyui@main#egg=cozy_comfyui
 git+https://github.com/ltdrdata/cstr.git
