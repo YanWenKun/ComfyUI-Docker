@@ -297,10 +297,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     pip install -U uv \
     # Nunchaku version needs to sync with PyTorch version
     && pip install \
-https://github.com/nunchaku-tech/nunchaku/releases/download/v1.0.1/nunchaku-1.0.1+torch2.8-cp312-cp312-linux_x86_64.whl \
-    # SageAttention needs PyTorch to build with
-    && export MAX_JOBS=4 TORCH_CUDA_ARCH_LIST="5.0;6.0;7.0;7.5;8.0;8.6;9.0" \
-    && pip install sageattention --no-build-isolation
+https://github.com/nunchaku-tech/nunchaku/releases/download/v1.0.1/nunchaku-1.0.1+torch2.8-cp312-cp312-linux_x86_64.whl
 
 # Notes on FlashAttention:
 # <xformers 0.0.32.post2> requires <flash-attn [2.7.1, 2.8.2]>,
