@@ -8,7 +8,7 @@ git+https://github.com/ltdrdata/ffmpy.git
 git+https://github.com/ltdrdata/img2texture.git
 
 # SageAttention 1, conflicts with SageAttention 2
-sageattention
+sageattention==1.0.6
 
 # SageAttention 2 (pre-compiled)
 #https://huggingface.co/Kijai/PrecompiledWheels/resolve/main/sageattention-2.2.0-cp312-cp312-linux_x86_64.whl
