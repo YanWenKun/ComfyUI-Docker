@@ -7,6 +7,7 @@ imageio[ffmpeg]
 joblib
 kornia
 matplotlib
+nvidia-ml-py
 omegaconf
 onnx
 onnxruntime-gpu
