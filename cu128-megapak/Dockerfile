@@ -241,7 +241,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # Here's some hack. To reduce image size & single layer size, we:
 # 1. Install PyTorch and all its dependencies.
 # 2. Uninstall PyTorch only,
-# 3. Delete redundant NVIDIA Python libs (they are already installed as OS packages, except NCCL).
+# 3. Delete redundant NVIDIA Python libs (they are already installed as OS packages, except NCCL and NVSHMEM).
 # 4. Install PyTorch again in another layer.
 # Note: xFormers is not always released with latest PyTorch, so using `pip install --no-deps` is not a good idea.
 RUN --mount=type=cache,target=/root/.cache/pip \
@@ -249,7 +249,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         xformers==0.0.33 torchvision torchaudio \
         --index-url https://download.pytorch.org/whl/cu128 \
 && pip uninstall --yes torch \
-&& find /usr/local/lib/python3.12/site-packages/nvidia/ -mindepth 1 -maxdepth 1 ! -name 'nccl' -exec rm -rfv {} +
+&& find /usr/local/lib/python3.12/site-packages/nvidia/ -mindepth 1 -maxdepth 1 ! -name 'nccl' ! -name 'nvshmem' -exec rm -rfv {} +
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
@@ -258,7 +258,8 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 
 ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\
 :/usr/local/lib64/python3.12/site-packages/torch/lib\
-:/usr/local/lib/python3.12/site-packages/nvidia/nccl/lib"
+:/usr/local/lib/python3.12/site-packages/nvidia/nccl/lib\
+:/usr/local/lib/python3.12/site-packages/nvidia/nvshmem/lib"
 
 # Install Triton (redundant)
 RUN --mount=type=cache,target=/root/.cache/pip \
