@@ -20,7 +20,9 @@ services:
     environment:
       - CLI_ARGS=
     security_opt:
-      - "label=type:nvidia_container_t"
+      # - "label=type:nvidia_container_t"
+      - "label=disable"
+      - "seccomp=unconfined"
     deploy:
       resources:
         reservations:
