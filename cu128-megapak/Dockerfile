@@ -296,11 +296,12 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 RUN --mount=type=cache,target=/root/.cache/pip \
     # Update UV
     pip install -U uv \
-    # Compile-install FlashAttention (version paired with xFormers)
-    && pip install --no-build-isolation flash-attn==2.8.3 \
-    # Nunchaku version needs to sync with PyTorch version
+    # Nunchaku (binary pair with PyTorch)
     && pip install \
-https://github.com/nunchaku-tech/nunchaku/releases/download/v1.0.2/nunchaku-1.0.2+torch2.9-cp312-cp312-linux_x86_64.whl
+https://github.com/nunchaku-tech/nunchaku/releases/download/v1.0.2/nunchaku-1.0.2+torch2.9-cp312-cp312-linux_x86_64.whl \
+    # FlashAttention (version pair with xFormers, binary pair with PyTorch & CUDA)
+    && pip install \
+https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.4.17/flash_attn-2.8.3+cu128torch2.9-cp312-cp312-linux_x86_64.whl
 
 ################################################################################
 # Bundle ComfyUI in the image
