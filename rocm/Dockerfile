@@ -116,30 +116,33 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # Break down the steps for smaller image layers.
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
---no-deps https://repo.radeon.com/rocm/manylinux/rocm-rel-7.0.2/torch-2.8.0%2Brocm7.0.2.git245bf6ed-cp312-cp312-linux_x86_64.whl
+--no-deps https://repo.radeon.com/rocm/manylinux/rocm-rel-7.1/torch-2.8.0%2Brocm7.1.0.lw.git7a520360-cp312-cp312-linux_x86_64.whl
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-https://repo.radeon.com/rocm/manylinux/rocm-rel-7.0.2/torch-2.8.0%2Brocm7.0.2.git245bf6ed-cp312-cp312-linux_x86_64.whl \
-https://repo.radeon.com/rocm/manylinux/rocm-rel-7.0.2/triton-3.4.0%2Brocm7.0.2.gitf9e5bf54-cp312-cp312-linux_x86_64.whl
+https://repo.radeon.com/rocm/manylinux/rocm-rel-7.1/torch-2.8.0%2Brocm7.1.0.lw.git7a520360-cp312-cp312-linux_x86_64.whl \
+https://repo.radeon.com/rocm/manylinux/rocm-rel-7.1/torch_migraphx-0.0.4-cp312-cp312-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl \
+https://repo.radeon.com/rocm/manylinux/rocm-rel-7.1/triton-3.4.0%2Brocm7.1.0.gitf9e5bf54-cp312-cp312-linux_x86_64.whl
 # https://repo.radeon.com/rocm/manylinux/rocm-rel-7.0.2/pytorch_triton_rocm-3.5.0%2Bgitbbb06c03-cp312-cp312-linux_x86_64.whl
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-https://repo.radeon.com/rocm/manylinux/rocm-rel-7.0.2/torchvision-0.23.0%2Brocm7.0.2.git824e8c87-cp312-cp312-linux_x86_64.whl \
-https://repo.radeon.com/rocm/manylinux/rocm-rel-7.0.2/torchaudio-2.8.0%2Brocm7.0.2.git6e1c7fe9-cp312-cp312-linux_x86_64.whl \
-https://repo.radeon.com/rocm/manylinux/rocm-rel-7.0.2/apex-1.8.0a0%2Brocm7.0.2.git3f26640c-cp312-cp312-linux_x86_64.whl \
-https://repo.radeon.com/rocm/manylinux/rocm-rel-7.0.2/jax_rocm7_plugin-0.6.0-cp312-cp312-manylinux_2_28_x86_64.whl \
-https://repo.radeon.com/rocm/manylinux/rocm-rel-7.0.2/jax_rocm7_pjrt-0.6.0-py3-none-manylinux_2_28_x86_64.whl
+https://repo.radeon.com/rocm/manylinux/rocm-rel-7.1/torchvision-0.23.0%2Brocm7.1.0.git824e8c87-cp312-cp312-linux_x86_64.whl \
+https://repo.radeon.com/rocm/manylinux/rocm-rel-7.1/torchaudio-2.8.0%2Brocm7.1.0.git6e1c7fe9-cp312-cp312-linux_x86_64.whl \
+https://repo.radeon.com/rocm/manylinux/rocm-rel-7.1/apex-1.8.0a0%2Brocm7.1.0.git3f26640c-cp312-cp312-linux_x86_64.whl \
+https://repo.radeon.com/rocm/manylinux/rocm-rel-7.1/jaxlib-0.7.1.dev0%2Bselfbuilt-cp312-cp312-manylinux_2_27_x86_64.whl \
+https://repo.radeon.com/rocm/manylinux/rocm-rel-7.1/jax_rocm7_plugin-0.7.1-cp312-cp312-manylinux_2_28_x86_64.whl \
+https://repo.radeon.com/rocm/manylinux/rocm-rel-7.1/jax_rocm7_pjrt-0.7.1-py3-none-manylinux_2_28_x86_64.whl
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-https://repo.radeon.com/rocm/manylinux/rocm-rel-7.0.2/onnxruntime_rocm-1.22.1-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl \
-onnxruntime==1.22.1
+# https://repo.radeon.com/rocm/manylinux/rocm-rel-7.0.2/onnxruntime_rocm-1.22.1-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl \
+https://repo.radeon.com/rocm/manylinux/rocm-rel-7.1/onnxruntime_migraphx-1.23.1-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl \
+onnxruntime==1.23.1
 
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install \
-https://repo.radeon.com/rocm/manylinux/rocm-rel-7.0.2/transformer_engine_rocm-2.1.0-py3-none-manylinux_2_28_x86_64.whl
+# RUN --mount=type=cache,target=/root/.cache/pip \
+#     pip install \
+# https://repo.radeon.com/rocm/manylinux/rocm-rel-7.0.2/transformer_engine_rocm-2.1.0-py3-none-manylinux_2_28_x86_64.whl
 
 # Deps for ComfyUI & custom nodes
 COPY builder-scripts/.  /builder-scripts/
