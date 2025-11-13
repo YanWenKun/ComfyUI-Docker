@@ -19,6 +19,8 @@ ARG USING_GITHUB_ACTIONS=false
 RUN --mount=type=cache,target=/var/cache/zypp \
     zypper addrepo --check --refresh --priority 90 \
         'https://ftp.gwdg.de/pub/linux/misc/packman/suse/openSUSE_Tumbleweed/Essentials/' packman-essentials \
+    && zypper addrepo --check --refresh --priority 80 \
+        'https://download.opensuse.org/repositories/science:/GPU:/ROCm/openSUSE_Tumbleweed/' 'science:GPU:ROCm' \
     && zypper --gpg-auto-import-keys \
         install --no-confirm --auto-agree-with-licenses \
 python312-devel \
