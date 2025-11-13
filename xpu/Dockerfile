@@ -144,6 +144,10 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         -r /builder-scripts/pak9.txt
 
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        -r /builder-scripts/pakA.txt
+
 # Ensure deps match
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \

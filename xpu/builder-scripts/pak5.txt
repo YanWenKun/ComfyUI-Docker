@@ -37,10 +37,8 @@ safetensors
 segment-anything
 sentencepiece
 simpleeval
-soundfile
 spandrel
 SQLAlchemy
-svglib
 tokenizers
 toml
 torchsde

@@ -1,0 +1,6 @@
+# https://www.intel.com/content/www/us/en/developer/tools/openvino-toolkit/download.html
+# https://github.com/openvino-dev-samples/comfyui_openvino/blob/main/requirements.txt
+--pre
+--extra-index-url https://storage.openvinotoolkit.org/simple/wheels/nightly
+openvino
+openvino-genai

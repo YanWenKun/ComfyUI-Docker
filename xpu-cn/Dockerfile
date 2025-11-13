@@ -178,6 +178,10 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         -r /builder-scripts/pak9.txt
 
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        -r /builder-scripts/pakA.txt
+
 # 确保依赖项匹配
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
