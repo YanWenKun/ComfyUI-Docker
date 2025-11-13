@@ -48,7 +48,8 @@ RUN --mount=type=cache,target=/var/cache/dnf \
 # 安装 Python 及工具
 
 RUN --mount=type=cache,target=/var/cache/dnf \
-    dnf install -y \
+    dnf upgrade -y \
+    && dnf install -y \
 python3.13-devel \
 python3-pip \
 python3-wheel \
@@ -58,12 +59,12 @@ make \
 ninja \
 python3-cmake
 
-RUN --mount=type=cache,target=/var/cache/dnf \
-    dnf install -y \
-python3-matplotlib \
-python3-mpmath \
-python3-numpy \
-python3-onnx
+# RUN --mount=type=cache,target=/var/cache/dnf \
+#     dnf install -y \
+# python3-matplotlib \
+# python3-mpmath \
+# python3-numpy \
+# python3-onnx
 
 RUN --mount=type=cache,target=/var/cache/dnf \
     dnf install -y \
@@ -74,19 +75,19 @@ default-fonts-cjk
 
 RUN --mount=type=cache,target=/var/cache/dnf \
     dnf install -y \
-python3-opencv
+python3-opencv \
+python3-cairo
 
 RUN --mount=type=cache,target=/var/cache/dnf \
     dnf install -y \
 mesa-libGL \
 mesa-libEGL \
-python3-GitPython \
+# python3-GitPython \
 git \
-python3-pandas \
-python3-scikit-build \
-python3-scikit-build-core \
-python3-scikit-image \
-python3-scikit-learn \
+# python3-pandas \
+# python3-scikit-build-core \
+# python3-scikit-image \
+# python3-scikit-learn \
 fish \
 aria2 \
 fd-find \
@@ -131,6 +132,7 @@ gcc14-c++ \
 # 如果官方源下载缓慢，可搜索替换为南大源： https://mirrors.nju.edu.cn/pytorch/whl/xpu
 
 ARG PIP_ROOT_USER_ACTION='ignore'
+ARG PIP_NO_BUILD_ISOLATION=1
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip list \

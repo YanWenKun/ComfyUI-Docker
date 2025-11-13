@@ -19,6 +19,7 @@ RUN set -eu
 RUN --mount=type=cache,target=/var/cache/dnf \
     dnf install -y --nogpgcheck \
         'https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-42.noarch.rpm' \
+    && dnf upgrade -y \
     && dnf install -y \
 python3.13-devel \
 python3-pip \
@@ -29,12 +30,12 @@ make \
 ninja \
 python3-cmake
 
-RUN --mount=type=cache,target=/var/cache/dnf \
-    dnf install -y \
-python3-matplotlib \
-python3-mpmath \
-python3-numpy \
-python3-onnx
+# RUN --mount=type=cache,target=/var/cache/dnf \
+#     dnf install -y \
+# python3-matplotlib \
+# python3-mpmath \
+# python3-numpy \
+# python3-onnx
 
 RUN --mount=type=cache,target=/var/cache/dnf \
     dnf install -y \
@@ -45,19 +46,19 @@ default-fonts-cjk
 
 RUN --mount=type=cache,target=/var/cache/dnf \
     dnf install -y \
-python3-opencv
+python3-opencv \
+python3-cairo
 
 RUN --mount=type=cache,target=/var/cache/dnf \
     dnf install -y \
 mesa-libGL \
 mesa-libEGL \
-python3-GitPython \
+# python3-GitPython \
 git \
-python3-pandas \
-python3-scikit-build \
-python3-scikit-build-core \
-python3-scikit-image \
-python3-scikit-learn \
+# python3-pandas \
+# python3-scikit-build-core \
+# python3-scikit-image \
+# python3-scikit-learn \
 fish \
 aria2 \
 fd-find \
@@ -101,6 +102,7 @@ gcc14-c++ \
 # PyTorch (No IPEX)
 
 ARG PIP_ROOT_USER_ACTION='ignore'
+ARG PIP_NO_BUILD_ISOLATION=1
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip list \
