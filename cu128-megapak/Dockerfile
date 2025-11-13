@@ -296,6 +296,8 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 RUN --mount=type=cache,target=/root/.cache/pip \
     # Update UV
     pip install -U uv \
+    # Compile-install FlashAttention (version paired with xFormers)
+    && pip install flash-attn==2.8.3 \
     # Nunchaku version needs to sync with PyTorch version
     && pip install \
 https://github.com/nunchaku-tech/nunchaku/releases/download/v1.0.2/nunchaku-1.0.2+torch2.9-cp312-cp312-linux_x86_64.whl
