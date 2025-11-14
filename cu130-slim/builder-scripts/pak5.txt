@@ -50,7 +50,6 @@ sentencepiece
 simpleeval
 spandrel
 SQLAlchemy
-svglib
 tokenizers
 toml
 torchsde
