@@ -52,7 +52,6 @@ simpleeval
 soundfile
 spandrel
 SQLAlchemy
-svglib
 tokenizers
 toml
 tomli

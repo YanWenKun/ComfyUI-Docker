@@ -11,7 +11,10 @@ nvidia-ml-py
 omegaconf
 onnx
 onnxruntime-gpu
+opencv-contrib-python
 opencv-contrib-python-headless
+opencv-python
+opencv-python-headless
 pandas
 pilgram
 pillow
