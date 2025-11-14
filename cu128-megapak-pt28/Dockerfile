@@ -1,0 +1,363 @@
+################################################################################
+# Dockerfile that builds 'yanwk/comfyui-boot:cu128-megapak-pt28'
+# A runtime environment for https://github.com/comfyanonymous/ComfyUI
+# Using CUDA 12.8, Python 3.11, GCC 11
+# Using glibc 2.38 (from openSUSE Leap 15.6)
+# The container will be running in root (easy for rootless deploy).
+################################################################################
+
+# FROM docker.io/opensuse/leap:15.6
+FROM opensuse/leap:15.6
+
+LABEL maintainer="YAN Wenkun <code@yanwk.fun>"
+
+RUN set -eu
+
+ARG USING_GITHUB_ACTIONS=false
+
+################################################################################
+# NVIDIA CUDA devel
+# Ref: https://gitlab.com/nvidia/container-images/cuda/
+# Break down the steps, so we have more but smaller image layers.
+
+RUN --mount=type=cache,target=/var/cache/zypp \
+    zypper update --no-confirm
+
+RUN --mount=type=cache,target=/var/cache/zypp \
+    printf "\
+[cuda-opensuse15-x86_64]\n\
+name=cuda-opensuse15-x86_64\n\
+baseurl=https://developer.download.nvidia.com/compute/cuda/repos/opensuse15/x86_64\n\
+enabled=1\n\
+gpgcheck=1\n\
+gpgkey=https://developer.download.nvidia.com/compute/cuda/repos/opensuse15/x86_64/D42D0685.pub\n" \
+        > /etc/zypp/repos.d/cuda-opensuse15.repo \
+    && zypper --gpg-auto-import-keys \
+        install --no-confirm --no-recommends --auto-agree-with-licenses \
+cuda-cccl-12-8 \
+cuda-command-line-tools-12-8 \
+cuda-compat-12-8 \
+cuda-cudart-12-8 \
+cuda-minimal-build-12-8 \
+cuda-nvcc-12-8 \
+cuda-nvprof-12-8 \
+cuda-nvtx-12-8
+
+RUN --mount=type=cache,target=/var/cache/zypp \
+    zypper --gpg-auto-import-keys \
+        install --no-confirm --no-recommends --auto-agree-with-licenses \
+libcublas-12-8 \
+libnpp-12-8
+
+RUN --mount=type=cache,target=/var/cache/zypp \
+    zypper --gpg-auto-import-keys \
+        install --no-confirm --no-recommends --auto-agree-with-licenses \
+cuda-cudart-devel-12-8 \
+cuda-nvml-devel-12-8 \
+cuda-nvrtc-devel-12-8 \
+libcublas-devel-12-8 \
+libnpp-devel-12-8
+
+RUN --mount=type=cache,target=/var/cache/zypp \
+    zypper --gpg-auto-import-keys \
+        install --no-confirm --no-recommends --auto-agree-with-licenses \
+cuda-libraries-12-8
+
+RUN --mount=type=cache,target=/var/cache/zypp \
+    zypper --gpg-auto-import-keys \
+        install --no-confirm --no-recommends --auto-agree-with-licenses \
+cuda-libraries-devel-12-8
+
+RUN --mount=type=cache,target=/var/cache/zypp \
+    zypper --gpg-auto-import-keys \
+        install --no-confirm --no-recommends --auto-agree-with-licenses \
+libcusparselt-devel
+
+# Note the version is specified
+# (check that by `zypper se -s libcudnn9` or `zypper -v in cudnn9-cuda-12-8`)
+RUN --mount=type=cache,target=/var/cache/zypp \
+    zypper --gpg-auto-import-keys \
+        install --no-confirm --no-recommends --auto-agree-with-licenses \
+libcudnn9-cuda-12-9.8.0.87-1
+
+RUN --mount=type=cache,target=/var/cache/zypp \
+    zypper --gpg-auto-import-keys \
+        install --no-confirm --no-recommends --auto-agree-with-licenses \
+cudnn9-cuda-12-8
+
+ENV PATH="${PATH}:/usr/local/cuda-12.8/bin" \
+    LD_LIBRARY_PATH="/usr/lib64:/usr/local/cuda-12.8/lib64" \
+    LIBRARY_PATH="/usr/local/cuda-12.8/lib64/stubs" \
+    CUDA_HOME="/usr/local/cuda-12.8"
+
+################################################################################
+# Python and tools
+# Since this image is so big, we use openSUSE-verified PIP packages for compatibility.
+
+RUN --mount=type=cache,target=/var/cache/zypp \
+    zypper addrepo --check --refresh --priority 90 \
+        'https://ftp.gwdg.de/pub/linux/misc/packman/suse/openSUSE_Leap_15.6/Essentials/' packman-essentials \
+    && zypper --gpg-auto-import-keys \
+        install --no-confirm --auto-agree-with-licenses \
+python311-devel \
+python311-pip \
+python311-wheel \
+python311-setuptools \
+python311-Cython \
+python311-matplotlib \
+python311-scikit-build
+# python311-py-build-cmake \
+# python311-mpmath \
+# python311-numba-devel \
+# python311-onnx \
+# python311-pandas \
+# python311-scikit-build-core-pyproject \
+# python311-scikit-image \
+# python311-scikit-learn \
+# python311-scipy
+
+RUN --mount=type=cache,target=/var/cache/zypp \
+    zypper --gpg-auto-import-keys \
+        install --no-confirm --auto-agree-with-licenses \
+python311-opencv \
+opencv \
+opencv-devel \
+Mesa-libGL1 \
+Mesa-libEGL-devel \
+libgthread-2_0-0 \
+libQt5OpenGL-devel
+
+RUN --mount=type=cache,target=/var/cache/zypp \
+    zypper --gpg-auto-import-keys \
+        install --no-confirm --auto-agree-with-licenses \
+# python311-addict \
+# python311-aenum \
+python311-aiohttp \
+python311-alembic \
+python311-black \
+python311-cachetools \
+python311-chardet \
+python311-dbm \
+python311-deepdiff \
+# python311-dill \
+# python311-ffmpeg-python \
+python311-filelock \
+# python311-ftfy \
+python311-GitPython \
+python311-httpx \
+# python311-imageio \
+python311-importlib-metadata \
+# python311-joblib \
+python311-lark \
+python311-loguru \
+# python311-mss \
+# python311-numexpr \
+# python311-piexif \
+python311-protobuf \
+python311-py-cpuinfo \
+python311-pydantic \
+# python311-pydantic-settings \
+# python311-pydub \
+python311-pygit2 \
+python311-PyGithub \
+python311-PyYAML \
+python311-regex \
+python311-qrcode \
+python311-rich \
+# python311-safetensors \
+python311-simpleeval \
+# python311-SoundFile \
+python311-SQLAlchemy \
+# python311-svglib \
+# python311-tokenizers \
+python311-toml \
+python311-tqdm \
+python311-typer \
+# python311-uv \
+python311-webcolors \
+python311-yapf \
+python311-yarl
+
+RUN --mount=type=cache,target=/var/cache/zypp \
+    zypper --gpg-auto-import-keys \
+        install --no-confirm --auto-agree-with-licenses \
+make \
+cmake \
+ninja \
+git \
+aria2 \
+findutils \
+# fish \
+fd \
+vim \
+which \
+ffmpeg \
+x264 \
+x265
+
+RUN rm -vf /usr/lib64/python3.11/EXTERNALLY-MANAGED \
+    # Ensure default Python version
+    && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11 100
+
+# Temp fix for OpenCV on openSUSE
+ENV LD_PRELOAD=/usr/lib64/libjpeg.so.8
+
+# Temp fix for SentencePiece on CMAKE 4+
+ENV CMAKE_POLICY_VERSION_MINIMUM=3.5
+
+################################################################################
+# GCC 11 
+# Version range [9, 14]
+
+RUN --mount=type=cache,target=/var/cache/zypp \
+    zypper --gpg-auto-import-keys \
+        install --no-confirm --auto-agree-with-licenses \
+gcc11 \
+gcc11-c++ \
+cpp11 \
+    && update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++-11 90 \
+    && update-alternatives --install /usr/bin/cc  cc  /usr/bin/gcc-11 90 \
+    && update-alternatives --install /usr/bin/cpp cpp /usr/bin/cpp-11 90 \
+    && update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-11 90 \
+    && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 90 \
+    && update-alternatives --install /usr/bin/gcc-ar gcc-ar /usr/bin/gcc-ar-11 90 \
+    && update-alternatives --install /usr/bin/gcc-nm gcc-nm /usr/bin/gcc-nm-11 90 \
+    && update-alternatives --install /usr/bin/gcc-ranlib gcc-ranlib /usr/bin/gcc-ranlib-11 90 \
+    && update-alternatives --install /usr/bin/gcov gcov /usr/bin/gcov-11 90 \
+    && update-alternatives --install /usr/bin/gcov-dump gcov-dump /usr/bin/gcov-dump-11 90 \
+    && update-alternatives --install /usr/bin/gcov-tool gcov-tool /usr/bin/gcov-tool-11 90 
+
+################################################################################
+# PyTorch, xFormers
+# Break down the steps, so we have more but smaller image layers.
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip list \
+    && pip install \
+        --upgrade pip wheel setuptools \
+    && pip install \
+        --dry-run xformers==0.0.32.post2 torch==2.8.0 torchvision torchaudio \
+        --index-url https://download.pytorch.org/whl/cu128
+
+# Here's some hack. To reduce image size & single layer size, we:
+# 1. Install PyTorch and all its dependencies.
+# 2. Uninstall PyTorch only,
+# 3. Delete redundant NVIDIA Python libs (they are already installed as OS packages, except NCCL and NVSHMEM).
+# 4. Install PyTorch again in another layer.
+# Note: xFormers is not always released with latest PyTorch, so using `pip install --no-deps` is not a good idea.
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        xformers==0.0.32.post2 torch==2.8.0 torchvision torchaudio \
+        --index-url https://download.pytorch.org/whl/cu128 \
+&& pip uninstall --yes torch \
+&& find /usr/local/lib/python3.11/site-packages/nvidia/ -mindepth 1 -maxdepth 1 ! -name 'nccl' ! -name 'nvshmem' -exec rm -rfv {} +
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        xformers==0.0.32.post2 torch==2.8.0 torchvision torchaudio \
+        --index-url https://download.pytorch.org/whl/cu128
+
+ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\
+:/usr/local/lib64/python3.11/site-packages/torch/lib\
+:/usr/local/lib/python3.11/site-packages/nvidia/nccl/lib\
+:/usr/local/lib/python3.11/site-packages/nvidia/nvshmem/lib"
+
+################################################################################
+# More Python Packages
+
+# Deps for ComfyUI & custom nodes
+COPY builder-scripts/.  /builder-scripts/
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        -r /builder-scripts/pak3.txt
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        -r /builder-scripts/pak5.txt
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        -r /builder-scripts/pak7.txt
+
+# Prevent SAM-2 from installing CUDA packages
+# SAM-2 is used by ComfyUI-Impact-Pack
+RUN --mount=type=cache,target=/root/.cache/pip \
+    cd /builder-scripts \
+    && git clone https://github.com/facebookresearch/sam2.git \
+    && cd sam2 \
+    && SAM2_BUILD_CUDA=1 pip install \
+        -e . --no-deps --no-build-isolation \
+    && cd /
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    # Update UV
+    pip install -U uv \
+    # Nunchaku (binary pair with PyTorch)
+    && pip install \
+https://github.com/nunchaku-tech/nunchaku/releases/download/v1.0.2/nunchaku-1.0.2+torch2.8-cp311-cp311-linux_x86_64.whl \
+    # FlashAttention (version pair with xFormers, binary pair with PyTorch & CUDA)
+    && pip install \
+https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.3.14/flash_attn-2.8.2+cu128torch2.8-cp311-cp311-linux_x86_64.whl
+
+# Limit CPU/RAM usage during builds
+ARG MAX_JOBS=2
+
+RUN if [ "${USING_GITHUB_ACTIONS}" = "true" ]; then \
+        export MAX_JOBS=1 ; \
+    fi
+
+# SageAttention (source build)
+ARG TORCH_CUDA_ARCH_LIST='8.0;8.6;8.9'
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    cd /builder-scripts \
+    && git clone https://github.com/thu-ml/SageAttention.git \
+    && cd SageAttention \
+    && pip install -e . --no-build-isolation \
+    && cd /
+
+# SpargeAttention (source build)
+ARG TORCH_CUDA_ARCH_LIST='8.0;8.6;8.9;9.0'
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    cd /builder-scripts \
+    && git clone https://github.com/thu-ml/SpargeAttn.git \
+    && cd SpargeAttn \
+    && pip install -e . --no-build-isolation \
+    && cd /
+
+################################################################################
+# Bundle ComfyUI in the image
+
+WORKDIR /default-comfyui-bundle
+
+RUN bash /builder-scripts/preload-cache.sh
+
+# Install deps (comfyui-frontend-package, etc) pair to the preloaded ComfyUI version
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        -r '/default-comfyui-bundle/ComfyUI/requirements.txt' \
+        -r '/default-comfyui-bundle/ComfyUI/custom_nodes/ComfyUI-Manager/requirements.txt' \
+    && pip list
+
+################################################################################
+
+# Clean cache to avoid GitHub Actions "No space left on device"
+RUN --mount=type=cache,target=/root/.cache/pip \
+    if [ "${USING_GITHUB_ACTIONS}" = "true" ]; then \
+        rm -rf /root/.cache/pip/* ; \
+    fi
+
+RUN du -ah /root \
+    && rm -rfv /root/* \
+    && rm -rfv /root/.[^.]* /root/.??*
+
+COPY runner-scripts/.  /runner-scripts/
+
+USER root
+VOLUME /root
+WORKDIR /root
+EXPOSE 8188
+ENV CLI_ARGS=""
+CMD ["bash","/runner-scripts/entrypoint.sh"]
