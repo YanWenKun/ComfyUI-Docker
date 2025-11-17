@@ -16,7 +16,8 @@ jobs:
 
       - name: Run container with quick-test
         run: |
-          docker run --rm \
+          env \
+          && docker run --rm \
             --name comfyui-quick-test \
             -e CLI_ARGS="--quick-test-for-ci --cpu" \
             docker.io/yanwk/comfyui-boot:cu128-slim
