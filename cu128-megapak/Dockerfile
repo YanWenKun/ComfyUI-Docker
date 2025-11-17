@@ -178,6 +178,8 @@ RUN --mount=type=cache,target=/var/cache/zypp \
     zypper --gpg-auto-import-keys \
         install --no-confirm --auto-agree-with-licenses \
 make \
+bison \
+gawk \
 ninja \
 git \
 aria2 \
@@ -226,8 +228,25 @@ cpp14 \
     && update-alternatives --install /usr/bin/gcov-tool gcov-tool /usr/bin/gcov-tool-14 90 
 
 ################################################################################
-# Python Packages
+# Optional glibc 2.39
+# 2.39 is also used by RHEL 10 / Ubuntu 24.04
+# CUDA 12.x does not support glibc >2.41
 
+WORKDIR /tmp
+RUN curl -LO https://ftp.gnu.org/gnu/glibc/glibc-2.39.tar.xz \
+    && tar xf glibc-2.39.tar.xz
+
+WORKDIR /tmp/glibc-2.39/build
+RUN ../configure \
+        --prefix=/opt/glibc-2.39 \
+        --disable-werror \
+    && make -j$(nproc) \
+    && make install
+
+ENV PATH="/opt/glibc-2.39/bin:${PATH}" \
+    LD_LIBRARY_PATH="/opt/glibc-2.39:${LD_LIBRARY_PATH}"
+
+################################################################################
 # PyTorch, xFormers
 # Break down the steps, so we have more but smaller image layers.
 RUN --mount=type=cache,target=/root/.cache/pip \
@@ -266,6 +285,9 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         triton pytorch-triton \
         --index-url https://download.pytorch.org/whl/cu128
+
+################################################################################
+# More Python Packages
 
 # Deps for ComfyUI & custom nodes
 COPY builder-scripts/.  /builder-scripts/
