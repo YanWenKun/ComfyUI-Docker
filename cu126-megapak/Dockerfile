@@ -178,6 +178,8 @@ RUN --mount=type=cache,target=/var/cache/zypp \
     zypper --gpg-auto-import-keys \
         install --no-confirm --auto-agree-with-licenses \
 make \
+bison \
+gawk \
 ninja \
 git \
 aria2 \
