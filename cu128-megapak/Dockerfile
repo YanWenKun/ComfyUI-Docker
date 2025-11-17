@@ -301,7 +301,13 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 https://github.com/nunchaku-tech/nunchaku/releases/download/v1.0.2/nunchaku-1.0.2+torch2.9-cp312-cp312-linux_x86_64.whl \
     # FlashAttention (version pair with xFormers, binary pair with PyTorch & CUDA)
     && pip install \
-https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.4.17/flash_attn-2.8.3+cu128torch2.9-cp312-cp312-linux_x86_64.whl
+https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.4.17/flash_attn-2.8.3+cu128torch2.9-cp312-cp312-linux_x86_64.whl \
+    # SageAttention
+    && pip install \
+https://github.com/YanWenKun/ComfyUI-Containerfiles/releases/download/sageattn2/sageattention-2.2.0-cp312-cp312-linux_x86_64.whl \
+    # SpargeAttention (Sparse-SageAttention)
+    && pip install \
+https://github.com/YanWenKun/ComfyUI-Containerfiles/releases/download/sageattn2/spas_sage_attn-0.1.0-cp312-cp312-linux_x86_64.whl
 
 ################################################################################
 # Bundle ComfyUI in the image

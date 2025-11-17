@@ -7,8 +7,7 @@
 # The container will be running in root (easy for rootless deploy).
 ################################################################################
 
-# FROM docker.io/opensuse/leap:15.6
-FROM opensuse/leap:15.6
+FROM docker.io/opensuse/leap:15.6
 
 LABEL maintainer="YAN Wenkun <code@yanwk.fun>"
 
@@ -168,7 +167,7 @@ cpp11 \
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip list \
     && pip install \
-        --upgrade pip wheel setuptools \
+        --upgrade pip wheel setuptools packaging \
     && pip install \
         --dry-run xformers==0.0.32.post2 torch==2.8.0 torchvision torchaudio \
         --index-url https://download.pytorch.org/whl/cu128
@@ -232,34 +231,13 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 https://github.com/nunchaku-tech/nunchaku/releases/download/v1.0.2/nunchaku-1.0.2+torch2.8-cp312-cp312-linux_x86_64.whl \
     # FlashAttention (version pair with xFormers, binary pair with PyTorch & CUDA)
     && pip install \
-https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.3.14/flash_attn-2.8.2+cu128torch2.8-cp312-cp312-linux_x86_64.whl
-
-# # Limit CPU/RAM usage during builds
-# ARG MAX_JOBS=2
-
-# RUN if [ "${USING_GITHUB_ACTIONS}" = "true" ]; then \
-#         export MAX_JOBS=1 ; \
-#     fi
-
-# # SageAttention (source build)
-# ARG TORCH_CUDA_ARCH_LIST='8.0;8.6;8.9'
-
-# RUN --mount=type=cache,target=/root/.cache/pip \
-#     cd /builder-scripts \
-#     && git clone https://github.com/thu-ml/SageAttention.git \
-#     && cd SageAttention \
-#     && pip install -e . --no-build-isolation \
-#     && cd /
-
-# # SpargeAttention (source build)
-# ARG TORCH_CUDA_ARCH_LIST='8.0;8.6;8.9;9.0'
-
-# RUN --mount=type=cache,target=/root/.cache/pip \
-#     cd /builder-scripts \
-#     && git clone https://github.com/thu-ml/SpargeAttn.git \
-#     && cd SpargeAttn \
-#     && pip install -e . --no-build-isolation \
-#     && cd /
+https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.3.14/flash_attn-2.8.2+cu128torch2.8-cp312-cp312-linux_x86_64.whl \
+    # SageAttention
+    && pip install \
+https://github.com/YanWenKun/ComfyUI-Containerfiles/releases/download/sageattn2/sageattention-2.2.0-cp312-cp312-linux_x86_64.whl \
+    # SpargeAttention (Sparse-SageAttention)
+    && pip install \
+https://github.com/YanWenKun/ComfyUI-Containerfiles/releases/download/sageattn2/spas_sage_attn-0.1.0-cp312-cp312-linux_x86_64.whl
 
 ################################################################################
 # Bundle ComfyUI in the image
