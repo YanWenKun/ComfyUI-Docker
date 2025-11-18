@@ -112,25 +112,6 @@ cpp15 \
     && update-alternatives --install /usr/bin/gcov-tool gcov-tool /usr/bin/gcov-tool-15 90 
 
 ################################################################################
-# glibc 2.41
-# Currently CUDA 13.0 supports max to glibc 2.41
-# 2.41 is also used by Fedora 42
-
-WORKDIR /tmp
-RUN curl -LO https://ftp.gnu.org/gnu/glibc/glibc-2.41.tar.xz \
-    && tar xf glibc-2.41.tar.xz
-
-WORKDIR /tmp/glibc-2.41/build
-RUN ../configure \
-        --prefix=/opt/glibc-2.41 \
-        --disable-werror \
-    && make -j$(nproc) \
-    && make install
-
-ENV PATH="/opt/glibc-2.41/bin:${PATH}" \
-    LD_LIBRARY_PATH="/opt/glibc-2.41${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
-
-################################################################################
 # Python Packages
 
 # PyTorch

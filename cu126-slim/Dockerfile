@@ -111,25 +111,6 @@ cpp13 \
     && update-alternatives --install /usr/bin/gcov-tool gcov-tool /usr/bin/gcov-tool-13 90 
 
 ################################################################################
-# glibc 2.39
-# CUDA 12.x does not support glibc >2.41
-# 2.39 is also used by RHEL 10 / Ubuntu 24.04
-
-WORKDIR /tmp
-RUN curl -LO https://ftp.gnu.org/gnu/glibc/glibc-2.39.tar.xz \
-    && tar xf glibc-2.39.tar.xz
-
-WORKDIR /tmp/glibc-2.39/build
-RUN ../configure \
-        --prefix=/opt/glibc-2.39 \
-        --disable-werror \
-    && make -j$(nproc) \
-    && make install
-
-ENV PATH="/opt/glibc-2.39/bin:${PATH}" \
-    LD_LIBRARY_PATH="/opt/glibc-2.39${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
-
-################################################################################
 # Python Packages
 
 # PyTorch, xFormers
