@@ -14,10 +14,16 @@ jobs:
       - name: Pull image from Docker Hub
         run: docker pull docker.io/yanwk/comfyui-boot:xpu-cn
 
+      - name: Show container environment variables
+        run: |
+          docker run --rm \
+            --name show-env \
+            docker.io/yanwk/comfyui-boot:xpu-cn \
+            env
+
       - name: Run container with quick-test
         run: |
-          env \
-          && docker run --rm \
+          docker run --rm \
             --name comfyui-quick-test \
             -e CLI_ARGS="--quick-test-for-ci --cpu" \
             docker.io/yanwk/comfyui-boot:xpu-cn
