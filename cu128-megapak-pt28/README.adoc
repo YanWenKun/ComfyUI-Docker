@@ -105,6 +105,30 @@ Note the `--disable-xformers` in `CLI_ARGS`. xFormers may cause compatibility is
 [[cli-args]]
 ## CLI_ARGS Reference
 
+### Attention Selection
+
+NOTE: Only one attention implementation can be selected at a time, they are mutually exclusive.
+If none is specified, xFormers is enabled by default.
+
+TIP: For Blackwell GPUs, you may want to use a combination like `--use-flash-attention --disable-xformers`.
+
+[%autowidth,cols=2]
+|===
+|args |description
+
+|--use-sage-attention
+|Use SageAttention. Keep current config for xFormers.
+
+|--use-flash-attention
+|Use FlashAttention. Keep current config for xFormers.
+
+|--use-pytorch-cross-attention
+|Use PyTorch's built-in cross-attention. Disable xFormers.
+
+|===
+
+### Frequently Used Arguments
+
 [%autowidth,cols=2]
 |===
 |args |description
@@ -113,9 +137,6 @@ Note the `--disable-xformers` in `CLI_ARGS`. xFormers may cause compatibility is
 |Disable xFormers. Enabling xFormers can cause 
 https://github.com/YanWenKun/ComfyUI-Docker/issues/128[issues] 
 on Blackwell GPUs, but may be required for some video workflows (e.g. SVD).
-
-|--use-pytorch-cross-attention
-|Use PyTorch's built-in cross-attention. Disable xFormers, FlashAttention and SageAttention.
 
 |--fast
 |Enable experimental optimizations.
