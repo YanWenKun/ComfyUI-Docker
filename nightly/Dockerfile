@@ -127,4 +127,4 @@ ENV PATH="${PATH}:/root/.local/bin"
 # Suppress [WARNING: Running pip as the 'root' user]
 ENV PIP_ROOT_USER_ACTION=ignore
 
-CMD ["python3.14t","./ComfyUI/main.py","--listen","--port 8188","${CLI_ARGS}"]
+CMD ["python3.14t","./ComfyUI/main.py","--listen","--port 8188","$CLI_ARGS"]

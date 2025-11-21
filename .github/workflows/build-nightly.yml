@@ -68,7 +68,7 @@ jobs:
         run: |
           docker run --rm \
             --name show-env \
-            yanwk/comfyui-boot:nightly \
+            localhost/yanwk/comfyui-boot:nightly \
             env
 
       - name: Run container - Quick-Test
@@ -76,4 +76,4 @@ jobs:
           docker run --rm \
             --name comfyui-quick-test \
             -e CLI_ARGS="--quick-test-for-ci --cpu" \
-            yanwk/comfyui-boot:nightly
+            localhost/yanwk/comfyui-boot:nightly
