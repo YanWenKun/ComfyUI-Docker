@@ -51,12 +51,14 @@ less \
 vim \
 ca-certificates \
 libjpeg-dev \
-libpng-dev \
-# This meta package will install libcusparselt0-cuda-13 & libcusparselt0-dev-cuda-13
+libpng-dev
+
+RUN --mount=type=cache,target=/var/cache/apt \
+    apt-get install -y --no-install-recommends \
+# Will also install libcusparselt0-cuda-13 & libcusparselt0-dev-cuda-13
 cusparselt-cuda-13 \
-# ffmpeg \
-# x264 \
-# x265 \
+# Will also install libnvshmem3-cuda-13 & libnvshmem3-dev-cuda-13 & libnvshmem3-static-cuda-13
+nvshmem-cuda-13 \
     && rm -vrf /var/lib/apt/lists/* \
     && rm -vf /usr/lib/python3.14/EXTERNALLY-MANAGED
 
@@ -104,8 +106,7 @@ RUN git clone 'https://github.com/comfyanonymous/ComfyUI.git'
 
 # Install only essential dependencies for ComfyUI
 RUN --mount=type=cache,target=/root/.cache/pip \
-    awk '/^#non essential dependencies:/{exit} {print}' /root/ComfyUI/requirements.txt > /root/requirements-essential.txt \
-    && pip install -r /root/requirements-essential.txt
+    pip install -r /root/ComfyUI/requirements.txt
 
 ################################################################################
 # Clean cache to avoid GitHub Actions "No space left on device"
