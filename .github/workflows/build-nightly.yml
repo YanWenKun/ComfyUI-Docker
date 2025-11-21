@@ -63,12 +63,14 @@ jobs:
             yanwk/comfyui-boot:nightly
             yanwk/comfyui-boot:nightly-${{ steps.date.outputs.date }}-${{ steps.commit.outputs.short }}
           push: true
+          # Load to local Docker repository so it can be used by `docker run` below.
+          load: true
 
       - name: Run container - List env vars
         run: |
           docker run --rm \
             --name show-env \
-            localhost/yanwk/comfyui-boot:nightly \
+            yanwk/comfyui-boot:nightly \
             env
 
       - name: Run container - Quick-Test
@@ -76,4 +78,4 @@ jobs:
           docker run --rm \
             --name comfyui-quick-test \
             -e CLI_ARGS="--quick-test-for-ci --cpu" \
-            localhost/yanwk/comfyui-boot:nightly
+            yanwk/comfyui-boot:nightly
