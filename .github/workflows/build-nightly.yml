@@ -1,4 +1,4 @@
-name: Publish 'nightly' to Docker Hub
+name: Publish & Test 'nightly'
 
 on: 
   workflow_dispatch: # Can be manually triggered
@@ -57,7 +57,23 @@ jobs:
         with:
           context: ./nightly
           file: ./nightly/Dockerfile
+          build-args: |
+            USING_GITHUB_ACTIONS=true
           tags:  |
             yanwk/comfyui-boot:nightly
             yanwk/comfyui-boot:nightly-${{ steps.date.outputs.date }}-${{ steps.commit.outputs.short }}
           push: true
+
+      - name: Run container - List env vars
+        run: |
+          docker run --rm \
+            --name show-env \
+            yanwk/comfyui-boot:nightly \
+            env
+
+      - name: Run container - Quick-Test
+        run: |
+          docker run --rm \
+            --name comfyui-quick-test \
+            -e CLI_ARGS="--quick-test-for-ci --cpu" \
+            yanwk/comfyui-boot:nightly

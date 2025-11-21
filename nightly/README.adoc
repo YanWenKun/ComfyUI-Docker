@@ -6,20 +6,13 @@ https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=nightly[View on <Docker Hu
 
 ## Note
 
-* This image won't download ComfyUI or any models. Please prepare your ComfyUI suite before running the container.
+* A ComfyUI repo is preloaded in this image (under `/root/ComfyUI`). And the `-v "$(pwd)"/storage:/root` is commented out in the examples below. You can uncomment it to persist your data, but then you need to prepare your ComfyUI folder first.
 
-* Part of the `Dockerfile` is commented out due to CI limitation:
+* Only basic dependencies for running ComfyUI is installed. Otherwise the image would be too big that GitHub Actions would throw IOException.
 
-** Only basic dependencies for running ComfyUI is installed. Otherwise the image would be too big that GitHub Actions would throw IOException.
+* `xFormers` is not installed in this image.
+It requires building from source in order to use it with PyTorch nightly. And building xFormers (with comprehensive build targets) on GitHub Actions would often result in halt (just for unpaid version, maybe).
 
-** `xFormers` is not installed in this image.
-It requires building from source in order to use it with PyTorch nightly. And building xFormers (with comprehensive build targets) on GitHub Actions would often result in halt (maybe just unpaid version).
-
-** If you build the image by yourself, you can uncomment the lines in `Dockerfile`, for a bigger, yet more comprehensive image.
-
-## Running
-
-* Don't forget to put ComfyUI in the `storage` folder.
 
 .Using Docker
 [source,sh]
@@ -31,7 +24,7 @@ docker run -it --rm \
   --runtime nvidia \
   --gpus all \
   -p 8188:8188 \
-  -v "$(pwd)"/storage:/root \
+#  -v "$(pwd)"/storage:/root \
   -e CLI_ARGS="--fast --front-end-version Comfy-Org/ComfyUI_frontend@latest" \
   -e PIP_INDEX_URL="https://pypi.org/simple" \
   -e HF_ENDPOINT="https://huggingface.co" \
@@ -49,7 +42,7 @@ podman run -it --rm \
   --security-opt label=disable \
   --security-opt seccomp=unconfined \
   -p 8188:8188 \
-  -v "$(pwd)"/storage:/root \
+#  -v "$(pwd)"/storage:/root \
   -e CLI_ARGS="--fast --front-end-version Comfy-Org/ComfyUI_frontend@latest" \
   -e PIP_INDEX_URL="https://pypi.org/simple" \
   -e HF_ENDPOINT="https://huggingface.co" \

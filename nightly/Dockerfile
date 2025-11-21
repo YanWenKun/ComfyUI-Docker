@@ -12,13 +12,15 @@
 # Note about GCC:
 # Ubuntu 24.04 comes with GCC 13, so no additional config here.
 #
-# Note about env vars:
+# Note about environment variables:
 # In NVIDIA's image, there's no CUDA_HOME or CUDA_PATH.
 # Also, the LD_LIBRARY_PATH is intended to point to a non-existent folder.
 # Ref: https://gitlab.com/nvidia/container-images/cuda/-/issues/47
 ################################################################################
 
 FROM nvidia/cuda:13.0.2-cudnn-devel-ubuntu24.04
+
+ARG USING_GITHUB_ACTIONS=false
 
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -55,6 +57,7 @@ libpng-dev \
     && rm -vrf /var/lib/apt/lists/* \
     && rm -vf /usr/lib/python3.14/EXTERNALLY-MANAGED
 
+################################################################################
 # In Ubuntu/Debian, PIP packages installed by APT were locked.
 # So here we install PIP in a classic way, make it easier to update.
 RUN --mount=type=cache,target=/root/.cache/pip \
@@ -66,6 +69,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     && pip list \
     && df -h
 
+################################################################################
 # PyTorch
 # To reduce image size & single layer size, we:
 # 1. Install PyTorch only.
@@ -88,108 +92,26 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     && find /usr/local/lib/python3.14t/dist-packages/nvidia/ -mindepth 1 -maxdepth 1 -exec rm -rfv {} +
 
 ################################################################################
-# Dependencies
+# Bundle ComfyUI directly in /root
+WORKDIR /root
 
-# RUN --mount=type=cache,target=/root/.cache/pip \
-#     pip install \
-# accelerate \
-# compel \
-# diffusers \
-# fairscale \
-# ftfy \
-# imageio \
-# joblib \
-# kornia \
-# lark \
-# matplotlib \
-# onnxruntime-gpu \
-# opencv-contrib-python-headless \
-# pandas \
-# pilgram \
-# pillow \
-# pygit2 \
-# python-ffmpeg \
-# regex \
-# scikit-image \
-# scikit-learn \
-# scipy \
-# timm \
-# torchdiffeq \
-# torchmetrics \
-# transformers
+# Use latest ComfyUI (dev)
+RUN git clone 'https://github.com/comfyanonymous/ComfyUI.git'
 
+# Install only essential dependencies for ComfyUI
 RUN --mount=type=cache,target=/root/.cache/pip \
-    curl -o /root/requirements.txt \
-        -L https://github.com/comfyanonymous/ComfyUI/raw/refs/heads/master/requirements.txt \
-    && awk '/^#non essential dependencies:/{exit} {print}' /root/requirements.txt > /root/essential.txt \
-    && pip install -r /root/essential.txt \
-    && pip install -r https://github.com/Comfy-Org/ComfyUI-Manager/raw/refs/heads/main/requirements.txt
-
-# RUN --mount=type=cache,target=/root/.cache/pip \
-#     pip install \
-# -r https://raw.githubusercontent.com/crystian/ComfyUI-Crystools/main/requirements.txt \
-# -r https://raw.githubusercontent.com/cubiq/ComfyUI_essentials/main/requirements.txt \
-# -r https://raw.githubusercontent.com/cubiq/ComfyUI_FaceAnalysis/main/requirements.txt \
-# -r https://raw.githubusercontent.com/cubiq/ComfyUI_InstantID/main/requirements.txt \
-# -r https://raw.githubusercontent.com/Fannovel16/comfyui_controlnet_aux/main/requirements.txt \
-# -r https://raw.githubusercontent.com/Fannovel16/ComfyUI-Frame-Interpolation/main/requirements-no-cupy.txt \
-# -r https://raw.githubusercontent.com/FizzleDorf/ComfyUI_FizzNodes/main/requirements.txt \
-# -r https://raw.githubusercontent.com/jags111/efficiency-nodes-comfyui/main/requirements.txt \
-# -r https://raw.githubusercontent.com/kijai/ComfyUI-KJNodes/main/requirements.txt \
-# -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Impact-Pack/Main/requirements.txt \
-# -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Impact-Subpack/main/requirements.txt \
-# -r https://raw.githubusercontent.com/ltdrdata/ComfyUI-Inspire-Pack/main/requirements.txt \
-# -r https://raw.githubusercontent.com/melMass/comfy_mtb/main/requirements.txt \
-# -r https://raw.githubusercontent.com/MrForExample/ComfyUI-3D-Pack/main/requirements.txt \
-# -r https://raw.githubusercontent.com/storyicon/comfyui_segment_anything/main/requirements.txt \
-# -r https://raw.githubusercontent.com/yolain/ComfyUI-Easy-Use/main/requirements.txt \
-# -r https://raw.githubusercontent.com/ZHO-ZHO-ZHO/ComfyUI-InstantID/main/requirements.txt \
-#     && pip uninstall --break-system-packages --yes \
-#         onnxruntime-gpu \
-#     && pip --no-cache-dir install --break-system-packages \
-#         onnxruntime-gpu \
-#         --index-url https://aiinfra.pkgs.visualstudio.com/PublicPackages/_packaging/onnxruntime-cuda-12/pypi/simple/ \
-#         --extra-index-url https://pypi.org/simple \
-#     && pip install \
-#         mediapipe \
-#     && pip list
+    awk '/^#non essential dependencies:/{exit} {print}' /root/ComfyUI/requirements.txt > /root/requirements-essential.txt \
+    && pip install -r /root/requirements-essential.txt
 
 ################################################################################
-# # Build xFormers
-
-# # https://arnon.dk/matching-sm-architectures-arch-and-gencode-for-various-nvidia-cards/
-# ARG TORCH_CUDA_ARCH_LIST="5.2+PTX;6.0;6.1+PTX;7.0+PTX;7.5;8.0;8.6+PTX;8.9+PTX"
-
-# # Limit max concurrent build jobs. Not set here.
-# ARG MAX_JOBS
-
-# RUN mkdir -p /BUILD/wheels
-
-# RUN --mount=type=cache,target=/root/.cache/pip \
-#     pip install \
-#         -r https://raw.githubusercontent.com/facebookresearch/xformers/main/requirements.txt
-
-# RUN git clone --depth=1 --no-tags --recurse-submodules --shallow-submodules \
-#         https://github.com/facebookresearch/xformers.git \
-#         /BUILD/xformers
-
-# WORKDIR /BUILD/xformers
-
-# RUN --mount=type=cache,target=/root/.cache/pip \
-#     --mount=type=cache,target=/BUILD/xformers/build \
-#     --mount=type=cache,target=/BUILD/xformers/dist \
-#     python3 setup.py bdist_wheel -d /BUILD/wheels
-
-# RUN --mount=type=cache,target=/root/.cache/pip \
-#     pip install /BUILD/wheels/*.whl
+# Clean cache to avoid GitHub Actions "No space left on device"
+RUN --mount=type=cache,target=/root/.cache/pip \
+    if [ "${USING_GITHUB_ACTIONS}" = "true" ]; then \
+        rm -rf /root/.cache/pip/* ; \
+    fi
 
 ################################################################################
-
-RUN du -ah /root \
-    && rm -rfv /root/.profile /root/.bashrc \
-    && rm -rfv /root/* \
-    && df -h
-
+# Finishing
 USER root
 VOLUME /root
 WORKDIR /root
