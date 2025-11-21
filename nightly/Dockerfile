@@ -25,7 +25,8 @@ ARG USING_GITHUB_ACTIONS=false
 ARG DEBIAN_FRONTEND=noninteractive
 
 RUN --mount=type=cache,target=/var/cache/apt \
-    apt-get update \
+    set -euo pipefail \
+    && apt-get update \
     && apt-get upgrade -y \
     && apt-get install -y --no-install-recommends \
         gnupg2 ca-certificates curl \
@@ -127,4 +128,4 @@ ENV PATH="${PATH}:/root/.local/bin"
 # Suppress [WARNING: Running pip as the 'root' user]
 ENV PIP_ROOT_USER_ACTION=ignore
 
-CMD ["python3.14t","./ComfyUI/main.py","--listen","--port 8188","$CLI_ARGS"]
+CMD ["bash", "-c", "python3.14t ./ComfyUI/main.py --listen --port 8188 $CLI_ARGS"]
