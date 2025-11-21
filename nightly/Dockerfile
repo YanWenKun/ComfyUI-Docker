@@ -24,9 +24,10 @@ ARG USING_GITHUB_ACTIONS=false
 
 ARG DEBIAN_FRONTEND=noninteractive
 
+SHELL ["/bin/bash", "-euo", "pipefail", "-c"]
+
 RUN --mount=type=cache,target=/var/cache/apt \
-    set -euo pipefail \
-    && apt-get update \
+    apt-get update \
     && apt-get upgrade -y \
     && apt-get install -y --no-install-recommends \
         gnupg2 ca-certificates curl \
