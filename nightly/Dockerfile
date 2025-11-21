@@ -1,7 +1,6 @@
 ################################################################################
 # Dockerfile that builds 'yanwk/comfyui-boot:nightly'
-# A image with preview (nightly) dependencies for ComfyUI.
-# Does not download ComfyUI or any models.
+# A image for testing with latest ComfyUI and nightly/experimental dependencies.
 #
 # Using image from NVIDIA as base image:
 # https://catalog.ngc.nvidia.com/orgs/nvidia/containers/cuda/tags
@@ -12,9 +11,9 @@
 # Note about GCC:
 # Ubuntu 24.04 comes with GCC 13, so no additional config here.
 #
-# Note about environment variables:
-# In NVIDIA's image, there's no CUDA_HOME or CUDA_PATH.
-# Also, the LD_LIBRARY_PATH is intended to point to a non-existent folder.
+# Note about environment variables in NVIDIA's image:
+# 1. There's no CUDA_HOME or CUDA_PATH.
+# 2. The LD_LIBRARY_PATH was intended to point to a non-existent folder.
 # Ref: https://gitlab.com/nvidia/container-images/cuda/-/issues/47
 ################################################################################
 
@@ -53,6 +52,8 @@ vim \
 ca-certificates \
 libjpeg-dev \
 libpng-dev \
+# This meta package will install libcusparselt0-cuda-13 & libcusparselt0-dev-cuda-13
+cusparselt-cuda-13 \
 # ffmpeg \
 # x264 \
 # x265 \
@@ -74,9 +75,10 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 ################################################################################
 # PyTorch
 # To reduce image size & single layer size, we:
-# 1. Install PyTorch only.
-# 2. Install all its dependencies.
-# 3. Delete redundant NVIDIA Python libs (they are already installed as OS packages).
+# 1. Fetch the list of packages and download them into the cache.
+# 2. Install PyTorch only.
+# 3. Install all dependencies.
+# 4. Delete redundant NVIDIA Python libs (they are already installed as OS packages).
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         --dry-run --pre torch torchvision torchaudio \
@@ -129,4 +131,4 @@ ENV PATH="${PATH}:/root/.local/bin"
 # Suppress [WARNING: Running pip as the 'root' user]
 ENV PIP_ROOT_USER_ACTION=ignore
 
-CMD ["bash", "-c", "python3.14t ./ComfyUI/main.py --listen --port 8188 $CLI_ARGS"]
+CMD ["bash", "-c", "python3.14t ./ComfyUI/main.py --listen --port 8188 ${CLI_ARGS}"]
