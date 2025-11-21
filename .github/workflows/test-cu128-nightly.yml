@@ -1,0 +1,40 @@
+name: Test 'nightly' from Docker Hub
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["Publish 'nightly' to Docker Hub"]
+    types:
+      - completed
+
+jobs:
+  test-image-nightly:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Maximize build disk space
+        uses: easimon/maximize-build-space@master
+        with:
+          overprovision-lvm: 'true'
+          remove-android: 'true'
+          remove-dotnet: 'true'
+          remove-haskell: 'true'
+          remove-codeql: 'true'
+          remove-docker-images: 'true'
+          swap-size-mb: 512
+
+      - name: Pull image from Docker Hub
+        run: docker pull docker.io/yanwk/comfyui-boot:nightly
+
+      - name: Show container environment variables
+        run: |
+          docker run --rm \
+            --name show-env \
+            docker.io/yanwk/comfyui-boot:nightly \
+            env
+
+      - name: Run container with quick-test
+        run: |
+          docker run --rm \
+            --name comfyui-quick-test \
+            -e CLI_ARGS="--quick-test-for-ci --cpu" \
+            docker.io/yanwk/comfyui-boot:nightly
