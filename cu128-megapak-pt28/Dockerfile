@@ -223,6 +223,15 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         -e . --no-deps --no-build-isolation \
     && cd /
 
+# Prevent SAM-3 from installing NumPy1
+RUN --mount=type=cache,target=/root/.cache/pip \
+    cd /builder-scripts \
+    && git clone https://github.com/facebookresearch/sam3.git \
+    && cd sam3 \
+    && pip install \
+        -e . --no-deps --no-build-isolation \
+    && cd /
+
 RUN --mount=type=cache,target=/root/.cache/pip \
     # Update UV
     pip install -U uv \

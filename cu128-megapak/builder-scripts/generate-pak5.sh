@@ -25,6 +25,7 @@ https://github.com/Fannovel16/comfyui_controlnet_aux/raw/refs/heads/main/require
 https://github.com/Gourieff/ComfyUI-ReActor/raw/refs/heads/main/requirements.txt
 https://github.com/huchenlei/ComfyUI-layerdiffuse/raw/refs/heads/main/requirements.txt
 https://github.com/kijai/ComfyUI-Florence2/raw/refs/heads/main/requirements.txt
+https://github.com/Ltamann/ComfyUI-TBG-SAM3/raw/refs/heads/main/requirements.txt
 # Video
 https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite/raw/refs/heads/main/requirements.txt
 https://github.com/Fannovel16/ComfyUI-Frame-Interpolation/raw/refs/heads/main/requirements-no-cupy.txt

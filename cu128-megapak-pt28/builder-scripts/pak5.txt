@@ -10,6 +10,7 @@ chardet
 clip-interrogator
 color-matcher
 colour-science
+decord
 deepdiff
 dill
 einops
@@ -31,6 +32,7 @@ pixeloe
 protobuf
 psutil
 py-cpuinfo
+pycocotools
 pydantic-settings
 pydantic
 pydub
@@ -47,6 +49,7 @@ rich-argparse
 safetensors
 segment-anything
 sentencepiece
+shapely
 simpleeval
 spandrel
 SQLAlchemy
