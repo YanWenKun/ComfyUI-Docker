@@ -12,7 +12,7 @@ function set_repo () {
 
     if [[ $git_remote_url =~ ^(https:\/\/github\.com\/)(.*)(\.git)$ ]]; then
         echo "正在替换为 GitHub 代理地址: $1" ;
-        git -C "$1" remote set-url origin "https://gh-proxy.com/$git_remote_url" ;
+        git -C "$1" remote set-url origin "https://gh-proxy.org/$git_remote_url" ;
     fi ;
 }
 
@@ -35,17 +35,17 @@ mkdir -p /default-comfyui-bundle/ComfyUI/user/__manager
 
 cat <<EOF > /default-comfyui-bundle/ComfyUI/user/__manager/config.ini
 [default]
-channel_url = https://gh-proxy.com/https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main
+channel_url = https://gh-proxy.org/https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main
 use_uv = False
 EOF
 
 cat <<EOF > /default-comfyui-bundle/ComfyUI/user/__manager/channels.list
-default::https://gh-proxy.com/https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main
-recent::https://gh-proxy.com/https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/node_db/new
-legacy::https://gh-proxy.com/https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/node_db/legacy
-forked::https://gh-proxy.com/https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/node_db/forked
-dev::https://gh-proxy.com/https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/node_db/dev
-tutorial::https://gh-proxy.com/https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/node_db/tutorial
+default::https://gh-proxy.org/https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main
+recent::https://gh-proxy.org/https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/node_db/new
+legacy::https://gh-proxy.org/https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/node_db/legacy
+forked::https://gh-proxy.org/https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/node_db/forked
+dev::https://gh-proxy.org/https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/node_db/dev
+tutorial::https://gh-proxy.org/https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/node_db/tutorial
 EOF
 
 echo "########################################"

@@ -15,7 +15,7 @@ set -eu
 #172.21.*,172.22.*,172.23.*,172.24.*,172.25.*,172.26.*,172.27.*,
 #172.28.*,172.29.*,172.30.*,172.31.*,172.32.*,192.168.*,
 #*.cn,ghproxy.com,*.ghproxy.com,ghproxy.org,*.ghproxy.org,
-#gh-proxy.com,*.gh-proxy.com,ghproxy.net,*.ghproxy.net"
+#gh-proxy.org,*.gh-proxy.org,ghproxy.net,*.ghproxy.net"
 #export no_proxy=$NO_PROXY
 #echo "[INFO] 代理设置为 $HTTP_PROXY"
 
