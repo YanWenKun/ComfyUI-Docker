@@ -31,15 +31,15 @@ gcs 'https://github.com/Comfy-Org/ComfyUI-Manager.git'
 
 # 使用镜像站点替换 ComfyUI-Manager 默认仓库地址，避免卡 UI
 # 治标但不治本，使用 Manager 全部功能仍需挂代理或魔改
-mkdir -p /default-comfyui-bundle/ComfyUI/user/default/ComfyUI-Manager
+mkdir -p /default-comfyui-bundle/ComfyUI/user/__manager
 
-cat <<EOF > /default-comfyui-bundle/ComfyUI/user/default/ComfyUI-Manager/config.ini
+cat <<EOF > /default-comfyui-bundle/ComfyUI/user/__manager/config.ini
 [default]
 channel_url = https://gh-proxy.com/https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main
 use_uv = False
 EOF
 
-cat <<EOF > /default-comfyui-bundle/ComfyUI/user/default/ComfyUI-Manager/channels.list
+cat <<EOF > /default-comfyui-bundle/ComfyUI/user/__manager/channels.list
 default::https://gh-proxy.com/https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main
 recent::https://gh-proxy.com/https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/node_db/new
 legacy::https://gh-proxy.com/https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/node_db/legacy

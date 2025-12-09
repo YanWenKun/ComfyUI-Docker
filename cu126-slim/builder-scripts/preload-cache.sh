@@ -21,9 +21,9 @@ cd /default-comfyui-bundle/ComfyUI/custom_nodes
 gcs https://github.com/Comfy-Org/ComfyUI-Manager.git
 
 # Force ComfyUI-Manager to use PIP instead of UV
-mkdir -p /default-comfyui-bundle/ComfyUI/user/default/ComfyUI-Manager
+mkdir -p /default-comfyui-bundle/ComfyUI/user/__manager
 
-cat <<EOF > /default-comfyui-bundle/ComfyUI/user/default/ComfyUI-Manager/config.ini
+cat <<EOF > /default-comfyui-bundle/ComfyUI/user/__manager/config.ini
 [default]
 use_uv = False
 EOF
