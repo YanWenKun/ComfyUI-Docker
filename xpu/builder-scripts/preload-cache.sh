@@ -16,9 +16,6 @@ cd /default-comfyui-bundle/ComfyUI
 # Using stable version (has a release tag)
 git reset --hard "$(git tag | grep -e '^v' | sort -V | tail -1)"
 
-cd /default-comfyui-bundle/ComfyUI/custom_nodes
-gcs https://github.com/Comfy-Org/ComfyUI-Manager.git
-
 # Force ComfyUI-Manager to use PIP instead of UV
 mkdir -p /default-comfyui-bundle/ComfyUI/user/__manager
 
@@ -26,6 +23,8 @@ cat <<EOF > /default-comfyui-bundle/ComfyUI/user/__manager/config.ini
 [default]
 use_uv = False
 EOF
+
+cd /default-comfyui-bundle/ComfyUI/custom_nodes
 
 # Performance
 gcs https://github.com/openvino-dev-samples/comfyui_openvino.git

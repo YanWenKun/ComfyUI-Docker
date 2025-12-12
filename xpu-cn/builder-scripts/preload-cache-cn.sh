@@ -8,7 +8,7 @@ function gcs() {
 }
 
 echo "########################################"
-echo "[INFO] 下载 ComfyUI & Manager..."
+echo "[INFO] 下载 ComfyUI..."
 echo "########################################"
 
 cd /default-comfyui-bundle
@@ -17,8 +17,9 @@ cd /default-comfyui-bundle/ComfyUI
 # 使用稳定版 ComfyUI（GitHub 上有发布标签）
 git reset --hard "$(git tag | grep -e '^v' | sort -V | tail -1)"
 
-cd /default-comfyui-bundle/ComfyUI/custom_nodes
-gcs 'https://gh-proxy.org/https://github.com/Comfy-Org/ComfyUI-Manager.git'
+echo "########################################"
+echo "[INFO] 配置 ComfyUI-Manager..."
+echo "########################################"
 
 # 使用镜像站点替换 ComfyUI-Manager 默认仓库地址，避免卡 UI
 # 治标但不治本，使用 Manager 全部功能仍需挂代理或魔改
@@ -42,6 +43,8 @@ EOF
 echo "########################################"
 echo "[INFO] 下载扩展组件（自定义节点）……"
 echo "########################################"
+
+cd /default-comfyui-bundle/ComfyUI/custom_nodes
 
 # 性能
 gcs https://gh-proxy.org/https://github.com/openvino-dev-samples/comfyui_openvino.git

@@ -202,7 +202,7 @@ RUN if [ "${USING_GITHUB_ACTIONS}" = "false" ]; then \
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         -r '/default-comfyui-bundle/ComfyUI/requirements.txt' \
-        -r '/default-comfyui-bundle/ComfyUI/custom_nodes/ComfyUI-Manager/requirements.txt' \
+        -r '/default-comfyui-bundle/ComfyUI/manager_requirements.txt' \
     && pip list
 
 ################################################################################
