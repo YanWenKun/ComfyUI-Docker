@@ -29,6 +29,7 @@ cat <<EOF > /default-comfyui-bundle/ComfyUI/user/__manager/config.ini
 [default]
 channel_url = https://gh-proxy.org/https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main
 use_uv = False
+security_level = weak
 EOF
 
 cat <<EOF > /default-comfyui-bundle/ComfyUI/user/__manager/channels.list
