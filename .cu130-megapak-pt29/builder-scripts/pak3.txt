@@ -1,0 +1,41 @@
+# Essentials
+accelerate
+diffusers
+ftfy
+huggingface-hub
+imageio[ffmpeg]
+joblib
+kornia
+matplotlib
+nvidia-ml-py
+omegaconf
+onnx
+onnxruntime-gpu
+opencv-contrib-python
+opencv-contrib-python-headless
+opencv-python
+opencv-python-headless
+pandas
+pilgram
+pillow
+pygit2
+python-ffmpeg
+regex
+scikit-build-core
+scikit-image
+scikit-learn
+scipy
+timm
+torchmetrics
+transformers
+
+# Hand-picks
+# For smZNodes
+compel
+lark
+# For Frame Interpolation
+cupy-cuda12x
+# For APISR
+fairscale
+# For DepthFM
+torchdiffeq
