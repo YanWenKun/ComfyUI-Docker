@@ -51,7 +51,6 @@ gcs https://github.com/ltdrdata/ComfyUI-Impact-Subpack.git
 gcs https://github.com/ltdrdata/ComfyUI-Inspire-Pack.git
 gcs https://github.com/Fannovel16/comfyui_controlnet_aux.git
 gcs https://github.com/florestefano1975/comfyui-portrait-master.git
-gcs https://github.com/Gourieff/ComfyUI-ReActor.git
 gcs https://github.com/huchenlei/ComfyUI-layerdiffuse.git
 gcs https://github.com/kijai/ComfyUI-Florence2.git
 gcs https://github.com/Kosinkadink/ComfyUI-Advanced-ControlNet.git
@@ -71,6 +70,7 @@ gcs https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git
 
 # To be removed in future
 gcs https://github.com/cubiq/ComfyUI_essentials.git
+gcs https://github.com/Gourieff/ComfyUI-ReActor.git ComfyUI-ReActor.disabled
 
 
 echo "########################################"

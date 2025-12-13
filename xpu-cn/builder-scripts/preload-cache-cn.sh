@@ -70,7 +70,6 @@ gcs https://gh-proxy.org/https://github.com/ltdrdata/ComfyUI-Impact-Subpack.git
 gcs https://gh-proxy.org/https://github.com/ltdrdata/ComfyUI-Inspire-Pack.git
 gcs https://gh-proxy.org/https://github.com/Fannovel16/comfyui_controlnet_aux.git
 gcs https://gh-proxy.org/https://github.com/florestefano1975/comfyui-portrait-master.git
-gcs https://gh-proxy.org/https://github.com/Gourieff/ComfyUI-ReActor.git
 gcs https://gh-proxy.org/https://github.com/huchenlei/ComfyUI-layerdiffuse.git
 gcs https://gh-proxy.org/https://github.com/kijai/ComfyUI-Florence2.git
 gcs https://gh-proxy.org/https://github.com/Kosinkadink/ComfyUI-Advanced-ControlNet.git
@@ -88,6 +87,7 @@ gcs https://gh-proxy.org/https://github.com/SLAPaper/ComfyUI-Image-Selector.git
 
 # 已停更，待删除
 gcs https://gh-proxy.org/https://github.com/cubiq/ComfyUI_essentials.git
+gcs https://gh-proxy.org/https://github.com/Gourieff/ComfyUI-ReActor.git ComfyUI-ReActor.disabled
 
 # 这些节点需要额外克隆 Git 子模块（GitHub 仓库），可能下载失败，故不在 CN 脚本中下载
 #gcs https://gh-proxy.org/https://github.com/yolain/ComfyUI-Easy-Use.git

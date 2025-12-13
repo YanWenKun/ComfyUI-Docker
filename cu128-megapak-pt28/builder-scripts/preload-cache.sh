@@ -59,7 +59,6 @@ gcs https://github.com/ltdrdata/ComfyUI-Inspire-Pack.git
 gcs https://github.com/chflame163/ComfyUI_LayerStyle.git
 gcs https://github.com/Fannovel16/comfyui_controlnet_aux.git
 gcs https://github.com/florestefano1975/comfyui-portrait-master.git
-gcs https://github.com/Gourieff/ComfyUI-ReActor.git
 gcs https://github.com/huchenlei/ComfyUI-layerdiffuse.git
 gcs https://github.com/kijai/ComfyUI-Florence2.git
 gcs https://github.com/Kosinkadink/ComfyUI-Advanced-ControlNet.git
@@ -84,6 +83,7 @@ gcs https://github.com/cubiq/ComfyUI_FaceAnalysis.git
 gcs https://github.com/cubiq/ComfyUI_InstantID.git
 gcs https://github.com/cubiq/ComfyUI_IPAdapter_plus.git
 gcs https://github.com/cubiq/PuLID_ComfyUI.git
+gcs https://github.com/Gourieff/ComfyUI-ReActor.git ComfyUI-ReActor.disabled
 
 
 echo "########################################"
