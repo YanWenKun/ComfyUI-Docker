@@ -22,6 +22,7 @@ mkdir -p /default-comfyui-bundle/ComfyUI/user/__manager
 cat <<EOF > /default-comfyui-bundle/ComfyUI/user/__manager/config.ini
 [default]
 use_uv = False
+security_level = weak
 EOF
 
 cd /default-comfyui-bundle/ComfyUI/custom_nodes
