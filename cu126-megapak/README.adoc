@@ -2,9 +2,9 @@
 
 image::../docs/concept-v6-megapak.svg["Concept Design"]
 
-image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-cu1126-megapak.yml/badge.svg["GitHub Workflow Status",link="https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-cu1126-megapak.yml"]
+image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-cu126-megapak.yml/badge.svg["GitHub Workflow Status",link="https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-cu126-megapak.yml"]
 
-https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=cu1126-megapak[View on <Docker Hub>]
+https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=cu126-megapak[View on <Docker Hub>]
 
 
 **MEGAPAK** uses the same base mechanism as the `slim` images. The key differences are:
@@ -46,7 +46,7 @@ docker run -it --rm \
   -v "$(pwd)"/storage-user/output:/root/ComfyUI/output \
   -v "$(pwd)"/storage-user/workflows:/root/ComfyUI/user/default/workflows \
   -e CLI_ARGS="" \
-  yanwk/comfyui-boot:cu1126-megapak
+  yanwk/comfyui-boot:cu126-megapak
 ----
 
 ### Run with Podman
@@ -75,7 +75,7 @@ podman run -it --rm \
   -v "$(pwd)"/storage-user/output:/root/ComfyUI/output \
   -v "$(pwd)"/storage-user/workflows:/root/ComfyUI/user/default/workflows \
   -e CLI_ARGS="" \
-  docker.io/yanwk/comfyui-boot:cu1126-megapak
+  docker.io/yanwk/comfyui-boot:cu126-megapak
 ----
 
 
