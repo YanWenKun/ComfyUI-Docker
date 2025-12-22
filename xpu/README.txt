@@ -38,7 +38,7 @@ podman run -it --rm \
   -v "$(pwd)"/storage-user/input:/root/ComfyUI/input \
   -v "$(pwd)"/storage-user/output:/root/ComfyUI/output \
   -v "$(pwd)"/storage-user/workflows:/root/ComfyUI/user/default/workflows \
-  -e CLI_ARGS="--disable-smart-memory --async-offload" \
+  -e CLI_ARGS="--enable-manager --disable-smart-memory --async-offload" \
   yanwk/comfyui-boot:xpu
 ====
 
