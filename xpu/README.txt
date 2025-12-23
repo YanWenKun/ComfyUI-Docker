@@ -73,6 +73,7 @@ Time on generating one 1024x1024px image (pre-warmed, only infer time)
 * Flux1 schnell (4-step): GOOD (8s)
 * Flux1 dev fp8 (20-step): GOOD (35s)
 * Flux1 Krea dev (20-step): OK (46s)
+* Z-Image Turbo (9-step): GOOD (11s)
 
 * Hunyuan3D 2.0 (Comfy Repackaged): 'Non-uniform work-groups are not supported by the target device'
 * StableZero123: 'Non-uniform work-groups are not supported by the target device'
