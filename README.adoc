@@ -100,6 +100,14 @@ The `megapak` images are all-in-one bundles, including development kits and doze
 * link:cu128-megapak/README.adoc[`cu128-megapak`]
 ** CUDA 12.8, Python 3.12, GCC 14
 
+* link:cu128-megapak-pt28/README.adoc[`cu128-megapak-pt28`] ⭐
+** CUDA 12.8, Python 3.12, GCC 11, PyTorch 2.8
+** Better compatibility (e.g. for SageAttention).
+
+* link:cu130-megapak/README.adoc[`cu130-megapak`]
+** CUDA 13.0, Python 3.13 (with GIL), GCC 15, No xFormers
+** Not as fully equipped as cu128 images.
+
 ### Testing
 
 * link:nightly/README.adoc[`nightly`]

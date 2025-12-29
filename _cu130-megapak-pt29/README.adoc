@@ -1,0 +1,236 @@
+# MEGAPAK image for ComfyUI
+
+**__Using PyTorch 2.8 and CUDA 12.8__**
+
+image::../docs/concept-v6-megapak.svg["Concept Design"]
+
+image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-cu128-megapak-pt28.yml/badge.svg["GitHub Workflow Status",link="https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-cu128-megapak-pt28.yml"]
+
+https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=cu128-megapak-pt28[View on <Docker Hub>]
+
+
+**MEGAPAK** uses the same base mechanism as the `slim` images. The key differences are:
+
+* Includes 40+ custom nodes. See link:./builder-scripts/preload-cache.sh[the full list].
+* Includes CUDA development kit for compiling PyTorch C++ extensions, `.cu` files, etc.
+* Includes performance optimization libraries such as Nunchaku and SageAttention (powerful but may have compatibility issues).
+* Includes additional tools and dependencies.
+
+What's special about this `cu128-megapak-pt28` image:
+
+* Pinned to PyTorch 2.8.0 and CUDA 12.8.
+
+* Pre-installed:
+** SageAttention 2.2.0
+** SpargeAttention
+** FlashAttention 2.8.2
+** Nunchaku
+
+* With:
+** Python 3.12
+** GCC 11
+** glibc 2.38 (from openSUSE Leap 15.6)
+
+
+## Usage
+
+Please successfully run the `slim` image before attempting the `megapak` image. The prerequisites/setup sections are omitted from this document.
+
+### Run with Docker
+
+[source,sh]
+----
+mkdir -p \
+  storage \
+  storage-models/models \
+  storage-models/hf-hub \
+  storage-models/torch-hub \
+  storage-user/input \
+  storage-user/output \
+  storage-user/workflows
+
+docker run -it --rm \
+  --name comfyui-megapak \
+  --runtime nvidia \
+  --gpus all \
+  -p 8188:8188 \
+  -v "$(pwd)"/storage:/root \
+  -v "$(pwd)"/storage-models/models:/root/ComfyUI/models \
+  -v "$(pwd)"/storage-models/hf-hub:/root/.cache/huggingface/hub \
+  -v "$(pwd)"/storage-models/torch-hub:/root/.cache/torch/hub \
+  -v "$(pwd)"/storage-user/input:/root/ComfyUI/input \
+  -v "$(pwd)"/storage-user/output:/root/ComfyUI/output \
+  -v "$(pwd)"/storage-user/workflows:/root/ComfyUI/user/default/workflows \
+  -e CLI_ARGS="--disable-xformers" \
+  yanwk/comfyui-boot:cu128-megapak-pt28
+----
+
+Note the `--disable-xformers` in `CLI_ARGS`. xFormers may cause compatibility issues on Blackwell GPUs.
+
+### Run with Podman
+
+[source,bash]
+----
+mkdir -p \
+  storage \
+  storage-models/models \
+  storage-models/hf-hub \
+  storage-models/torch-hub \
+  storage-user/input \
+  storage-user/output \
+  storage-user/workflows
+
+podman run -it --rm \
+  --name comfyui-megapak \
+  --device nvidia.com/gpu=all \
+  --security-opt label=disable \
+  -p 8188:8188 \
+  -v "$(pwd)"/storage:/root \
+  -v "$(pwd)"/storage-models/models:/root/ComfyUI/models \
+  -v "$(pwd)"/storage-models/hf-hub:/root/.cache/huggingface/hub \
+  -v "$(pwd)"/storage-models/torch-hub:/root/.cache/torch/hub \
+  -v "$(pwd)"/storage-user/input:/root/ComfyUI/input \
+  -v "$(pwd)"/storage-user/output:/root/ComfyUI/output \
+  -v "$(pwd)"/storage-user/workflows:/root/ComfyUI/user/default/workflows \
+  -e CLI_ARGS="--disable-xformers" \
+  docker.io/yanwk/comfyui-boot:cu128-megapak-pt28
+----
+
+Note the `--disable-xformers` in `CLI_ARGS`. xFormers may cause compatibility issues on Blackwell GPUs.
+
+[[cli-args]]
+## CLI_ARGS - Attention Selection
+
+[%autowidth,cols=2]
+|===
+|args |description
+
+|--use-sage-attention
+|Use SageAttention. Keep current config for xFormers.
+
+|--use-flash-attention
+|Use FlashAttention. Keep current config for xFormers.
+
+|--use-pytorch-cross-attention
+|Use PyTorch's built-in cross-attention. Disable xFormers.
+
+|===
+
+* Only one attention implementation can be selected at a time.
+If none is specified, xFormers is enabled by default.
+
+### Compatibility (only applies to this image)
+
+[cols="1,1,1,1,1,1,1", options="header"]
+|===
+| GPU Architecture
+| Blackwell | Hopper | Ada Lovelace | Ampere | Turing | Volta
+
+| Example GPU
+| RTX 5090 | H100 | RTX 4090 | RTX 3090 
+| RTX 2080 +
+GTX 1660 
+| TITAN V
+
+| SageAttention
+| ❌ | ❓ | ✔️ | ✔️ | ❌ | ❌
+
+| FlashAttention
+| ✔️ | ✔️ | ✔️ | ✔️ | ❌ | ❌
+
+| xFormers
+| ❌ | ✔️ | ✔️ | ✔️ | ✔️ | ❌
+
+| PyTorch Native
+| ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️
+
+|===
+
+* SageAttention may not work on Hopper GPUs.
+
+* For Blackwell GPUs, you may want to use a combination like `--use-flash-attention --disable-xformers`.
+
+
+## CLI_ARGS - Frequently Used
+
+[%autowidth,cols=2]
+|===
+|args |description
+
+|--disable-xformers
+|Disable xFormers. Enabling xFormers can cause 
+https://github.com/YanWenKun/ComfyUI-Docker/issues/128[issues] 
+on Blackwell GPUs, but may be required for some video workflows (e.g. SVD).
+
+|--fast
+|Enable experimental optimizations.
+(e.g. 
+https://github.com/comfyanonymous/ComfyUI/commit/9953f22fce0ba899da0676a0b374e5d1f72bf259[float8_e4m3fn] 
+matrix multiplication on Ada Lovelace and later GPUs).
+Might lower image quality. +
+Turn it off if you want stability over speed.
+
+|--disable-smart-memory
+|Force ComfyUI to offload models from VRAM to RAM more frequently. Slows performance but reduce memory leaks.
+
+|--lowvram
+|Force ComfyUI to split the model (UNET) into parts to use less VRAM, at the cost of speed. Use only if your GPU has less than 6 GB of VRAM.
+
+|--novram
+|Use system RAM only, no VRAM at all. Very slow.
+
+|--cpu
+|Run on CPU. Very slow. Used for testing purposes.
+
+|===
+
+More `CLI_ARGS` available at ComyfyUI's
+https://github.com/comfyanonymous/ComfyUI/blob/master/comfy/cli_args.py[cli_args.py].
+
+
+[[env-vars]]
+## Environment Variables Reference
+
+[cols="2,2,3"]
+|===
+|Variable|Example Value|Memo
+
+|HTTP_PROXY +
+HTTPS_PROXY
+|http://localhost:1081 +
+http://localhost:1081
+|Set HTTP proxy. Works the same as `set-proxy.sh`.
+
+|PIP_INDEX_URL
+|'https://pypi.org/simple'
+|Set mirror site for Python Package Index.
+
+|HF_ENDPOINT
+|'https://huggingface.co'
+|Set mirror site for HuggingFace Hub.
+
+|HF_TOKEN
+|'hf_your_token'
+|Set HuggingFace Access Token.
+https://huggingface.co/settings/tokens[More info]
+
+|HF_XET_HIGH_PERFORMANCE
+|1
+|Enable HuggingFace Hub's high performance mode.
+Only make sense if you have >5Gbps and VERY STABLE connection (e.g. cloud server).
+https://huggingface.co/docs/huggingface_hub/main/en/package_reference/environment_variables#hfxethighperformance[More info]
+
+|TORCH_CUDA_ARCH_LIST
+|7.5 +
+or +
+'5.2+PTX;6.0;6.1+PTX;7.5;8.0;8.6;8.9+PTX'
+|Build target for PyTorch and its extensions.
+For most users, no setup is needed as it will be automatically selected on Linux.
+When needed, you only need to set one build target just for your GPU.
+https://arnon.dk/matching-sm-architectures-arch-and-gencode-for-various-nvidia-cards/[More info]
+
+|CMAKE_ARGS
+|'-DBUILD_opencv_world=ON -DWITH_CUDA=ON -DCUDA_FAST_MATH=ON -DWITH_CUBLAS=ON -DWITH_NVCUVID=ON'
+|Build options for CMAKE projects using CUDA.
+
+|===
