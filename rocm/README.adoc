@@ -46,7 +46,7 @@ https://github.com/YanWenKun/ComfyUI-Docker/pull/67[nhtua])__
 ** `-e HSA_OVERRIDE_GFX_VERSION=12.0.0 \`
 ** Check the https://rocm.docs.amd.com/en/latest/reference/gpu-arch-specs.html[AMD doc] to see if your GPU can use `12.0.1`.
 
-* For integrated graphics on CPU:
+* For integrated graphics on Ryzen CPU/APU:
 ** `-e HIP_VISIBLE_DEVICES=0 \`
 
 
