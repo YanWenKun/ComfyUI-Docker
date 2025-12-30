@@ -117,7 +117,9 @@ podman run -it --rm \
 If none is specified, xFormers is enabled by default.
 
 * For example, you may want to use one of these:
+** `--use-flash-attention`
 ** `--use-flash-attention --disable-xformers`
+** `--use-sage-attention`
 ** `--use-sage-attention --disable-xformers`
 ** `--use-pytorch-cross-attention`
 ** Leave empty (will use xFormers by default).
@@ -151,6 +153,9 @@ GTX 1660
 
 * SageAttention may not work on Hopper GPUs.
 
+* Note the 
+https://github.com/YanWenKun/ComfyUI-Docker/issues/128[compatibility issues]
+on Blackwell GPUs were fixed in this version. Now xFormers is enabled by default.
 
 ## CLI_ARGS - Frequently Used
 
@@ -159,9 +164,7 @@ GTX 1660
 |args |description
 
 |--disable-xformers
-|Disable xFormers. Note the 
-https://github.com/YanWenKun/ComfyUI-Docker/issues/128[compatibility issues]
-on Blackwell GPUs were fixed in this version. Now xFormers is enabled by default.
+|Disable xFormers.
 
 |--fast
 |Enable experimental optimizations.
