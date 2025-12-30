@@ -17,6 +17,7 @@ https://github.com/ltdrdata/was-node-suite-comfyui/raw/refs/heads/main/requireme
 https://github.com/kijai/ComfyUI-KJNodes/raw/refs/heads/main/requirements.txt
 https://github.com/jags111/efficiency-nodes-comfyui/raw/refs/heads/main/requirements.txt
 https://github.com/yolain/ComfyUI-Easy-Use/raw/refs/heads/main/requirements.txt
+https://github.com/lihaoyun6/ComfyUI-llama-cpp_vlm/raw/refs/heads/main/requirements.txt
 # Control
 https://github.com/ltdrdata/ComfyUI-Impact-Pack/raw/refs/heads/Main/requirements.txt
 https://github.com/ltdrdata/ComfyUI-Impact-Subpack/raw/refs/heads/main/requirements.txt

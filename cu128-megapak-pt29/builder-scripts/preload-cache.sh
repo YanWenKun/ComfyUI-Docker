@@ -78,6 +78,7 @@ gcs https://github.com/numz/ComfyUI-SeedVR2_VideoUpscaler.git
 gcs https://github.com/pythongosssss/ComfyUI-WD14-Tagger.git
 gcs https://github.com/SLAPaper/ComfyUI-Image-Selector.git
 gcs https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git
+gcs https://github.com/lihaoyun6/ComfyUI-llama-cpp_vlm.git
 
 # To be removed in future
 gcs https://github.com/cubiq/ComfyUI_essentials.git

@@ -249,6 +249,11 @@ https://github.com/YanWenKun/ComfyUI-Containerfiles/releases/download/sageattn2/
     && pip install \
 https://github.com/YanWenKun/ComfyUI-Containerfiles/releases/download/sageattn2/spas_sage_attn-0.1.0-cp312-cp312-linux_x86_64.whl
 
+# llama-cpp-python
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+https://github.com/JamePeng/llama-cpp-python/releases/download/v0.3.18-cu128-AVX2-linux-20251220/llama_cpp_python-0.3.18-cp312-cp312-linux_x86_64.whl
+
 ################################################################################
 # Bundle ComfyUI in the image
 
