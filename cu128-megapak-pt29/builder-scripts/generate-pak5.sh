@@ -31,6 +31,7 @@ https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite/raw/refs/heads/main/requ
 https://github.com/Fannovel16/ComfyUI-Frame-Interpolation/raw/refs/heads/main/requirements-no-cupy.txt
 https://github.com/melMass/comfy_mtb/raw/refs/heads/main/requirements.txt
 https://github.com/FizzleDorf/ComfyUI_FizzNodes/raw/refs/heads/main/requirements.txt
+https://github.com/numz/ComfyUI-SeedVR2_VideoUpscaler/raw/refs/heads/main/requirements.txt
 # Pending Removal
 # cubiq is no longer developing ComfyUI custom nodes
 https://github.com/cubiq/ComfyUI_essentials/raw/refs/heads/main/requirements.txt

@@ -46,6 +46,7 @@ rembg
 requirements-parser
 rich
 rich-argparse
+rotary-embedding-torch
 safetensors
 segment-anything
 sentencepiece

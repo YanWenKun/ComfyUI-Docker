@@ -72,6 +72,7 @@ gcs https://github.com/FizzleDorf/ComfyUI_FizzNodes.git
 gcs https://github.com/Kosinkadink/ComfyUI-AnimateDiff-Evolved.git
 gcs https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git
 gcs https://github.com/melMass/comfy_mtb.git
+gcs https://github.com/numz/ComfyUI-SeedVR2_VideoUpscaler.git
 
 # More
 gcs https://github.com/pythongosssss/ComfyUI-WD14-Tagger.git
