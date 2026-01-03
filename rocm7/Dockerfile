@@ -132,8 +132,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 
 RUN df -h \
     && du -ah /root \
-    && rm -vrf /root/* \
-    && rm -vrf /root/.[^.]* /root/.??*
+    && find /root -mindepth 1 -maxdepth 1 -exec rm -rfv {} +
 
 COPY runner-scripts/.  /runner-scripts/
 
