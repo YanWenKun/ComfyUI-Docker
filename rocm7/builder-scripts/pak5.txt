@@ -34,7 +34,7 @@ sentencepiece
 soundfile
 spandrel
 SQLAlchemy
-svglib
+#svglib
 tokenizers
 toml
 torchsde
