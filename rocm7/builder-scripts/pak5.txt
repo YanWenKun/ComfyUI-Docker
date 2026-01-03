@@ -11,8 +11,8 @@ dill
 einops
 filelock
 fvcore
+gguf
 GitPython
-hydra-core
 imageio-ffmpeg
 importlib-metadata
 matrix-nio
@@ -31,10 +31,8 @@ rich
 safetensors
 segment-anything
 sentencepiece
-soundfile
 spandrel
 SQLAlchemy
-#svglib
 tokenizers
 toml
 torchsde

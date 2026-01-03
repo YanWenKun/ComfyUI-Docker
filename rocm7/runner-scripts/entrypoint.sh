@@ -50,9 +50,12 @@ echo "########################################"
 
 # Let .pyc files be stored in one place
 export PYTHONPYCACHEPREFIX="/root/.cache/pycache"
-# Let PIP install packages to /root/.local
-export PIP_USER=true
-# Add above to PATH
+
+# (Disabled) Let PIP install packages to /root/.local
+# Won't work since the base image uses virtualenv.
+#export PIP_USER=true
+
+# Still add this to PATH to stay compatible with user's existing volumes
 export PATH="${PATH}:/root/.local/bin"
 # Suppress [WARNING: Running pip as the 'root' user]
 export PIP_ROOT_USER_ACTION=ignore
