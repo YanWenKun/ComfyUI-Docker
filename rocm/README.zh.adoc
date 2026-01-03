@@ -6,86 +6,62 @@ image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-rocm.y
 
 https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=rocm[在 <Docker Hub> 上查看]
 
-## 注：构建镜像
+## 注：镜像区别
 
-本仓库会定期自动发布最新镜像到 Docker Hub，但由于 ROCm PyTorch 太大，GitHub Actions 经常报错“存储空间不足”，导致发布失败。
+`rocm7` 镜像基于 AMD 官方提供的
+https://hub.docker.com/r/rocm/pytorch[rocm/pytorch]
+镜像构建，当 ROCm 发布新版本时，`rocm7` 镜像会比 `rocm` 镜像更早更新（潜在的兼容性问题更少）。 +
+但 `rocm7` 预装的 Python 组件不如 `rocm` 镜像丰富，其对 ComfyUI 插件（自定义节点）的支持会略逊一筹。
 
-因此，下文中的运行命令会先在本地构建镜像（构建过程基本就是下载软件包，加上少量编译）。
-
-但如果当前
-https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=rocm[Docker Hub]
-上的 `rocm` 镜像发布日期较新，你也可以跳过“构建镜像”步骤以节约时间。
+如果不清楚如何选择，或者初次接触 ComfyUI，建议用 `rocm7` 镜像。
 
 ## 准备工作
 
-* 确保 Linux 宿主机上正确安装了
-https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/native_linux/install-radeon.html[Radeon software for Linux with ROCm]。
+* 确保宿主机已安装 AMD GPU 驱动（内核模块 `amdgpu`）。
 
-## 构建并运行
+* 检查你的 GPU/CPU 是否被 ROCm 支持：
+** https://rocm.docs.amd.com/projects/install-on-linux/en/latest/reference/system-requirements.html[支持的 GPU 列表]
+** https://rocm.docs.amd.com/projects/radeon-ryzen/en/latest/docs/compatibility/compatibilityryz/native_linux/native_linux_compatibility.html#gpu-support-matrix[支持的 Ryzen CPU (APU) 列表]
+** 虽然 RX 6000 系列（RDNA 2）不再被 ROCm 7 官方支持，但编译目标列表中仍有 `gfx1030`（应该是专业卡 W6800 仍被支持的缘故）。
+故 RDNA 2 用户仍可以尝试本镜像，但可能不会完美运行。
 
-### 必要环境变量
+* （可选）为防止 `HIP error: an illegal memory access was encountered` 错误，可在宿主机上设置内核参数 `amdgpu.cwsr_enable=0`，具体见
+https://github.com/YanWenKun/ComfyUI-Docker/issues/157[issue #157]
+（感谢 __SergeyFilippov__ ）。
+
+
+## 必要环境变量
 
 需根据 GPU 型号添加如下环境变量（感谢
 https://github.com/YanWenKun/ComfyUI-Docker/pull/67[nhtua]
 的 PR）：
 
-* **RDNA 2** :
-** `-e HSA_OVERRIDE_GFX_VERSION=10.3.0 \`
+* **RDNA 4** :
+** `-e HSA_OVERRIDE_GFX_VERSION=12.0.0 \`
+** 参看 https://rocm.docs.amd.com/en/latest/reference/gpu-arch-specs.html[AMD文档] ，部分型号可改用 `12.0.1`
+
+* Ryzen AI **Max** 300 系列 (**RDNA 3.5**):
+** `-e HSA_OVERRIDE_GFX_VERSION=11.5.1 \`
+** `-e HIP_VISIBLE_DEVICES=0 \`
+
+* Ryzen AI 300 系列 (**RDNA 3.5**):
+** `-e HSA_OVERRIDE_GFX_VERSION=11.5.0 \`
+** `-e HIP_VISIBLE_DEVICES=0 \`
 
 * **RDNA 3** :
 ** `-e HSA_OVERRIDE_GFX_VERSION=11.0.0 \`
 ** 参看 https://rocm.docs.amd.com/en/latest/reference/gpu-arch-specs.html[AMD文档] ，部分型号可改用 `11.0.1`
 
-* **RDNA 4** :
-** `-e HSA_OVERRIDE_GFX_VERSION=12.0.0 \`
-** 参看 https://rocm.docs.amd.com/en/latest/reference/gpu-arch-specs.html[AMD文档] ，部分型号可改用 `12.0.1`
+* **RDNA 2** :
+** `-e HSA_OVERRIDE_GFX_VERSION=10.3.0 \`
 
-* APU／集显再额外添加 :
-** `-e HIP_VISIBLE_DEVICES=0 \`
 
-### 可选环境变量
-
-注意以下调优均有一定代价，按需使用：
-
-* 强制 ComfyUI 更频繁地将模型权重从显存卸载到内存：
-
-** `-e CLI_ARGS="--disable-smart-memory" \`
-
-** 有效减少显存泄漏，代价是更慢、占用更多系统内存（
-https://github.com/comfyanonymous/ComfyUI/blob/master/comfy/cli_args.py[源码]
-）
-
-* 禁用显存碎片缓存机制：
-
-** `-e HSA_DISABLE_FRAGMENT_ALLOCATOR=1 \`
-
-** 缓解部分显存访问失败的问题，代价是更慢、占用更多显存（
-https://rocm.docs.amd.com/projects/ROCR-Runtime/en/latest/api-reference/environment_variables.html[文档] ；
-感谢
-https://github.com/YanWenKun/ComfyUI-Docker/issues/134[SergeyFilippov]
-的 Issue）
-
-* 启用可调优操作（操作自调优）：
-
-** `-e PYTORCH_TUNABLEOP_ENABLED=1 \`
-
-** 首次运行较慢，但之后运行更快（
-https://github.com/ROCm/pytorch/tree/main/aten/src/ATen/cuda/tunable[文档1] ，
-https://github.com/Comfy-Org/docs/blob/main/troubleshooting/overview.mdx#amd-gpu-issues[文档2] ；
-感谢
-https://github.com/YanWenKun/ComfyUI-Docker/pull/114[SergeyFilippov]
-的 PR）
+## 运行
 
 ### 使用 Docker
 
 [source,sh]
 ----
-# 构建镜像
-git clone https://github.com/YanWenKun/ComfyUI-Docker.git
-cd ComfyUI-Docker/rocm
-docker build . -t yanwk/comfyui-boot:rocm
-
-# 运行容器
 mkdir -p \
   storage \
   storage-models/models \
@@ -118,12 +94,6 @@ docker run -it --rm \
 
 [source,sh]
 ----
-# 构建镜像
-git clone https://github.com/YanWenKun/ComfyUI-Docker.git
-cd ComfyUI-Docker/rocm
-podman build . -t yanwk/comfyui-boot:rocm
-
-# 运行容器
 mkdir -p \
   storage \
   storage-models/models \
@@ -149,78 +119,112 @@ podman run -it --rm \
   -v "$(pwd)"/storage-user/workflows:/root/ComfyUI/user/default/workflows \
   -e HSA_OVERRIDE_GFX_VERSION="" \
   -e CLI_ARGS="" \
-  yanwk/comfyui-boot:rocm
+  docker.io/yanwk/comfyui-boot:rocm
 ----
 
 启动完成后，访问 http://localhost:8188/
 
-[[hint]]
-## 如果你愿意折腾……
 
-（以下内容介绍另外的安装使用方式，与本镜像无关）
+## 可选环境变量
 
-使用由 AMD 构建的 ROCm PyTorch 镜像：
+注意以下调优均有一定代价，按需使用：
 
-https://hub.docker.com/r/rocm/pytorch
+* 强制 ComfyUI 更频繁地将模型权重从显存卸载到内存：
 
-这个镜像很大，但如果你运行容器遇到困难，可以尝试用这个镜像手动安装运行 ComfyUI。
-它已经安装好了最重要的 PyTorch，你只需要再安装少量 Python 包即可运行 ComfyUI。
+** `-e CLI_ARGS="--disable-smart-memory" \`
 
-[source,sh]
-----
-docker pull rocm/pytorch:rocm7.1.1_ubuntu24.04_py3.12_pytorch_release_2.9.1
+** 有效减少显存泄漏，代价是更慢、占用更多系统内存（
+https://github.com/comfyanonymous/ComfyUI/blob/master/comfy/cli_args.py[源码]
+）
 
-mkdir -p storage
+* 禁用显存碎片缓存机制：
 
-docker run -it --rm \
-  --name comfyui-rocm \
-  --device=/dev/kfd --device=/dev/dri \
-  --group-add=video --ipc=host --cap-add=SYS_PTRACE \
-  --security-opt seccomp=unconfined \
-  --security-opt label=disable \
-  -p 8188:8188 \
-  --user root \
-  --workdir /root/workdir \
-  -v "$(pwd)"/storage:/root/workdir \
-  rocm/pytorch:rocm7.1.1_ubuntu24.04_py3.12_pytorch_release_2.9.1 \
-  /bin/bash
+** `-e HSA_DISABLE_FRAGMENT_ALLOCATOR=1 \`
 
-git clone https://github.com/comfyanonymous/ComfyUI.git
+** 缓解部分显存访问失败的问题，代价是更慢、占用更多显存（
+https://rocm.docs.amd.com/projects/ROCR-Runtime/en/latest/api-reference/environment_variables.html[文档] ；
+感谢
+https://github.com/YanWenKun/ComfyUI-Docker/issues/134[SergeyFilippov]
+的 Issue）
 
-pip install -r ComfyUI/requirements.txt
-# 或使用 Conda:
-# conda install --yes --file ComfyUI/requirements.txt
+* 启用可调优操作（操作自调优）：
 
-python ComfyUI/main.py --listen --port 8188
-# 或使用 python3:
-# python3 ComfyUI/main.py --listen --port 8188
-----
+** `-e PYTORCH_TUNABLEOP_ENABLED=1 \`
 
-## 备注： Windows 用户
+** 首次运行较慢，但之后运行更快（
+https://github.com/ROCm/pytorch/tree/main/aten/src/ATen/cuda/tunable[文档1] ，
+https://github.com/Comfy-Org/docs/blob/main/troubleshooting/overview.mdx#amd-gpu-issues[文档2] ；
+感谢
+https://github.com/YanWenKun/ComfyUI-Docker/pull/114[SergeyFilippov]
+的 PR）
 
-（以下内容介绍另外的安装使用方式，与本镜像无关）
 
-WSL2 支持 ROCm 与 DirectML：
+// ## 如果你愿意折腾……
 
-* ROCm
+// （以下内容介绍另外的安装使用方式，与本镜像无关）
 
-** 如果你的 AMD GPU 在
-https://rocm.docs.amd.com/projects/radeon/en/latest/docs/compatibility/wsl/wsl_compatibility.html[兼容性列表]
-中，你可以在 WSL2 环境中安装
-https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/wsl/install-radeon.html[Radeon software]
-，也可以通过 Docker Desktop 使用
-<<hint, ROCm PyTorch 镜像>>。
+// 使用由 AMD 构建的 ROCm PyTorch 镜像：
 
-* DirectML
+// https://hub.docker.com/r/rocm/pytorch
 
-** DirectML 支持大多数 GPU（包括 AMD APU 与 Intel GPU）。
-该方法比纯 CPU 快，比 Linux 下的 ROCm 慢，且支持的 GPU 型号更多（甚至核显也能跑）。
+// 这个镜像很大，但如果你运行容器遇到困难，可以尝试用这个镜像手动安装运行 ComfyUI。
+// 它已经安装好了最重要的 PyTorch，你只需要再安装少量 Python 包即可运行 ComfyUI。
 
-** 见：
-link:../docs/wsl-directml.zh.adoc[在 WSL2 环境下通过 DirectML 运行 ComfyUI]。
+// [source,sh]
+// ----
+// docker pull rocm/pytorch:rocm7.1.1_ubuntu24.04_py3.12_pytorch_release_2.9.1
 
-* ZLUDA
+// mkdir -p storage
 
-** 这里 ZLUDA 不是跑在 WSL2 上，而是 Windows 原生运行。ZLUDA 能“翻译”CUDA 指令给 AMD GPU 运行。
-这里不写详细了，因为老方法很可能一更新就不能用了，还请搜索教程。
-但还是提一点建议，先试着跑 SD-WebUI，这个起手要容易不少。
+// docker run -it --rm \
+//   --name comfyui-rocm \
+//   --device=/dev/kfd --device=/dev/dri \
+//   --group-add=video --ipc=host --cap-add=SYS_PTRACE \
+//   --security-opt seccomp=unconfined \
+//   --security-opt label=disable \
+//   -p 8188:8188 \
+//   --user root \
+//   --workdir /root/workdir \
+//   -v "$(pwd)"/storage:/root/workdir \
+//   rocm/pytorch:rocm7.1.1_ubuntu24.04_py3.12_pytorch_release_2.9.1 \
+//   /bin/bash
+
+// git clone https://github.com/comfyanonymous/ComfyUI.git
+
+// pip install -r ComfyUI/requirements.txt
+// # 或使用 Conda:
+// # conda install --yes --file ComfyUI/requirements.txt
+
+// python ComfyUI/main.py --listen --port 8188
+// # 或使用 python3:
+// # python3 ComfyUI/main.py --listen --port 8188
+// ----
+
+// ## 备注： Windows 用户
+
+// （以下内容介绍另外的安装使用方式，与本镜像无关）
+
+// WSL2 支持 ROCm 与 DirectML：
+
+// * ROCm
+
+// ** 如果你的 AMD GPU 在
+// https://rocm.docs.amd.com/projects/radeon/en/latest/docs/compatibility/wsl/wsl_compatibility.html[兼容性列表]
+// 中，你可以在 WSL2 环境中安装
+// https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/wsl/install-radeon.html[Radeon software]
+// ，也可以通过 Docker Desktop 使用
+// <<hint, ROCm PyTorch 镜像>>。
+
+// * DirectML
+
+// ** DirectML 支持大多数 GPU（包括 AMD APU 与 Intel GPU）。
+// 该方法比纯 CPU 快，比 Linux 下的 ROCm 慢，且支持的 GPU 型号更多（甚至核显也能跑）。
+
+// ** 见：
+// link:../docs/wsl-directml.zh.adoc[在 WSL2 环境下通过 DirectML 运行 ComfyUI]。
+
+// * ZLUDA
+
+// ** 这里 ZLUDA 不是跑在 WSL2 上，而是 Windows 原生运行。ZLUDA 能“翻译”CUDA 指令给 AMD GPU 运行。
+// 这里不写详细了，因为老方法很可能一更新就不能用了，还请搜索教程。
+// 但还是提一点建议，先试着跑 SD-WebUI，这个起手要容易不少。

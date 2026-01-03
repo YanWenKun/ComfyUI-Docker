@@ -10,12 +10,12 @@ TIP: This image is using the latest ROCm 7, which is only recommended for Radeon
 
 TIP: If you are using RX 7000 series (RDNA 3) GPU, you may want to use the
 link:../rocm6/README.adoc[`rocm6`]
-image for more stable experience.
+image for a more stable experience.
 
 
 ## Prequisites
 
-* Make sure AMD GPU driver (Kernel module `amdgpu`) is installed on your host system.
+* Make sure AMD GPU driver (kernel module `amdgpu`) is installed on your host system.
 
 * Check if your GPU/CPU is supported by ROCm:
 ** https://rocm.docs.amd.com/projects/install-on-linux/en/latest/reference/system-requirements.html[Supported GPU list]
@@ -23,6 +23,10 @@ image for more stable experience.
 
 ** Although RX 6000 series (RDNA 2) is not officially supported by ROCm 7, it is still on the build targets list (RDNA 2 PRO GPUs such as W6800 are still supported by ROCm 7).
 You can try it out, but no guarantee it will work properly.
+
+* (Optional) To prevent `HIP error: an illegal memory access was encountered`, you may want to set your kernel parameter `amdgpu.cwsr_enable=0` on your host system, as described in
+https://github.com/YanWenKun/ComfyUI-Docker/issues/157[issue #157]
+__(Thanks to SergeyFilippov)__.
 
 
 ## Essential Environment Variables

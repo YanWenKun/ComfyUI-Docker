@@ -3,9 +3,10 @@
 # A runtime environment for https://github.com/comfyanonymous/ComfyUI
 # With ROCm 7 for AMD GPU.
 #
-# Using Python 3.12
-# Using GCC 13 (from Ubuntu 24.04)
-# Using glibc 2.39 (from Ubuntu 24.04)
+# Using default components from Ubuntu 24.04:
+# * Python 3.12
+# * GCC 13
+# * glibc 2.39
 #
 # The container will be running in root.
 ################################################################################
@@ -14,7 +15,7 @@ FROM rocm/pytorch:rocm7.1.1_ubuntu24.04_py3.12_pytorch_release_2.9.1
 
 ################################################################################
 # Note the base image have already done:
-# 1. Install Python 3.12 from PPA/deadsnakes.
+# 1. Install Python 3.12 from Ubuntu repository (PPA/deadsnakes was added but not used).
 # 2. Create virtual environment in /opt/venv with Python 3.12.
 # 3. Configure PATH to include /opt/venv/bin as first entry.
 #    So there is no need to run `. /opt/venv/bin/activate` afterwards.

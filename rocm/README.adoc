@@ -15,39 +15,57 @@ https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=rocm[View on <Docker Hub>]
 // https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=rocm[Docker Hub]
 // is recently built.
 
-TIP: This image is using the latest ROCm 7, which is in 
-https://rocm.docs.amd.com/projects/radeon-ryzen/en/latest/[preview stage].
-You may want to use the
+TIP: This image is using the latest ROCm 7, which is only recommended for Radeon RX 9000 series (RDNA 4) and Ryzen AI 300 series (RDNA 3.5) users.
+
+TIP: If you are using RX 7000 series (RDNA 3) GPU, you may want to use the
 link:../rocm6/README.adoc[`rocm6`]
-image for more stable experience.
+image for a more stable experience.
+
+TIP: The difference between `rocm` and `rocm7` images is that `rocm7` is built on
+https://hub.docker.com/r/rocm/pytorch[rocm/pytorch]
+image provided by AMD, which will update earlier than `rocm` when new ROCm version is released.
+
 
 ## Prequisites
 
-* Make sure ROCm Software Stack is installed on your Linux host:
+* Make sure AMD GPU driver (kernel module `amdgpu`) is installed on your host system.
 
-** https://rocm.docs.amd.com/projects/radeon-ryzen/en/latest/docs/install/installrad/native_linux/install-radeon.html[For Radeon (discrete GPU)].
+* Check if your GPU/CPU is supported by ROCm:
+** https://rocm.docs.amd.com/projects/install-on-linux/en/latest/reference/system-requirements.html[Supported GPU list]
+** https://rocm.docs.amd.com/projects/radeon-ryzen/en/latest/docs/compatibility/compatibilityryz/native_linux/native_linux_compatibility.html#gpu-support-matrix[Supported Ryzen CPU (APU) list]
 
-** https://rocm.docs.amd.com/projects/radeon-ryzen/en/latest/docs/install/installryz/native_linux/install-ryzen.html[For Ryzen (APU)].
+** Although RX 6000 series (RDNA 2) is not officially supported by ROCm 7, it is still on the build targets list (RDNA 2 PRO GPUs such as W6800 are still supported by ROCm 7).
+You can try it out, but no guarantee it will work properly.
+
+* (Optional) To prevent `HIP error: an illegal memory access was encountered`, you may want to set your kernel parameter `amdgpu.cwsr_enable=0` on your host system, as described in
+https://github.com/YanWenKun/ComfyUI-Docker/issues/157[issue #157]
+__(Thanks to SergeyFilippov)__.
+
 
 ## Essential Environment Variables
 
-You need to add these configuration (especially for APUs) into the command of `docker run` or `podman run` below.
+You need to add these configuration into the command of `docker run` or `podman run` below.
 __(Thanks to
 https://github.com/YanWenKun/ComfyUI-Docker/pull/67[nhtua])__
 
-* For RDNA 2 cards:
-** `-e HSA_OVERRIDE_GFX_VERSION=10.3.0 \`
-
-* For RDNA 3 cards:
-** `-e HSA_OVERRIDE_GFX_VERSION=11.0.0 \`
-** Check the https://rocm.docs.amd.com/en/latest/reference/gpu-arch-specs.html[AMD doc] to see if your GPU can use `11.0.1`.
-
-* For RDNA 4 cards:
+* For RDNA 4 GPUs:
 ** `-e HSA_OVERRIDE_GFX_VERSION=12.0.0 \`
 ** Check the https://rocm.docs.amd.com/en/latest/reference/gpu-arch-specs.html[AMD doc] to see if your GPU can use `12.0.1`.
 
-* For integrated graphics on Ryzen CPU/APU:
+* For Ryzen AI Max 300 Series (RDNA 3.5):
+** `-e HSA_OVERRIDE_GFX_VERSION=11.5.1 \`
 ** `-e HIP_VISIBLE_DEVICES=0 \`
+
+* For Ryzen AI 300 Series (RDNA 3.5):
+** `-e HSA_OVERRIDE_GFX_VERSION=11.5.0 \`
+** `-e HIP_VISIBLE_DEVICES=0 \`
+
+* For RDNA 3 GPUs:
+** `-e HSA_OVERRIDE_GFX_VERSION=11.0.0 \`
+** Check the https://rocm.docs.amd.com/en/latest/reference/gpu-arch-specs.html[AMD doc] to see if your GPU can use `11.0.1`.
+
+* For RDNA 2 GPUs:
+** `-e HSA_OVERRIDE_GFX_VERSION=10.3.0 \`
 
 
 ## Run

@@ -13,13 +13,18 @@ link:../rocm6/README.zh.adoc[`rocm6`]
 
 ## 准备工作
 
-* 确保宿主机已安装 AMD GPU 驱动（Kernel 模块 `amdgpu`）。
+* 确保宿主机已安装 AMD GPU 驱动（内核模块 `amdgpu`）。
 
 * 检查你的 GPU/CPU 是否被 ROCm 支持：
 ** https://rocm.docs.amd.com/projects/install-on-linux/en/latest/reference/system-requirements.html[支持的 GPU 列表]
 ** https://rocm.docs.amd.com/projects/radeon-ryzen/en/latest/docs/compatibility/compatibilityryz/native_linux/native_linux_compatibility.html#gpu-support-matrix[支持的 Ryzen CPU (APU) 列表]
 ** 虽然 RX 6000 系列（RDNA 2）不再被 ROCm 7 官方支持，但编译目标列表中仍有 `gfx1030`（应该是专业卡 W6800 仍被支持的缘故）。
 故 RDNA 2 用户仍可以尝试本镜像，但可能不会完美运行。
+
+* （可选）为防止 `HIP error: an illegal memory access was encountered` 错误，可在宿主机上设置内核参数 `amdgpu.cwsr_enable=0`，具体见
+https://github.com/YanWenKun/ComfyUI-Docker/issues/157[issue #157]
+（感谢 __SergeyFilippov__ ）。
+
 
 ## 必要环境变量
 
@@ -31,7 +36,7 @@ https://github.com/YanWenKun/ComfyUI-Docker/pull/67[nhtua]
 ** `-e HSA_OVERRIDE_GFX_VERSION=12.0.0 \`
 ** 参看 https://rocm.docs.amd.com/en/latest/reference/gpu-arch-specs.html[AMD文档] ，部分型号可改用 `12.0.1`
 
-* Ryzen AI Max 300 系列 (**RDNA 3.5**):
+* Ryzen AI **Max** 300 系列 (**RDNA 3.5**):
 ** `-e HSA_OVERRIDE_GFX_VERSION=11.5.1 \`
 ** `-e HIP_VISIBLE_DEVICES=0 \`
 
