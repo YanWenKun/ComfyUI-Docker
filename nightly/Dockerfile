@@ -23,7 +23,7 @@ ARG USING_GITHUB_ACTIONS=false
 
 ARG DEBIAN_FRONTEND=noninteractive
 
-SHELL ["/bin/bash", "-euo", "pipefail", "-c"]
+SHELL ["/usr/bin/bash", "-euo", "pipefail", "-c"]
 
 RUN --mount=type=cache,target=/var/cache/apt \
     apt-get update \
