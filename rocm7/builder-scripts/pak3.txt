@@ -1,0 +1,30 @@
+# 'compel lark' for smZNodes
+# 'torchdiffeq' for DepthFM
+# 'fairscale' for APISR
+accelerate
+compel
+diffusers
+fairscale
+ftfy
+huggingface-hub
+imageio
+joblib
+kornia
+lark
+matplotlib
+onnx
+opencv-contrib-python-headless
+pandas
+pilgram
+pillow
+pygit2
+python-ffmpeg
+regex
+scikit-build-core
+scikit-image
+scikit-learn
+scipy
+timm
+torchdiffeq
+torchmetrics
+transformers

@@ -1,0 +1,148 @@
+# Run ComfyUI with ROCm on AMD GPU
+
+English | 🀄 *link:README.zh.adoc[中文说明]*
+
+image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-rocm7.yml/badge.svg["GitHub Workflow Status",link="https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-rocm7.yml"]
+
+https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=rocm7[View on <Docker Hub>]
+
+TIP: This image is using the latest ROCm 7, which is only recommended for Radeon RX 9000 series (RDNA 4) and Ryzen AI 300 series (RDNA 3.5) users.
+
+TIP: If you are using RX 7000 series (RDNA 3) GPU, you may want to use the
+link:../rocm6/README.adoc[`rocm6`]
+image for more stable experience.
+
+
+## Prequisites
+
+* Make sure AMD GPU driver (Kernel module `amdgpu`) is installed on your host system.
+
+* Check if your GPU/CPU is supported by ROCm:
+** https://rocm.docs.amd.com/projects/install-on-linux/en/latest/reference/system-requirements.html[Supported GPU list]
+** https://rocm.docs.amd.com/projects/radeon-ryzen/en/latest/docs/compatibility/compatibilityryz/native_linux/native_linux_compatibility.html#gpu-support-matrix[Supported Ryzen CPU (APU) list]
+
+** Although RX 6000 series (RDNA 2) is not officially supported by ROCm 7, it is still on the build targets list (RDNA 2 PRO GPUs such as W6800 are still supported by ROCm 7).
+You can try it out, but no guarantee it will work properly.
+
+
+## Essential Environment Variables
+
+You need to add these configuration into the command of `docker run` or `podman run` below.
+__(Thanks to
+https://github.com/YanWenKun/ComfyUI-Docker/pull/67[nhtua])__
+
+* For RDNA 4 GPUs:
+** `-e HSA_OVERRIDE_GFX_VERSION=12.0.0 \`
+** Check the https://rocm.docs.amd.com/en/latest/reference/gpu-arch-specs.html[AMD doc] to see if your GPU can use `12.0.1`.
+
+* For Ryzen AI Max 300 Series (RDNA 3.5):
+** `-e HSA_OVERRIDE_GFX_VERSION=11.5.1 \`
+** `-e HIP_VISIBLE_DEVICES=0 \`
+
+* For Ryzen AI 300 Series (RDNA 3.5):
+** `-e HSA_OVERRIDE_GFX_VERSION=11.5.0 \`
+** `-e HIP_VISIBLE_DEVICES=0 \`
+
+* For RDNA 3 GPUs:
+** `-e HSA_OVERRIDE_GFX_VERSION=11.0.0 \`
+** Check the https://rocm.docs.amd.com/en/latest/reference/gpu-arch-specs.html[AMD doc] to see if your GPU can use `11.0.1`.
+
+* For RDNA 2 GPUs:
+** `-e HSA_OVERRIDE_GFX_VERSION=10.3.0 \`
+
+
+## Run
+
+### Using Docker
+
+[source,sh]
+----
+mkdir -p \
+  storage \
+  storage-models/models \
+  storage-models/hf-hub \
+  storage-models/torch-hub \
+  storage-user/input \
+  storage-user/output \
+  storage-user/workflows
+
+docker run -it --rm \
+  --name comfyui-rocm \
+  --device=/dev/kfd --device=/dev/dri \
+  --group-add=video --group-add=render \
+  --ipc=host --cap-add=SYS_PTRACE \
+  --security-opt seccomp=unconfined \
+  --security-opt label=disable \
+  -p 8188:8188 \
+  -v "$(pwd)"/storage:/root \
+  -v "$(pwd)"/storage-models/models:/root/ComfyUI/models \
+  -v "$(pwd)"/storage-models/hf-hub:/root/.cache/huggingface/hub \
+  -v "$(pwd)"/storage-models/torch-hub:/root/.cache/torch/hub \
+  -v "$(pwd)"/storage-user/input:/root/ComfyUI/input \
+  -v "$(pwd)"/storage-user/output:/root/ComfyUI/output \
+  -v "$(pwd)"/storage-user/workflows:/root/ComfyUI/user/default/workflows \
+  -e HSA_OVERRIDE_GFX_VERSION="" \
+  -e CLI_ARGS="" \
+  yanwk/comfyui-boot:rocm
+----
+
+### Using Podman
+
+[source,sh]
+----
+mkdir -p \
+  storage \
+  storage-models/models \
+  storage-models/hf-hub \
+  storage-models/torch-hub \
+  storage-user/input \
+  storage-user/output \
+  storage-user/workflows
+
+podman run -it --rm \
+  --name comfyui-rocm \
+  --device=/dev/kfd --device=/dev/dri \
+  --group-add=video --group-add=render \
+  --ipc=host --cap-add=SYS_PTRACE \
+  --security-opt seccomp=unconfined \
+  --security-opt label=disable \
+  -p 8188:8188 \
+  -v "$(pwd)"/storage:/root \
+  -v "$(pwd)"/storage-models/models:/root/ComfyUI/models \
+  -v "$(pwd)"/storage-models/hf-hub:/root/.cache/huggingface/hub \
+  -v "$(pwd)"/storage-models/torch-hub:/root/.cache/torch/hub \
+  -v "$(pwd)"/storage-user/input:/root/ComfyUI/input \
+  -v "$(pwd)"/storage-user/output:/root/ComfyUI/output \
+  -v "$(pwd)"/storage-user/workflows:/root/ComfyUI/user/default/workflows \
+  -e HSA_OVERRIDE_GFX_VERSION="" \
+  -e CLI_ARGS="" \
+  docker.io/yanwk/comfyui-boot:rocm
+----
+
+Once the app is loaded, visit http://localhost:8188/
+
+
+## Optional Environment Variables
+
+You may also want to add more environment variables:
+
+* Force ComfyUI to offload model weights from VRAM to RAM more frequently.
+Slows performance but reduce memory leaks
+(https://github.com/comfyanonymous/ComfyUI/blob/master/comfy/cli_args.py[Source]).
+
+** `-e CLI_ARGS="--disable-smart-memory" \`
+
+* Disable internal memory fragment caching (to mitigate memory faults.
+https://rocm.docs.amd.com/projects/ROCR-Runtime/en/latest/api-reference/environment_variables.html[Doc]).
+__(Thanks to
+https://github.com/YanWenKun/ComfyUI-Docker/issues/134[SergeyFilippov])__
+
+** `-e HSA_DISABLE_FRAGMENT_ALLOCATOR=1 \`
+
+* Enable tunable operations (slower first run, faster subsequent runs.
+https://github.com/ROCm/pytorch/tree/main/aten/src/ATen/cuda/tunable[Doc1],
+https://github.com/Comfy-Org/docs/blob/main/troubleshooting/overview.mdx#amd-gpu-issues[Doc2]).
+__(Thanks to
+https://github.com/YanWenKun/ComfyUI-Docker/pull/114[SergeyFilippov])__
+
+** `-e PYTORCH_TUNABLEOP_ENABLED=1 \`
