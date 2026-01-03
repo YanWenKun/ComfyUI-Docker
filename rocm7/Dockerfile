@@ -26,11 +26,7 @@ FROM rocm/pytorch:rocm7.1.1_ubuntu24.04_py3.12_pytorch_release_2.9.1
 
 LABEL maintainer="code@yanwk.fun"
 
-ARG USING_GITHUB_ACTIONS=false
-
 ARG DEBIAN_FRONTEND=noninteractive
-
-SHELL ["/bin/bash", "-euo", "pipefail", "-c"]
 
 ################################################################################
 # Clean cache files inherited from base image
@@ -131,15 +127,9 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         -r '/default-comfyui-bundle/ComfyUI/custom_nodes/ComfyUI-Manager/requirements.txt' \
     && pip list
 
-
 ################################################################################
-# Clean cache to avoid GitHub Actions "No space left on device"
-RUN --mount=type=cache,target=/root/.cache/pip \
-    if [ "${USING_GITHUB_ACTIONS}" = "true" ]; then \
-        rm -rf /root/.cache/pip/* ; \
-    fi
+# Finishing
 
-# Clean /root (nothing important)
 RUN df -h \
     && du -ah /root \
     && rm -vrf /root/* \
