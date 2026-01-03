@@ -48,18 +48,18 @@ jobs:
           sudo systemctl stop docker
 
           # create new data dir and copy current data (rsync preserves metadata)
-          sudo mkdir -p "$(NEW_ROOT)"
-          sudo rsync -aHAXx /var/lib/docker/ "$(NEW_ROOT)"/ || true
+          sudo mkdir -p "${NEW_ROOT}"
+          sudo rsync -aHAXx /var/lib/docker/ "${NEW_ROOT}"/ || true
 
           # configure Docker to use the new root
-          echo '{"data-root":"'"$(NEW_ROOT)"'"}' | sudo tee /etc/docker/daemon.json
+          echo '{"data-root":"'"${NEW_ROOT}"'"}' | sudo tee /etc/docker/daemon.json
 
           # start Docker back up
           sudo systemctl start docker
 
           # verify
           docker info --format '{{.DockerRootDir}}'
-          df -h "$(NEW_ROOT)"
+          df -h "${NEW_ROOT}"
 
       -
         name: Set up QEMU
