@@ -15,7 +15,7 @@ services:
     ports:
       - "8188:8188"
     volumes:
-      - "./storage:/root"
+      # - "./storage:/root"
       - "./storage-models/models:/root/ComfyUI/models"
       - "./storage-models/hf-hub:/root/.cache/huggingface/hub"
       - "./storage-models/torch-hub:/root/.cache/torch/hub"
