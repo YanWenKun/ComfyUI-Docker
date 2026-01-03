@@ -18,8 +18,9 @@ link:../rocm6/README.zh.adoc[`rocm6`]
 * 检查你的 GPU/CPU 是否被 ROCm 支持：
 ** https://rocm.docs.amd.com/projects/install-on-linux/en/latest/reference/system-requirements.html[支持的 GPU 列表]
 ** https://rocm.docs.amd.com/projects/radeon-ryzen/en/latest/docs/compatibility/compatibilityryz/native_linux/native_linux_compatibility.html#gpu-support-matrix[支持的 Ryzen CPU (APU) 列表]
-** 虽然 RX 6000 系列（RDNA 2）不再被 ROCm 7 官方支持，但编译目标列表中仍有 `gfx1030`（应该是专业卡 W6800 仍被支持的缘故）。
-故 RDNA 2 用户仍可以尝试本镜像，但可能不会完美运行。
+
+** RX 6000 系列可尝试运行，但不保证功能正常。
+*** RX 6000 系列不在 ROCm 7 的官方支持列表中，但 RDNA 2 专业卡（如 W6800）仍被 ROCm 7 支持，它们的编译目标均为 `gfx1030` ，故仍有尝试价值。
 
 * （可选）为防止 `HIP error: an illegal memory access was encountered` 错误，可在宿主机上设置内核参数 `amdgpu.cwsr_enable=0`，具体见
 https://github.com/YanWenKun/ComfyUI-Docker/issues/157[issue #157]
@@ -59,7 +60,7 @@ https://github.com/YanWenKun/ComfyUI-Docker/pull/67[nhtua]
 [source,sh]
 ----
 mkdir -p \
-  storage \
+#  storage \
   storage-models/models \
   storage-models/hf-hub \
   storage-models/torch-hub \
@@ -67,15 +68,15 @@ mkdir -p \
   storage-user/output \
   storage-user/workflows
 
-docker run -it --rm \
-  --name comfyui-rocm \
+docker run \
+  --name comfyui-rocm7 \
   --device=/dev/kfd --device=/dev/dri \
   --group-add=video --group-add=render \
   --ipc=host --cap-add=SYS_PTRACE \
   --security-opt seccomp=unconfined \
   --security-opt label=disable \
   -p 8188:8188 \
-  -v "$(pwd)"/storage:/root \
+#  -v "$(pwd)"/storage:/root \
   -v "$(pwd)"/storage-models/models:/root/ComfyUI/models \
   -v "$(pwd)"/storage-models/hf-hub:/root/.cache/huggingface/hub \
   -v "$(pwd)"/storage-models/torch-hub:/root/.cache/torch/hub \
@@ -84,7 +85,7 @@ docker run -it --rm \
   -v "$(pwd)"/storage-user/workflows:/root/ComfyUI/user/default/workflows \
   -e HSA_OVERRIDE_GFX_VERSION="" \
   -e CLI_ARGS="" \
-  yanwk/comfyui-boot:rocm
+  yanwk/comfyui-boot:rocm7
 ----
 
 ### 使用 Podman
@@ -92,7 +93,7 @@ docker run -it --rm \
 [source,sh]
 ----
 mkdir -p \
-  storage \
+#  storage \
   storage-models/models \
   storage-models/hf-hub \
   storage-models/torch-hub \
@@ -100,15 +101,15 @@ mkdir -p \
   storage-user/output \
   storage-user/workflows
 
-podman run -it --rm \
-  --name comfyui-rocm \
+podman run \
+  --name comfyui-rocm7 \
   --device=/dev/kfd --device=/dev/dri \
   --group-add=video --group-add=render \
   --ipc=host --cap-add=SYS_PTRACE \
   --security-opt seccomp=unconfined \
   --security-opt label=disable \
   -p 8188:8188 \
-  -v "$(pwd)"/storage:/root \
+#  -v "$(pwd)"/storage:/root \
   -v "$(pwd)"/storage-models/models:/root/ComfyUI/models \
   -v "$(pwd)"/storage-models/hf-hub:/root/.cache/huggingface/hub \
   -v "$(pwd)"/storage-models/torch-hub:/root/.cache/torch/hub \
@@ -117,7 +118,7 @@ podman run -it --rm \
   -v "$(pwd)"/storage-user/workflows:/root/ComfyUI/user/default/workflows \
   -e HSA_OVERRIDE_GFX_VERSION="" \
   -e CLI_ARGS="" \
-  docker.io/yanwk/comfyui-boot:rocm
+  docker.io/yanwk/comfyui-boot:rocm7
 ----
 
 启动完成后，访问 http://localhost:8188/

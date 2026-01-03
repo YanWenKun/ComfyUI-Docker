@@ -22,8 +22,9 @@ https://hub.docker.com/r/rocm/pytorch[rocm/pytorch]
 * 检查你的 GPU/CPU 是否被 ROCm 支持：
 ** https://rocm.docs.amd.com/projects/install-on-linux/en/latest/reference/system-requirements.html[支持的 GPU 列表]
 ** https://rocm.docs.amd.com/projects/radeon-ryzen/en/latest/docs/compatibility/compatibilityryz/native_linux/native_linux_compatibility.html#gpu-support-matrix[支持的 Ryzen CPU (APU) 列表]
-** 虽然 RX 6000 系列（RDNA 2）不再被 ROCm 7 官方支持，但编译目标列表中仍有 `gfx1030`（应该是专业卡 W6800 仍被支持的缘故）。
-故 RDNA 2 用户仍可以尝试本镜像，但可能不会完美运行。
+
+** RX 6000 系列可尝试运行，但不保证功能正常。
+*** RX 6000 系列不在 ROCm 7 的官方支持列表中，但 RDNA 2 专业卡（如 W6800）仍被 ROCm 7 支持，它们的编译目标均为 `gfx1030` ，故仍有尝试价值。
 
 * （可选）为防止 `HIP error: an illegal memory access was encountered` 错误，可在宿主机上设置内核参数 `amdgpu.cwsr_enable=0`，具体见
 https://github.com/YanWenKun/ComfyUI-Docker/issues/157[issue #157]
