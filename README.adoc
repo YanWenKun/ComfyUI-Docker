@@ -100,25 +100,37 @@ The `megapak` images are all-in-one bundles, including development kits and doze
 * link:cu128-megapak/README.adoc[`cu128-megapak`]
 ** CUDA 12.8, Python 3.12, GCC 14
 
+* link:cu128-megapak-pt28/README.adoc[`cu128-megapak-pt28`]
+** CUDA 12.8, Python 3.12, GCC 11, PyTorch 2.8.0
+
+* link:cu128-megapak-pt29/README.adoc[`cu128-megapak-pt29`]
+** CUDA 12.8, Python 3.12, GCC 11, PyTorch 2.9.1
+
 ### Testing
 
 * link:nightly/README.adoc[`nightly`]
 ** Using development version of PyTorch. For testing latest features.
 
 
-## More Image Tags
-
-* link:rocm/README.adoc[`rocm`]
-
-** For AMD GPUs with ROCm 7 (latest version).
+## ROCm Image Tags
 
 * link:rocm6/README.adoc[`rocm6`]
 
 ** For AMD GPUs with ROCm 6 (stable version).
 
+* link:rocm7/README.adoc[`rocm7`]
+
+** For AMD GPUs with ROCm 7 (latest version).
+
+
+## XPU Image Tags
+
 * link:xpu/[`xpu`]
 
 ** For Intel GPUs with XPU.
+
+
+## More Image Tags
 
 * link:cpu/[`cpu`]
 
@@ -127,6 +139,7 @@ The `megapak` images are all-in-one bundles, including development kits and doze
 * link:archived/[archived]
 
 ** Archived Dockerfiles of retired image tags.
+
 
 ## License
 
