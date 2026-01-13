@@ -19,17 +19,23 @@ jobs:
     environment: Publish to Docker Hub
     runs-on: ubuntu-latest
     steps:
-      -
-        name: Maximize build disk space
-        uses: easimon/maximize-build-space@master
-        with:
-          overprovision-lvm: 'true'
-          remove-android: 'true'
-          remove-dotnet: 'true'
-          remove-haskell: 'true'
-          remove-codeql: 'true'
-          remove-docker-images: 'true'
-          swap-size-mb: 512
+      - name: Move Docker data-root to /mnt
+        run: |
+          sudo systemctl stop docker
+
+          sudo mkdir -p /mnt/docker
+          sudo mkdir -p /etc/docker
+
+          cat /etc/docker/daemon.json || true
+
+          sudo tee /etc/docker/daemon.json > /dev/null <<'EOF'
+          {
+            "data-root": "/mnt/docker"
+          }
+          EOF
+
+          sudo systemctl restart docker
+          docker info | grep "Docker Root Dir"
       -
         name: Get current date
         id: date
