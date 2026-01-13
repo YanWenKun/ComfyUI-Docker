@@ -242,10 +242,10 @@ https://github.com/nunchaku-tech/nunchaku/releases/download/v1.1.0/nunchaku-1.1.
 https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.3.14/flash_attn-2.8.2+cu128torch2.8-cp312-cp312-linux_x86_64.whl \
     # SageAttention
     && pip install \
-https://github.com/YanWenKun/ComfyUI-Containerfiles/releases/download/sageattn2/sageattention-2.2.0-cp312-cp312-linux_x86_64.whl \
+https://github.com/YanWenKun/ComfyUI-Containerfiles/releases/download/sageattn-py312-cu128-pt28/sageattention-2.2.0-cp312-cp312-linux_x86_64.whl \
     # SpargeAttention (Sparse-SageAttention)
     && pip install \
-https://github.com/YanWenKun/ComfyUI-Containerfiles/releases/download/sageattn2/spas_sage_attn-0.1.0-cp312-cp312-linux_x86_64.whl
+https://github.com/YanWenKun/ComfyUI-Containerfiles/releases/download/sageattn-py312-cu128-pt28/spas_sage_attn-0.1.0-cp312-cp312-linux_x86_64.whl
 
 ################################################################################
 # Bundle ComfyUI in the image
