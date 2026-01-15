@@ -138,7 +138,7 @@ GTX 1660
 | TITAN V
 
 | SageAttention
-| ❌ | ❓ | ✔️ | ✔️ | ❌ | ❌
+| ✔️ | ❌ | ✔️ | ✔️ | ❌ | ❌
 
 | FlashAttention
 | ✔️ | ✔️ | ✔️ | ✔️ | ❌ | ❌
@@ -151,9 +151,7 @@ GTX 1660
 
 |===
 
-* SageAttention may not work on Hopper GPUs.
-
-* Note the 
+* Note the xFormers 
 https://github.com/YanWenKun/ComfyUI-Docker/issues/128[compatibility issues]
 on Blackwell GPUs were fixed in this version. Now xFormers is enabled by default.
 
