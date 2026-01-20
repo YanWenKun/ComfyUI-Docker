@@ -32,27 +32,63 @@ __(Thanks to SergeyFilippov)__.
 ## Essential Environment Variables
 
 You need to add these configuration into the command of `docker run` or `podman run` below.
+
+[cols="2,3,2", options="header"]
+|===
+| GPU Architecture | Configuration to add |  GPU Model
+
+.4+| RDNA 4 (gfx1201)
+.4+| `-e HSA_OVERRIDE_GFX_VERSION=12.0.1 \`
+| Radeon AI PRO R9700
+| Radeon RX 9070 XT
+| Radeon RX 9070
+| Radeon RX 9070 GRE
+
+.2+| RDNA 4 (gfx1200)
+.2+| `-e HSA_OVERRIDE_GFX_VERSION=12.0.0 \`
+| Radeon RX 9060 XT
+| Radeon RX 9060
+
+.3+| RDNA 3.5 (gfx1151)
+.3+| `-e HSA_OVERRIDE_GFX_VERSION=11.5.1 \` + 
+`-e HIP_VISIBLE_DEVICES=0 \`
+| Ryzen AI Max+ 395
+| Ryzen AI Max 390
+| Ryzen AI Max 385
+
+.3+| RDNA 3.5 (gfx1150)
+.3+| `-e HSA_OVERRIDE_GFX_VERSION=11.5.0 \` + 
+`-e HIP_VISIBLE_DEVICES=0 \`
+| Ryzen AI 9 HX 375
+| Ryzen AI 9 HX 370
+| Ryzen AI 9 365
+
+.4+| RDNA 3 (gfx1101)
+.4+| `-e HSA_OVERRIDE_GFX_VERSION=11.0.1 \`
+| Radeon PRO W7700
+| Radeon PRO V710
+| Radeon RX 7800 XT
+| Radeon RX 7700 XT
+
+.5+| RDNA 3 (gfx1100)
+.5+| `-e HSA_OVERRIDE_GFX_VERSION=11.0.0 \`
+| Radeon PRO W7900
+| Radeon PRO W7800
+| Radeon RX 7900 XTX
+| Radeon RX 7900 XT
+| Radeon RX 7900 GRE
+
+.2+| RDNA 2 (gfx1030)
+.2+| `-e HSA_OVERRIDE_GFX_VERSION=10.3.0 \`
+| Radeon PRO W6800
+| Radeon PRO V620
+
+|===
+
+Reference: 
+https://rocm.docs.amd.com/en/latest/reference/gpu-arch-specs.html[AMD GPU arch specs]
 __(Thanks to
 https://github.com/YanWenKun/ComfyUI-Docker/pull/67[nhtua])__
-
-* For RDNA 4 GPUs:
-** `-e HSA_OVERRIDE_GFX_VERSION=12.0.0 \`
-** Check the https://rocm.docs.amd.com/en/latest/reference/gpu-arch-specs.html[AMD doc] to see if your GPU can use `12.0.1`.
-
-* For Ryzen AI Max 300 Series (RDNA 3.5):
-** `-e HSA_OVERRIDE_GFX_VERSION=11.5.1 \`
-** `-e HIP_VISIBLE_DEVICES=0 \`
-
-* For Ryzen AI 300 Series (RDNA 3.5):
-** `-e HSA_OVERRIDE_GFX_VERSION=11.5.0 \`
-** `-e HIP_VISIBLE_DEVICES=0 \`
-
-* For RDNA 3 GPUs:
-** `-e HSA_OVERRIDE_GFX_VERSION=11.0.0 \`
-** Check the https://rocm.docs.amd.com/en/latest/reference/gpu-arch-specs.html[AMD doc] to see if your GPU can use `11.0.1`.
-
-* For RDNA 2 GPUs:
-** `-e HSA_OVERRIDE_GFX_VERSION=10.3.0 \`
 
 
 ## Run

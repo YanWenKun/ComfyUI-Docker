@@ -29,28 +29,65 @@ https://github.com/YanWenKun/ComfyUI-Docker/issues/157[issue #157]
 
 ## 必要环境变量
 
-需根据 GPU 型号添加如下环境变量（感谢
+需根据 GPU 型号，为容器配置如下环境变量：
+
+[cols="2,3,2", options="header"]
+|===
+| GPU 架构 | 需配置的环境变量 |  GPU 型号
+
+.4+| RDNA 4 (gfx1201)
+.4+| `-e HSA_OVERRIDE_GFX_VERSION=12.0.1 \`
+| Radeon AI PRO R9700
+| Radeon RX 9070 XT
+| Radeon RX 9070
+| Radeon RX 9070 GRE
+
+.2+| RDNA 4 (gfx1200)
+.2+| `-e HSA_OVERRIDE_GFX_VERSION=12.0.0 \`
+| Radeon RX 9060 XT
+| Radeon RX 9060
+
+.3+| RDNA 3.5 (gfx1151)
+.3+| `-e HSA_OVERRIDE_GFX_VERSION=11.5.1 \` + 
+`-e HIP_VISIBLE_DEVICES=0 \`
+| Ryzen AI Max+ 395
+| Ryzen AI Max 390
+| Ryzen AI Max 385
+
+.3+| RDNA 3.5 (gfx1150)
+.3+| `-e HSA_OVERRIDE_GFX_VERSION=11.5.0 \` + 
+`-e HIP_VISIBLE_DEVICES=0 \`
+| Ryzen AI 9 HX 375
+| Ryzen AI 9 HX 370
+| Ryzen AI 9 365
+
+.4+| RDNA 3 (gfx1101)
+.4+| `-e HSA_OVERRIDE_GFX_VERSION=11.0.1 \`
+| Radeon PRO W7700
+| Radeon PRO V710
+| Radeon RX 7800 XT
+| Radeon RX 7700 XT
+
+.5+| RDNA 3 (gfx1100)
+.5+| `-e HSA_OVERRIDE_GFX_VERSION=11.0.0 \`
+| Radeon PRO W7900
+| Radeon PRO W7800
+| Radeon RX 7900 XTX
+| Radeon RX 7900 XT
+| Radeon RX 7900 GRE
+
+.2+| RDNA 2 (gfx1030)
+.2+| `-e HSA_OVERRIDE_GFX_VERSION=10.3.0 \`
+| Radeon PRO W6800
+| Radeon PRO V620
+
+|===
+
+参考：
+https://rocm.docs.amd.com/en/latest/reference/gpu-arch-specs.html[AMD GPU 架构列表]
+（感谢
 https://github.com/YanWenKun/ComfyUI-Docker/pull/67[nhtua]
-的 PR）：
-
-* **RDNA 4** :
-** `-e HSA_OVERRIDE_GFX_VERSION=12.0.0 \`
-** 参看 https://rocm.docs.amd.com/en/latest/reference/gpu-arch-specs.html[AMD文档] ，部分型号可改用 `12.0.1`
-
-* Ryzen AI **Max** 300 系列 (**RDNA 3.5**):
-** `-e HSA_OVERRIDE_GFX_VERSION=11.5.1 \`
-** `-e HIP_VISIBLE_DEVICES=0 \`
-
-* Ryzen AI 300 系列 (**RDNA 3.5**):
-** `-e HSA_OVERRIDE_GFX_VERSION=11.5.0 \`
-** `-e HIP_VISIBLE_DEVICES=0 \`
-
-* **RDNA 3** :
-** `-e HSA_OVERRIDE_GFX_VERSION=11.0.0 \`
-** 参看 https://rocm.docs.amd.com/en/latest/reference/gpu-arch-specs.html[AMD文档] ，部分型号可改用 `11.0.1`
-
-* **RDNA 2** :
-** `-e HSA_OVERRIDE_GFX_VERSION=10.3.0 \`
+的 PR）
 
 
 ## 运行
