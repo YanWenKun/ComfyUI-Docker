@@ -30,7 +30,7 @@ security_level = weak
 EOF
 
 # Performance
-gcs https://github.com/welltop-cn/ComfyUI-TeaCache.git
+gcs https://github.com/welltop-cn/ComfyUI-TeaCache.git ComfyUI-TeaCache.disabled
 gcs https://github.com/city96/ComfyUI-GGUF.git
 
 # General
@@ -45,8 +45,8 @@ gcs https://github.com/cubiq/ComfyUI_IPAdapter_plus.git
 gcs https://github.com/cubiq/PuLID_ComfyUI.git
 gcs https://github.com/Fannovel16/comfyui_controlnet_aux.git
 gcs https://github.com/Kosinkadink/ComfyUI-Advanced-ControlNet.git
-gcs https://github.com/ltdrdata/ComfyUI-Impact-Pack.git
-gcs https://github.com/ltdrdata/ComfyUI-Impact-Subpack.git
+gcs https://github.com/ltdrdata/ComfyUI-Impact-Pack.git ComfyUI-Impact-Pack.disabled
+gcs https://github.com/ltdrdata/ComfyUI-Impact-Subpack.git ComfyUI-Impact-Subpack.disabled
 gcs https://github.com/ltdrdata/ComfyUI-Inspire-Pack.git
 
 # Video
