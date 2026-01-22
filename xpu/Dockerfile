@@ -44,10 +44,10 @@ x264 \
 x265 \
 default-fonts-cjk
 
-RUN --mount=type=cache,target=/var/cache/dnf \
-    dnf install -y \
-python3-opencv \
-python3-cairo
+# RUN --mount=type=cache,target=/var/cache/dnf \
+#     dnf install -y \
+# python3-opencv \
+# python3-cairo
 
 RUN --mount=type=cache,target=/var/cache/dnf \
     dnf install -y \
@@ -125,28 +125,40 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # Deps for ComfyUI & custom nodes
 COPY builder-scripts/.  /builder-scripts/
 
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install \
-        -r /builder-scripts/pak3.txt
+# Generate a version constraints file to pin PyTorch (prevent later installs from changing its version)
+RUN pip list --format=freeze \
+        | awk -F== 'BEGIN{want["torch"]=1;want["torchvision"]=1;want["torchaudio"]=1} $1 in want{print $1 "==" $2}' \
+        > /builder-scripts/constraints.txt \
+    && echo "Pinned PyTorch version:" \
+    && cat /builder-scripts/constraints.txt
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        -r /builder-scripts/pak5.txt
+        -r /builder-scripts/pak3.txt \
+        -c /builder-scripts/constraints.txt
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        -r /builder-scripts/pak5.txt \
+        -c /builder-scripts/constraints.txt
 
 # Temp fix for SentencePiece on CMAKE 4+
 ENV CMAKE_POLICY_VERSION_MINIMUM=3.5
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        -r /builder-scripts/pak7.txt
+        -r /builder-scripts/pak7.txt \
+        -c /builder-scripts/constraints.txt
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        -r /builder-scripts/pak9.txt
+        -r /builder-scripts/pak9.txt \
+        -c /builder-scripts/constraints.txt
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        -r /builder-scripts/pakA.txt
+        -r /builder-scripts/pakA.txt \
+        -c /builder-scripts/constraints.txt
 
 # Ensure deps match
 RUN --mount=type=cache,target=/root/.cache/pip \
@@ -164,6 +176,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         -r '/default-comfyui-bundle/ComfyUI/requirements.txt' \
         -r '/default-comfyui-bundle/ComfyUI/manager_requirements.txt' \
+        -c /builder-scripts/constraints.txt \
     && pip list
 
 ################################################################################

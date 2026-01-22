@@ -73,10 +73,10 @@ x264 \
 x265 \
 default-fonts-cjk
 
-RUN --mount=type=cache,target=/var/cache/dnf \
-    dnf install -y \
-python3-opencv \
-python3-cairo
+# RUN --mount=type=cache,target=/var/cache/dnf \
+#     dnf install -y \
+# python3-opencv \
+# python3-cairo
 
 RUN --mount=type=cache,target=/var/cache/dnf \
     dnf install -y \
@@ -155,13 +155,22 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # 安装 ComfyUI 及扩展所需依赖项
 COPY builder-scripts/.  /builder-scripts/
 
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install \
-        -r /builder-scripts/pak3.txt
+# 生成版本号约束文件，强制后续安装不得变更 PyTorch 版本
+RUN pip list --format=freeze \
+        | awk -F== 'BEGIN{want["torch"]=1;want["torchvision"]=1;want["torchaudio"]=1} $1 in want{print $1 "==" $2}' \
+        > /builder-scripts/constraints.txt \
+    && echo "Pinned PyTorch version:" \
+    && cat /builder-scripts/constraints.txt
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        -r /builder-scripts/pak5.txt
+        -r /builder-scripts/pak3.txt \
+        -c /builder-scripts/constraints.txt
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        -r /builder-scripts/pak5.txt \
+        -c /builder-scripts/constraints.txt
 
 # Temp fix for SentencePiece on CMAKE 4+
 # 临时修复：解决 CMAKE 4+ 编译 SentencePiece 报错，强制最低版本 3.5
@@ -169,18 +178,20 @@ ENV CMAKE_POLICY_VERSION_MINIMUM=3.5
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     if [ "${USING_GITHUB_ACTIONS}" = "false" ]; then \
-        pip install -r /builder-scripts/pak7-cn.txt ; \
+        pip install -r /builder-scripts/pak7-cn.txt -c /builder-scripts/constraints.txt ; \
     else \
-        pip install -r /builder-scripts/pak7.txt ; \
+        pip install -r /builder-scripts/pak7.txt -c /builder-scripts/constraints.txt ; \
     fi
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        -r /builder-scripts/pak9.txt
+        -r /builder-scripts/pak9.txt \
+        -c /builder-scripts/constraints.txt
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        -r /builder-scripts/pakA.txt
+        -r /builder-scripts/pakA.txt \
+        -c /builder-scripts/constraints.txt
 
 # 确保依赖项匹配
 RUN --mount=type=cache,target=/root/.cache/pip \
@@ -203,6 +214,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         -r '/default-comfyui-bundle/ComfyUI/requirements.txt' \
         -r '/default-comfyui-bundle/ComfyUI/manager_requirements.txt' \
+        -c /builder-scripts/constraints.txt \
     && pip list
 
 ################################################################################
