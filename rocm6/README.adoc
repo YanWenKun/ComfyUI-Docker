@@ -6,20 +6,13 @@ image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-rocm6.
 
 https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=rocm6[View on <Docker Hub>]
 
-## Note: Image Building
-
-This Docker image is often too big to build on GitHub Actions (throw "No space left on device" error).
-So the commands below contain the steps for building Docker image (basically downloading packages).
-
-You can skip those steps if the `rocm6` image on
-https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=rocm6[Docker Hub]
-is recently built.
-
 ## Prepare
 
-* Make sure
-https://rocm.docs.amd.com/projects/radeon-ryzen/en/docs-6.4.4/docs/install/installrad/native_linux/install-radeon.html[Radeon software for Linux with ROCm]
-is installed on your Linux host.
+* Make sure AMD GPU driver (kernel module `amdgpu`) is installed on your host system.
+
+* Check if your GPU/CPU is supported by ROCm 6:
+** https://rocm.docs.amd.com/projects/radeon-ryzen/en/docs-6.4.4/docs/compatibility/compatibilityrad/native_linux/native_linux_compatibility.html[Supported GPU list]
+
 
 ## Build & Run
 
@@ -53,12 +46,6 @@ https://github.com/YanWenKun/ComfyUI-Docker/pull/114[SergeyFilippov])
 .With Docker
 [source,sh]
 ----
-# Build the image
-git clone https://github.com/YanWenKun/ComfyUI-Docker.git
-cd ComfyUI-Docker/rocm6
-docker build . -t yanwk/comfyui-boot:rocm6
-
-# Run the container
 mkdir -p \
   storage \
   storage-models/models \
@@ -82,6 +69,7 @@ docker run -it --rm \
   -v "$(pwd)"/storage-user/input:/root/ComfyUI/input \
   -v "$(pwd)"/storage-user/output:/root/ComfyUI/output \
   -v "$(pwd)"/storage-user/workflows:/root/ComfyUI/user/default/workflows \
+  -e HSA_OVERRIDE_GFX_VERSION="" \
   -e CLI_ARGS="" \
   yanwk/comfyui-boot:rocm6
 ----
@@ -89,12 +77,6 @@ docker run -it --rm \
 .With Podman
 [source,sh]
 ----
-# Build the image
-git clone https://github.com/YanWenKun/ComfyUI-Docker.git
-cd ComfyUI-Docker/rocm6
-podman build . -t yanwk/comfyui-boot:rocm6
-
-# Run the container
 mkdir -p \
   storage \
   storage-models/models \
@@ -118,6 +100,7 @@ podman run -it --rm \
   -v "$(pwd)"/storage-user/input:/root/ComfyUI/input \
   -v "$(pwd)"/storage-user/output:/root/ComfyUI/output \
   -v "$(pwd)"/storage-user/workflows:/root/ComfyUI/user/default/workflows \
+  -e HSA_OVERRIDE_GFX_VERSION="" \
   -e CLI_ARGS="" \
   yanwk/comfyui-boot:rocm6
 ----

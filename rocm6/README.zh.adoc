@@ -6,20 +6,12 @@ image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-rocm6.
 
 https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=rocm6[在 <Docker Hub> 上查看]
 
-## 注：构建镜像
-
-本仓库会定期自动发布最新镜像到 Docker Hub，但由于 ROCm PyTorch 太大，GitHub Actions 经常报错“存储空间不足”，导致发布失败。
-
-因此，下文中的运行命令会先在本地构建镜像（构建过程基本就是下载软件包，加上少量编译）。
-
-但如果当前
-https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=rocm6[Docker Hub]
-上的 `rocm6` 镜像发布日期较新，你也可以跳过“构建镜像”步骤以节约时间。
-
 ## 准备工作
 
-* 确保 Linux 宿主机上正确安装了
-https://rocm.docs.amd.com/projects/radeon-ryzen/en/docs-6.4.4/docs/install/installrad/native_linux/install-radeon.html[Radeon software for Linux with ROCm]。
+* 确保宿主机已安装 AMD GPU 驱动（内核模块 `amdgpu`）。
+
+* 检查你的 GPU/CPU 是否被 ROCm 6 支持：
+** https://rocm.docs.amd.com/projects/radeon-ryzen/en/docs-6.4.4/docs/compatibility/compatibilityrad/native_linux/native_linux_compatibility.html[支持的 GPU 列表]
 
 ## 构建并运行
 
@@ -55,12 +47,6 @@ https://github.com/YanWenKun/ComfyUI-Docker/pull/114[SergeyFilippov]
 .使用 Docker
 [source,sh]
 ----
-# 构建镜像
-git clone https://github.com/YanWenKun/ComfyUI-Docker.git
-cd ComfyUI-Docker/rocm6
-docker build . -t yanwk/comfyui-boot:rocm6
-
-# 运行容器
 mkdir -p \
   storage \
   storage-models/models \
@@ -84,6 +70,7 @@ docker run -it --rm \
   -v "$(pwd)"/storage-user/input:/root/ComfyUI/input \
   -v "$(pwd)"/storage-user/output:/root/ComfyUI/output \
   -v "$(pwd)"/storage-user/workflows:/root/ComfyUI/user/default/workflows \
+  -e HSA_OVERRIDE_GFX_VERSION="" \
   -e CLI_ARGS="" \
   yanwk/comfyui-boot:rocm6
 ----
@@ -91,12 +78,6 @@ docker run -it --rm \
 .使用 Podman
 [source,sh]
 ----
-# 构建镜像
-git clone https://github.com/YanWenKun/ComfyUI-Docker.git
-cd ComfyUI-Docker/rocm6
-podman build . -t yanwk/comfyui-boot:rocm6
-
-# 运行容器
 mkdir -p \
   storage \
   storage-models/models \
@@ -120,6 +101,7 @@ podman run -it --rm \
   -v "$(pwd)"/storage-user/input:/root/ComfyUI/input \
   -v "$(pwd)"/storage-user/output:/root/ComfyUI/output \
   -v "$(pwd)"/storage-user/workflows:/root/ComfyUI/user/default/workflows \
+  -e HSA_OVERRIDE_GFX_VERSION="" \
   -e CLI_ARGS="" \
   yanwk/comfyui-boot:rocm6
 ----

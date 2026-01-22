@@ -20,14 +20,7 @@ image for a more stable experience.
 * Check if your GPU/CPU is supported by ROCm:
 ** https://rocm.docs.amd.com/projects/install-on-linux/en/latest/reference/system-requirements.html[Supported GPU list]
 ** https://rocm.docs.amd.com/projects/radeon-ryzen/en/latest/docs/compatibility/compatibilityryz/native_linux/native_linux_compatibility.html#gpu-support-matrix[Supported Ryzen CPU (APU) list]
-
-** RX 6000 series may work, but there is no guarantee. 
-*** They are not officially supported by ROCm 7. But RDNA 2 PRO GPUs (e.g. W6800) are supported. They share the same build target `gfx1030`.
-
-* (Optional) To prevent `HIP error: an illegal memory access was encountered`, you may want to set your kernel parameter `amdgpu.cwsr_enable=0` on your host system, as described in
-https://github.com/YanWenKun/ComfyUI-Docker/issues/157[issue #157]
-__(Thanks to SergeyFilippov)__.
-
+** Or follow the table below.
 
 ## Essential Environment Variables
 
@@ -84,6 +77,9 @@ You need to add these configuration into the command of `docker run` or `podman 
 | Radeon PRO V620
 
 |===
+
+* Radeon RX 6000 series may work, but there is no guarantee. 
+** They are not officially supported by ROCm 7. But PRO GPUs of RDNA 2 (W6800, V620) are supported. They share the same build target `gfx1030`.
 
 Reference: 
 https://rocm.docs.amd.com/en/latest/reference/gpu-arch-specs.html[AMD GPU arch specs]
