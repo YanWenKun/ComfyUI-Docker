@@ -15,7 +15,7 @@ on:
 
 jobs:
 
-  build-publish-cu126-megapak:
+  build-test-publish-cu126-megapak:
     environment: Publish to Docker Hub
     runs-on: ubuntu-latest
     steps:
@@ -50,13 +50,39 @@ jobs:
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       -
+        name: Build 'cu126-megapak'
+        uses: docker/build-push-action@v6
+        with:
+          context: ./cu126-megapak
+          file: ./cu126-megapak/Dockerfile
+          build-args: |
+            USING_GITHUB_ACTIONS=true
+          tags: |
+            yanwk/comfyui-boot:cu126-megapak
+            yanwk/comfyui-boot:cu126-megapak-${{ steps.date.outputs.date }}
+          load: true
+      - 
+        name: Show 'cu126-megapak' environment variables
+        run: |
+          docker run --rm \
+            --name show-env \
+            docker.io/yanwk/comfyui-boot:cu126-megapak \
+            env
+      - 
+        name: Test 'cu126-megapak'
+        run: |
+          docker run --rm \
+            --name comfyui-quick-test \
+            -e CLI_ARGS="--quick-test-for-ci --cpu" \
+            yanwk/comfyui-boot:cu126-megapak-${{ steps.date.outputs.date }}
+      -
         name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_ACCESSTOKEN }}
       -
-        name: Build and push 'cu126-megapak'
+        name: Push 'cu126-megapak'
         uses: docker/build-push-action@v6
         with:
           context: ./cu126-megapak

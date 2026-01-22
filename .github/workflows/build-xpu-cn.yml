@@ -15,21 +15,28 @@ on:
 
 jobs:
 
-  build-publish-xpu-cn:
+  build-test-publish-xpu-cn:
     environment: Publish to Docker Hub
     runs-on: ubuntu-latest
     steps:
       -
-        name: Maximize build disk space
-        uses: easimon/maximize-build-space@master
-        with:
-          overprovision-lvm: 'true'
-          remove-android: 'true'
-          remove-dotnet: 'true'
-          remove-haskell: 'true'
-          remove-codeql: 'true'
-          remove-docker-images: 'true'
-          swap-size-mb: 512
+        name: Move Docker data-root to /mnt
+        run: |
+          sudo systemctl stop docker
+
+          sudo mkdir -p /mnt/docker
+          sudo mkdir -p /etc/docker
+
+          cat /etc/docker/daemon.json || true
+
+          sudo tee /etc/docker/daemon.json > /dev/null <<'EOF'
+          {
+            "data-root": "/mnt/docker"
+          }
+          EOF
+
+          sudo systemctl restart docker
+          docker info | grep "Docker Root Dir"
       -
         name: Get current date
         id: date
@@ -44,13 +51,39 @@ jobs:
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       -
+        name: Build 'xpu-cn'
+        uses: docker/build-push-action@v6
+        with:
+          context: ./xpu-cn
+          file: ./xpu-cn/Dockerfile
+          build-args: |
+            USING_GITHUB_ACTIONS=true
+          tags: |
+            yanwk/comfyui-boot:xpu-cn
+            yanwk/comfyui-boot:xpu-cn-${{ steps.date.outputs.date }}
+          load: true
+      - 
+        name: Show 'xpu-cn' environment variables
+        run: |
+          docker run --rm \
+            --name show-env \
+            docker.io/yanwk/comfyui-boot:xpu-cn \
+            env
+      - 
+        name: Test 'xpu-cn'
+        run: |
+          docker run --rm \
+            --name comfyui-quick-test \
+            -e CLI_ARGS="--quick-test-for-ci --cpu" \
+            yanwk/comfyui-boot:xpu-cn-${{ steps.date.outputs.date }}
+      -
         name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_ACCESSTOKEN }}
       -
-        name: Build and Push 'xpu-cn'
+        name: Push 'xpu-cn'
         uses: docker/build-push-action@v6
         with:
           context: ./xpu-cn
