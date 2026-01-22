@@ -29,7 +29,7 @@ security_level = weak
 EOF
 
 # Performance
-gcs https://github.com/welltop-cn/ComfyUI-TeaCache.git
+gcs https://github.com/welltop-cn/ComfyUI-TeaCache.git ComfyUI-TeaCache.disabled
 gcs https://github.com/city96/ComfyUI-GGUF.git
 
 # Workspace

@@ -29,7 +29,7 @@ cd /default-comfyui-bundle/ComfyUI/custom_nodes
 
 # Performance
 gcs https://github.com/openvino-dev-samples/comfyui_openvino.git
-gcs https://github.com/welltop-cn/ComfyUI-TeaCache.git
+gcs https://github.com/welltop-cn/ComfyUI-TeaCache.git ComfyUI-TeaCache.disabled
 gcs https://github.com/city96/ComfyUI-GGUF.git
 
 # Workspace
