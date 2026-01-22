@@ -216,16 +216,26 @@ ${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
 # Deps for ComfyUI & custom nodes
 COPY builder-scripts/.  /builder-scripts/
 
+# Generate a version constraints file to pin PyTorch (prevent later installs from changing its version)
+RUN pip list --format=freeze \
+        | awk -F== 'BEGIN{want["torch"]=1;want["torchvision"]=1;want["torchaudio"]=1} $1 in want{print $1 "==" $2}' \
+        > /builder-scripts/constraints.txt \
+    && echo "Pinned PyTorch version:" \
+    && cat /builder-scripts/constraints.txt
+
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
+        -c /builder-scripts/constraints.txt \
         -r /builder-scripts/pak3.txt
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
+        -c /builder-scripts/constraints.txt \
         -r /builder-scripts/pak5.txt
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
+        -c /builder-scripts/constraints.txt \
         -r /builder-scripts/pak7.txt
 
 ################################################################################
@@ -238,6 +248,7 @@ RUN bash /builder-scripts/preload-cache.sh
 # Install deps (comfyui-frontend-package, etc) pair to the preloaded ComfyUI version
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
+        -c /builder-scripts/constraints.txt \
         -r '/default-comfyui-bundle/ComfyUI/requirements.txt' \
         -r '/default-comfyui-bundle/ComfyUI/custom_nodes/ComfyUI-Manager/requirements.txt' \
     && pip list
