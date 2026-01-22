@@ -101,10 +101,7 @@ echo "[INFO] 下载模型文件..."
 echo "########################################"
 
 # TAESD 模型（用于生成时预览）
-cd /default-comfyui-bundle/ComfyUI/models/vae
-
-# gh-proxy.org 屏蔽了 aria2，这里改用 curl 下载
-curl -LO 'https://gh-proxy.org/https://github.com/madebyollin/taesd/raw/refs/heads/main/taesdxl_decoder.pth'
-curl -LO 'https://gh-proxy.org/https://github.com/madebyollin/taesd/raw/refs/heads/main/taesd_decoder.pth'
-curl -LO 'https://gh-proxy.org/https://github.com/madebyollin/taesd/raw/refs/heads/main/taesd3_decoder.pth'
-curl -LO 'https://gh-proxy.org/https://github.com/madebyollin/taesd/raw/refs/heads/main/taef1_decoder.pth'
+cd /default-comfyui-bundle/ComfyUI/models/vae_approx
+gcs https://gh-proxy.org/https://github.com/madebyollin/taesd.git
+cp taesd/*.pth .
+rm -rf taesd

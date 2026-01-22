@@ -56,10 +56,7 @@ echo "########################################"
 echo "[INFO] Downloading Models..."
 echo "########################################"
 
-# VAE Models
-cd /default-comfyui-bundle/ComfyUI/models/vae
-
-aria2c 'https://github.com/madebyollin/taesd/raw/refs/heads/main/taesdxl_decoder.pth'
-aria2c 'https://github.com/madebyollin/taesd/raw/refs/heads/main/taesd_decoder.pth'
-aria2c 'https://github.com/madebyollin/taesd/raw/refs/heads/main/taesd3_decoder.pth'
-aria2c 'https://github.com/madebyollin/taesd/raw/refs/heads/main/taef1_decoder.pth'
+cd /default-comfyui-bundle/ComfyUI/models/vae_approx
+gcs https://github.com/madebyollin/taesd.git
+cp taesd/*.pth .
+rm -rf taesd
