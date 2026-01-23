@@ -36,6 +36,8 @@ jobs:
 
           sudo systemctl restart docker
           docker info | grep "Docker Root Dir"
+
+          df -h
       -
         name: Get current date
         id: date
