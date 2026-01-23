@@ -40,7 +40,7 @@ jobs:
         name: Move Docker data-root to WORKDIR
         run: |
           WORKDIR=$(pwd)
-          echo "PWD=${WORKDIR}"
+          echo "WORKDIR=${WORKDIR}"
 
           sudo systemctl stop docker
 
