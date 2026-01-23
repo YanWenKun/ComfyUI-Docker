@@ -49,7 +49,7 @@ cd /default-comfyui-bundle/ComfyUI/custom_nodes
 
 # 性能
 gcs https://gh-proxy.org/https://github.com/openvino-dev-samples/comfyui_openvino.git
-gcs https://gh-proxy.org/https://github.com/welltop-cn/ComfyUI-TeaCache.git
+gcs https://gh-proxy.org/https://github.com/welltop-cn/ComfyUI-TeaCache.git ComfyUI-TeaCache.disabled
 gcs https://gh-proxy.org/https://github.com/city96/ComfyUI-GGUF.git
 
 # 工作空间
