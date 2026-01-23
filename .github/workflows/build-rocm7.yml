@@ -30,6 +30,12 @@ jobs:
           remove-codeql: 'true'
           remove-docker-images: 'true'
           swap-size-mb: 512
+      # Ugly workaround, checkout first then move docker data-root to the same directory
+      # (e.g. /home/runner/work/ComfyUI-Docker/ComfyUI-Docker)
+      # which has plenty of space after last step.
+      -
+        name: Git checkout
+        uses: actions/checkout@v6
       -
         name: Move Docker data-root to WORKDIR
         run: |
@@ -57,9 +63,6 @@ jobs:
         name: Get current date
         id: date
         run: echo "date=$(date +'%Y%m%d')" >> $GITHUB_OUTPUT
-      -
-        name: Git checkout
-        uses: actions/checkout@v6
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v3
