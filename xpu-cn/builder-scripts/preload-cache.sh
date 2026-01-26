@@ -21,7 +21,7 @@ echo "[INFO] 下载 ComfyUI & 扩展节点..."
 echo "########################################"
 
 cd /default-comfyui-bundle
-git clone 'https://github.com/comfyanonymous/ComfyUI.git'
+git clone 'https://github.com/Comfy-Org/ComfyUI.git'
 cd /default-comfyui-bundle/ComfyUI
 # 使用稳定版 ComfyUI（GitHub 上有发布标签）
 git reset --hard "$(git tag | grep -e '^v' | sort -V | tail -1)"
@@ -56,6 +56,8 @@ echo "########################################"
 
 cd /default-comfyui-bundle/ComfyUI/custom_nodes
 
+gcs https://github.com/Comfy-Org/ComfyUI-Manager.git
+
 # 性能
 gcs https://github.com/openvino-dev-samples/comfyui_openvino.git
 gcs https://github.com/welltop-cn/ComfyUI-TeaCache.git ComfyUI-TeaCache.disabled
@@ -63,12 +65,15 @@ gcs https://github.com/city96/ComfyUI-GGUF.git
 
 # 工作空间
 gcs https://github.com/crystian/ComfyUI-Crystools.git
+gcs https://github.com/willmiao/ComfyUI-Lora-Manager.git
+gcs https://github.com/chrisgoringe/cg-use-everywhere.git
+gcs https://github.com/alexopus/ComfyUI-Image-Saver.git
+gcs https://github.com/SLAPaper/ComfyUI-Image-Selector.git
 
 # 综合
 gcs https://github.com/ltdrdata/was-node-suite-comfyui.git
 gcs https://github.com/kijai/ComfyUI-KJNodes.git
 gcs https://github.com/bash-j/mikey_nodes.git
-gcs https://github.com/chrisgoringe/cg-use-everywhere.git
 gcs https://github.com/jags111/efficiency-nodes-comfyui.git
 gcs https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git
 gcs https://github.com/rgthree/rgthree-comfy.git
@@ -86,6 +91,8 @@ gcs https://github.com/kijai/ComfyUI-Florence2.git
 gcs https://github.com/Kosinkadink/ComfyUI-Advanced-ControlNet.git
 gcs https://github.com/mcmonkeyprojects/sd-dynamic-thresholding.git
 gcs https://github.com/twri/sdxl_prompt_styler.git
+gcs https://github.com/pamparamm/ComfyUI-ppm.git
+gcs https://github.com/KohakuBlueleaf/z-tipo-extension.git
 
 # 视频
 gcs https://github.com/Fannovel16/ComfyUI-Frame-Interpolation.git
@@ -95,8 +102,8 @@ gcs https://github.com/melMass/comfy_mtb.git
 
 # 其他
 gcs https://github.com/pythongosssss/ComfyUI-WD14-Tagger.git
-gcs https://github.com/SLAPaper/ComfyUI-Image-Selector.git
 gcs https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git
+gcs https://github.com/1038lab/ComfyUI-QwenVL.git
 
 # 已停更，待删除
 gcs https://github.com/cubiq/ComfyUI_essentials.git

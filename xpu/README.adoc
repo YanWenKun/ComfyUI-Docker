@@ -1,0 +1,224 @@
+# Run ComfyUI with XPU on Intel GPU
+
+image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-xpu.yml/badge.svg["GitHub Workflow Status",link="https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-xpu.yml"]
+
+https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=xpu[View on <Docker Hub>]
+
+## Supported Intel GPU & CPU
+
+[cols="1,3"]
+|===
+| Arc Battlemage
+| B580, B570, B60, B50
+
+| Arc Alchemist
+| A770, A750, A580, A770M, A730M, A550M, Flex 170
+
+| Panther Lake
+| 388H, 386H, 368H, 366H, 358H, 356H, 338H, 336H, 365, 355, 335, 332, 325, 322
+
+| Lunar Lake
+| 288V, 268V, 266V, 258V, 256V, 238V, 236V, 228V, 226V
+
+| Arrow Lake-H
+| 285H, 265H, 255H, 235H, 225H
+
+| Meteor Lake-H
+| 185H, 165H, 155H, 135H, 125H, 165HL, 155HL, 135HL, 125HL
+
+| Data Center
+| Max 1550, Max 1100
+|===
+
+For more information, refer to
+https://docs.pytorch.org/docs/stable/notes/get_start_xpu.html[PyTorch Documentation].
+
+
+## Prerequisites
+
+Check the driver (Linux kernel module) for Intel GPU:
+
+[source,sh]
+----
+lsmod | grep -i xe
+----
+
+For most desktop distros, `xe` is usually already included and don't need manual installation.
+
+TIP: The latest kernel 6.18 may have issues with Intel Arc GPUs. Consider using kernel 6.17 if you encounter problems.
+
+
+## Run
+
+### Using Docker
+
+[source,sh]
+----
+mkdir -p \
+  storage \
+  storage-models/models \
+  storage-models/hf-hub \
+  storage-models/torch-hub \
+  storage-user/input \
+  storage-user/output \
+  storage-user/workflows
+
+docker run -it --rm \
+  --name comfyui-xpu \
+  --device=/dev/dri \
+  --ipc=host \
+  --security-opt label=disable \
+  -p 8188:8188 \
+  -v "$(pwd)"/storage:/root \
+  -v "$(pwd)"/storage-models/models:/root/ComfyUI/models \
+  -v "$(pwd)"/storage-models/hf-hub:/root/.cache/huggingface/hub \
+  -v "$(pwd)"/storage-models/torch-hub:/root/.cache/torch/hub \
+  -v "$(pwd)"/storage-user/input:/root/ComfyUI/input \
+  -v "$(pwd)"/storage-user/output:/root/ComfyUI/output \
+  -v "$(pwd)"/storage-user/workflows:/root/ComfyUI/user/default/workflows \
+  -e CLI_ARGS="--async-offload" \
+  yanwk/comfyui-boot:xpu
+----
+
+### Using Podman
+
+[source,sh]
+----
+mkdir -p \
+  storage \
+  storage-models/models \
+  storage-models/hf-hub \
+  storage-models/torch-hub \
+  storage-user/input \
+  storage-user/output \
+  storage-user/workflows
+
+podman run -it --rm \
+  --name comfyui-xpu \
+  --device=/dev/dri \
+  --ipc=host \
+  --security-opt label=disable \
+  -p 8188:8188 \
+  -v "$(pwd)"/storage:/root \
+  -v "$(pwd)"/storage-models/models:/root/ComfyUI/models \
+  -v "$(pwd)"/storage-models/hf-hub:/root/.cache/huggingface/hub \
+  -v "$(pwd)"/storage-models/torch-hub:/root/.cache/torch/hub \
+  -v "$(pwd)"/storage-user/input:/root/ComfyUI/input \
+  -v "$(pwd)"/storage-user/output:/root/ComfyUI/output \
+  -v "$(pwd)"/storage-user/workflows:/root/ComfyUI/user/default/workflows \
+  -e CLI_ARGS="--async-offload" \
+  docker.io/yanwk/comfyui-boot:xpu
+----
+
+Once the app is loaded, visit http://localhost:8188/
+
+
+[[cli-args]]
+## CLI_ARGS Reference
+
+TIP: Most of these args are about memory-management.
+You can install `nvtop` (works for Intel GPUs as well) on your host system to monitor VRAM usage.
+
+[%autowidth,cols=2]
+|===
+|args |description
+
+|--async-offload
+|Enable asynchronous offloading of models from VRAM to RAM. Gives subtle improvement and no visible harm.
+
+|--disable-smart-memory
+|Force ComfyUI to offload models from VRAM to RAM more frequently. Mitigate memory leaks effectively, but slows performance and consumes more system RAM.
+
+|--lowvram
+|Force ComfyUI to split the model (UNET) into parts to use less VRAM, at the cost of speed. Use only if your VRAM is not enough.
+
+|--cpu-vae
+|Run the VAE on the CPU. Useful when you run into OOM during VAE stage.
+
+|--mmap-torch-files
+|Load models from disk to RAM on-demand, instead of loading the whole model into RAM at once. Use only if your system RAM is not enough.
+
+|--reserve-vram 1
+|Set the amount of VRAM (in GB) you want to reserve for use by your OS or other software.
+For example, you may want to keep your web browser with dozens of tabs open while running ComfyUI.
+
+|--bf16-unet --bf16-vae --bf16-text-enc
+|(Advanced optimization) Run the diffusion model in bf16; Run the VAE in bf16; Store text encoder weights in bf16.
+
+|--novram
+|Use system RAM only, no VRAM at all. Very slow.
+
+|--cpu
+|Run on CPU. Very slow. Used for testing purposes.
+
+|--enable-manager
+|Enable ComfyUI's built-in Custom Nodes manager. Not really needed since ComfyUI-Manager is already installed.
+
+|===
+
+More `CLI_ARGS` available at ComyfyUI's
+https://github.com/Comfy-Org/ComfyUI/blob/master/comfy/cli_args.py[cli_args.py].
+
+
+[[env-vars]]
+## Environment Variables Reference
+
+[cols="2,2,3"]
+|===
+|Variable|Example Value|Memo
+
+|HTTP_PROXY +
+HTTPS_PROXY
+|http://localhost:1081 +
+http://localhost:1081
+|Set HTTP proxy. Works the same as `set-proxy.sh`.
+
+|PIP_INDEX_URL
+|'https://pypi.org/simple'
+|Set mirror site for Python Package Index.
+
+|GITHUB_ENDPOINT
+|'https://github.com' +
+or +
+'https://gh-proxy.org/https://github.com'
+|Set mirror site of GitHub for ComfyUI-Manager.
+
+|HF_ENDPOINT
+|'https://huggingface.co'
+|Set mirror site for HuggingFace Hub.
+
+|HF_TOKEN
+|'hf_your_token'
+|Set HuggingFace Access Token.
+https://huggingface.co/settings/tokens[More info]
+
+|HF_XET_HIGH_PERFORMANCE
+|1
+|Enable HuggingFace Hub's high performance mode.
+Only make sense if you have >5Gbps and VERY STABLE connection (e.g. cloud server).
+https://huggingface.co/docs/huggingface_hub/main/en/package_reference/environment_variables#hfxethighperformance[More info]
+
+|===
+
+
+## Tips
+
+* Recent models (Z-Image Turbo, Qwen Image 2512, FLUX.2 Klein, etc.) run well on XPU.
+
+* Video generation is very VRAM-hungry.
+You may want to use lighter models, lower resolution and lower frame count to avoid OOM.
+
+* Once OOM, ComfyUI may not crash, but GPU will stop responding
+for future prompt (UR_RESULT_ERROR_DEVICE_LOST).
+In that case, you need to restart ComfyUI.
+
+* 3D generation models are mostly developed for CUDA. There's no point to try them.
+
+
+## For Windows Users
+
+* Just use Intel AI Playground:
+** https://game.intel.com/us/stories/introducing-ai-playground/
+
+* Or yet another ComfyUI portable:
+** https://github.com/YanWenKun/ComfyUI-WinPortable-XPU

@@ -59,13 +59,6 @@ make \
 ninja \
 python3-cmake
 
-# RUN --mount=type=cache,target=/var/cache/dnf \
-#     dnf install -y \
-# python3-matplotlib \
-# python3-mpmath \
-# python3-numpy \
-# python3-onnx
-
 RUN --mount=type=cache,target=/var/cache/dnf \
     dnf install -y \
 ffmpeg \
@@ -73,21 +66,11 @@ x264 \
 x265 \
 default-fonts-cjk
 
-# RUN --mount=type=cache,target=/var/cache/dnf \
-#     dnf install -y \
-# python3-opencv \
-# python3-cairo
-
 RUN --mount=type=cache,target=/var/cache/dnf \
     dnf install -y \
 mesa-libGL \
 mesa-libEGL \
-# python3-GitPython \
 git \
-# python3-pandas \
-# python3-scikit-build-core \
-# python3-scikit-image \
-# python3-scikit-learn \
 fish \
 aria2 \
 fd-find \
@@ -213,7 +196,7 @@ RUN if [ "${USING_GITHUB_ACTIONS}" = "false" ]; then \
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         -r '/default-comfyui-bundle/ComfyUI/requirements.txt' \
-        -r '/default-comfyui-bundle/ComfyUI/manager_requirements.txt' \
+        -r '/default-comfyui-bundle/ComfyUI/custom_nodes/ComfyUI-Manager/requirements.txt' \
         -c /builder-scripts/constraints.txt \
     && pip list
 
@@ -229,6 +212,7 @@ ${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
 
 ENV PIP_INDEX_URL="https://mirrors.cernet.edu.cn/pypi/web/simple"
 ENV HF_ENDPOINT="https://hf-mirror.com"
+ENV GITHUB_ENDPOINT="https://gh-proxy.org/https://github.com"
 
 RUN if [ "${USING_GITHUB_ACTIONS}" = "true" ]; then \
         sed -e 's|^metalink=|#metalink=|g' \

@@ -4,7 +4,7 @@ set -eu
 echo '#' > pak5.txt
 
 array=(
-https://github.com/comfyanonymous/ComfyUI/raw/refs/heads/master/requirements.txt
+https://github.com/Comfy-Org/ComfyUI/raw/refs/heads/master/requirements.txt
 https://github.com/Comfy-Org/ComfyUI-Manager/raw/refs/heads/main/requirements.txt
 # Performance
 https://github.com/openvino-dev-samples/comfyui_openvino/raw/refs/heads/main/requirements.txt
@@ -12,6 +12,9 @@ https://github.com/welltop-cn/ComfyUI-TeaCache/raw/refs/heads/main/requirements.
 https://github.com/city96/ComfyUI-GGUF/raw/refs/heads/main/requirements.txt
 # Workspace
 https://github.com/crystian/ComfyUI-Crystools/raw/refs/heads/main/requirements.txt
+https://github.com/willmiao/ComfyUI-Lora-Manager/raw/refs/heads/main/requirements.txt
+https://github.com/alexopus/ComfyUI-Image-Saver/raw/refs/heads/master/requirements.txt
+https://github.com/1038lab/ComfyUI-QwenVL/raw/refs/heads/main/requirements.txt
 # General
 https://github.com/ltdrdata/was-node-suite-comfyui/raw/refs/heads/main/requirements.txt
 https://github.com/kijai/ComfyUI-KJNodes/raw/refs/heads/main/requirements.txt
@@ -25,6 +28,7 @@ https://github.com/Fannovel16/comfyui_controlnet_aux/raw/refs/heads/main/require
 https://github.com/Gourieff/ComfyUI-ReActor/raw/refs/heads/main/requirements.txt
 https://github.com/huchenlei/ComfyUI-layerdiffuse/raw/refs/heads/main/requirements.txt
 https://github.com/kijai/ComfyUI-Florence2/raw/refs/heads/main/requirements.txt
+https://github.com/KohakuBlueleaf/z-tipo-extension/raw/refs/heads/main/requirements.txt
 # Video
 https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite/raw/refs/heads/main/requirements.txt
 https://github.com/Fannovel16/ComfyUI-Frame-Interpolation/raw/refs/heads/main/requirements-no-cupy.txt

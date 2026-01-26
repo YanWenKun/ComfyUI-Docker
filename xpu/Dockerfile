@@ -1,10 +1,10 @@
 ################################################################################
 # Dockerfile that builds 'yanwk/comfyui-boot:xpu'
-# A runtime environment for https://github.com/comfyanonymous/ComfyUI
+# A runtime environment for https://github.com/Comfy-Org/ComfyUI
 # Running on XPU (Intel GPU).
 # Does NOT install IPEX (Intel Extension for PyTorch).
 # Using Python 3.13, GCC 14.
-# Using 'root' inside the container.
+# Using 'root' user inside container.
 ################################################################################
 
 FROM fedora:42
@@ -30,13 +30,6 @@ make \
 ninja \
 python3-cmake
 
-# RUN --mount=type=cache,target=/var/cache/dnf \
-#     dnf install -y \
-# python3-matplotlib \
-# python3-mpmath \
-# python3-numpy \
-# python3-onnx
-
 RUN --mount=type=cache,target=/var/cache/dnf \
     dnf install -y \
 ffmpeg \
@@ -44,21 +37,11 @@ x264 \
 x265 \
 default-fonts-cjk
 
-# RUN --mount=type=cache,target=/var/cache/dnf \
-#     dnf install -y \
-# python3-opencv \
-# python3-cairo
-
 RUN --mount=type=cache,target=/var/cache/dnf \
     dnf install -y \
 mesa-libGL \
 mesa-libEGL \
-# python3-GitPython \
 git \
-# python3-pandas \
-# python3-scikit-build-core \
-# python3-scikit-image \
-# python3-scikit-learn \
 fish \
 aria2 \
 fd-find \
@@ -80,7 +63,7 @@ openssl
 
 ################################################################################
 # GCC 14
-# Fedora 42 defaults to GCC 15
+# (Fedora 42 defaults to GCC 15)
 
 RUN --mount=type=cache,target=/var/cache/dnf \
     dnf install -y \
@@ -175,7 +158,7 @@ RUN bash /builder-scripts/preload-cache.sh
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         -r '/default-comfyui-bundle/ComfyUI/requirements.txt' \
-        -r '/default-comfyui-bundle/ComfyUI/manager_requirements.txt' \
+        -r '/default-comfyui-bundle/ComfyUI/custom_nodes/ComfyUI-Manager/requirements.txt' \
         -c /builder-scripts/constraints.txt \
     && pip list
 

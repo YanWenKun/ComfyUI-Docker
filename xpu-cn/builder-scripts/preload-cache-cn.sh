@@ -12,7 +12,7 @@ echo "[INFO] 下载 ComfyUI..."
 echo "########################################"
 
 cd /default-comfyui-bundle
-git clone 'https://gh-proxy.org/https://github.com/comfyanonymous/ComfyUI.git'
+git clone 'https://gh-proxy.org/https://github.com/Comfy-Org/ComfyUI.git'
 cd /default-comfyui-bundle/ComfyUI
 # 使用稳定版 ComfyUI（GitHub 上有发布标签）
 git reset --hard "$(git tag | grep -e '^v' | sort -V | tail -1)"
@@ -47,6 +47,8 @@ echo "########################################"
 
 cd /default-comfyui-bundle/ComfyUI/custom_nodes
 
+gcs https://gh-proxy.org/https://github.com/Comfy-Org/ComfyUI-Manager.git
+
 # 性能
 gcs https://gh-proxy.org/https://github.com/openvino-dev-samples/comfyui_openvino.git
 gcs https://gh-proxy.org/https://github.com/welltop-cn/ComfyUI-TeaCache.git ComfyUI-TeaCache.disabled
@@ -54,12 +56,15 @@ gcs https://gh-proxy.org/https://github.com/city96/ComfyUI-GGUF.git
 
 # 工作空间
 gcs https://gh-proxy.org/https://github.com/crystian/ComfyUI-Crystools.git
+gcs https://gh-proxy.org/https://github.com/willmiao/ComfyUI-Lora-Manager.git
+gcs https://gh-proxy.org/https://github.com/chrisgoringe/cg-use-everywhere.git
+gcs https://gh-proxy.org/https://github.com/alexopus/ComfyUI-Image-Saver.git
+gcs https://gh-proxy.org/https://github.com/SLAPaper/ComfyUI-Image-Selector.git
 
 # 综合
 gcs https://gh-proxy.org/https://github.com/ltdrdata/was-node-suite-comfyui.git
 gcs https://gh-proxy.org/https://github.com/kijai/ComfyUI-KJNodes.git
 gcs https://gh-proxy.org/https://github.com/bash-j/mikey_nodes.git
-gcs https://gh-proxy.org/https://github.com/chrisgoringe/cg-use-everywhere.git
 gcs https://gh-proxy.org/https://github.com/jags111/efficiency-nodes-comfyui.git
 gcs https://gh-proxy.org/https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git
 gcs https://gh-proxy.org/https://github.com/rgthree/rgthree-comfy.git
@@ -76,6 +81,8 @@ gcs https://gh-proxy.org/https://github.com/kijai/ComfyUI-Florence2.git
 gcs https://gh-proxy.org/https://github.com/Kosinkadink/ComfyUI-Advanced-ControlNet.git
 gcs https://gh-proxy.org/https://github.com/mcmonkeyprojects/sd-dynamic-thresholding.git
 gcs https://gh-proxy.org/https://github.com/twri/sdxl_prompt_styler.git
+gcs https://gh-proxy.org/https://github.com/pamparamm/ComfyUI-ppm.git
+gcs https://gh-proxy.org/https://github.com/KohakuBlueleaf/z-tipo-extension.git
 
 # 视频
 gcs https://gh-proxy.org/https://github.com/Fannovel16/ComfyUI-Frame-Interpolation.git
@@ -84,7 +91,7 @@ gcs https://gh-proxy.org/https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite
 
 # 其他
 gcs https://gh-proxy.org/https://github.com/pythongosssss/ComfyUI-WD14-Tagger.git
-gcs https://gh-proxy.org/https://github.com/SLAPaper/ComfyUI-Image-Selector.git
+gcs https://gh-proxy.org/https://github.com/1038lab/ComfyUI-QwenVL.git
 
 # 已停更，待删除
 gcs https://gh-proxy.org/https://github.com/cubiq/ComfyUI_essentials.git

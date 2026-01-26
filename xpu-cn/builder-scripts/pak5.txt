@@ -1,8 +1,11 @@
 addict
 aiohttp
+aiosqlite
 albumentations
 alembic
 av
+beautifulsoup4
+bitsandbytes
 cachetools
 chardet
 clip-interrogator
@@ -16,11 +19,16 @@ fvcore
 GitPython
 imageio-ffmpeg
 importlib-metadata
+jinja2
+llama-cpp-python
 mss
+natsort
 numba
+olefile
 peft
 piexif
 pixeloe
+platformdirs
 psutil
 py-cpuinfo
 pydantic-settings
@@ -39,6 +47,7 @@ sentencepiece
 simpleeval
 spandrel
 SQLAlchemy
+tipo-kgen
 tokenizers
 toml
 torchsde

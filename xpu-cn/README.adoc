@@ -1,0 +1,226 @@
+# 基于 Intel GPU + XPU 运行 ComfyUI
+
+image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-xpu-cn.yml/badge.svg["GitHub Workflow Status",link="https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-xpu-cn.yml"]
+
+https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=xpu-cn[View on <Docker Hub>]
+
+## 支持的 Intel GPU 与 CPU
+
+[cols="1,3"]
+|===
+| Arc Battlemage
+| B580, B570, B60, B50
+
+| Arc Alchemist
+| A770, A750, A580, A770M, A730M, A550M, Flex 170
+
+| Panther Lake
+| 388H, 386H, 368H, 366H, 358H, 356H, 338H, 336H, 365, 355, 335, 332, 325, 322
+
+| Lunar Lake
+| 288V, 268V, 266V, 258V, 256V, 238V, 236V, 228V, 226V
+
+| Arrow Lake-H
+| 285H, 265H, 255H, 235H, 225H
+
+| Meteor Lake-H
+| 185H, 165H, 155H, 135H, 125H, 165HL, 155HL, 135HL, 125HL
+
+| Data Center
+| Max 1550, Max 1100
+|===
+
+更多兼容性信息参考
+https://docs.pytorch.org/docs/stable/notes/get_start_xpu.html[PyTorch 文档] 。
+
+
+## 检查驱动
+
+确保宿主机已安装 Intel GPU 驱动（内核模块 `xe`）：
+
+[source,sh]
+----
+lsmod | grep -i xe
+----
+
+常见桌面发行版通常已自带 `xe`，无需手动安装。
+
+TIP: 最新的 6.18 内核可能会导致 ComfyUI 启动时 PyTorch 报错，如果遇到 `UR_RESULT_ERROR_OUT_OF_DEVICE_MEMORY`，建议改用 6.17 版本的内核。
+
+
+## 运行
+
+TIP: 如连接 Docker Hub 困难，可以尝试先从
+https://www.coderjia.cn/archives/dba3f94c-a021-468a-8ac6-e840f85867ea[镜像站点]
+拉取镜像，再启动容器。
+
+### 使用 Docker
+
+[source,sh]
+----
+mkdir -p \
+  storage \
+  storage-models/models \
+  storage-models/hf-hub \
+  storage-models/torch-hub \
+  storage-user/input \
+  storage-user/output \
+  storage-user/workflows
+
+docker run -it --rm \
+  --name comfyui-xpu \
+  --device=/dev/dri \
+  --ipc=host \
+  --security-opt label=disable \
+  -p 8188:8188 \
+  -v "$(pwd)"/storage:/root \
+  -v "$(pwd)"/storage-models/models:/root/ComfyUI/models \
+  -v "$(pwd)"/storage-models/hf-hub:/root/.cache/huggingface/hub \
+  -v "$(pwd)"/storage-models/torch-hub:/root/.cache/torch/hub \
+  -v "$(pwd)"/storage-user/input:/root/ComfyUI/input \
+  -v "$(pwd)"/storage-user/output:/root/ComfyUI/output \
+  -v "$(pwd)"/storage-user/workflows:/root/ComfyUI/user/default/workflows \
+  -e CLI_ARGS="--async-offload" \
+  yanwk/comfyui-boot:xpu-cn
+----
+
+### 使用 Podman
+
+[source,sh]
+----
+mkdir -p \
+  storage \
+  storage-models/models \
+  storage-models/hf-hub \
+  storage-models/torch-hub \
+  storage-user/input \
+  storage-user/output \
+  storage-user/workflows
+
+podman run -it --rm \
+  --name comfyui-xpu \
+  --device=/dev/dri \
+  --ipc=host \
+  --security-opt label=disable \
+  -p 8188:8188 \
+  -v "$(pwd)"/storage:/root \
+  -v "$(pwd)"/storage-models/models:/root/ComfyUI/models \
+  -v "$(pwd)"/storage-models/hf-hub:/root/.cache/huggingface/hub \
+  -v "$(pwd)"/storage-models/torch-hub:/root/.cache/torch/hub \
+  -v "$(pwd)"/storage-user/input:/root/ComfyUI/input \
+  -v "$(pwd)"/storage-user/output:/root/ComfyUI/output \
+  -v "$(pwd)"/storage-user/workflows:/root/ComfyUI/user/default/workflows \
+  -e CLI_ARGS="--async-offload" \
+  docker.io/yanwk/comfyui-boot:xpu-cn
+----
+
+启动完成后，访问 http://localhost:8188/
+
+
+[[cli-args]]
+## CLI_ARGS 参考
+
+TIP: 以下大部分参数都关于内存管理。
+你可以在宿主机上安装 `nvtop`来监控显存使用情况，该工具也支持 Intel GPU。
+
+[%autowidth,cols=2]
+|===
+|启动参数 |说明
+
+|--async-offload
+|“将模型权重从显存卸载到内存”这一操作从同步变为异步。带来少量性能提升，且无明显副作用。
+
+|--disable-smart-memory
+|强制 ComfyUI 不要在显存中缓存模型权重，用完即卸载到内存中以释放显存。有效缓解显存泄漏问题，但会增加模型加载用时，并占用更多内存。
+
+|--lowvram
+|强制 ComfyUI 对模型 (UNET) 进行分块加载以减少显存占用，代价是降低速度。仅在显存不足时使用。
+
+|--cpu-vae
+|在 VAE 阶段改用 CPU 运行。一些比较极限的情况下，会在采样阶段显存够用而在 VAE 阶段显存不足，可用此参数快速绕过问题，而不必调整其他参数。
+
+|--mmap-torch-files
+|“按需”从磁盘加载模型文件。当模型文件较大时，可以避免一次性将整个模型加载到内存中。仅在内存不足时使用。
+
+|--reserve-vram 1
+|设置保留给其他程序的显存大小（单位：GB）。例如你希望运行 ComfyUI 时留一部分显存给浏览器，避免显存不足时浏览器直接退出。
+
+|--bf16-unet --bf16-vae --bf16-text-enc
+|将扩散模型、VAE 和文本编码器都以 bf16 精度运行。高级优化参数，一般无需指定。
+
+|--novram
+|不使用显存，完全使用系统内存，但仍以 GPU 运行计算。非常慢，仅在显存不足时使用。
+
+|--cpu
+|使用 CPU 运行。非常慢，适合测试、模型下载转换、图像批处理等场景。
+
+|--enable-manager
+|启用 ComfyUI 内置的自定义节点管理器。镜像内已安装 ComfyUI-Manager，通常不需要启用此功能。
+
+|===
+
+更多 `CLI_ARGS` 参考 ComfyUI 的
+https://github.com/Comfy-Org/ComfyUI/blob/master/comfy/cli_args.py[cli_args.py] 。
+
+
+[[env-vars]]
+## 环境变量参考
+
+TIP: 以下三个镜像源均已预设，仅在连接不畅时需要手动设置。
+
+[cols="2,2,3"]
+|===
+|变量名 |样例值 |说明
+
+|PIP_INDEX_URL
+|'https://mirrors.cernet.edu.cn/pypi/web/simple'
+|设置 PyPI 镜像源以加速 Python 包下载。
+
+|GITHUB_ENDPOINT
+|'https://gh-proxy.org/https://github.com'
+|为 ComfyUI-Manager 设置 GitHub 镜像站点。
+
+|HF_ENDPOINT
+|'https://hf-mirror.com'
+|为 HuggingFace Hub 设置镜像站点。
+
+|HTTP_PROXY +
+HTTPS_PROXY
+|http://localhost:1081 +
+http://localhost:1081
+|设置 HTTP 代理地址，与 `set-proxy.sh` 脚本功能相同。
+
+|HF_TOKEN
+|'hf_your_token'
+|设置 HuggingFace 的访问令牌（Access Token）。一些模型需要登录并同意协议后才能下载。
+https://huggingface.co/settings/tokens[令牌设置页面]
+
+|HF_XET_HIGH_PERFORMANCE
+|1
+|启用 HuggingFace Hub 下载器的高性能模式。
+该模式会使用更多硬件资源以尽可能吃满网络带宽，仅适合大带宽（>5Gbps）且十分稳定的网络环境。
+https://huggingface.co/docs/huggingface_hub/main/en/package_reference/environment_variables#hfxethighperformance[官方文档]
+
+|===
+
+
+## 技巧
+
+* 建议先试试 Z-Image Turbo, Qwen Image 2512, FLUX.2 Klein 等较新的模型，体验较好，ComfyUI 内置有样例工作流。
+
+* 视频生成极耗显存，目前针对 XPU 优化的手段（量化、分片、缓存等）也有限，
+建议使用更轻量的模型、降低分辨率和帧数以避免显存溢出。
+
+* 当显存溢出时，ComfyUI 不一定会崩溃，而可能是 GPU 停止响应，添新任务提示设备丢失 `UR_RESULT_ERROR_DEVICE_LOST`，
+此时需要重启 ComfyUI。
+
+* 3D 类模型几乎全部基于 CUDA 开发，没有尝试的必要。
+
+
+## 给 Windows 用户的建议
+
+* 可以尝试 Intel 官方的 AI Playground:
+** https://game.intel.com/us/stories/introducing-ai-playground/
+
+* 或者试试我打包的 ComfyUI portable:
+** https://github.com/YanWenKun/ComfyUI-WinPortable-XPU
