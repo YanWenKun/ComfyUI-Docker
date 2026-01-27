@@ -18,4 +18,4 @@ services:
       - "./storage-user/output:/root/ComfyUI/output"
       - "./storage-user/workflows:/root/ComfyUI/user/default/workflows"
     environment:
-      - CLI_ARGS="--cpu"
+      - CLI_ARGS=--cpu
