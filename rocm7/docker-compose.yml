@@ -24,7 +24,7 @@ services:
       - "./storage-user/workflows:/root/ComfyUI/user/default/workflows"
     environment:
       - CLI_ARGS=
-      # - CLI_ARGS="--disable-smart-memory --use-pytorch-cross-attention"
+      # - CLI_ARGS=--disable-smart-memory --use-pytorch-cross-attention
       # - HSA_OVERRIDE_GFX_VERSION=12.0.0
       # - HIP_VISIBLE_DEVICES=0
       # - HSA_DISABLE_FRAGMENT_ALLOCATOR=1

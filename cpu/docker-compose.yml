@@ -17,5 +17,7 @@ services:
       - "./storage-user/input:/root/ComfyUI/input"
       - "./storage-user/output:/root/ComfyUI/output"
       - "./storage-user/workflows:/root/ComfyUI/user/default/workflows"
+    # security_opt: # Uncomment if using SELinux
+    #   - label:disable
     environment:
       - CLI_ARGS=--cpu
