@@ -96,8 +96,7 @@ jobs:
             --name comfyui-quick-test \
             -e CLI_ARGS="--quick-test-for-ci --cpu" \
             yanwk/comfyui-boot:rocm7-${{ steps.date.outputs.date }} \
-              pip uninstall -y flash_attn \
-              && bash /runner-scripts/entrypoint.sh
+              bash -c 'pip uninstall -y flash_attn && bash /runner-scripts/entrypoint.sh'
       -
         name: Login to Docker Hub
         uses: docker/login-action@v3
