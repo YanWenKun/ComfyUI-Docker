@@ -92,6 +92,8 @@ jobs:
         name: Test 'rocm7'
         # Prevent CI from using Flash Attention (needs GPU)
         run: |
+          DISABLE_FLASH_ATTN=1 \
+          COMFYUI_DISABLE_OPTIMIZED_ATTENTION=1 \
           docker run --rm \
             --name comfyui-quick-test \
             -e CLI_ARGS="--quick-test-for-ci --cpu --use-pytorch-cross-attention" \
