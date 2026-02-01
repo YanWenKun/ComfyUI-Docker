@@ -98,7 +98,7 @@ COPY builder-scripts/.  /builder-scripts/
 
 # Triton backend
 ENV FLASH_ATTENTION_TRITON_AMD_ENABLE=TRUE
-# Composable Kernel (CK) backend
+# Composable Kernel (CK) backend (needs a GPU for compiling)
 #ENV FLASH_ATTENTION_SKIP_CK_BUILD=FALSE
 
 RUN --mount=type=cache,target=/root/.cache/pip \

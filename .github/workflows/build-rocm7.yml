@@ -90,10 +90,11 @@ jobs:
             env
       - 
         name: Test 'rocm7'
+        # Prevent CI from using Flash Attention (needs GPU)
         run: |
           docker run --rm \
             --name comfyui-quick-test \
-            -e CLI_ARGS="--quick-test-for-ci --cpu" \
+            -e CLI_ARGS="--quick-test-for-ci --cpu --use-pytorch-cross-attention" \
             yanwk/comfyui-boot:rocm7-${{ steps.date.outputs.date }}
       -
         name: Login to Docker Hub
