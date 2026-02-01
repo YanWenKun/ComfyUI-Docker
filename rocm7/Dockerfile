@@ -89,16 +89,17 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
 https://repo.radeon.com/rocm/manylinux/rocm-rel-7.2/transformer_engine_rocm-2.4.0-py3-none-manylinux_2_28_x86_64.whl
 
-# The /builder-scripts is also used as a compile-install workspace for a few Python packages
+# The /builder-scripts is also used as a compile-install workspace for some Python packages
 COPY builder-scripts/.  /builder-scripts/
 
 # Compile-Install Flash Attention for ROCm
 # https://github.com/Dao-AILab/flash-attention#amd-rocm-support
 # https://rocm.docs.amd.com/en/latest/how-to/rocm-for-ai/inference-optimization/model-acceleration-libraries.html#installing-flash-attention-2
 
-# Install both Composable Kernel (CK) and Triton backends.
+# Triton backend
 ENV FLASH_ATTENTION_TRITON_AMD_ENABLE=TRUE
-ENV FLASH_ATTENTION_SKIP_CK_BUILD=FALSE
+# Composable Kernel (CK) backend
+#ENV FLASH_ATTENTION_SKIP_CK_BUILD=FALSE
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     cd /builder-scripts \
