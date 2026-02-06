@@ -235,7 +235,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     && pip install \
         --upgrade pip wheel setuptools \
     && pip install \
-        --dry-run xformers==0.0.33.post2 torchvision torchaudio \
+        --dry-run xformers==0.0.34 torchvision torchaudio \
         --index-url https://download.pytorch.org/whl/cu128
 
 # Here's some hack. To reduce image size & single layer size, we:
@@ -246,14 +246,14 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # Note: xFormers is not always released with latest PyTorch, so using `pip install --no-deps` is not a good idea.
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        xformers==0.0.33.post2 torchvision torchaudio \
+        xformers==0.0.34 torchvision torchaudio \
         --index-url https://download.pytorch.org/whl/cu128 \
 && pip uninstall --yes torch \
 && find /usr/local/lib/python3.12/site-packages/nvidia/ -mindepth 1 -maxdepth 1 ! -name 'nccl' ! -name 'nvshmem' -exec rm -rfv {} +
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        xformers==0.0.33.post2 torchvision torchaudio \
+        xformers==0.0.34 torchvision torchaudio \
         --index-url https://download.pytorch.org/whl/cu128
 
 ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\
@@ -310,10 +310,10 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     pip install -U uv \
     # Nunchaku (binary pair with PyTorch)
     && pip install \
-https://github.com/nunchaku-tech/nunchaku/releases/download/v1.0.2/nunchaku-1.0.2+torch2.9-cp312-cp312-linux_x86_64.whl \
+https://github.com/nunchaku-ai/nunchaku/releases/download/v1.2.1/nunchaku-1.2.1+cu12.8torch2.10-cp312-cp312-linux_x86_64.whl \
     # FlashAttention (version pair with xFormers, binary pair with PyTorch & CUDA)
     && pip install \
-https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.7.0/flash_attn-2.8.3+cu128torch2.9-cp312-cp312-linux_x86_64.whl \
+https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.7.16/flash_attn-2.8.3+cu128torch2.10-cp312-cp312-linux_x86_64.whl \
     # SageAttention
     && pip install \
 https://github.com/YanWenKun/ComfyUI-Containerfiles/releases/download/sageattn-py312-cu128-pt29/sageattention-2.2.0-cp312-cp312-linux_x86_64.whl \
