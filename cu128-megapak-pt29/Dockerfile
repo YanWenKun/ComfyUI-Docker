@@ -132,8 +132,6 @@ x264 \
 x265 \
 wget
 
-RUN rustup default stable
-
 RUN --mount=type=cache,target=/var/cache/zypp \
     zypper --non-interactive \
         install --force-resolution \
@@ -260,6 +258,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
 https://github.com/JamePeng/llama-cpp-python/releases/download/v0.3.18-cu128-AVX2-linux-20251220/llama_cpp_python-0.3.18-cp312-cp312-linux_x86_64.whl
 
+
 ################################################################################
 # Bundle ComfyUI in the image
 
@@ -287,6 +286,9 @@ RUN du -ah /root \
     && rm -rfv /root/.[^.]* /root/.??*
 
 COPY runner-scripts/.  /runner-scripts/
+
+# Setup default rustup toolchain
+RUN rustup default stable
 
 USER root
 VOLUME /root
