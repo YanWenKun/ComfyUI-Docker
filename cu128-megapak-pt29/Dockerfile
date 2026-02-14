@@ -127,10 +127,12 @@ findutils \
 fd \
 vim \
 which \
-ffmpeg \
 x264 \
 x265 \
-wget
+tar \
+gzip \
+wget \
+xz
 
 RUN --mount=type=cache,target=/var/cache/zypp \
     zypper --non-interactive \
@@ -258,6 +260,13 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
 https://github.com/JamePeng/llama-cpp-python/releases/download/v0.3.18-cu128-AVX2-linux-20251220/llama_cpp_python-0.3.18-cp312-cp312-linux_x86_64.whl
 
+
+# ffmpeg
+RUN --mount=type=cache,target=/tmp/ffmpeg_download \
+    cd /tmp/ffmpeg_download && \
+    wget -N https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n8.0-latest-linux64-gpl-shared-8.0.tar.xz && \
+    tar -xf ffmpeg-n8.0-latest-linux64-gpl-shared-8.0.tar.xz && \
+    cp -r ffmpeg-n8.0-latest-linux64-gpl-shared-8.0/* /usr/local/
 
 ################################################################################
 # Bundle ComfyUI in the image
