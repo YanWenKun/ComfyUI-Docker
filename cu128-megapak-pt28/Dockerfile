@@ -126,7 +126,7 @@ findutils \
 fd \
 vim \
 which \
-ffmpeg \
+ffmpeg-8 \
 x264 \
 x265
 
