@@ -11,8 +11,6 @@ FROM docker.io/opensuse/leap:15.6
 
 LABEL maintainer="YAN Wenkun <code@yanwk.fun>"
 
-RUN set -eu
-
 ARG USING_GITHUB_ACTIONS=false
 
 ################################################################################
@@ -128,7 +126,9 @@ RUN --mount=type=cache,target=/var/cache/zypp \
 make \
 cmake \
 ninja \
+rustup \
 git \
+git-lfs \
 aria2 \
 findutils \
 # fish \
@@ -174,7 +174,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     && pip install \
         --upgrade pip wheel setuptools packaging \
     && pip install \
-        --dry-run xformers==0.0.32.post2 torch==2.8.0 torchvision torchaudio \
+        --dry-run xformers==0.0.32.post2 torch==2.8.0 torchvision torchaudio torchcodec==0.7.0 \
         --index-url https://download.pytorch.org/whl/cu128
 
 # Here's some hack. To reduce image size & single layer size, we:
@@ -185,14 +185,14 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # Note: xFormers is not always released with latest PyTorch, so using `pip install --no-deps` is not a good idea.
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        xformers==0.0.32.post2 torch==2.8.0 torchvision torchaudio \
+        xformers==0.0.32.post2 torch==2.8.0 torchvision torchaudio torchcodec==0.7.0 \
         --index-url https://download.pytorch.org/whl/cu128 \
 && pip uninstall --yes torch \
 && find /usr/local/lib/python3.12/site-packages/nvidia/ -mindepth 1 -maxdepth 1 ! -name 'nccl' ! -name 'nvshmem' -exec rm -rfv {} +
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        xformers==0.0.32.post2 torch==2.8.0 torchvision torchaudio \
+        xformers==0.0.32.post2 torch==2.8.0 torchvision torchaudio torchcodec==0.7.0 \
         --index-url https://download.pytorch.org/whl/cu128
 
 ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\

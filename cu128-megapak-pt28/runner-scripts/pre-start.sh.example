@@ -1,4 +1,6 @@
 #!/bin/bash
 set -eu
 
-echo "[INFO] Continue without pre-start script."
+echo "[INFO] Setup default rustup toolchain..."
+
+rustup default stable
