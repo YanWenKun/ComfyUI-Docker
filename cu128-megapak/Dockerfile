@@ -89,19 +89,10 @@ ENV PATH="${PATH}:/usr/local/cuda-12.8/bin" \
 # Python and tools
 # Since this image is so big, we use openSUSE-verified PIP packages for compatibility.
 
-# Install FFmpeg first to avoid version hopping
-# openSUSE/Packman's FFmpeg {6,7,8} builds have a special ABI tag, so use 4 here.
 RUN --mount=type=cache,target=/var/cache/zypp \
     zypper addrepo --check --refresh --priority 90 \
         'https://ftp.gwdg.de/pub/linux/misc/packman/suse/openSUSE_Tumbleweed/Essentials/' packman-essentials \
     && zypper --gpg-auto-import-keys \
-        install --no-confirm --auto-agree-with-licenses \
-ffmpeg-4 \
-x264 \
-x265
-
-RUN --mount=type=cache,target=/var/cache/zypp \
-    zypper --gpg-auto-import-keys \
         install --no-confirm --auto-agree-with-licenses \
 python312-devel \
 python312-pip \
@@ -197,6 +188,9 @@ fish \
 fd \
 vim \
 which \
+ffmpeg \
+x264 \
+x265 \
 google-noto-sans-fonts \
 google-noto-sans-cjk-fonts \
 google-noto-coloremoji-fonts \
