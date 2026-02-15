@@ -136,7 +136,6 @@ python312-chardet \
 python312-dbm \
 python312-deepdiff \
 python312-dill \
-python312-ffmpeg-python \
 python312-filelock \
 python312-ftfy \
 python312-GitPython \
