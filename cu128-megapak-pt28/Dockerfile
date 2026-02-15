@@ -93,10 +93,19 @@ ENV PATH="${PATH}:/usr/local/cuda-12.8/bin" \
 ################################################################################
 # Python and tools
 
+# Install FFmpeg first to avoid version hopping
+# openSUSE/Packman's FFmpeg {6,7,8} builds have a special ABI tag, so use 4 here.
 RUN --mount=type=cache,target=/var/cache/zypp \
     zypper addrepo --check --refresh --priority 90 \
         'https://ftp.gwdg.de/pub/linux/misc/packman/suse/openSUSE_Leap_15.6/Essentials/' packman-essentials \
     && zypper --gpg-auto-import-keys \
+        install --no-confirm --auto-agree-with-licenses \
+ffmpeg-4 \
+x264 \
+x265
+
+RUN --mount=type=cache,target=/var/cache/zypp \
+    zypper --gpg-auto-import-keys \
         install --no-confirm --auto-agree-with-licenses \
 python312-devel \
 python312-pip \
@@ -125,10 +134,7 @@ findutils \
 # fish \
 fd \
 vim \
-which \
-ffmpeg-8 \
-x264 \
-x265
+which
 
 RUN rm -vf /usr/lib64/python3.12/EXTERNALLY-MANAGED \
     # Ensure default Python version
