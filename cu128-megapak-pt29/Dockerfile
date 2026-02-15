@@ -11,8 +11,6 @@ FROM docker.io/opensuse/leap:15.6
 
 LABEL maintainer="YAN Wenkun <code@yanwk.fun>"
 
-RUN set -eu
-
 ARG USING_GITHUB_ACTIONS=false
 
 ################################################################################
@@ -127,13 +125,17 @@ findutils \
 fd \
 vim \
 which \
-ffmpeg-8 \
-x264 \
-x265 \
 tar \
 gzip \
 wget \
 xz
+
+# FFmpeg
+RUN --mount=type=cache,target=/tmp/ffmpeg_download \
+    cd /tmp/ffmpeg_download && \
+    wget -N https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n8.0-latest-linux64-gpl-shared-8.0.tar.xz && \
+    tar -xf ffmpeg-n8.0-latest-linux64-gpl-shared-8.0.tar.xz && \
+    cp -r ffmpeg-n8.0-latest-linux64-gpl-shared-8.0/* /usr/local/
 
 RUN --mount=type=cache,target=/var/cache/zypp \
     zypper --non-interactive \
@@ -215,7 +217,6 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         -r /builder-scripts/pak5.txt
-
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
