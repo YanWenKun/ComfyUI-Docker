@@ -181,22 +181,32 @@ make \
 bison \
 gawk \
 ninja \
+rustup \
 git \
+git-lfs \
 aria2 \
 findutils \
 fish \
 fd \
 vim \
 which \
-ffmpeg \
-x264 \
-x265 \
+tar \
+xz \
+wget \
 google-noto-sans-fonts \
 google-noto-sans-cjk-fonts \
 google-noto-coloremoji-fonts \
     && rm -v /usr/lib64/python3.12/EXTERNALLY-MANAGED \
     # Ensure default Python version
     && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 100
+
+# FFmpeg from BtbN
+RUN --mount=type=cache,target=/tmp/ffmpeg_download \
+    cd /tmp/ffmpeg_download \
+    && wget -N https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n8.0-latest-linux64-gpl-shared-8.0.tar.xz \
+    && tar -xf ffmpeg-n8.0-latest-linux64-gpl-shared-8.0.tar.xz \
+    && rm -vf ffmpeg-n8.0-latest-linux64-gpl-shared-8.0/*.txt \
+    && cp -r ffmpeg-n8.0-latest-linux64-gpl-shared-8.0/* /usr/local/
 
 # Temp fix for OpenCV on openSUSE
 ENV LD_PRELOAD=/usr/lib64/libjpeg.so.8
