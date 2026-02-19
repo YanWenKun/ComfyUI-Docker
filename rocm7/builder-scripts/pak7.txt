@@ -1,7 +1,7 @@
 dlib
 facexlib
 insightface
-git+https://github.com/StarTwi/CLIP.git@bb9d976819f587c37bd31b8fafe13358fcf8fdd7
+git+https://github.com/openai/CLIP.git
 git+https://github.com/cozy-comfyui/cozy_comfyui@main#egg=cozy_comfyui
 git+https://github.com/ltdrdata/cstr.git
 git+https://github.com/ltdrdata/ffmpy.git
