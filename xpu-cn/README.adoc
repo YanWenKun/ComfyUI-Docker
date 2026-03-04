@@ -120,8 +120,8 @@ podman run -it --rm \
 [[cli-args]]
 ## CLI_ARGS 参考
 
-TIP: 以下大部分参数都关于内存管理。
-你可以在宿主机上安装 `nvtop`来监控显存使用情况，该工具也支持 Intel GPU。
+TIP: 以下参数大多为显存／内存管理。
+你可以在宿主机上安装 `nvtop` 来监控显存使用情况，该工具也支持 Intel GPU。
 
 [%autowidth,cols=2]
 |===
