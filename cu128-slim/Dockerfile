@@ -9,8 +9,6 @@ FROM docker.io/opensuse/tumbleweed:latest
 
 LABEL maintainer="YAN Wenkun <code@yanwk.fun>"
 
-RUN set -eu
-
 ################################################################################
 # Python and tools
 # Since this image is so big, we use openSUSE-verified PIP packages for compatibility.
@@ -21,29 +19,7 @@ RUN --mount=type=cache,target=/var/cache/zypp \
     && zypper --gpg-auto-import-keys \
         install --no-confirm --auto-agree-with-licenses \
 python312-devel \
-python312-pip \
-python312-wheel \
-python312-setuptools \
-python312-Cython \
-python312-py-build-cmake \
-python312-matplotlib \
-python312-mpmath \
-python312-numba-devel \
-# python312-numpy \ # Numba conflicts with latest NumPy
-python312-onnx \
-python312-pandas \
-python312-scikit-build \
-python312-scikit-build-core-pyproject \
-python312-scikit-image \
-python312-scikit-learn \
-python312-scipy
-
-RUN --mount=type=cache,target=/var/cache/zypp \
-    zypper --gpg-auto-import-keys \
-        install --no-confirm --auto-agree-with-licenses \
-python312-opencv \
-opencv \
-opencv-devel \
+python312-dbm \
 Mesa-libGL1 \
 Mesa-libEGL-devel \
 libgthread-2_0-0 \
@@ -52,20 +28,16 @@ libQt5OpenGL5
 RUN --mount=type=cache,target=/var/cache/zypp \
     zypper --gpg-auto-import-keys \
         install --no-confirm --auto-agree-with-licenses \
-python312-ffmpeg-python \
-python312-imageio \
-python312-svglib \
 ffmpeg \
 x264 \
 x265 \
-python312-GitPython \
-python312-pygit2 \
 git
 
 RUN --mount=type=cache,target=/var/cache/zypp \
     zypper --gpg-auto-import-keys \
         install --no-confirm --auto-agree-with-licenses \
 make \
+cmake \
 bison \
 gawk \
 ninja \
@@ -116,9 +88,11 @@ cpp14 \
 # PyTorch, xFormers
 # Break down the steps, so we have more but smaller image layers.
 RUN --mount=type=cache,target=/root/.cache/pip \
-    pip list \
-    && pip install \
-        --upgrade pip wheel setuptools
+    python3 -m ensurepip --upgrade \
+    && update-alternatives --install /usr/bin/pip pip /usr/local/bin/pip3.12 100 \
+    && pip install --upgrade \
+        pip wheel setuptools packaging \
+    && pip list
 
 # 1. Dry run pip install to get the list of packages
 #    (first run to show logs, then grep the output)
