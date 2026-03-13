@@ -1,5 +1,6 @@
 # Essentials
 accelerate
+Cython
 diffusers
 ftfy
 huggingface-hub
