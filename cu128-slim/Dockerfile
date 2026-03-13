@@ -11,7 +11,6 @@ LABEL maintainer="YAN Wenkun <code@yanwk.fun>"
 
 ################################################################################
 # Python and tools
-# Since this image is so big, we use openSUSE-verified PIP packages for compatibility.
 
 RUN --mount=type=cache,target=/var/cache/zypp \
     zypper addrepo --check --refresh --priority 90 \
