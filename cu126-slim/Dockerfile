@@ -15,7 +15,9 @@ RUN set -eu
 # Python and tools
 
 RUN --mount=type=cache,target=/var/cache/zypp \
-    zypper --gpg-auto-import-keys \
+    zypper addrepo --check --refresh --priority 90 \
+        'https://ftp.gwdg.de/pub/linux/misc/packman/suse/openSUSE_Tumbleweed/Essentials/' packman-essentials \
+    && zypper --gpg-auto-import-keys \
         install --no-confirm --auto-agree-with-licenses \
 python312-devel \
 python312-dbm \
