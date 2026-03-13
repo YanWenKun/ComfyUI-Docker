@@ -48,6 +48,7 @@ fd \
 fuse \
 vim \
 which \
+update-alternatives \
 google-noto-sans-fonts \
     && rm -v /usr/lib64/python3.12/EXTERNALLY-MANAGED \
     # Ensure default Python version
