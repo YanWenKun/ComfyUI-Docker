@@ -90,6 +90,7 @@ jobs:
 
 
   test-image-rocm7:
+    needs: build-publish-rocm7
     runs-on: ubuntu-latest
     steps:
       - 
