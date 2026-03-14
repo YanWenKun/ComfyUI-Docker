@@ -98,13 +98,13 @@ jobs:
         run: sleep 30s
       - 
         name: Pull image from Docker Hub
-        run: docker pull docker.io/yanwk/comfyui-boot:rocm7-${{ steps.date.outputs.date }}
+        run: docker pull docker.io/yanwk/comfyui-boot:rocm7
       - 
         name: Show 'rocm7' environment variables
         run: |
           docker run --rm \
             --name show-env \
-            docker.io/yanwk/comfyui-boot:rocm7-${{ steps.date.outputs.date }} \
+            docker.io/yanwk/comfyui-boot:rocm7 \
             env
       - 
         name: Test 'rocm7'
@@ -113,5 +113,5 @@ jobs:
           docker run --rm \
             --name comfyui-quick-test \
             -e CLI_ARGS="--quick-test-for-ci --cpu" \
-            docker.io/yanwk/comfyui-boot:rocm7-${{ steps.date.outputs.date }} \
+            docker.io/yanwk/comfyui-boot:rocm7 \
               bash -c 'pip uninstall -y flash_attn && bash /runner-scripts/entrypoint.sh'
