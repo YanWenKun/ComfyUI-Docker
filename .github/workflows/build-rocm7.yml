@@ -98,13 +98,13 @@ jobs:
         run: sleep 30s
       - 
         name: Pull image from Docker Hub
-        run: docker pull docker.io/yanwk/comfyui-boot:rocm7
+        run: docker pull docker.io/yanwk/comfyui-boot:rocm7-${{ steps.date.outputs.date }}
       - 
         name: Show 'rocm7' environment variables
         run: |
           docker run --rm \
             --name show-env \
-            docker.io/yanwk/comfyui-boot:rocm7 \
+            docker.io/yanwk/comfyui-boot:rocm7-${{ steps.date.outputs.date }} \
             env
       - 
         name: Test 'rocm7'
