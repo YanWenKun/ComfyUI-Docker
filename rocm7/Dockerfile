@@ -95,11 +95,11 @@ COPY builder-scripts/.  /builder-scripts/
 # Compile-Install Flash Attention for ROCm
 # https://github.com/Dao-AILab/flash-attention#amd-rocm-support
 # https://rocm.docs.amd.com/en/latest/how-to/rocm-for-ai/inference-optimization/model-acceleration-libraries.html#installing-flash-attention-2
-
-# Triton backend
-ENV FLASH_ATTENTION_TRITON_AMD_ENABLE=TRUE
+#
 # Composable Kernel (CK) backend (needs a GPU for compiling)
 #ENV FLASH_ATTENTION_SKIP_CK_BUILD=FALSE
+# Triton backend
+ENV FLASH_ATTENTION_TRITON_AMD_ENABLE=TRUE
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     cd /builder-scripts \
