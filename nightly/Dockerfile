@@ -17,7 +17,7 @@
 # Ref: https://gitlab.com/nvidia/container-images/cuda/-/issues/47
 ################################################################################
 
-FROM nvidia/cuda:13.0.2-cudnn-devel-ubuntu24.04
+FROM nvidia/cuda:13.2.0-cudnn-devel-ubuntu24.04
 
 ARG USING_GITHUB_ACTIONS=false
 
@@ -84,17 +84,17 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         --dry-run --pre torch torchvision torchaudio \
-        --index-url https://download.pytorch.org/whl/nightly/cu130
+        --index-url https://download.pytorch.org/whl/nightly/cu132
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         --no-deps --pre torch torchvision torchaudio \
-        --index-url https://download.pytorch.org/whl/nightly/cu130
+        --index-url https://download.pytorch.org/whl/nightly/cu132
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         --pre torch torchvision torchaudio \
-        --index-url https://download.pytorch.org/whl/nightly/cu130 \
+        --index-url https://download.pytorch.org/whl/nightly/cu132 \
     && find /usr/local/lib/python3.14t/dist-packages/nvidia/ -mindepth 1 -maxdepth 1 -exec rm -rfv {} +
 
 ################################################################################
