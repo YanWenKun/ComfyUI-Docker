@@ -13,6 +13,7 @@ kornia
 lark
 matplotlib
 onnx
+onnxruntime
 opencv-contrib-python-headless
 pandas
 pilgram

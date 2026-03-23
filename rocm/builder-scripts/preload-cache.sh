@@ -29,6 +29,9 @@ use_uv = False
 security_level = weak
 EOF
 
+# Performance
+gcs https://github.com/city96/ComfyUI-GGUF.git
+
 # General
 gcs https://github.com/ltdrdata/was-node-suite-comfyui.git
 gcs https://github.com/chrisgoringe/cg-use-everywhere.git

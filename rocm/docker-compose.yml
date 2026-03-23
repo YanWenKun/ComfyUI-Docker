@@ -40,3 +40,4 @@ services:
     security_opt:
       - seccomp:unconfined
       - label:disable
+    # shm_size: 8g # Uncomment if you don't want to use --ipc=host
