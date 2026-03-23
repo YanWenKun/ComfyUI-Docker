@@ -6,7 +6,7 @@ This repo is for
 https://hub.docker.com/r/yanwk/comfyui-boot[Docker images] 
 that runs 
 https://github.com/comfyanonymous/ComfyUI[ComfyUI] - 
-a Stable Diffusion GUI powering node-based workflow.
+an AIGC GUI powering node-based workflow.
 
 ## Quick Start - NVIDIA GPU
 
