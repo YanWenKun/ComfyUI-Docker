@@ -22,21 +22,8 @@ onnxruntime-migraphx
 
 COPY builder-scripts/.  /builder-scripts/
 
-# Compile-Install Flash Attention for ROCm
-# https://github.com/Dao-AILab/flash-attention#amd-rocm-support
-# https://rocm.docs.amd.com/en/latest/how-to/rocm-for-ai/inference-optimization/model-acceleration-libraries.html#installing-flash-attention-2
-#
-# Composable Kernel (CK) backend (needs a GPU for compiling)
-#ENV FLASH_ATTENTION_SKIP_CK_BUILD=FALSE
-# Triton backend
-ENV FLASH_ATTENTION_TRITON_AMD_ENABLE=TRUE
-
-RUN --mount=type=cache,target=/root/.cache/pip \
-    cd /builder-scripts \
-    && git clone https://github.com/Dao-AILab/flash-attention \
-    && cd flash-attention \
-    && python3 setup.py install \
-    && cd /
+# Note: No FlashAttention for ROCm in this image
+# PyTorch's ROCm builds will try to find CUDA to compile and throw errors.
 
 # Deps for ComfyUI & custom nodes
 RUN --mount=type=cache,target=/root/.cache/pip \
