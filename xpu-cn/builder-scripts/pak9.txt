@@ -1,3 +1,6 @@
 # https://www.intel.com/content/www/us/en/developer/tools/openvino-toolkit/download.html
 onnxruntime
-onnxruntime-openvino
+
+# TODO: py314 版本发布后恢复该包
+# https://pypi.org/project/onnxruntime-openvino/#files
+#onnxruntime-openvino

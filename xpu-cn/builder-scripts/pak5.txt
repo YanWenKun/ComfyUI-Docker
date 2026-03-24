@@ -6,6 +6,7 @@ alembic
 av
 beautifulsoup4
 bitsandbytes
+blake3
 cachetools
 chardet
 clip-interrogator
@@ -17,10 +18,12 @@ einops
 filelock
 fvcore
 GitPython
+glfw
 imageio-ffmpeg
 importlib-metadata
 jinja2
 llama-cpp-python
+matrix-nio
 mss
 natsort
 numba
@@ -34,10 +37,12 @@ py-cpuinfo
 pydantic-settings
 pydantic
 PyGithub
+PyOpenGL
 python-dateutil
 pyyaml
 qrcode[pil]
 rembg
+requests
 requirements-parser
 rich
 rich-argparse

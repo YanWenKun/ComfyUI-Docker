@@ -2,12 +2,11 @@
 # Dockerfile that builds 'yanwk/comfyui-boot:xpu'
 # A runtime environment for https://github.com/Comfy-Org/ComfyUI
 # Running on XPU (Intel GPU).
-# Does NOT install IPEX (Intel Extension for PyTorch).
-# Using Python 3.13, GCC 14.
+# Using Python 3.14, GCC 15.
 # Using 'root' user inside container.
 ################################################################################
 
-FROM fedora:42
+FROM fedora:43
 
 LABEL maintainer="code@yanwk.fun"
 
@@ -16,16 +15,16 @@ LABEL maintainer="code@yanwk.fun"
 
 RUN --mount=type=cache,target=/var/cache/dnf \
     dnf install -y --nogpgcheck \
-        'https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-42.noarch.rpm' \
+        'https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-43.noarch.rpm' \
     && dnf upgrade -y \
     && dnf install -y \
-python3.13-devel \
+python3.14-devel \
 python3-pip \
 python3-wheel \
 python3-setuptools \
 python3-cython \
 make \
-ninja \
+ninja-build \
 python3-cmake
 
 RUN --mount=type=cache,target=/var/cache/dnf \
@@ -59,28 +58,14 @@ intel-igc \
 clinfo \
 openssl
 
-################################################################################
-# GCC 14
-# (Fedora 42 defaults to GCC 15)
-
+# Fedora 43 defaults to GCC 15
 RUN --mount=type=cache,target=/var/cache/dnf \
     dnf install -y \
-gcc14 \
-gcc14-c++ \
-    && update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++-14 90 \
-    && update-alternatives --install /usr/bin/cc  cc  /usr/bin/gcc-14 90 \
-    && update-alternatives --install /usr/bin/cpp cpp /usr/bin/cpp-14 90 \
-    && update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-14 90 \
-    && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-14 90 \
-    && update-alternatives --install /usr/bin/gcc-ar gcc-ar /usr/bin/gcc-ar-14 90 \
-    && update-alternatives --install /usr/bin/gcc-nm gcc-nm /usr/bin/gcc-nm-14 90 \
-    && update-alternatives --install /usr/bin/gcc-ranlib gcc-ranlib /usr/bin/gcc-ranlib-14 90 \
-    && update-alternatives --install /usr/bin/gcov gcov /usr/bin/gcov-14 90 \
-    && update-alternatives --install /usr/bin/gcov-dump gcov-dump /usr/bin/gcov-dump-14 90 \
-    && update-alternatives --install /usr/bin/gcov-tool gcov-tool /usr/bin/gcov-tool-14 90 
+gcc \
+gcc-c++
 
 # ################################################################################
-# PyTorch (No IPEX)
+# PyTorch
 
 ARG PIP_ROOT_USER_ACTION='ignore'
 ARG PIP_NO_BUILD_ISOLATION=1
@@ -88,16 +73,15 @@ ARG PIP_NO_BUILD_ISOLATION=1
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip list \
     && pip install \
-        --upgrade pip wheel setuptools
+        --upgrade pip wheel setuptools packaging
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        --dry-run torch torchvision torchaudio \
+        torch torchvision torchaudio \
         --index-url https://download.pytorch.org/whl/xpu \
-    && pip install \
-        --no-deps torch \
-        --index-url https://download.pytorch.org/whl/xpu
+    && pip uninstall --yes torch
 
+# Install torch separately to reduce image layer size
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         torch torchvision torchaudio \
@@ -163,7 +147,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 ################################################################################
 
 ENV LD_LIBRARY_PATH="/usr/local/lib\
-:/usr/local/lib64/python3.13/site-packages/torch/lib/\
+:/usr/local/lib64/python3.14/site-packages/torch/lib/\
 ${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
 
 ################################################################################

@@ -1,10 +1,11 @@
 accelerate
 compel
+Cython
 diffusers
 fairscale
 ftfy
 gguf
-huggingface-hub[cli]
+huggingface-hub
 imageio
 joblib
 kornia

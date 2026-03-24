@@ -1,13 +1,13 @@
 ################################################################################
 # 用于构建镜像 'yanwk/comfyui-boot:xpu-cn' 的 Dockerfile
 # 用于以 Intel GPU 运行 ComfyUI
-# 使用 PyTorch 官方仓库的 XPU 二进制包，且不使用 IPEX（Intel Extension for PyTorch）
-# 使用 Python 3.13, GCC 14
+# 使用 PyTorch 官方仓库的 XPU 二进制包
+# 使用 Python 3.14, GCC 15
 # 容器内将以 root 用户运行
 ################################################################################
 
 # 该基础镜像声明不含仓库前缀，因而会优先查找本地镜像
-FROM fedora:42
+FROM fedora:43
 
 LABEL maintainer="code@yanwk.fun"
 
@@ -31,7 +31,7 @@ RUN --mount=type=cache,target=/var/cache/dnf \
             /etc/yum.repos.d/fedora-updates.repo \
         && dnf config-manager setopt fedora-cisco-openh264.enabled=0 \
         && dnf install -y --nogpgcheck \
-            'https://mirrors.cernet.edu.cn/rpmfusion/free/fedora/rpmfusion-free-release-42.noarch.rpm' \
+            'https://mirrors.cernet.edu.cn/rpmfusion/free/fedora/rpmfusion-free-release-43.noarch.rpm' \
         && sed -e 's!^metalink=!#metalink=!g' \
             -e 's!^mirrorlist=!#mirrorlist=!g' \
             -e 's!^#baseurl=!baseurl=!g' \
@@ -39,7 +39,7 @@ RUN --mount=type=cache,target=/var/cache/dnf \
             -i.bak /etc/yum.repos.d/rpmfusion*.repo ; \
     else \
         dnf install -y --nogpgcheck \
-            'https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-42.noarch.rpm' ; \
+            'https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-43.noarch.rpm' ; \
     fi
 
 ################################################################################
@@ -48,13 +48,13 @@ RUN --mount=type=cache,target=/var/cache/dnf \
 RUN --mount=type=cache,target=/var/cache/dnf \
     dnf upgrade -y \
     && dnf install -y \
-python3.13-devel \
+python3.14-devel \
 python3-pip \
 python3-wheel \
 python3-setuptools \
 python3-cython \
 make \
-ninja \
+ninja-build \
 python3-cmake
 
 RUN --mount=type=cache,target=/var/cache/dnf \
@@ -88,50 +88,43 @@ intel-igc \
 clinfo \
 openssl
 
-################################################################################
-# GCC 14
-# （Fedora 42 默认使用 GCC 15）
-
+# Fedora 43 默认使用 GCC 15
 RUN --mount=type=cache,target=/var/cache/dnf \
     dnf install -y \
-gcc14 \
-gcc14-c++ \
-    && update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++-14 90 \
-    && update-alternatives --install /usr/bin/cc  cc  /usr/bin/gcc-14 90 \
-    && update-alternatives --install /usr/bin/cpp cpp /usr/bin/cpp-14 90 \
-    && update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-14 90 \
-    && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-14 90 \
-    && update-alternatives --install /usr/bin/gcc-ar gcc-ar /usr/bin/gcc-ar-14 90 \
-    && update-alternatives --install /usr/bin/gcc-nm gcc-nm /usr/bin/gcc-nm-14 90 \
-    && update-alternatives --install /usr/bin/gcc-ranlib gcc-ranlib /usr/bin/gcc-ranlib-14 90 \
-    && update-alternatives --install /usr/bin/gcov gcov /usr/bin/gcov-14 90 \
-    && update-alternatives --install /usr/bin/gcov-dump gcov-dump /usr/bin/gcov-dump-14 90 \
-    && update-alternatives --install /usr/bin/gcov-tool gcov-tool /usr/bin/gcov-tool-14 90 
+gcc \
+gcc-c++
 
 # ################################################################################
-# PyTorch （无 IPEX）
-# 如果官方源下载缓慢，可搜索替换为南大源： https://mirrors.nju.edu.cn/pytorch/whl/xpu
+# PyTorch
 
 ARG PIP_ROOT_USER_ACTION='ignore'
 ARG PIP_NO_BUILD_ISOLATION=1
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip list \
-    && pip install \
-        --upgrade pip wheel setuptools
+    && pip install --upgrade \
+        pip wheel setuptools packaging
 
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install \
-        --dry-run torch torchvision torchaudio \
-        --index-url https://download.pytorch.org/whl/xpu \
-    && pip install \
-        --no-deps torch \
-        --index-url https://download.pytorch.org/whl/xpu
+# 默认使用南大源，如果遇到下载卡壳，可改为官方源
+RUN if [ "${USING_GITHUB_ACTIONS}" = "true" ]; then \
+        echo "export PT_INDEX_URL=https://download.pytorch.org/whl/xpu" > /tmp/pt_env; \
+    else \
+        echo "export PT_INDEX_URL=https://mirrors.nju.edu.cn/pytorch/whl/xpu" > /tmp/pt_env; \
+    fi
 
+# 这里单独卸载 torch 是为了减少镜像单层大小，利于拉取时多线程下载
 RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install \
+    source /tmp/pt_env \
+    && pip install \
         torch torchvision torchaudio \
-        --index-url https://download.pytorch.org/whl/xpu
+        --index-url ${PT_INDEX_URL} \
+    && pip uninstall --yes torch
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    source /tmp/pt_env \
+    && pip install \
+        torch torchvision torchaudio \
+        --index-url ${PT_INDEX_URL}
 
 # 安装 ComfyUI 及扩展所需依赖项
 COPY builder-scripts/.  /builder-scripts/
@@ -176,9 +169,11 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 
 # 确保依赖项匹配
 RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install \
+    source /tmp/pt_env \
+    && pip install \
         torch torchvision torchaudio \
-        --index-url https://download.pytorch.org/whl/xpu
+        --index-url ${PT_INDEX_URL} \
+    && rm -vf /tmp/pt_env
 
 ################################################################################
 # 预载 ComfyUI 及扩展，并根据预载的 ComfyUI 版本安装依赖项（确保前后端版本匹配）
@@ -202,7 +197,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # 绑定环境变量 (依赖库 .so 文件)
 
 ENV LD_LIBRARY_PATH="/usr/local/lib\
-:/usr/local/lib64/python3.13/site-packages/torch/lib/\
+:/usr/local/lib64/python3.14/site-packages/torch/lib/\
 ${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
 
 ################################################################################
