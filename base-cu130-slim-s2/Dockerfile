@@ -68,3 +68,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 WORKDIR /default-comfyui-bundle
 
 RUN bash /builder-scripts/preload-cache.sh
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip list \
+    && pip --version
