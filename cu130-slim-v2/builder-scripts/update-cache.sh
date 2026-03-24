@@ -1,0 +1,49 @@
+#!/bin/bash
+
+set -euo pipefail
+
+function git_pull () {
+    git_remote_url=$(git -C "$1" remote get-url origin) ;
+
+    if [[ $git_remote_url =~ ^(https:\/\/github\.com\/)(.*)(\.git)$ ]]; then
+        echo "Updating: $1" ;
+        git -C "$1" reset --hard ;
+        git -C "$1" pull --ff-only ;
+        echo "Done Updating: $1" ;
+    fi ;
+}
+
+echo "########################################"
+echo "[INFO] Updating ComfyUI & Nodes..."
+echo "########################################"
+
+cd /default-comfyui-bundle/ComfyUI
+
+git reset --hard
+git pull
+# Using stable version (has a release tag)
+git reset --hard "$(git tag | grep -e '^v' | sort -V | tail -1)"
+
+cd /default-comfyui-bundle/ComfyUI/custom_nodes
+
+for D in *; do
+    if [ -d "${D}" ]; then
+        git_pull "${D}" &
+    fi
+done
+
+wait "$(jobs -p)"
+
+# Disable Manager's cache update on startup ("FETCH ComfyRegistry Data")
+grep -n "run(default_cache_update())" ./ComfyUI-Manager/glob/manager_server.py && 
+sed -i.bak '/run(default_cache_update())/d' ./ComfyUI-Manager/glob/manager_server.py
+
+# Configure Manager
+mkdir -p /default-comfyui-bundle/ComfyUI/user/__manager
+
+cat <<EOF > /default-comfyui-bundle/ComfyUI/user/__manager/config.ini
+[default]
+use_uv = False
+security_level = weak
+downgrade_blacklist = torch, torchvision, torchaudio
+EOF
