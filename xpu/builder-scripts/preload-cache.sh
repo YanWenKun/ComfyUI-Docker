@@ -23,11 +23,16 @@ cat <<EOF > /default-comfyui-bundle/ComfyUI/user/__manager/config.ini
 [default]
 use_uv = False
 security_level = weak
+downgrade_blacklist = torch, torchvision, torchaudio
 EOF
 
 cd /default-comfyui-bundle/ComfyUI/custom_nodes
 
 gcs https://github.com/Comfy-Org/ComfyUI-Manager.git
+
+# Disable Manager cache update on startup ("FETCH ComfyRegistry Data")
+grep -n "run(default_cache_update())" ./ComfyUI-Manager/glob/manager_server.py && 
+sed -i.bak '/run(default_cache_update())/d' ./ComfyUI-Manager/glob/manager_server.py
 
 # Performance
 gcs https://github.com/openvino-dev-samples/comfyui_openvino.git

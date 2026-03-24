@@ -30,6 +30,7 @@ cat <<EOF > /default-comfyui-bundle/ComfyUI/user/__manager/config.ini
 channel_url = https://gh-proxy.org/https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main
 use_uv = False
 security_level = weak
+downgrade_blacklist = torch, torchvision, torchaudio
 EOF
 
 cat <<EOF > /default-comfyui-bundle/ComfyUI/user/__manager/channels.list
@@ -48,6 +49,10 @@ echo "########################################"
 cd /default-comfyui-bundle/ComfyUI/custom_nodes
 
 gcs https://gh-proxy.org/https://github.com/Comfy-Org/ComfyUI-Manager.git
+
+# 阻止 Manager 每次启动时都进行缓存更新（"FETCH ComfyRegistry Data"）
+grep -n "run(default_cache_update())" ./ComfyUI-Manager/glob/manager_server.py && 
+sed -i.bak '/run(default_cache_update())/d' ./ComfyUI-Manager/glob/manager_server.py
 
 # 性能
 gcs https://gh-proxy.org/https://github.com/openvino-dev-samples/comfyui_openvino.git
