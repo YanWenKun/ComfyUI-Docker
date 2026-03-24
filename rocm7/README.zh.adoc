@@ -1,15 +1,10 @@
-# 基于 AMD GPU + ROCm 运行 ComfyUI
+# 基于 AMD GPU + ROCm 7 运行 ComfyUI
 
 中文 | ℹ️ *link:README.adoc[English]*
 
 image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-rocm7.yml/badge.svg["GitHub Workflow Status",link="https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-rocm7.yml"]
 
 https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=rocm7[在 <Docker Hub> 上查看]
-
-TIP: 本镜像使用最新的 ROCm 7，仅推荐给 Radeon RX 9000 系列（RDNA 4）和 Ryzen AI 300 系列（RDNA 3.5）用户。
-更早的 GPU 用户推荐使用更稳定的
-link:../rocm6/README.zh.adoc[`rocm6`]
-镜像。
 
 ## 准备工作
 

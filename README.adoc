@@ -114,13 +114,19 @@ The `megapak` images are all-in-one bundles, including development kits and doze
 
 ## ROCm Image Tags
 
-* link:rocm6/README.adoc[`rocm6`]
+* link:rocm/README.adoc[`rocm`]
 
-** For AMD GPUs with ROCm 6 (stable version).
+** For AMD GPUs with ROCm 7.
+** Based on PyTorch's builds (faster release).
 
 * link:rocm7/README.adoc[`rocm7`]
 
-** For AMD GPUs with ROCm 7 (latest version).
+** For AMD GPUs with ROCm 7.
+** Based on AMD's builds (comprehensive functionality).
+
+* link:rocm6/README.adoc[`rocm6`]
+
+** For AMD GPUs with ROCm 6 (stable version).
 
 
 ## XPU Image Tags

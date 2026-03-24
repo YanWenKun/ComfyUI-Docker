@@ -6,14 +6,29 @@ image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-rocm.y
 
 https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=rocm[在 <Docker Hub> 上查看]
 
-## 注：镜像区别
+## 版本选择
+
+* RDNA 4（Radeon RX 9000 系列）和 RDNA 3.5（Ryzen AI 300 系列）用户需使用 ROCm 7 或未来版本。
+
+* RDNA 3 用户可在 ROCm 7 与 6 之间自由选择，优先选 7。
+
+* RDNA 2 用户推荐使用更稳定的
+link:../rocm6/README.zh.adoc[`rocm6`]
+镜像。
+
+
+## 镜像区别
+
+`rocm` 镜像基于
+https://download.pytorch.org/whl/rocm7.2[PyTorch]
+发布的二进制包构建，当 PyTorch 发布新版时，`rocm` 可立即得到更新。
 
 `rocm7` 镜像基于 AMD 官方提供的
 https://hub.docker.com/r/rocm/pytorch[rocm/pytorch]
-镜像构建，当 ROCm 发布新版本时，`rocm7` 镜像会比 `rocm` 镜像更早更新（潜在的兼容性问题更少）。 +
-但 `rocm7` 预装的 Python 组件不如 `rocm` 镜像丰富，其对 ComfyUI 插件（自定义节点）的支持会略逊一筹。
+镜像构建，该镜像功能更全面，但更新较慢。
 
-如果不清楚如何选择，或者初次接触 ComfyUI，建议用 `rocm7` 镜像。
+如果不清楚如何选择，或者初次接触 ComfyUI，建议用 `rocm` 镜像，遇到兼容性问题再换用 `rocm7` 镜像。
+
 
 ## 准备工作
 
@@ -22,39 +37,73 @@ https://hub.docker.com/r/rocm/pytorch[rocm/pytorch]
 * 检查你的 GPU/CPU 是否被 ROCm 支持：
 ** https://rocm.docs.amd.com/projects/install-on-linux/en/latest/reference/system-requirements.html[支持的 GPU 列表]
 ** https://rocm.docs.amd.com/projects/radeon-ryzen/en/latest/docs/compatibility/compatibilityryz/native_linux/native_linux_compatibility.html#gpu-support-matrix[支持的 Ryzen CPU (APU) 列表]
-
-** RX 6000 系列可尝试运行，但不保证功能正常。
-*** RX 6000 系列不在 ROCm 7 的官方支持列表中，但 RDNA 2 专业卡（如 W6800）仍被 ROCm 7 支持，它们的编译目标均为 `gfx1030` ，故仍有尝试价值。
-
-* （可选）为防止 `HIP error: an illegal memory access was encountered` 错误，可在宿主机上设置内核参数 `amdgpu.cwsr_enable=0`，具体见
-https://github.com/YanWenKun/ComfyUI-Docker/issues/157[issue #157]
-（感谢 __SergeyFilippov__ ）。
+** 或参考下表。
 
 
 ## 必要环境变量
 
-需根据 GPU 型号添加如下环境变量（感谢
+需根据 GPU 型号，为容器配置如下环境变量：
+
+[cols="2,3,2", options="header"]
+|===
+| GPU 架构 | 需配置的环境变量 |  GPU 型号
+
+.4+| RDNA 4 (gfx1201)
+.4+| `-e HSA_OVERRIDE_GFX_VERSION=12.0.1 \`
+| Radeon AI PRO R9700
+| Radeon RX 9070 XT
+| Radeon RX 9070
+| Radeon RX 9070 GRE
+
+.2+| RDNA 4 (gfx1200)
+.2+| `-e HSA_OVERRIDE_GFX_VERSION=12.0.0 \`
+| Radeon RX 9060 XT
+| Radeon RX 9060
+
+.3+| RDNA 3.5 (gfx1151)
+.3+| `-e HSA_OVERRIDE_GFX_VERSION=11.5.1 \` + 
+`-e HIP_VISIBLE_DEVICES=0 \`
+| Ryzen AI Max+ 395
+| Ryzen AI Max 390
+| Ryzen AI Max 385
+
+.3+| RDNA 3.5 (gfx1150)
+.3+| `-e HSA_OVERRIDE_GFX_VERSION=11.5.0 \` + 
+`-e HIP_VISIBLE_DEVICES=0 \`
+| Ryzen AI 9 HX 375
+| Ryzen AI 9 HX 370
+| Ryzen AI 9 365
+
+.4+| RDNA 3 (gfx1101)
+.4+| `-e HSA_OVERRIDE_GFX_VERSION=11.0.1 \`
+| Radeon PRO W7700
+| Radeon PRO V710
+| Radeon RX 7800 XT
+| Radeon RX 7700 XT
+
+.5+| RDNA 3 (gfx1100)
+.5+| `-e HSA_OVERRIDE_GFX_VERSION=11.0.0 \`
+| Radeon PRO W7900
+| Radeon PRO W7800
+| Radeon RX 7900 XTX
+| Radeon RX 7900 XT
+| Radeon RX 7900 GRE
+
+.2+| RDNA 2 (gfx1030)
+.2+| `-e HSA_OVERRIDE_GFX_VERSION=10.3.0 \`
+| Radeon PRO W6800
+| Radeon PRO V620
+
+|===
+
+* Radeon RX 6000 系列可尝试运行，但不保证功能正常。
+** RX 6000 系列不在 ROCm 7 的官方支持列表中，但 RDNA 2 专业卡（如 W6800）仍被 ROCm 7 支持，它们的编译目标均为 `gfx1030` ，故仍有尝试价值。
+
+参考：
+https://rocm.docs.amd.com/en/latest/reference/gpu-arch-specs.html[AMD GPU 架构列表]
+（感谢
 https://github.com/YanWenKun/ComfyUI-Docker/pull/67[nhtua]
-的 PR）：
-
-* **RDNA 4** :
-** `-e HSA_OVERRIDE_GFX_VERSION=12.0.0 \`
-** 参看 https://rocm.docs.amd.com/en/latest/reference/gpu-arch-specs.html[AMD文档] ，部分型号可改用 `12.0.1`
-
-* Ryzen AI **Max** 300 系列 (**RDNA 3.5**):
-** `-e HSA_OVERRIDE_GFX_VERSION=11.5.1 \`
-** `-e HIP_VISIBLE_DEVICES=0 \`
-
-* Ryzen AI 300 系列 (**RDNA 3.5**):
-** `-e HSA_OVERRIDE_GFX_VERSION=11.5.0 \`
-** `-e HIP_VISIBLE_DEVICES=0 \`
-
-* **RDNA 3** :
-** `-e HSA_OVERRIDE_GFX_VERSION=11.0.0 \`
-** 参看 https://rocm.docs.amd.com/en/latest/reference/gpu-arch-specs.html[AMD文档] ，部分型号可改用 `11.0.1`
-
-* **RDNA 2** :
-** `-e HSA_OVERRIDE_GFX_VERSION=10.3.0 \`
+的 PR）
 
 
 ## 运行
@@ -158,74 +207,3 @@ https://github.com/Comfy-Org/docs/blob/main/troubleshooting/overview.mdx#amd-gpu
 感谢
 https://github.com/YanWenKun/ComfyUI-Docker/pull/114[SergeyFilippov]
 的 PR）
-
-
-// ## 如果你愿意折腾……
-
-// （以下内容介绍另外的安装使用方式，与本镜像无关）
-
-// 使用由 AMD 构建的 ROCm PyTorch 镜像：
-
-// https://hub.docker.com/r/rocm/pytorch
-
-// 这个镜像很大，但如果你运行容器遇到困难，可以尝试用这个镜像手动安装运行 ComfyUI。
-// 它已经安装好了最重要的 PyTorch，你只需要再安装少量 Python 包即可运行 ComfyUI。
-
-// [source,sh]
-// ----
-// docker pull rocm/pytorch:rocm7.1.1_ubuntu24.04_py3.12_pytorch_release_2.9.1
-
-// mkdir -p storage
-
-// docker run -it --rm \
-//   --name comfyui-rocm \
-//   --device=/dev/kfd --device=/dev/dri \
-//   --group-add=video --ipc=host --cap-add=SYS_PTRACE \
-//   --security-opt seccomp=unconfined \
-//   --security-opt label=disable \
-//   -p 8188:8188 \
-//   --user root \
-//   --workdir /root/workdir \
-//   -v "$(pwd)"/storage:/root/workdir \
-//   rocm/pytorch:rocm7.1.1_ubuntu24.04_py3.12_pytorch_release_2.9.1 \
-//   /bin/bash
-
-// git clone https://github.com/comfyanonymous/ComfyUI.git
-
-// pip install -r ComfyUI/requirements.txt
-// # 或使用 Conda:
-// # conda install --yes --file ComfyUI/requirements.txt
-
-// python ComfyUI/main.py --listen --port 8188
-// # 或使用 python3:
-// # python3 ComfyUI/main.py --listen --port 8188
-// ----
-
-// ## 备注： Windows 用户
-
-// （以下内容介绍另外的安装使用方式，与本镜像无关）
-
-// WSL2 支持 ROCm 与 DirectML：
-
-// * ROCm
-
-// ** 如果你的 AMD GPU 在
-// https://rocm.docs.amd.com/projects/radeon/en/latest/docs/compatibility/wsl/wsl_compatibility.html[兼容性列表]
-// 中，你可以在 WSL2 环境中安装
-// https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/wsl/install-radeon.html[Radeon software]
-// ，也可以通过 Docker Desktop 使用
-// <<hint, ROCm PyTorch 镜像>>。
-
-// * DirectML
-
-// ** DirectML 支持大多数 GPU（包括 AMD APU 与 Intel GPU）。
-// 该方法比纯 CPU 快，比 Linux 下的 ROCm 慢，且支持的 GPU 型号更多（甚至核显也能跑）。
-
-// ** 见：
-// link:../docs/wsl-directml.zh.adoc[在 WSL2 环境下通过 DirectML 运行 ComfyUI]。
-
-// * ZLUDA
-
-// ** 这里 ZLUDA 不是跑在 WSL2 上，而是 Windows 原生运行。ZLUDA 能“翻译”CUDA 指令给 AMD GPU 运行。
-// 这里不写详细了，因为老方法很可能一更新就不能用了，还请搜索教程。
-// 但还是提一点建议，先试着跑 SD-WebUI，这个起手要容易不少。
