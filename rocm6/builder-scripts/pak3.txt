@@ -2,6 +2,7 @@
 # 'torchdiffeq' for DepthFM
 # 'fairscale' for APISR
 accelerate
+cmake
 compel
 Cython
 diffusers
@@ -14,7 +15,10 @@ kornia
 lark
 matplotlib
 onnx
+opencv-contrib-python
 opencv-contrib-python-headless
+opencv-python
+opencv-python-headless
 pandas
 pilgram
 pillow
