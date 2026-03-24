@@ -9,8 +9,6 @@ FROM docker.io/opensuse/tumbleweed:latest
 
 LABEL maintainer="YAN Wenkun <code@yanwk.fun>"
 
-RUN set -eu
-
 ################################################################################
 # Python and tools
 

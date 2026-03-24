@@ -8,8 +8,6 @@ FROM opensuse/tumbleweed:latest
 
 LABEL maintainer="code@yanwk.fun"
 
-RUN set -eu
-
 ARG USING_GITHUB_ACTIONS=false
 
 ################################################################################

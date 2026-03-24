@@ -11,8 +11,6 @@ FROM fedora:42
 
 LABEL maintainer="code@yanwk.fun"
 
-RUN set -eu
-
 ################################################################################
 # OS Packages
 

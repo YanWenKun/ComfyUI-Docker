@@ -11,8 +11,6 @@ FROM fedora:42
 
 LABEL maintainer="code@yanwk.fun"
 
-RUN set -eu
-
 ################################################################################
 # 配置软件源，默认使用国内源，用 GitHub Actions 构建镜像时则使用官方源
 
