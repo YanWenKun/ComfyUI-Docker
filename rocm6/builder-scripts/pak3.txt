@@ -3,6 +3,7 @@
 # 'fairscale' for APISR
 accelerate
 compel
+Cython
 diffusers
 fairscale
 ftfy

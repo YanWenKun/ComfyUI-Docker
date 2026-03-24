@@ -20,46 +20,21 @@ RUN --mount=type=cache,target=/var/cache/zypp \
     && zypper --gpg-auto-import-keys \
         install --no-confirm --auto-agree-with-licenses \
 python312-devel \
-python312-pip \
-python312-wheel \
-python312-setuptools \
-python312-Cython \
-python312-py-build-cmake \
-python312-aiohttp \
 python312-dbm \
-python312-ffmpeg-python \
-python312-GitPython \
-python312-httpx \
-python312-joblib \
-python312-lark \
-python312-matplotlib \
-python312-mpmath \
-python312-numba-devel \
-# python312-numpy \ # Numba conflicts with latest NumPy
-python312-onnx \
-python312-opencv \
-python312-pandas \
-python312-qrcode \
-python312-rich \
-python312-scikit-build \
-python312-scikit-build-core-pyproject \
-python312-scikit-image \
-python312-scikit-learn \
-python312-scipy \
-python312-svglib \
-python312-tqdm \
-    && rm /usr/lib64/python3.12/EXTERNALLY-MANAGED \
-    && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 100
+Mesa-libGL1 \
+Mesa-libEGL-devel \
+libgthread-2_0-0
 
 # Note: 'half' for ORT on ROCm.
 RUN --mount=type=cache,target=/var/cache/zypp \
     zypper --gpg-auto-import-keys \
         install --no-confirm --auto-agree-with-licenses \
-Mesa-libGL1 \
-Mesa-libEGL-devel \
 ghc-half \
-libgthread-2_0-0 \
 make \
+cmake \
+bison \
+gawk \
+findutils \
 ninja \
 shadow \
 git \
@@ -73,9 +48,12 @@ opencv-devel \
 ffmpeg \
 x264 \
 x265 \
+update-alternatives \
 google-noto-sans-fonts \
 google-noto-sans-cjk-fonts \
-google-noto-coloremoji-fonts
+google-noto-coloremoji-fonts \
+    && rm /usr/lib64/python3.12/EXTERNALLY-MANAGED \
+    && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 100
 
 ################################################################################
 # GCC 13
@@ -103,9 +81,11 @@ cpp13 \
 ################################################################################
 # Python Packages
 RUN --mount=type=cache,target=/root/.cache/pip \
-    pip list \
-    && pip install \
-        --upgrade pip wheel setuptools
+    python3 -m ensurepip --upgrade \
+    && update-alternatives --install /usr/bin/pip pip /usr/local/bin/pip3.12 100 \
+    && pip install --upgrade \
+        pip wheel setuptools packaging \
+    && pip list
 
 # PyTorch ROCm
 # Ref: https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/native_linux/install-pytorch.html
