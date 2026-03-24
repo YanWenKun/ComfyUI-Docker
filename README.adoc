@@ -51,19 +51,23 @@ The supported CUDA versions for each GPU architecture are shown in the table bel
 GTX 1660 
 | TITAN V | GTX 1080 | GTX 980
 
-| cu130
+| cu130 ⭐
 | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌
 
-| cu128 ⭐
+| cu128
 | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌
 
 | cu126
-| ❌ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️
+| ❌ | ❌ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️
 
 |===
 
-* **CUDA 12.8 images are currently recommended**, in line with PyTorch’s 
-https://github.com/pytorch/pytorch/issues/159980[development plan].
+* **CUDA 13.0 images are currently recommended**.
+ComfyUI's
+https://github.com/Comfy-Org/comfy-kitchen[performance library]
+is currently developed based on CUDA 13.0,
+which is also considered one of the stable versions of
+https://github.com/pytorch/pytorch/issues/172663[PyTorch].
 
 * If you are unsure about your NVIDIA GPU architecture, see
 https://arnon.dk/matching-sm-architectures-arch-and-gencode-for-various-nvidia-cards/[this article].
@@ -84,10 +88,10 @@ The `slim` images start with only ComfyUI and ComfyUI-Manager, yet include many 
 * link:cu126-slim/README.adoc[`cu126-slim`]
 ** CUDA 12.6, Python 3.12
 
-* link:cu128-slim/README.adoc[`cu128-slim`] ⭐
+* link:cu128-slim/README.adoc[`cu128-slim`]
 ** CUDA 12.8, Python 3.12
 
-* link:cu130-slim/README.adoc[`cu130-slim`]
+* link:cu130-slim/README.adoc[`cu130-slim`] ⭐
 ** CUDA 13.0, Python 3.13 (with GIL), No xFormers
 
 ### MEGAPAK
