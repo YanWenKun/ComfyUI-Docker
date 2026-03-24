@@ -2,7 +2,6 @@
 # 'torchdiffeq' for DepthFM
 # 'fairscale' for APISR
 accelerate
-cmake
 compel
 Cython
 diffusers

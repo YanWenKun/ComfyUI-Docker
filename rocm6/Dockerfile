@@ -55,6 +55,9 @@ google-noto-coloremoji-fonts \
     && rm /usr/lib64/python3.12/EXTERNALLY-MANAGED \
     && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 100
 
+# Temp fix for SentencePiece on CMAKE 4+
+ENV CMAKE_POLICY_VERSION_MINIMUM=3.5
+
 ################################################################################
 # GCC 13
 # GCC 12 was dropped in 2025 OpenSUSE Tumbleweed updates.
