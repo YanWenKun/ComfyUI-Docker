@@ -76,7 +76,7 @@ docker run -it --rm \
   -v "$(pwd)"/storage-user/input:/root/ComfyUI/input \
   -v "$(pwd)"/storage-user/output:/root/ComfyUI/output \
   -v "$(pwd)"/storage-user/workflows:/root/ComfyUI/user/default/workflows \
-  -e CLI_ARGS="--async-offload" \
+  -e CLI_ARGS="" \
   yanwk/comfyui-boot:xpu
 ----
 
@@ -106,7 +106,7 @@ podman run -it --rm \
   -v "$(pwd)"/storage-user/input:/root/ComfyUI/input \
   -v "$(pwd)"/storage-user/output:/root/ComfyUI/output \
   -v "$(pwd)"/storage-user/workflows:/root/ComfyUI/user/default/workflows \
-  -e CLI_ARGS="--async-offload" \
+  -e CLI_ARGS="" \
   docker.io/yanwk/comfyui-boot:xpu
 ----
 
@@ -124,7 +124,7 @@ You can install `nvtop` (works for Intel GPUs as well) on your host system to mo
 |args |description
 
 |--async-offload
-|Enable asynchronous offloading of models from VRAM to RAM. Gives subtle improvement and no visible harm.
+|Enable asynchronous offloading of models from VRAM to RAM. Gives subtle improvement. May have compatibility issues with certain VAEs.
 
 |--disable-smart-memory
 |Force ComfyUI to offload models from VRAM to RAM more frequently. Mitigate memory leaks effectively, but slows performance and consumes more system RAM.
