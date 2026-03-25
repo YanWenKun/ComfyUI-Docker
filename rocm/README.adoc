@@ -18,10 +18,15 @@ image.
 
 ## Differences Between Images
 
-The `rocm` image is built using the binary packages released by
+* `rocm` :
+
+** ROCm 7.2
+** Based on the binary packages released by
 https://download.pytorch.org/whl/rocm7.2[PyTorch], and can be updated immediately when a new version of PyTorch is released.
 
-The `rocm7` image is built based on the official
+* `rocm7` :
+** ROCm 7.2
+** Based on the official
 https://hub.docker.com/r/rocm/pytorch[rocm/pytorch]
 image provided by AMD, which offers more comprehensive functionality but is updated less frequently.
 

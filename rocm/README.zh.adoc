@@ -19,11 +19,11 @@ link:../rocm6/README.zh.adoc[`rocm6`]
 
 ## 镜像区别
 
-`rocm` 镜像基于
+`rocm` 镜像：使用 ROCm 7.2，基于
 https://download.pytorch.org/whl/rocm7.2[PyTorch]
 发布的二进制包构建，当 PyTorch 发布新版时，`rocm` 可立即得到更新。
 
-`rocm7` 镜像基于 AMD 官方提供的
+`rocm7` 镜像：使用 ROCm 7.2，基于 AMD 官方提供的
 https://hub.docker.com/r/rocm/pytorch[rocm/pytorch]
 镜像构建，该镜像功能更全面，但更新较慢。
 
