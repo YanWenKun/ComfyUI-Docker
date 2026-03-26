@@ -4,19 +4,7 @@ set -e
 
 echo "########################################"
 
-# Run user's set-proxy script
-cd /root
-if [ ! -f "/root/user-scripts/set-proxy.sh" ] ; then
-    mkdir -p /root/user-scripts
-    cp /runner-scripts/set-proxy.sh.example /root/user-scripts/set-proxy.sh
-else
-    echo "[INFO] Running set-proxy script..."
-
-    chmod +x /root/user-scripts/set-proxy.sh
-    source /root/user-scripts/set-proxy.sh
-fi ;
-
-# Copy ComfyUI from cache to workdir if it doesn't exist
+# Copy ComfyUI from cache to workdir if not exist
 cd /root
 if [ ! -f "/root/ComfyUI/main.py" ] ; then
     mkdir -p /root/ComfyUI
