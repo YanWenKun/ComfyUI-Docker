@@ -34,9 +34,24 @@ done
 
 wait "$(jobs -p)"
 
+echo "########################################"
+echo "[INFO] Configuring ComfyUI & Nodes..."
+echo "########################################"
+
+mkdir -p /default-comfyui-bundle/ComfyUI/user/default
+
+# Enable TAESD preview by default
+cat <<EOF > /default-comfyui-bundle/ComfyUI/user/default/comfy.settings.json
+{
+    "Comfy.Execution.PreviewMethod": "taesd"
+}
+EOF
+
+cd /default-comfyui-bundle/ComfyUI/custom_nodes/ComfyUI-Manager
+
 # Disable Manager's cache update on startup ("FETCH ComfyRegistry Data")
-grep -n "run(default_cache_update())" ./ComfyUI-Manager/glob/manager_server.py && 
-sed -i.bak '/run(default_cache_update())/d' ./ComfyUI-Manager/glob/manager_server.py
+grep -n "run(default_cache_update())" ./glob/manager_server.py && 
+sed -i.bak '/run(default_cache_update())/d' ./glob/manager_server.py
 
 # Configure Manager
 mkdir -p /default-comfyui-bundle/ComfyUI/user/__manager
