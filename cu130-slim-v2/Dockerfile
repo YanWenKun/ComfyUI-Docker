@@ -35,9 +35,9 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 
 ################################################################################
 
-RUN du -ah /root \
-    && rm -rfv /root/* \
-    && rm -rfv /root/.[^.]* /root/.??*
+RUN df -h \
+    && du -ah /root \
+    && fd -H . /root/ --min-depth 1 -x rm -rfv
 
 COPY runner-scripts/.  /runner-scripts/
 
