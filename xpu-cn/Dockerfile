@@ -16,6 +16,8 @@ LABEL maintainer="code@yanwk.fun"
 
 ARG USING_GITHUB_ACTIONS=false
 
+# 注意 /root 最终会清空，这里的配置并不影响运行时。
+# 运行时的 PyPI 国内源由另外的环境变量控制。
 RUN if [ "${USING_GITHUB_ACTIONS}" = "false" ]; then \
         mkdir -p /root/.config/pip \
         && echo '[global]' > /root/.config/pip/pip.conf \
@@ -43,7 +45,7 @@ RUN --mount=type=cache,target=/var/cache/dnf \
     fi
 
 ################################################################################
-# 安装 Python 及工具
+# 系统软件包
 
 RUN --mount=type=cache,target=/var/cache/dnf \
     dnf upgrade -y \
@@ -94,8 +96,8 @@ RUN --mount=type=cache,target=/var/cache/dnf \
 gcc \
 gcc-c++
 
-# ################################################################################
-# PyTorch
+################################################################################
+# Python 包 - PyTorch
 
 ARG PIP_ROOT_USER_ACTION='ignore'
 ARG PIP_NO_BUILD_ISOLATION=1
@@ -126,7 +128,9 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         torch torchvision torchaudio \
         --index-url ${PT_INDEX_URL}
 
-# 安装 ComfyUI 及扩展所需依赖项
+################################################################################
+# Python 包 - ComfyUI 自定义节点（插件）依赖项
+
 COPY builder-scripts/.  /builder-scripts/
 
 # 生成版本号约束文件，强制后续安装不得变更 PyTorch 版本
@@ -167,14 +171,6 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         -r /builder-scripts/pakA.txt \
         -c /builder-scripts/constraints.txt
 
-# 确保依赖项匹配
-RUN --mount=type=cache,target=/root/.cache/pip \
-    source /tmp/pt_env \
-    && pip install \
-        torch torchvision torchaudio \
-        --index-url ${PT_INDEX_URL} \
-    && rm -vf /tmp/pt_env
-
 ################################################################################
 # 预载 ComfyUI 及扩展，并根据预载的 ComfyUI 版本安装依赖项（确保前后端版本匹配）
 
@@ -190,7 +186,15 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         -r '/default-comfyui-bundle/ComfyUI/requirements.txt' \
         -r '/default-comfyui-bundle/ComfyUI/custom_nodes/ComfyUI-Manager/requirements.txt' \
-        -c /builder-scripts/constraints.txt \
+        -c /builder-scripts/constraints.txt
+
+# 确保依赖项匹配
+RUN --mount=type=cache,target=/root/.cache/pip \
+    source /tmp/pt_env \
+    && pip install \
+        torch torchvision torchaudio \
+        --index-url ${PT_INDEX_URL} \
+    && rm -vf /tmp/pt_env \
     && pip list
 
 ################################################################################

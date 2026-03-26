@@ -11,7 +11,7 @@ FROM fedora:43
 LABEL maintainer="code@yanwk.fun"
 
 ################################################################################
-# OS Packages
+# System Packages
 
 RUN --mount=type=cache,target=/var/cache/dnf \
     dnf install -y --nogpgcheck \
@@ -64,8 +64,8 @@ RUN --mount=type=cache,target=/var/cache/dnf \
 gcc \
 gcc-c++
 
-# ################################################################################
-# PyTorch
+################################################################################
+# Python Packages - PyTorch
 
 ARG PIP_ROOT_USER_ACTION='ignore'
 ARG PIP_NO_BUILD_ISOLATION=1
@@ -87,7 +87,8 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         torch torchvision torchaudio \
         --index-url https://download.pytorch.org/whl/xpu
 
-# Deps for ComfyUI & custom nodes
+################################################################################
+# Python Packages - Deps for ComfyUI & custom nodes
 COPY builder-scripts/.  /builder-scripts/
 
 # Generate a version constraints file to pin PyTorch (prevent later installs from changing its version)
@@ -125,12 +126,6 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         -r /builder-scripts/pakA.txt \
         -c /builder-scripts/constraints.txt
 
-# Ensure deps match
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install \
-        torch torchvision torchaudio \
-        --index-url https://download.pytorch.org/whl/xpu
-
 ################################################################################
 
 WORKDIR /default-comfyui-bundle
@@ -141,7 +136,13 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         -r '/default-comfyui-bundle/ComfyUI/requirements.txt' \
         -r '/default-comfyui-bundle/ComfyUI/custom_nodes/ComfyUI-Manager/requirements.txt' \
-        -c /builder-scripts/constraints.txt \
+        -c /builder-scripts/constraints.txt
+
+# Ensure deps match
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        torch torchvision torchaudio \
+        --index-url https://download.pytorch.org/whl/xpu \
     && pip list
 
 ################################################################################
