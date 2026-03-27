@@ -81,12 +81,6 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         -e . --no-deps --no-build-isolation \
     && cd /
 
-# Clean cache to avoid GitHub Actions "No space left on device"
-RUN --mount=type=cache,target=/root/.cache/pip \
-    if [ "${USING_GITHUB_ACTIONS}" = "true" ]; then \
-        df -h && rm -rf /root/.cache/pip/* ; \
-    fi
-
 RUN --mount=type=cache,target=/root/.cache/pip \
     df -h \
     # Update UV
@@ -96,7 +90,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 https://github.com/nunchaku-ai/nunchaku/releases/download/v1.2.1/nunchaku-1.2.1+cu13.0torch2.11-cp313-cp313-linux_x86_64.whl \
     # SageAttention 2
     && pip install \
-https://github.com/YanWenKun/ComfyUI-Containerfiles/releases/download/sageattn-py313-cu130-pt211/sageattention-2.2.0-hopper-cp313-cp313-linux_x86_64.whl \
+https://github.com/YanWenKun/ComfyUI-Containerfiles/releases/download/sageattn-py313-cu130-pt211/sageattention-2.2.0+hopper-cp313-cp313-linux_x86_64.whl \
     # SageAttention 3
     && pip install \
 https://github.com/YanWenKun/ComfyUI-Containerfiles/releases/download/sageattn-py313-cu130-pt211/sageattn3-1.0.0-cp313-cp313-linux_x86_64.whl \
