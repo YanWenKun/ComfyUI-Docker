@@ -36,13 +36,19 @@ done
 wait
 
 # Install FastVideo
-git clone --depth=1 --no-tags --recurse-submodules --shallow-submodules \
+git clone --depth=1 --no-tags \
     https://github.com/hao-ai-lab/FastVideo.git \
     /tmp/FastVideo
 
 mkdir -p /default-comfyui-bundle/ComfyUI/custom_nodes/FastVideo
 cp --archive --update=none "/tmp/FastVideo/comfyui/." "/default-comfyui-bundle/ComfyUI/custom_nodes/FastVideo/"
 rm -rf /tmp/FastVideo
+
+# Install ComfyUI-SageAttention3
+# A simple connector node for adapting SA3
+cd /default-comfyui-bundle/ComfyUI/custom_nodes
+git clone --depth=1 --no-tags \
+https://github.com/wallen0322/ComfyUI-SageAttention3.git
 
 echo "########################################"
 echo "[INFO] Configuring ComfyUI & Nodes..."
