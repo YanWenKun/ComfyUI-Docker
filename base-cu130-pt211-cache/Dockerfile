@@ -81,6 +81,12 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         -e . --no-deps --no-build-isolation \
     && cd /
 
+# Clean cache to avoid GitHub Actions "No space left on device"
+RUN --mount=type=cache,target=/root/.cache/pip \
+    if [ "${USING_GITHUB_ACTIONS}" = "true" ]; then \
+        df -h && rm -rf /root/.cache/pip/* ; \
+    fi
+
 RUN --mount=type=cache,target=/root/.cache/pip \
     df -h \
     # Update UV
