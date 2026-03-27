@@ -4,6 +4,7 @@ diffusers
 ftfy
 huggingface-hub
 imageio[ffmpeg]
+imageio[pyav]
 joblib
 kornia
 matplotlib

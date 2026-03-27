@@ -69,10 +69,12 @@ gcs https://github.com/pamparamm/ComfyUI-ppm.git
 gcs https://github.com/twri/sdxl_prompt_styler.git
 
 # Video
+gcs https://github.com/aigc-apps/VideoX-Fun.git
 gcs https://github.com/Fannovel16/ComfyUI-Frame-Interpolation.git
 gcs https://github.com/FizzleDorf/ComfyUI_FizzNodes.git
 gcs https://github.com/Kosinkadink/ComfyUI-AnimateDiff-Evolved.git
 gcs https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git
+gcs https://github.com/Lightricks/ComfyUI-LTXVideo.git
 gcs https://github.com/melMass/comfy_mtb.git
 gcs https://github.com/numz/ComfyUI-SeedVR2_VideoUpscaler.git
 

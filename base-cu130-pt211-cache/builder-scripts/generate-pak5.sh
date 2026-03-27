@@ -39,9 +39,11 @@ https://github.com/chflame163/ComfyUI_LayerStyle/raw/refs/heads/main/repair_depe
 #https://github.com/chflame163/ComfyUI_LayerStyle_Advance/raw/refs/heads/main/requirements.txt
 #https://github.com/chflame163/ComfyUI_LayerStyle_Advance/raw/refs/heads/main/repair_dependency_list.txt
 # Video
+https://github.com/aigc-apps/VideoX-Fun/raw/refs/heads/main/requirements.txt
 https://github.com/Fannovel16/ComfyUI-Frame-Interpolation/raw/refs/heads/main/requirements-no-cupy.txt
 https://github.com/FizzleDorf/ComfyUI_FizzNodes/raw/refs/heads/main/requirements.txt
 https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite/raw/refs/heads/main/requirements.txt
+https://github.com/Lightricks/ComfyUI-LTXVideo/raw/refs/heads/master/requirements.txt
 https://github.com/melMass/comfy_mtb/raw/refs/heads/main/requirements.txt
 https://github.com/numz/ComfyUI-SeedVR2_VideoUpscaler/raw/refs/heads/main/requirements.txt
 # More

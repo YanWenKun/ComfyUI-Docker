@@ -18,12 +18,14 @@ colour-science
 comfy-aimdo
 comfy-kitchen
 compressed-tensors
+datasets
 decord
 deepdiff
 dill
 diskcache
 einops
 filelock
+func-timeout
 fvcore
 gguf
 GitPython
@@ -79,9 +81,11 @@ simpleeval
 soundfile
 spandrel
 SQLAlchemy
+tensorboard
 tiktoken
 tipo-kgen
 tokenizers
+tomesd
 toml
 tomli
 torchsde
