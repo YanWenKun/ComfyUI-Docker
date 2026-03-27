@@ -77,7 +77,11 @@ gcs https://github.com/melMass/comfy_mtb.git
 gcs https://github.com/numz/ComfyUI-SeedVR2_VideoUpscaler.git
 
 # More
+gcs https://github.com/1038lab/ComfyUI-JoyCaption.git
+gcs https://github.com/1038lab/ComfyUI-QwenTTS.git
 gcs https://github.com/1038lab/ComfyUI-QwenVL.git
+gcs https://github.com/1038lab/ComfyUI-RMBG.git
+gcs https://github.com/1038lab/ComfyUI-WildPromptor.git
 gcs https://github.com/akatz-ai/ComfyUI-DepthCrafter-Nodes.git
 gcs https://github.com/digitaljohn/comfyui-propost.git
 gcs https://github.com/kijai/ComfyUI-DepthAnythingV2.git

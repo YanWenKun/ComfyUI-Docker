@@ -17,6 +17,7 @@ color-matcher
 colour-science
 comfy-aimdo
 comfy-kitchen
+compressed-tensors
 decord
 deepdiff
 dill
@@ -27,11 +28,14 @@ fvcore
 gguf
 GitPython
 glfw
+google-generativeai
+groundingdino-py
 hydra-core
 imageio-ffmpeg
 importlib-metadata
 iopath
 jinja2
+librosa
 loguru
 markdownify
 matrix-nio
@@ -40,6 +44,8 @@ natsort
 numba
 numexpr
 olefile
+ollama
+openai-whisper
 peft
 piexif
 pixeloe
@@ -70,8 +76,10 @@ segment-anything
 sentencepiece
 shapely
 simpleeval
+soundfile
 spandrel
 SQLAlchemy
+tiktoken
 tipo-kgen
 tokenizers
 toml

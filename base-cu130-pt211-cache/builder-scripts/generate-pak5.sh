@@ -45,7 +45,11 @@ https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite/raw/refs/heads/main/requ
 https://github.com/melMass/comfy_mtb/raw/refs/heads/main/requirements.txt
 https://github.com/numz/ComfyUI-SeedVR2_VideoUpscaler/raw/refs/heads/main/requirements.txt
 # More
+https://github.com/1038lab/ComfyUI-JoyCaption/raw/refs/heads/main/requirements.txt
+https://github.com/1038lab/ComfyUI-QwenTTS/raw/refs/heads/main/requirements.txt
 https://github.com/1038lab/ComfyUI-QwenVL/raw/refs/heads/main/requirements.txt
+https://github.com/1038lab/ComfyUI-RMBG/raw/refs/heads/main/requirements.txt
+https://github.com/1038lab/ComfyUI-WildPromptor/raw/refs/heads/main/requirements.txt
 https://github.com/akatz-ai/ComfyUI-DepthCrafter-Nodes/raw/refs/heads/main/requirements.txt
 https://github.com/digitaljohn/comfyui-propost/raw/refs/heads/master/requirements.txt
 https://github.com/kijai/ComfyUI-DepthAnythingV2/raw/refs/heads/main/requirements.txt
