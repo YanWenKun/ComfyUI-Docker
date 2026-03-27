@@ -57,12 +57,14 @@ sed -i.bak '/run(default_cache_update())/d' ./glob/manager_server.py
 # Configure Manager
 mkdir -p /default-comfyui-bundle/ComfyUI/user/__manager
 
-# Have to add every item or Manager won't persist the config.
+# Have to add all items or Manager won't persist the config.
 cat <<EOF > /default-comfyui-bundle/ComfyUI/user/__manager/config.ini
 [default]
+use_uv = False
+security_level = weak
+downgrade_blacklist = torch, torchvision, torchaudio
 preview_method = 
 git_exe = 
-use_uv = False
 channel_url = 
 share_option = 
 bypass_ssl = 
@@ -71,8 +73,6 @@ component_policy =
 update_policy = 
 windows_selector_event_loop_policy = 
 model_download_by_agent = 
-downgrade_blacklist = torch, torchvision, torchaudio
-security_level = weak
 always_lazy_install = 
 network_mode = 
 db_mode = 
