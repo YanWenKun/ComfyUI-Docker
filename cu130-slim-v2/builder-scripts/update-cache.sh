@@ -2,13 +2,13 @@
 
 set -euo pipefail
 
-function git_pull () {
+function git_force_sync () {
     git_remote_url=$(git -C "$1" remote get-url origin) ;
 
     if [[ $git_remote_url =~ ^(https:\/\/github\.com\/)(.*)(\.git)$ ]]; then
         echo "Updating: $1" ;
-        git -C "$1" reset --hard ;
-        git -C "$1" pull --ff-only ;
+        git -C "$1" fetch --all --tags --prune --prune-tags ;
+        git -C "$1" reset --hard '@{upstream}' ;
         echo "Done Updating: $1" ;
     fi ;
 }
@@ -19,17 +19,17 @@ echo "########################################"
 
 cd /default-comfyui-bundle/ComfyUI
 
-git fetch --all
+git fetch --all --tags --prune --prune-tags
 git reset --hard '@{upstream}'
 
 # Using stable version (has a release tag)
-git reset --hard "$(git tag | grep -e '^v' | sort -V | tail -1)"
+git reset --hard "$(git tag -l 'v*' | sort -V | tail -1)"
 
 cd /default-comfyui-bundle/ComfyUI/custom_nodes
 
 for D in *; do
     if [ -d "${D}" ]; then
-        git_pull "${D}" &
+        git_force_sync "${D}" &
     fi
 done
 
