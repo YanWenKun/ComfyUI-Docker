@@ -160,12 +160,6 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         xformers torchvision torchaudio \
         --index-url https://download.pytorch.org/whl/cu128
 
-# Install Triton (redundant)
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install \
-        triton pytorch-triton \
-        --index-url https://download.pytorch.org/whl/cu128
-
 # Bind libs (.so files)
 # Ref: https://github.com/pytorch/pytorch/blob/main/.ci/manywheel/build_cuda.sh
 ENV LD_LIBRARY_PATH="/usr/local/lib64/python3.12/site-packages/torch/lib\

@@ -198,12 +198,6 @@ ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\
 :/usr/local/lib/python3.12/site-packages/nvidia/nccl/lib\
 :/usr/local/lib/python3.12/site-packages/nvidia/nvshmem/lib"
 
-# Install Triton (redundant)
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install \
-        triton pytorch-triton \
-        --index-url https://download.pytorch.org/whl/cu128
-
 ################################################################################
 # More Python Packages
 
