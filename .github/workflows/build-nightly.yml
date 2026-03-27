@@ -70,7 +70,9 @@ jobs:
           docker run --rm \
             --name show-env \
             docker.io/yanwk/comfyui-boot:nightly \
-            env
+            env \
+            && echo "\n\n====\n\n" \
+            && ldconfig -p
       - 
         name: Test 'nightly'
         run: |

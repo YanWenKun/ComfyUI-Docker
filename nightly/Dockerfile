@@ -2,45 +2,34 @@
 # Dockerfile that builds 'yanwk/comfyui-boot:nightly'
 # A image for testing with latest ComfyUI and nightly/experimental dependencies.
 #
-# Using image from NVIDIA as base image:
-# https://catalog.ngc.nvidia.com/orgs/nvidia/containers/cuda/tags
-#
-# Note about Python:
-# Using No-GIL (free threading) build, note the 't' suffix in python3.14t.
-#
-# Note about GCC:
-# Ubuntu 24.04 comes with GCC 13, so no additional config here.
-#
-# Note about environment variables in NVIDIA's image:
-# 1. There's no CUDA_HOME or CUDA_PATH.
-# 2. The LD_LIBRARY_PATH was intended to point to a non-existent folder.
-# Ref: https://gitlab.com/nvidia/container-images/cuda/-/issues/47
+# Note about Ubuntu 26.04:
+# - GCC 15
+# - The Docker image uses glibc 2.42, but the daily ISO uses glibc 2.43.
+#   Expect upgrades in the future.
 ################################################################################
 
-FROM nvidia/cuda:13.0.2-cudnn-devel-ubuntu24.04
+ARG REGISTRY=docker.io
+FROM ${REGISTRY}/library/ubuntu:26.04
 
 ARG USING_GITHUB_ACTIONS=false
 
 ARG DEBIAN_FRONTEND=noninteractive
-
 SHELL ["/usr/bin/bash", "-euo", "pipefail", "-c"]
+
+ARG PIP_ROOT_USER_ACTION='ignore'
+ARG PIP_NO_BUILD_ISOLATION=1
 
 RUN --mount=type=cache,target=/var/cache/apt \
     apt-get update \
     && apt-get upgrade -y \
     && apt-get install -y --no-install-recommends \
-        gnupg2 ca-certificates curl \
-    && echo "deb http://ppa.launchpad.net/deadsnakes/ppa/ubuntu noble main" \
-        > /etc/apt/sources.list.d/deadsnakes.list \
-    && curl -fsSL 'https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x6a755776' \
-       | gpg --dearmor -o /etc/apt/trusted.gpg.d/deadsnakes.gpg \
-    && apt-get update \
-    && apt-get install -y --no-install-recommends \
 python3.14-full \
 python3.14-dev \
-python3.14-nogil \
 libegl1-mesa-dev \
+ca-certificates \
+curl \
 git \
+gnupg2 \
 cmake \
 ninja-build \
 aria2 \
@@ -51,23 +40,16 @@ less \
 vim \
 ca-certificates \
 libjpeg-dev \
-libpng-dev
-
-RUN --mount=type=cache,target=/var/cache/apt \
-    apt-get install -y --no-install-recommends \
-# Will also install libcusparselt0-cuda-13 & libcusparselt0-dev-cuda-13
-cusparselt-cuda-13 \
-# Will also install libnvshmem3-cuda-13 & libnvshmem3-dev-cuda-13 & libnvshmem3-static-cuda-13
-nvshmem-cuda-13 \
+libpng-dev \
     && rm -vrf /var/lib/apt/lists/* \
     && rm -vf /usr/lib/python3.14/EXTERNALLY-MANAGED
 
 ################################################################################
-# In Ubuntu/Debian, PIP packages installed by APT were locked.
-# So here we install PIP in a classic way, make it easier to update.
+# Install PIP in a classic way
+# Note: in Ubuntu/Debian, PIP packages installed by APT were locked.
 RUN --mount=type=cache,target=/root/.cache/pip \
     aria2c https://bootstrap.pypa.io/get-pip.py \
-    && python3.14t get-pip.py \
+    && python3.14 get-pip.py \
     && rm get-pip.py \
     && pip install \
         wheel setuptools \
@@ -76,26 +58,76 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 
 ################################################################################
 # PyTorch
-# To reduce image size & single layer size, we:
-# 1. Fetch the list of packages and download them into the cache.
-# 2. Install PyTorch only.
-# 3. Install all dependencies.
-# 4. Delete redundant NVIDIA Python libs (they are already installed as OS packages).
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install \
-        --dry-run --pre torch torchvision torchaudio \
-        --index-url https://download.pytorch.org/whl/nightly/cu130
+# Break down the steps, so we have more smaller image layers instead of a big solid one.
 
+# 1. Dry run `pip install` to get the list of packages
+# 2. Extract the package names and versions from the output
+#    Example: nvidia-cuda-runtime-cu12-12.6.77 -> nvidia-cuda-runtime-cu12==12.6.77
 RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install \
-        --no-deps --pre torch torchvision torchaudio \
-        --index-url https://download.pytorch.org/whl/nightly/cu130
-
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install \
-        --pre torch torchvision torchaudio \
+    pip list \
+    && pip install \
+        --dry-run torch torchvision torchaudio \
         --index-url https://download.pytorch.org/whl/nightly/cu130 \
-    && find /usr/local/lib/python3.14t/dist-packages/nvidia/ -mindepth 1 -maxdepth 1 -exec rm -rfv {} +
+            2>&1 | tee /tmp/pip-dryrun.txt \
+    && grep -oP '(?<=Would install ).*' /tmp/pip-dryrun.txt > /tmp/packages.txt \
+    && grep -oP 'nvidia-\S+-\S+' /tmp/packages.txt \
+        | sed 's/\(.*\)-\([^-]*\)$/\1==\2/' > /tmp/packages-nvidia.txt \
+    && echo "========== NVIDIA Packages ==========" \
+    && cat /tmp/packages-nvidia.txt \
+    && echo "====================================="
+
+# Install big 'nvidia-' packages first
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install --no-deps \
+        "$(grep '^nvidia-cublas' /tmp/packages-nvidia.txt)" \
+        --index-url https://download.pytorch.org/whl/nightly/cu130
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install --no-deps \
+        "$(grep '^nvidia-cudnn' /tmp/packages-nvidia.txt)" \
+        --index-url https://download.pytorch.org/whl/nightly/cu130
+
+# Install all 'nvidia-' packages, 5 at a time
+RUN --mount=type=cache,target=/root/.cache/pip \
+    head -n 5 /tmp/packages-nvidia.txt | while read -r pkg; do \
+        pip install --no-deps "$pkg" \
+            --index-url https://download.pytorch.org/whl/nightly/cu130; \
+    done
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    sed -n '6,10p' /tmp/packages-nvidia.txt | while read -r pkg; do \
+        pip install --no-deps "$pkg" \
+            --index-url https://download.pytorch.org/whl/nightly/cu130; \
+    done
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    tail -n +11 /tmp/packages-nvidia.txt | while read -r pkg; do \
+        pip install --no-deps "$pkg" \
+            --index-url https://download.pytorch.org/whl/nightly/cu130; \
+    done
+
+# Install PyTorch alone
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install --no-deps \
+        "$(grep -oP 'torch-\S+' /tmp/packages.txt | sed 's/\(.*\)-\([^-]*\)$/\1==\2/')" \
+        --index-url https://download.pytorch.org/whl/nightly/cu130
+
+# Install everything else, also works as a fail-safe
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        torch torchvision torchaudio \
+        --index-url https://download.pytorch.org/whl/nightly/cu130 \
+    && rm -v /tmp/pip-dryrun.txt /tmp/packages.txt /tmp/packages-nvidia.txt
+
+# Bind libs (.so files)
+# Ref: https://github.com/pytorch/pytorch/blob/main/.ci/manywheel/build_cuda.sh
+ENV LD_LIBRARY_PATH="/usr/local/lib64/python3.14/site-packages/torch/lib\
+:/usr/local/lib/python3.14/site-packages/nvidia/cu13/lib\
+:/usr/local/lib/python3.14/site-packages/nvidia/cudnn/lib\
+:/usr/local/lib/python3.14/site-packages/nvidia/cusparselt/lib\
+:/usr/local/lib/python3.14/site-packages/nvidia/nccl/lib\
+:/usr/local/lib/python3.14/site-packages/nvidia/nvshmem/lib\
+${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
 
 ################################################################################
 # Bundle ComfyUI directly in /root
@@ -107,13 +139,6 @@ RUN git clone 'https://github.com/comfyanonymous/ComfyUI.git'
 # Install only essential dependencies for ComfyUI
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install -r /root/ComfyUI/requirements.txt
-
-################################################################################
-# Clean cache to avoid GitHub Actions "No space left on device"
-RUN --mount=type=cache,target=/root/.cache/pip \
-    if [ "${USING_GITHUB_ACTIONS}" = "true" ]; then \
-        rm -rf /root/.cache/pip/* ; \
-    fi
 
 ################################################################################
 # Finishing
@@ -132,4 +157,4 @@ ENV PATH="${PATH}:/root/.local/bin"
 # Suppress [WARNING: Running pip as the 'root' user]
 ENV PIP_ROOT_USER_ACTION=ignore
 
-CMD ["bash", "-c", "python3.14t ./ComfyUI/main.py --listen --port 8188 ${CLI_ARGS}"]
+CMD ["bash", "-c", "python3.14 ./ComfyUI/main.py --listen --port 8188 ${CLI_ARGS}"]
