@@ -33,6 +33,7 @@ importlib-metadata
 iopath
 jinja2
 loguru
+markdownify
 matrix-nio
 mss
 natsort
