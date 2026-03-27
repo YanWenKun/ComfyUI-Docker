@@ -1,0 +1,80 @@
+name: Publish 'cu130-megapak-pt211' to Docker Hub
+
+on: 
+  workflow_dispatch: # Can be manually triggered
+  schedule: # Runs on everyday, 07:00 UTC
+    - cron: '0 7 * * *'
+  push: 
+    branches: [ main ]
+    paths-ignore:
+      - '**'
+      - '!cu130-megapak-pt211/Dockerfile'
+      - '!cu130-megapak-pt211/builder-scripts/**'
+      - '!cu130-megapak-pt211/runner-scripts/**'
+      - '!.github/workflows/build-cu130-megapak-pt211.yml'
+
+jobs:
+
+  build-test-publish-cu130-megapak-pt211:
+    environment: Publish to Docker Hub
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Get current date
+        id: date
+        run: echo "date=$(date +'%Y%m%d')" >> $GITHUB_OUTPUT
+      -
+        name: Git checkout
+        uses: actions/checkout@v6
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      -
+        name: Build 'cu130-megapak-pt211'
+        uses: docker/build-push-action@v6
+        with:
+          context: ./cu130-megapak-pt211
+          file: ./cu130-megapak-pt211/Dockerfile
+          build-args: |
+            USING_GITHUB_ACTIONS=true
+          tags: |
+            yanwk/comfyui-boot:cu130-megapak-pt211
+            yanwk/comfyui-boot:cu130-megapak-pt211-${{ steps.date.outputs.date }}
+          load: true
+      - 
+        name: Show 'cu130-megapak-pt211' environment variables
+        run: |
+          docker run --rm \
+            --name show-env \
+            docker.io/yanwk/comfyui-boot:cu130-megapak-pt211 \
+            env \
+            && echo "====" \
+            && ldconfig -p
+      - 
+        name: Test 'cu130-megapak-pt211'
+        run: |
+          docker run --rm \
+            --name comfyui-quick-test \
+            -e CLI_ARGS="--quick-test-for-ci --cpu" \
+            yanwk/comfyui-boot:cu130-megapak-pt211-${{ steps.date.outputs.date }}
+      -
+        name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_ACCESSTOKEN }}
+      -
+        name: Push 'cu130-megapak-pt211'
+        uses: docker/build-push-action@v6
+        with:
+          context: ./cu130-megapak-pt211
+          file: ./cu130-megapak-pt211/Dockerfile
+          build-args: |
+            USING_GITHUB_ACTIONS=true
+          tags:  |
+            yanwk/comfyui-boot:cu130-megapak-pt211
+            yanwk/comfyui-boot:cu130-megapak-pt211-${{ steps.date.outputs.date }}
+          push: true
