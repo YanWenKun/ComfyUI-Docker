@@ -40,18 +40,6 @@ channel_url = https://gh-proxy.org/https://raw.githubusercontent.com/ltdrdata/Co
 use_uv = False
 security_level = weak
 downgrade_blacklist = torch, torchvision, torchaudio
-preview_method = 
-git_exe = 
-share_option = 
-bypass_ssl = 
-file_logging = 
-component_policy = 
-update_policy = 
-windows_selector_event_loop_policy = 
-model_download_by_agent = 
-always_lazy_install = 
-network_mode = 
-db_mode = 
 EOF
 
 cat <<EOF > /default-comfyui-bundle/ComfyUI/user/__manager/channels.list
