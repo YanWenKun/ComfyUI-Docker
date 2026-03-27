@@ -19,8 +19,9 @@ echo "########################################"
 
 cd /default-comfyui-bundle/ComfyUI
 
-git reset --hard
-git pull
+git fetch --all
+git reset --hard '@{upstream}'
+
 # Using stable version (has a release tag)
 git reset --hard "$(git tag | grep -e '^v' | sort -V | tail -1)"
 
