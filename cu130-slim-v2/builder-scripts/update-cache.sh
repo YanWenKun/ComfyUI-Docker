@@ -33,7 +33,7 @@ for D in *; do
     fi
 done
 
-wait "$(jobs -p)"
+wait
 
 echo "########################################"
 echo "[INFO] Configuring ComfyUI & Nodes..."
