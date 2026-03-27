@@ -82,8 +82,9 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     && cd /
 
 RUN --mount=type=cache,target=/root/.cache/pip \
+    df -h \
     # Update UV
-    pip install -U uv \
+    && pip install -U uv \
     # Nunchaku (binary pair with PyTorch)
     && pip install \
 https://github.com/nunchaku-ai/nunchaku/releases/download/v1.2.1/nunchaku-1.2.1+cu13.0torch2.11-cp313-cp313-linux_x86_64.whl \
