@@ -120,5 +120,6 @@ WORKDIR /default-comfyui-bundle
 RUN bash /builder-scripts/preload-cache.sh
 
 RUN --mount=type=cache,target=/root/.cache/pip \
-    pip list \
+    df -h \
+    && pip list \
     && pip --version
