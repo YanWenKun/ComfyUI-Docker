@@ -7,7 +7,7 @@ function git_force_sync () {
 
     if [[ $git_remote_url =~ ^(https:\/\/github\.com\/)(.*)(\.git)$ ]]; then
         echo "Updating: $1" ;
-        git -C "$1" fetch --all --tags --prune --prune-tags ;
+        git -C "$1" fetch ;
         git -C "$1" reset --hard '@{upstream}' ;
         echo "Done Updating: $1" ;
     fi ;
