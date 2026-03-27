@@ -25,6 +25,10 @@ ARG PIP_NO_BUILD_ISOLATION=1
 RUN --mount=type=cache,target=/var/cache/dnf \
     dnf upgrade -y
 
+# Fix for projects using CMAKE missing package configuration file
+ENV CMAKE_PREFIX_PATH="/usr/local/lib64/python3.13/site-packages/torch/share/cmake" \
+    CUDACXX="/usr/local/cuda-13.0/bin/nvcc"
+
 ################################################################################
 # Dependencies for ComfyUI & custom nodes
 
@@ -112,6 +116,14 @@ https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
 https://github.com/JamePeng/llama-cpp-python/releases/download/v0.3.33-cu130-Basic-linux-20260315/llama_cpp_python-0.3.33+cu130.basic-cp313-cp313-linux_x86_64.whl
+
+# FastVideo
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        h5py wandb test-tube pytest flask flask_restful cloudpickle gpustat watch remote-pdb pyarrow \
+    && pip install --no-deps \
+        fastvideo \
+https://github.com/YanWenKun/ComfyUI-Containerfiles/releases/download/fastvideo-kernel-py313/fastvideo_kernel-0.2.6-cp313-cp313-linux_x86_64.whl
 
 ################################################################################
 # Pre-download a ComfyUI bundle in the image (will update later)
