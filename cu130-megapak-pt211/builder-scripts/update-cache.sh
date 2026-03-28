@@ -7,8 +7,9 @@ function git_force_sync () {
 
     if [[ $git_remote_url =~ ^(https:\/\/github\.com\/)(.*)(\.git)$ ]]; then
         echo "Updating: $1" ;
-        git -C "$1" fetch ;
+        git -C "$1" fetch --depth=1 --no-tags ;
         git -C "$1" reset --hard '@{upstream}' ;
+        git -C "$1" submodule update --init --recursive --depth=1
         echo "Done Updating: $1" ;
     fi ;
 }
