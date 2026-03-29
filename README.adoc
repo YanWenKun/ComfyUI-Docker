@@ -12,28 +12,34 @@ an AIGC GUI powering node-based workflow.
 
 ```sh
 mkdir -p \
-  storage \
   storage-models/models \
   storage-models/hf-hub \
   storage-models/torch-hub \
   storage-user/input \
   storage-user/output \
-  storage-user/workflows
+  storage-user/user-profile \
+  storage-user/user-scripts
 
+# Add sudo if needed
 docker run -it --rm \
-  --name comfyui \
-  --runtime nvidia \
+  --name comfyui-cu130 \
+  --pull=always \
+  --runtime=nvidia \
   --gpus all \
   -p 8188:8188 \
-  -v "$(pwd)"/storage:/root \
+  -v comfy-cache/.cache:/root/.cache \
+  -v comfy-cache/.config:/root/.config \
+  -v comfy-nodes/.local:/root/.local \
+  -v comfy-nodes/custom_nodes:/root/ComfyUI/custom_nodes \
   -v "$(pwd)"/storage-models/models:/root/ComfyUI/models \
   -v "$(pwd)"/storage-models/hf-hub:/root/.cache/huggingface/hub \
   -v "$(pwd)"/storage-models/torch-hub:/root/.cache/torch/hub \
   -v "$(pwd)"/storage-user/input:/root/ComfyUI/input \
   -v "$(pwd)"/storage-user/output:/root/ComfyUI/output \
-  -v "$(pwd)"/storage-user/workflows:/root/ComfyUI/user/default/workflows \
-  -e CLI_ARGS="--disable-xformers" \
-  yanwk/comfyui-boot:cu128-slim
+  -v "$(pwd)"/storage-user/user-profile:/root/ComfyUI/user \
+  -v "$(pwd)"/storage-user/user-scripts:/root/user-scripts \
+  -e CLI_ARGS="--fast" \
+  yanwk/comfyui-boot:cu130-slim-v2
 ```
 
 ## CUDA Compatibility
@@ -63,7 +69,8 @@ GTX 1660
 |===
 
 * **CUDA 13.0 images are currently recommended**.
-ComfyUI's
+
+** ComfyUI's
 https://github.com/Comfy-Org/comfy-kitchen[performance library]
 is currently developed based on CUDA 13.0,
 which is also considered one of the stable versions of
@@ -85,30 +92,33 @@ https://github.com/pytorch/pytorch/blob/main/.ci/manywheel/build_cuda.sh[PyTorch
 
 The `slim` images start with only ComfyUI and ComfyUI-Manager, yet include many dependencies to make future Custom Node installation easier. Recommended for beginners.
 
-* link:cu126-slim/README.adoc[`cu126-slim`]
-** CUDA 12.6, Python 3.12
+* link:cu130-slim-v2/README.adoc[`cu130-slim-v2`] ⭐
+** CUDA 13.0, Python 3.13 (with GIL), No xFormers
 
 * link:cu128-slim/README.adoc[`cu128-slim`]
 ** CUDA 12.8, Python 3.12
 
-* link:cu130-slim/README.adoc[`cu130-slim`] ⭐
-** CUDA 13.0, Python 3.13 (with GIL), No xFormers
+* link:cu126-slim/README.adoc[`cu126-slim`]
+** CUDA 12.6, Python 3.12
 
 ### MEGAPAK
 
 The `megapak` images are all-in-one bundles, including development kits and dozens of Custom Nodes for ComfyUI.
 
-* link:cu126-megapak/README.adoc[`cu126-megapak`]
-** CUDA 12.6, Python 3.12, GCC 13
+* link:cu130-megapak-pt211/README.adoc[`cu130-megapak-pt211`] ⭐
+** CUDA 13.0, Python 3.13 (with GIL), GCC 14, PyTorch 2.11.0
 
 * link:cu128-megapak/README.adoc[`cu128-megapak`]
-** CUDA 12.8, Python 3.12, GCC 14
+** CUDA 12.8, Python 3.12, GCC 14, PyTorch 2.11.0
+
+* link:cu128-megapak-pt29/README.adoc[`cu128-megapak-pt29`]
+** CUDA 12.8, Python 3.12, GCC 11, PyTorch 2.9.1
 
 * link:cu128-megapak-pt28/README.adoc[`cu128-megapak-pt28`]
 ** CUDA 12.8, Python 3.12, GCC 11, PyTorch 2.8.0
 
-* link:cu128-megapak-pt29/README.adoc[`cu128-megapak-pt29`]
-** CUDA 12.8, Python 3.12, GCC 11, PyTorch 2.9.1
+* link:cu126-megapak/README.adoc[`cu126-megapak`]
+** CUDA 12.6, Python 3.12, GCC 13, PyTorch 2.9.1
 
 ### Testing
 

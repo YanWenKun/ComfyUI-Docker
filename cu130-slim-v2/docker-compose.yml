@@ -20,8 +20,8 @@ services:
       - "./storage-models/torch-hub:/root/.cache/torch/hub"
       - "./storage-user/input:/root/ComfyUI/input"
       - "./storage-user/output:/root/ComfyUI/output"
-      - "./storage-user/workflows:/root/ComfyUI/user/default/workflows"
-      - "./storage-user/scripts:/root/user-scripts"
+      - "./storage-user/user-profile:/root/ComfyUI/user"
+      - "./storage-user/user-scripts:/root/user-scripts"
     environment:
       - CLI_ARGS=
     security_opt:
