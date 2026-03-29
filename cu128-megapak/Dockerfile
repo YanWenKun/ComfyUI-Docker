@@ -1,7 +1,7 @@
 ################################################################################
 # Dockerfile that builds 'yanwk/comfyui-boot:cu128-megapak'
 # A runtime environment for https://github.com/comfyanonymous/ComfyUI
-# Using CUDA 12.8, Python 3.12
+# Using CUDA 12.8, Python 3.12, PyTorch 2.11.0
 # The container will be running in root (easy for rootless deploy).
 ################################################################################
 
@@ -172,7 +172,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         pip wheel setuptools packaging \
     && pip list \
     && pip install \
-        --dry-run xformers==0.0.35 torchvision torchaudio \
+        --dry-run xformers==0.0.35 torch==2.11.0 torchvision==0.26.0 torchaudio==2.11.0 \
         --index-url https://download.pytorch.org/whl/cu128
 
 # Here's some hack. To reduce image size & single layer size, we:
@@ -183,14 +183,14 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # Note: xFormers is not always released with latest PyTorch, so using `pip install --no-deps` is not a good idea.
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        xformers==0.0.35 torchvision torchaudio \
+        xformers==0.0.35 torch==2.11.0 torchvision==0.26.0 torchaudio==2.11.0 \
         --index-url https://download.pytorch.org/whl/cu128 \
 && pip uninstall --yes torch \
 && find /usr/local/lib/python3.12/site-packages/nvidia/ -mindepth 1 -maxdepth 1 ! -name 'nccl' ! -name 'nvshmem' -exec rm -rfv {} +
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        xformers==0.0.35 torchvision torchaudio \
+        xformers==0.0.35 torch==2.11.0 torchvision==0.26.0 torchaudio==2.11.0 \
         --index-url https://download.pytorch.org/whl/cu128
 
 ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\
@@ -204,16 +204,26 @@ ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\
 # Deps for ComfyUI & custom nodes
 COPY builder-scripts/.  /builder-scripts/
 
+# Generate a version constraints file to pin PyTorch (prevent later installs from changing its version)
+RUN pip list --format=freeze \
+        | awk -F== 'BEGIN{want["torch"]=1;want["torchvision"]=1;want["torchaudio"]=1} $1 in want{print $1 "==" $2}' \
+        > /builder-scripts/constraints.txt \
+    && echo "Pinned PyTorch version:" \
+    && cat /builder-scripts/constraints.txt
+
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
+        -c /builder-scripts/constraints.txt \
         -r /builder-scripts/pak3.txt
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
+        -c /builder-scripts/constraints.txt \
         -r /builder-scripts/pak5.txt
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
+        -c /builder-scripts/constraints.txt \
         -r /builder-scripts/pak7.txt
 
 # Temp fixes
@@ -241,10 +251,13 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     pip install -U uv \
     # Nunchaku (binary pair with PyTorch)
     && pip install \
-https://github.com/nunchaku-ai/nunchaku/releases/download/v1.2.1/nunchaku-1.2.1+cu12.8torch2.10-cp312-cp312-linux_x86_64.whl \
+https://github.com/nunchaku-ai/nunchaku/releases/download/v1.2.1/nunchaku-1.2.1+cu12.8torch2.11-cp312-cp312-linux_x86_64.whl \
     # FlashAttention (version pair with xFormers, binary pair with PyTorch & CUDA)
     && pip install \
-https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.7.16/flash_attn-2.8.3+cu128torch2.10-cp312-cp312-linux_x86_64.whl \
+https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.9.4/flash_attn-2.8.3+cu128torch2.11-cp312-cp312-linux_x86_64.whl \
+    # FlashAttention 3
+    && pip install \
+https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.9.4/flash_attn_3-3.0.0+cu128torch2.11gite2743ab-cp39-abi3-linux_x86_64.whl \
     # SageAttention
     && pip install \
 https://github.com/YanWenKun/ComfyUI-Containerfiles/releases/download/sageattn-py312-cu128-pt29/sageattention-2.2.0-cp312-cp312-linux_x86_64.whl \
@@ -262,6 +275,7 @@ RUN bash /builder-scripts/preload-cache.sh
 # Install deps (comfyui-frontend-package, etc) pair to the preloaded ComfyUI version
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
+        -c /builder-scripts/constraints.txt \
         -r '/default-comfyui-bundle/ComfyUI/requirements.txt' \
         -r '/default-comfyui-bundle/ComfyUI/custom_nodes/ComfyUI-Manager/requirements.txt' \
     && pip list
