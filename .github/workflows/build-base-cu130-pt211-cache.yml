@@ -3,7 +3,8 @@ name: Publish 'base-cu130-pt211-cache' to Docker Hub
 on: 
   workflow_dispatch: # Can be manually triggered
   schedule: # Runs on every 1st & 16th day of the month, 05:00 UTC
-    - cron: '0 5 1,16 * *'
+    # - cron: '0 5 1,16 * *'
+    - cron: '0 5 16 * *'
   push: 
     branches: [ main ]
     paths-ignore:
