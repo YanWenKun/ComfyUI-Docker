@@ -15,7 +15,7 @@ function git_force_sync () {
 }
 
 echo "########################################"
-echo "[INFO] Updating ComfyUI & Nodes..."
+echo "[INFO] Updating ComfyUI..."
 echo "########################################"
 
 cd /default-comfyui-bundle/ComfyUI
@@ -25,6 +25,10 @@ git reset --hard '@{upstream}'
 
 # Using stable version (has a release tag)
 git reset --hard "$(git tag -l 'v*' | sort -V | tail -1)"
+
+echo "########################################"
+echo "[INFO] Updating Custom Nodes..."
+echo "########################################"
 
 cd /default-comfyui-bundle/ComfyUI/custom_nodes
 
@@ -36,7 +40,11 @@ done
 
 wait
 
-# Install FastVideo
+echo "########################################"
+echo "[INFO] Installing additional Custom Nodes..."
+echo "########################################"
+
+# FastVideo
 git clone --depth=1 --no-tags \
     https://github.com/hao-ai-lab/FastVideo.git \
     /tmp/FastVideo
@@ -45,7 +53,7 @@ mkdir -p /default-comfyui-bundle/ComfyUI/custom_nodes/FastVideo
 cp --archive --update=none "/tmp/FastVideo/comfyui/." "/default-comfyui-bundle/ComfyUI/custom_nodes/FastVideo/"
 rm -rf /tmp/FastVideo
 
-# Install ComfyUI-SageAttention3
+# ComfyUI-SageAttention3
 # A simple connector node for adapting SA3
 cd /default-comfyui-bundle/ComfyUI/custom_nodes
 git clone --depth=1 --no-tags \
