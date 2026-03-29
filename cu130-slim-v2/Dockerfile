@@ -49,9 +49,6 @@ RUN df -h \
 COPY runner-scripts/.  /runner-scripts/
 
 USER root
-# Create an anonymous volume even if the user does not mount one,
-# to avoid filling up the container's writable layer with user data.
-VOLUME /root
 WORKDIR /root
 EXPOSE 8188
 ENV CLI_ARGS=""
