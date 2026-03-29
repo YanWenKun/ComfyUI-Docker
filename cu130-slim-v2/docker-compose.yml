@@ -3,14 +3,18 @@ services:
   comfyui:
     init: true
     container_name: comfyui
+    image: "yanwk/comfyui-boot:cu130-slim-v2"
+    pull_policy: daily
     build:
       context: .
       dockerfile: Dockerfile
-    image: "yanwk/comfyui-boot:cu130-slim-v2"
     ports:
       - "8188:8188"
     volumes:
-      - "comfy-cache:/root"
+      - "comfy-cache/.cache:/root/.cache"
+      - "comfy-cache/.config:/root/.config"
+      - "comfy-nodes/.local:/root/.local"
+      - "comfy-nodes/custom_nodes:/root/ComfyUI/custom_nodes"
       - "./storage-models/models:/root/ComfyUI/models"
       - "./storage-models/hf-hub:/root/.cache/huggingface/hub"
       - "./storage-models/torch-hub:/root/.cache/torch/hub"

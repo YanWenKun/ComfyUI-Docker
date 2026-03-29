@@ -48,4 +48,4 @@ export PIP_ROOT_USER_ACTION=ignore
 cd /root
 
 # Note the specified python command
-python3.13 ./ComfyUI/main.py --listen --port 8188 ${CLI_ARGS}
+python3.13 ./ComfyUI/main.py --listen --port 8188 --enable-manager --enable-manager-legacy-ui ${CLI_ARGS}
