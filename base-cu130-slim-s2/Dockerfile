@@ -58,7 +58,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         flatbuffers numpy packaging protobuf sympy \
     && pip install onnxruntime onnxruntime-gpu \
     && pip uninstall --yes onnxruntime-gpu \
-    && pip install --pre --no-deps \
+    && pip install --no-deps \
         onnxruntime-gpu \
         --index-url https://aiinfra.pkgs.visualstudio.com/PublicPackages/_packaging/ort-cuda-13-nightly/pypi/simple/
 
