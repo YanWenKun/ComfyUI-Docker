@@ -1,7 +1,7 @@
 ################################################################################
 # Dockerfile that builds 'yanwk/comfyui-boot:cu126-megapak'
 # A runtime environment for https://github.com/comfyanonymous/ComfyUI
-# Using CUDA 12.6, Python 3.12
+# Using CUDA 12.6, Python 3.12, PyTorch 2.9.1
 # The container will be running in root (easy for rootless deploy).
 ################################################################################
 
@@ -163,7 +163,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         pip wheel setuptools packaging \
     && pip list \
     && pip install \
-        --dry-run xformers==0.0.33.post2 torchvision torchaudio \
+        --dry-run xformers==0.0.33.post2 torch==2.9.1 torchvision==0.24.1 torchaudio==2.9.1 \
         --index-url https://download.pytorch.org/whl/cu126
 
 # Here's some hack. To reduce image size & single layer size, we:
@@ -174,14 +174,14 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # Note: xFormers is not always released with latest PyTorch, so using `pip install --no-deps` is not a good idea.
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        xformers==0.0.33.post2 torchvision torchaudio \
+        xformers==0.0.33.post2 torch==2.9.1 torchvision==0.24.1 torchaudio==2.9.1 \
         --index-url https://download.pytorch.org/whl/cu126 \
 && pip uninstall --yes torch \
 && find /usr/local/lib/python3.12/site-packages/nvidia/ -mindepth 1 -maxdepth 1 ! -name 'nccl' ! -name 'nvshmem' -exec rm -rfv {} +
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        xformers==0.0.33.post2 torchvision torchaudio \
+        xformers==0.0.33.post2 torch==2.9.1 torchvision==0.24.1 torchaudio==2.9.1 \
         --index-url https://download.pytorch.org/whl/cu126
 
 ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\
@@ -195,16 +195,26 @@ ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\
 # Deps for ComfyUI & custom nodes
 COPY builder-scripts/.  /builder-scripts/
 
+# Generate a version constraints file to pin PyTorch (prevent later installs from changing its version)
+RUN pip list --format=freeze \
+        | awk -F== 'BEGIN{want["torch"]=1;want["torchvision"]=1;want["torchaudio"]=1} $1 in want{print $1 "==" $2}' \
+        > /builder-scripts/constraints.txt \
+    && echo "Pinned PyTorch version:" \
+    && cat /builder-scripts/constraints.txt
+
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
+        -c /builder-scripts/constraints.txt \
         -r /builder-scripts/pak3.txt
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
+        -c /builder-scripts/constraints.txt \
         -r /builder-scripts/pak5.txt
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
+        -c /builder-scripts/constraints.txt \
         -r /builder-scripts/pak7.txt
 
 # Temp fixes
@@ -247,6 +257,7 @@ RUN bash /builder-scripts/preload-cache.sh
 # Install deps (comfyui-frontend-package, etc) pair to the preloaded ComfyUI version
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
+        -c /builder-scripts/constraints.txt \
         -r '/default-comfyui-bundle/ComfyUI/requirements.txt' \
         -r '/default-comfyui-bundle/ComfyUI/custom_nodes/ComfyUI-Manager/requirements.txt' \
     && pip list
