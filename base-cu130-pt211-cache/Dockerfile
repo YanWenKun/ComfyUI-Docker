@@ -94,13 +94,13 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 https://github.com/nunchaku-ai/nunchaku/releases/download/v1.2.1/nunchaku-1.2.1+cu13.0torch2.11-cp313-cp313-linux_x86_64.whl \
     # SageAttention 2
     && pip install \
-https://github.com/YanWenKun/ComfyUI-Containerfiles/releases/download/sageattn-py313-cu130-pt211/sageattention-2.2.0+hopper-cp313-cp313-linux_x86_64.whl \
-    # SageAttention 3
+https://github.com/YanWenKun/ComfyUI-Containerfiles/releases/download/sageattn-py313-cu130-pt211-r2/sageattention-2.2.0-cp313-cp313-linux_x86_64.whl \
+    # SageAttention 3 (requires Blackwell GPU)
     && pip install \
-https://github.com/YanWenKun/ComfyUI-Containerfiles/releases/download/sageattn-py313-cu130-pt211/sageattn3-1.0.0-cp313-cp313-linux_x86_64.whl \
+https://github.com/YanWenKun/ComfyUI-Containerfiles/releases/download/sageattn-py313-cu130-pt211-r2/sageattn3-1.0.0-cp313-cp313-linux_x86_64.whl \
     # SpargeAttention (Sparse-SageAttention)
     && pip install \
-https://github.com/YanWenKun/ComfyUI-Containerfiles/releases/download/sageattn-py313-cu130-pt211/spas_sage_attn-0.1.0-cp313-cp313-linux_x86_64.whl
+https://github.com/YanWenKun/ComfyUI-Containerfiles/releases/download/sageattn-py313-cu130-pt211-r2/spas_sage_attn-0.1.0-cp313-cp313-linux_x86_64.whl
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     # FlashAttention 2 (version pair with xFormers, binary pair with PyTorch & CUDA)
@@ -123,7 +123,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         h5py wandb test-tube pytest flask flask_restful cloudpickle gpustat watch remote-pdb pyarrow \
     && pip install --no-deps \
         fastvideo \
-https://github.com/YanWenKun/ComfyUI-Containerfiles/releases/download/fastvideo-kernel-py313/fastvideo_kernel-0.2.6-cp313-cp313-linux_x86_64.whl
+https://github.com/YanWenKun/ComfyUI-Containerfiles/releases/download/fastvideo-kernel-py313-r2/fastvideo_kernel-0.2.6-cp313-cp313-linux_x86_64.whl
 
 ################################################################################
 # Pre-download a ComfyUI bundle in the image (will update later)
