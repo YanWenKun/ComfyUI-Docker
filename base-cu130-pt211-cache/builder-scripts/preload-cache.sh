@@ -21,7 +21,6 @@ cd /default-comfyui-bundle/ComfyUI
 git reset --hard "$(git tag | grep -e '^v' | sort -V | tail -1)"
 
 cd /default-comfyui-bundle/ComfyUI/custom_nodes
-gcs https://github.com/Comfy-Org/ComfyUI-Manager.git
 
 # Performance
 gcs https://github.com/city96/ComfyUI-GGUF.git
