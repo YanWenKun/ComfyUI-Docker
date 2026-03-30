@@ -6,7 +6,7 @@
 <!-- | 
 **[国内适配镜像点我](https://gitee.com/yanwenkun/ComfyUI-Docker/tree/main/cu124-cn)** -->
 
-Docker images for [ComfyUI](https://github.com/comfyanonymous/ComfyUI) - a Stable Diffusion GUI powering node-based workflow.
+Docker images for [ComfyUI](https://github.com/Comfy-Org/ComfyUI) - a Stable Diffusion GUI powering node-based workflow.
 
 
 ## Quick Start - NVIDIA GPU

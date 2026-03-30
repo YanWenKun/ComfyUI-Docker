@@ -1,6 +1,6 @@
 ################################################################################
 # Dockerfile that builds 'yanwk/comfyui-boot:cu130-slim-v2'
-# A runtime environment for https://github.com/comfyanonymous/ComfyUI
+# A runtime environment for https://github.com/Comfy-Org/ComfyUI
 # Using CUDA 13.0, Python 3.13 (with GIL).
 # Does not install xFormers by default.
 # The container will be running in root (easy for rootless deploy).

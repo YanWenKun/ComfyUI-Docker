@@ -132,7 +132,7 @@ docker run -it --rm \
   rocm/pytorch:rocm6.4.4_ubuntu24.04_py3.12_pytorch_release_2.7.1 \
   /bin/bash
 
-git clone https://github.com/comfyanonymous/ComfyUI.git
+git clone https://github.com/Comfy-Org/ComfyUI.git
 
 pip install -r ComfyUI/requirements.txt
 # Or:

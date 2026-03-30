@@ -184,7 +184,7 @@ podman run -it --rm \
 ** `-e CLI_ARGS="--disable-smart-memory" \`
 
 ** 有效减少显存泄漏，代价是更慢、占用更多系统内存（
-https://github.com/comfyanonymous/ComfyUI/blob/master/comfy/cli_args.py[源码]
+https://github.com/Comfy-Org/ComfyUI/blob/master/comfy/cli_args.py[源码]
 ）
 
 * 禁用显存碎片缓存机制：

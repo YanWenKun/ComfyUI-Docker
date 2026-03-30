@@ -4,7 +4,7 @@ set -eu
 echo '#' > pak5.txt
 
 array=(
-https://github.com/comfyanonymous/ComfyUI/raw/refs/heads/master/requirements.txt
+https://github.com/Comfy-Org/ComfyUI/raw/refs/heads/master/requirements.txt
 https://github.com/Comfy-Org/ComfyUI-Manager/raw/refs/heads/main/requirements.txt
 https://github.com/cubiq/ComfyUI_essentials/raw/refs/heads/main/requirements.txt
 https://github.com/cubiq/ComfyUI_FaceAnalysis/raw/refs/heads/main/requirements.txt

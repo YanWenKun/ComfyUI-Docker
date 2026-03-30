@@ -1,6 +1,6 @@
 ################################################################################
 # Dockerfile that builds 'yanwk/comfyui-boot:rocm6'
-# A runtime environment for https://github.com/comfyanonymous/ComfyUI
+# A runtime environment for https://github.com/Comfy-Org/ComfyUI
 # With ROCm 6 for AMD GPU.
 ################################################################################
 

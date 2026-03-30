@@ -1,6 +1,6 @@
 ################################################################################
 # Dockerfile that builds 'yanwk/comfyui-boot:rocm7'
-# A runtime environment for https://github.com/comfyanonymous/ComfyUI
+# A runtime environment for https://github.com/Comfy-Org/ComfyUI
 # With ROCm 7 for AMD GPU.
 #
 # Using default components from Ubuntu 24.04:

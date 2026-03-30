@@ -134,7 +134,7 @@ ${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
 WORKDIR /root
 
 # Use latest ComfyUI (dev)
-RUN git clone 'https://github.com/comfyanonymous/ComfyUI.git'
+RUN git clone 'https://github.com/Comfy-Org/ComfyUI.git'
 
 # Install only essential dependencies for ComfyUI
 RUN --mount=type=cache,target=/root/.cache/pip \

@@ -81,7 +81,7 @@ sudo pip3.10 install --break-system-packages \
 ## 4. 下载 ComfyUI
 ```sh
 git clone --depth=1 --no-tags --recurse-submodules --shallow-submodules \
-    https://github.com/comfyanonymous/ComfyUI.git
+    https://github.com/Comfy-Org/ComfyUI.git
 cd ComfyUI
 ```
 
@@ -109,4 +109,4 @@ python3.10 main.py --listen --port 8188 --directml
 
 TIP: 如果显存小于 4G，添加参数: --lowvram
 
-NOTE: 更多 ComfyUI 参数： https://github.com/comfyanonymous/ComfyUI/blob/master/comfy/cli_args.py
+NOTE: 更多 ComfyUI 参数： https://github.com/Comfy-Org/ComfyUI/blob/master/comfy/cli_args.py

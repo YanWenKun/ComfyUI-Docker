@@ -1,6 +1,6 @@
 ################################################################################
 # Dockerfile that builds 'yanwk/comfyui-boot:cu130-megapak-pt211'
-# A runtime environment for https://github.com/comfyanonymous/ComfyUI
+# A runtime environment for https://github.com/Comfy-Org/ComfyUI
 # Using 'root' user inside the container (easy for rootless deploy).
 #
 # Image hierarchy:

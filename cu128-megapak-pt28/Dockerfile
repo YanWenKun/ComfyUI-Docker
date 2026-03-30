@@ -1,6 +1,6 @@
 ################################################################################
 # Dockerfile that builds 'yanwk/comfyui-boot:cu128-megapak-pt28'
-# A runtime environment for https://github.com/comfyanonymous/ComfyUI
+# A runtime environment for https://github.com/Comfy-Org/ComfyUI
 # Using PyTorch 2.8.0
 # Using CUDA 12.8, Python 3.12, GCC 11
 # Using glibc 2.38 (from openSUSE Leap 15.6)

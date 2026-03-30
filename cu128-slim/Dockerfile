@@ -1,6 +1,6 @@
 ################################################################################
 # Dockerfile that builds 'yanwk/comfyui-boot:cu128-slim'
-# A runtime environment for https://github.com/comfyanonymous/ComfyUI
+# A runtime environment for https://github.com/Comfy-Org/ComfyUI
 # Using CUDA 12.8, Python 3.12
 # The container will be running in root (easy for rootless deploy).
 ################################################################################

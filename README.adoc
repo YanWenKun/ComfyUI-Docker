@@ -5,7 +5,7 @@ English | 🀄 *link:README.zh.adoc[中文说明]*
 This repo is for 
 https://hub.docker.com/r/yanwk/comfyui-boot[Docker images] 
 that runs 
-https://github.com/comfyanonymous/ComfyUI[ComfyUI] - 
+https://github.com/Comfy-Org/ComfyUI[ComfyUI] - 
 an AIGC GUI powering node-based workflow.
 
 ## Quick Start - NVIDIA GPU

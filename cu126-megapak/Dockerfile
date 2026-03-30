@@ -1,6 +1,6 @@
 ################################################################################
 # Dockerfile that builds 'yanwk/comfyui-boot:cu126-megapak'
-# A runtime environment for https://github.com/comfyanonymous/ComfyUI
+# A runtime environment for https://github.com/Comfy-Org/ComfyUI
 # Using CUDA 12.6, Python 3.12, PyTorch 2.9.1
 # The container will be running in root (easy for rootless deploy).
 ################################################################################

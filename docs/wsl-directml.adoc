@@ -80,7 +80,7 @@ sudo pip3.10 install --break-system-packages \
 ## 4. Download ComfyUI
 ```sh
 git clone --depth=1 --no-tags --recurse-submodules --shallow-submodules \
-    https://github.com/comfyanonymous/ComfyUI.git
+    https://github.com/Comfy-Org/ComfyUI.git
 cd ComfyUI
 ```
 
@@ -108,4 +108,4 @@ python3.10 main.py --listen --port 8188 --directml
 
 TIP: For <4G VRAM, add arg: --lowvram
 
-NOTE: More CLI args: https://github.com/comfyanonymous/ComfyUI/blob/master/comfy/cli_args.py
+NOTE: More CLI args: https://github.com/Comfy-Org/ComfyUI/blob/master/comfy/cli_args.py
