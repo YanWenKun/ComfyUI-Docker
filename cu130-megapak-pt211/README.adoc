@@ -2,7 +2,7 @@
 
 **__Using PyTorch 2.11 and CUDA 13.0__**
 
-image::../docs/concept-v6-megapak.svg["Concept Design"]
+image::concept.svg["Concept Design"]
 
 image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-cu130-megapak-pt211.yml/badge.svg["GitHub Workflow Status",link="https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-cu130-megapak-pt211.yml"]
 
