@@ -3,15 +3,25 @@
 set -euo pipefail
 
 function git_force_sync () {
-    git_remote_url=$(git -C "$1" remote get-url origin) ;
+    git_remote_url=$(git -C "$1" remote get-url origin)
 
     if [[ $git_remote_url =~ ^(https:\/\/github\.com\/)(.*)(\.git)$ ]]; then
-        echo "Updating: $1" ;
-        git -C "$1" fetch --depth=1 --no-tags ;
-        git -C "$1" reset --hard '@{upstream}' ;
-        git -C "$1" submodule update --init --recursive --depth=1
-        echo "Done Updating: $1" ;
-    fi ;
+        git -C "$1" fetch --depth=1 --no-tags
+
+        _local_head=$(git -C "$1" rev-parse HEAD)
+        _remote_head=$(git -C "$1" rev-parse '@{upstream}')
+
+        if [ "$_local_head" != "$_remote_head" ]; then
+            echo "[INFO] Updating: $1"
+
+            if ! git -C "$1" pull --ff-only; then
+                git -C "$1" reset --hard '@{upstream}'
+            fi
+
+            git -C "$1" submodule update --init --recursive --depth=1
+            echo "[INFO] Done Updating: $1"
+        fi
+    fi
 }
 
 echo "########################################"
@@ -36,9 +46,8 @@ for D in *; do
     fi
 done
 
-wait
-
-jobs
+# Do not quote (jobs -p), word splitting is intended here.
+wait $(jobs -p)
 
 echo "########################################"
 echo "[INFO] Installing additional Custom Nodes..."

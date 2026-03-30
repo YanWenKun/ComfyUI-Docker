@@ -21,12 +21,9 @@ Particular to this `cu130-megapak-pt211` image:
 * PyTorch 2.11 + CUDA 13.0.
 
 * Pre-installed:
-** SageAttention 2
-** SageAttention 3
+** SageAttention 2 / 3
 ** SpargeAttention
-** FlashAttention 2
-** FlashAttention 3
-** FlashAttention 4
+** FlashAttention 2 / 3 / 4
 ** Nunchaku
 ** llama-cpp-python
 ** FastVideo
