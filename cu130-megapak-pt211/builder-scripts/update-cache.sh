@@ -13,11 +13,7 @@ function git_force_sync () {
 
         if [ "$_local_head" != "$_remote_head" ]; then
             echo "[INFO] Updating: $1"
-
-            if ! git -C "$1" pull --ff-only; then
-                git -C "$1" reset --hard '@{upstream}'
-            fi
-
+            git -C "$1" reset --hard '@{upstream}'
             git -C "$1" submodule update --init --recursive --depth=1
             echo "[INFO] Done Updating: $1"
         fi
@@ -94,11 +90,3 @@ network_mode = personal_cloud
 EOF
 
 echo "########################################"
-echo "[INFO] Separating Custom Nodes from ComfyUI..."
-
-cd /default-comfyui-bundle/
-
-mkdir -p /default-comfyui-bundle/C_NODES
-
-mv /default-comfyui-bundle/ComfyUI/custom_nodes/* \
-   /default-comfyui-bundle/C_NODES/

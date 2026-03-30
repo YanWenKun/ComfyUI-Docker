@@ -8,9 +8,9 @@ echo "########################################"
 cd /root
 if [ ! -f "/root/ComfyUI/main.py" ] ; then
     mkdir -p /root/ComfyUI
-    # 'cp --archive': all file timestamps and permissions will be preserved
-    # 'cp --update=none': do not overwrite
-    if cp --archive --update=none "/default-comfyui-bundle/ComfyUI/." "/root/ComfyUI/" ; then
+    # 'rsync --archive': all file timestamps and permissions will be preserved
+    # 'rsync --ignore-existing': do not overwrite
+    if rsync --archive --ignore-existing --exclude 'custom_nodes/' "/default-comfyui-bundle/ComfyUI/" "/root/ComfyUI/" ; then
         echo "[INFO] Setting up ComfyUI..."
         echo "[INFO] Using image-bundled ComfyUI (copied to workdir)."
     else
@@ -27,7 +27,7 @@ if [ ! -f "/root/ComfyUI/custom_nodes/example_node.py.example" ] ; then
     mkdir -p /root/ComfyUI/custom_nodes
     # 'cp --archive': all file timestamps and permissions will be preserved
     # 'cp --update=none': do not overwrite
-    if cp --archive --update=none "/default-comfyui-bundle/C_NODES/." "/root/ComfyUI/custom_nodes/" ; then
+    if cp --archive --update=none "/default-comfyui-bundle/ComfyUI/custom_nodes/." "/root/ComfyUI/custom_nodes/" ; then
         echo "[INFO] Setting up Custom Nodes..."
         echo "[INFO] Using image-bundled Custom Nodes (copied to workdir)."
     else
