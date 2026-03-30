@@ -2,7 +2,7 @@ services:
 
   comfyui:
     init: true
-    container_name: comfyui
+    container_name: comfyui-cu130
     image: "yanwk/comfyui-boot:cu130-slim-v2"
     pull_policy: daily
     build:

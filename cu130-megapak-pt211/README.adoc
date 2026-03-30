@@ -1,43 +1,45 @@
-# Docker image for ComfyUI
+# MEGAPAK image for ComfyUI
 
-image::concept.svg["Concept Design"]
+**__Using PyTorch 2.11 and CUDA 13.0__**
 
-image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-cu130-slim-v2.yml/badge.svg["GitHub Workflow Status",link="https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-cu130-slim-v2.yml"]
+image::../docs/concept-v6-megapak.svg["Concept Design"]
 
-https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=cu130-slim-v2[View on <Docker Hub>]
+image:https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-cu130-megapak-pt211.yml/badge.svg["GitHub Workflow Status",link="https://github.com/YanWenKun/ComfyUI-Docker/actions/workflows/build-cu130-megapak-pt211.yml"]
+
+https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=cu130-megapak-pt211[View on <Docker Hub>]
 
 
-## What's New
+**MEGAPAK** uses the same base mechanism as the `slim` images. The key differences are:
 
-Unlike the previous images, the `cu130-slim-v2` image is adopting "dockerful" design, which emphasizes:
+* Includes 40+ Custom Nodes. See link:../base-cu130-pt211-cache/builder-scripts/preload-cache.sh[the full list].
+* Includes CUDA development kit for compiling PyTorch C++ extensions, `.cu` files, etc.
+* Includes performance optimization libraries such as Nunchaku and SageAttention (powerful but may have compatibility issues).
+* Includes additional tools and dependencies.
 
-* Updating ComfyUI by pulling new image, not by clicking "Update ComfyUI" in ComfyUI-Manager.
+Particular to this `cu130-megapak-pt211` image:
 
-* Decoupling Custom Nodes from ComfyUI in file-level. Now user-installed Custom Nodes and their dependencies are stored in bind mounts (Or Docker volumes), so they won't be affected by image updates.
+* PyTorch 2.11 + CUDA 13.0.
 
-## Prerequisites
+* Pre-installed:
+** SageAttention 2
+** SageAttention 3
+** SpargeAttention
+** FlashAttention 2
+** FlashAttention 3
+** FlashAttention 4
+** Nunchaku
+** llama-cpp-python
+** FastVideo
 
-* NVIDIA GPU with latest driver
-** Either Game or Studio edition will work.
-** You don't need to install drivers inside containers. Just make sure it's working on your host OS.
-
-* Docker/Podman Installed
-
-** Linux user may need to install
-https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html[NVIDIA Container Toolkit]
-(only on host OS). It will enable containers' GPU access.
-
-** Windows user could use 
-https://www.docker.com/products/docker-desktop/[Docker Desktop] 
-with WSL2 enabled, or 
-https://podman-desktop.io/[Podman Desktop]
-with WSL2 and 
-https://podman-desktop.io/docs/podman/gpu[GPU access].
-
-** WSL2 users please note that file sharing from Windows to Linux is very slow (down to <100MiB/s). You may want to use an in-WSL folder (or Docker volume) to store ComfyUI and model files.
+* With:
+** Python 3.13 (with GIL)
+** GCC 14
+** glibc 2.39 (from Rocky Linux 10)
 
 
 ## Usage
+
+Please successfully run the `slim` image before attempting the `megapak` image. The prerequisites/setup sections are omitted from this document.
 
 ### Run with Docker
 
@@ -56,9 +58,8 @@ mkdir -p \
   storage-user/user-profile \
   storage-user/user-scripts
 
-# Add sudo if needed
 docker run -it --rm \
-  --name comfyui-cu130 \
+  --name comfyui-megapak \
   --pull=always \
   --runtime=nvidia \
   --gpus all \
@@ -75,7 +76,7 @@ docker run -it --rm \
   -v "$(pwd)"/storage-user/user-profile:/root/ComfyUI/user \
   -v "$(pwd)"/storage-user/user-scripts:/root/user-scripts \
   -e CLI_ARGS="--fast" \
-  yanwk/comfyui-boot:cu130-slim-v2
+  yanwk/comfyui-boot:cu130-megapak-pt211
 ----
 
 ### Run with Podman (rootless)
@@ -96,7 +97,7 @@ mkdir -p \
   storage-user/user-scripts
 
 podman run -it --rm \
-  --name comfyui-cu130 \
+  --name comfyui-megapak \
   --pull=newer \
   --device nvidia.com/gpu=all \
   --security-opt label=disable \
@@ -113,37 +114,95 @@ podman run -it --rm \
   -v "$(pwd)"/storage-user/user-profile:/root/ComfyUI/user \
   -v "$(pwd)"/storage-user/user-scripts:/root/user-scripts \
   -e CLI_ARGS="--fast" \
-  docker.io/yanwk/comfyui-boot:cu130-slim-v2
+  docker.io/yanwk/comfyui-boot:cu130-megapak-pt211
 ----
-
-Note the `CLI_ARGS`, see <<cli-args, CLI_ARGS Reference>> below for details.
 
 Once the app is loaded, visit http://localhost:8188/
 
-
 ## Tips
 
-* If you encounter issues with nested mounts, remove the bind mounts for `storage-cache` and the ephemeral `--rm` flag.
+* Custom Nodes are copied to local storage at first start, allowing you to install additional Custom Nodes and persist them without conflicts.
 
-** Or just upgrade OS / Docker to a modern version.
+** The downside is that you need to update the Custom Nodes via ComfyUI-Manager rather than by pulling new images.
 
-### Pre-start Scripts
-
-The entrypoint script will create an example user script file at first start:
-
-----
-./storage-user/user-scripts/pre-start.sh
-----
-
-This is for user operations (e.g. setting proxies, environment variables), it will run before ComfyUI starts.
-
+** If you do not need to install additional Custom Nodes and prefer to update by pulling new images, you can remove the bind mounts for `storage-nodes`.
 
 [[cli-args]]
-## CLI_ARGS Reference
+## CLI_ARGS - Attention Selection
 
 [%autowidth,cols=2]
 |===
 |args |description
+
+|--use-sage-attention
+|Use SageAttention 2. Keep current config for xFormers.
+
+|--use-flash-attention
+|Use FlashAttention 2. Keep current config for xFormers.
+
+|--use-pytorch-cross-attention
+|Use PyTorch's built-in cross-attention. Disable xFormers.
+
+|===
+
+* Only one attention implementation can be selected at a time.
+If none is specified, xFormers is enabled by default.
+
+* For example, you may want to use one of these combinations:
+** `--use-flash-attention`
+** `--use-flash-attention --disable-xformers`
+** `--use-sage-attention`
+** `--use-sage-attention --disable-xformers`
+** `--use-pytorch-cross-attention`
+** Leave empty (will use xFormers by default).
+
+### Compatibility (only applies to this image)
+
+[cols="1,1,1,1,1,1", options="header"]
+|===
+| GPU Architecture
+| Blackwell | Hopper | Ada Lovelace | Ampere | Turing
+
+| Example GPU
+| RTX 5090 | H100 | RTX 4090 | RTX 3090 
+| RTX 2080 +
+GTX 1660
+
+| SageAttention 2
+| ✔️ | ❓ | ✔️ | ✔️ | ❌
+
+| SageAttention 3
+| ✔️ | ❌ | ❌ | ❌ | ❌
+
+| SpargeAttention
+| ❌ | ❌ | ✔️ | ✔️ | ❌
+
+| FlashAttention 2
+| ✔️ | ✔️ | ✔️ | ✔️ | ❌
+
+| FlashAttention 3
+| ✔️ | ✔️ | ❌ | ❌ | ❌
+
+| FlashAttention 4
+| ✔️ | ✔️ | ❌ | ❌ | ❌
+
+| xFormers
+| ✔️ | ✔️ | ✔️ | ✔️ | ✔️
+
+| PyTorch Native
+| ✔️ | ✔️ | ✔️ | ✔️ | ✔️
+
+|===
+
+
+## CLI_ARGS - Frequently Used
+
+[%autowidth,cols=2]
+|===
+|args |description
+
+|--disable-xformers
+|Disable xFormers.
 
 |--fast
 |Enable experimental optimizations.
@@ -164,12 +223,6 @@ Turn it off if you want stability over speed.
 
 |--cpu
 |Run on CPU. Very slow. Used for testing purposes.
-
-|--disable-xformers
-|Disable xFormers. xFormers is not installed in this image by default.
-
-|--use-pytorch-cross-attention
-|Use PyTorch's built-in cross-attention. Disable xFormers, FlashAttention and SageAttention.
 
 |===
 
@@ -215,5 +268,18 @@ https://huggingface.co/settings/tokens[More info]
 |Enable HuggingFace Hub's high performance mode.
 Only make sense if you have >5Gbps and VERY STABLE connection (e.g. cloud server).
 https://huggingface.co/docs/huggingface_hub/main/en/package_reference/environment_variables#hfxethighperformance[More info]
+
+|TORCH_CUDA_ARCH_LIST
+|8.6 +
+or +
+'7.0;7.5;8.0;8.6;9.0;10.0;12.0+PTX'
+|Build target for PyTorch and its extensions.
+For most users, no setup is needed as it will be automatically selected on Linux.
+When needed, you only need to set one build target just for your GPU.
+https://arnon.dk/matching-sm-architectures-arch-and-gencode-for-various-nvidia-cards/[More info]
+
+|CMAKE_ARGS
+|'-DBUILD_opencv_world=ON -DWITH_CUDA=ON -DCUDA_FAST_MATH=ON -DWITH_CUBLAS=ON -DWITH_NVCUVID=ON'
+|Build options for CMAKE projects using CUDA.
 
 |===
