@@ -131,6 +131,8 @@ https://github.com/YanWenKun/ComfyUI-Containerfiles/releases/download/fastvideo-
 
 WORKDIR /default-comfyui-bundle
 
+RUN bash /builder-scripts/preload-cache.sh
+
 RUN bash /builder-scripts/preload-nodes1.sh
 
 RUN bash /builder-scripts/preload-nodes2.sh
