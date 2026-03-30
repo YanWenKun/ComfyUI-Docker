@@ -1,0 +1,75 @@
+name: Check ComfyUI releases and update record
+
+on:
+  workflow_dispatch:
+  schedule:
+    # every 8 hours -> ~3 times/day
+    - cron: '0 */8 * * *'
+
+permissions:
+  contents: write
+
+jobs:
+  check-comfyui-release:
+    runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.compare.outputs.changed }}
+      latest: ${{ steps.get_latest.outputs.latest }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: true
+
+      - name: Get latest ComfyUI release
+        id: get_latest
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            try {
+              const owner = 'Comfy-Org', repo = 'ComfyUI';
+              const latest = await github.rest.repos.getLatestRelease({ owner, repo });
+              const tag = latest.data.tag_name;
+              core.setOutput('latest', tag);
+              console.log('Latest release tag:', tag);
+            } catch (err) {
+              core.setFailed('Failed to fetch latest release: ' + err.message);
+            }
+
+      - name: Read current release file
+        id: read_current
+        run: |
+          file=".github/current_comfyui_release.txt"
+          if [ -f "$file" ]; then
+            current=$(cat "$file" | tr -d '\r\n')
+          else
+            current=""
+          fi
+          echo "current=$current" >> $GITHUB_OUTPUT
+
+      - name: Compare and optionally update record
+        id: compare
+        run: |
+          latest="${{ steps.get_latest.outputs.latest }}"
+          current="${{ steps.read_current.outputs.current }}"
+          echo "latest=$latest" >> $GITHUB_OUTPUT
+          if [ -z "$latest" ]; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "No latest tag retrieved, aborting update."
+            exit 0
+          fi
+          if [ "$latest" = "$current" ]; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "No new release detected: $latest"
+          else
+            mkdir -p .github
+            echo "$latest" > .github/current_comfyui_release.txt
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add .github/current_comfyui_release.txt
+            git commit -m "Update ComfyUI release to $latest" || echo "no changes to commit"
+            git push
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "Updated .github/current_comfyui_release.txt -> $latest"
+          fi

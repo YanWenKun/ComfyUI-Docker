@@ -2,8 +2,6 @@ name: Publish 'cu130-megapak-pt211' to Docker Hub
 
 on: 
   workflow_dispatch: # Can be manually triggered
-  schedule: # Runs on everyday, 07:00 UTC
-    - cron: '0 7 * * *'
   push: 
     branches: [ main ]
     paths-ignore:
@@ -12,6 +10,7 @@ on:
       - '!cu130-megapak-pt211/builder-scripts/**'
       - '!cu130-megapak-pt211/runner-scripts/**'
       - '!.github/workflows/build-cu130-megapak-pt211.yml'
+      - '!.github/current_comfyui_release.txt'
 
 jobs:
 
