@@ -12,6 +12,10 @@ an AIGC GUI powering node-based workflow.
 
 ```sh
 mkdir -p \
+  storage-cache/dot-cache \
+  storage-cache/dot-config \
+  storage-nodes/dot-local \
+  storage-nodes/custom_nodes \
   storage-models/models \
   storage-models/hf-hub \
   storage-models/torch-hub \
@@ -20,17 +24,16 @@ mkdir -p \
   storage-user/user-profile \
   storage-user/user-scripts
 
-# Add sudo if needed
-docker run -it --rm \
+podman run -it --rm \
   --name comfyui-cu130 \
-  --pull=always \
-  --runtime=nvidia \
-  --gpus all \
+  --pull=newer \
+  --device nvidia.com/gpu=all \
+  --security-opt label=disable \
   -p 8188:8188 \
-  -v comfy-cache/.cache:/root/.cache \
-  -v comfy-cache/.config:/root/.config \
-  -v comfy-nodes/.local:/root/.local \
-  -v comfy-nodes/custom_nodes:/root/ComfyUI/custom_nodes \
+  -v "$(pwd)"/storage-cache/dot-cache:/root/.cache \
+  -v "$(pwd)"/storage-cache/dot-config:/root/.config \
+  -v "$(pwd)"/storage-nodes/dot-local:/root/.local \
+  -v "$(pwd)"/storage-nodes/custom_nodes:/root/ComfyUI/custom_nodes \
   -v "$(pwd)"/storage-models/models:/root/ComfyUI/models \
   -v "$(pwd)"/storage-models/hf-hub:/root/.cache/huggingface/hub \
   -v "$(pwd)"/storage-models/torch-hub:/root/.cache/torch/hub \
@@ -39,7 +42,7 @@ docker run -it --rm \
   -v "$(pwd)"/storage-user/user-profile:/root/ComfyUI/user \
   -v "$(pwd)"/storage-user/user-scripts:/root/user-scripts \
   -e CLI_ARGS="--fast" \
-  yanwk/comfyui-boot:cu130-slim-v2
+  docker.io/yanwk/comfyui-boot:cu130-slim-v2
 ```
 
 ## CUDA Compatibility

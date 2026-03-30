@@ -44,6 +44,10 @@ https://podman-desktop.io/docs/podman/gpu[GPU access].
 [source,sh]
 ----
 mkdir -p \
+  storage-cache/dot-cache \
+  storage-cache/dot-config \
+  storage-nodes/dot-local \
+  storage-nodes/custom_nodes \
   storage-models/models \
   storage-models/hf-hub \
   storage-models/torch-hub \
@@ -59,10 +63,10 @@ docker run -it --rm \
   --runtime=nvidia \
   --gpus all \
   -p 8188:8188 \
-  -v comfy-cache/.cache:/root/.cache \
-  -v comfy-cache/.config:/root/.config \
-  -v comfy-nodes/.local:/root/.local \
-  -v comfy-nodes/custom_nodes:/root/ComfyUI/custom_nodes \
+  -v "$(pwd)"/storage-cache/dot-cache:/root/.cache \
+  -v "$(pwd)"/storage-cache/dot-config:/root/.config \
+  -v "$(pwd)"/storage-nodes/dot-local:/root/.local \
+  -v "$(pwd)"/storage-nodes/custom_nodes:/root/ComfyUI/custom_nodes \
   -v "$(pwd)"/storage-models/models:/root/ComfyUI/models \
   -v "$(pwd)"/storage-models/hf-hub:/root/.cache/huggingface/hub \
   -v "$(pwd)"/storage-models/torch-hub:/root/.cache/torch/hub \
@@ -79,13 +83,17 @@ docker run -it --rm \
 [source,bash]
 ----
 mkdir -p \
+  storage-cache/dot-cache \
+  storage-cache/dot-config \
+  storage-nodes/dot-local \
+  storage-nodes/custom_nodes \
   storage-models/models \
   storage-models/hf-hub \
   storage-models/torch-hub \
   storage-user/input \
   storage-user/output \
   storage-user/user-profile \
-  storage-user/scripts
+  storage-user/user-scripts
 
 podman run -it --rm \
   --name comfyui-cu130 \
@@ -93,10 +101,10 @@ podman run -it --rm \
   --device nvidia.com/gpu=all \
   --security-opt label=disable \
   -p 8188:8188 \
-  -v comfy-cache/.cache:/root/.cache \
-  -v comfy-cache/.config:/root/.config \
-  -v comfy-nodes/.local:/root/.local \
-  -v comfy-nodes/custom_nodes:/root/ComfyUI/custom_nodes \
+  -v "$(pwd)"/storage-cache/dot-cache:/root/.cache \
+  -v "$(pwd)"/storage-cache/dot-config:/root/.config \
+  -v "$(pwd)"/storage-nodes/dot-local:/root/.local \
+  -v "$(pwd)"/storage-nodes/custom_nodes:/root/ComfyUI/custom_nodes \
   -v "$(pwd)"/storage-models/models:/root/ComfyUI/models \
   -v "$(pwd)"/storage-models/hf-hub:/root/.cache/huggingface/hub \
   -v "$(pwd)"/storage-models/torch-hub:/root/.cache/torch/hub \
