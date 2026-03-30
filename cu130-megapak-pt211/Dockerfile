@@ -37,12 +37,19 @@ COPY builder-scripts/.  /builder-scripts/
 RUN bash /builder-scripts/update-cache.sh
 
 # Install deps (comfyui-frontend-package, etc) pair to the preloaded ComfyUI version
+# Install ComfyUI-Manager (Python package)
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         -c /builder-scripts/constraints.txt \
         -r '/default-comfyui-bundle/ComfyUI/requirements.txt' \
-        -r '/default-comfyui-bundle/ComfyUI/custom_nodes/ComfyUI-Manager/requirements.txt' \
+        -r '/default-comfyui-bundle/ComfyUI/manager_requirements.txt' \
     && pip list
+
+# Disable ComfyUI-Manager's cache update on startup ("FETCH ComfyRegistry Data")
+RUN cd /usr/local/lib/python3.13/site-packages/comfyui_manager/legacy/ \
+    && echo "Deleting the line in $(pwd)/manager_server.py:" \
+    && grep -n "run(default_cache_update())" ./manager_server.py \
+    && sed -i '/run(default_cache_update())/d' ./manager_server.py
 
 ################################################################################
 
@@ -53,7 +60,6 @@ RUN df -h \
 COPY runner-scripts/.  /runner-scripts/
 
 USER root
-VOLUME /root
 WORKDIR /root
 EXPOSE 8188
 ENV CLI_ARGS=""

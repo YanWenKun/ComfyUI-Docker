@@ -21,6 +21,23 @@ else
     echo "[INFO] Using existing ComfyUI in user storage..."
 fi
 
+# Copy Custom Nodes from cache to workdir if not exist
+cd /root
+if [ ! -f "/root/ComfyUI/custom_nodes/example_node.py.example" ] ; then
+    mkdir -p /root/ComfyUI/custom_nodes
+    # 'cp --archive': all file timestamps and permissions will be preserved
+    # 'cp --update=none': do not overwrite
+    if cp --archive --update=none "/default-comfyui-bundle/C_NODES/." "/root/ComfyUI/custom_nodes/" ; then
+        echo "[INFO] Setting up Custom Nodes..."
+        echo "[INFO] Using image-bundled Custom Nodes (copied to workdir)."
+    else
+        echo "[ERROR] Failed to copy Custom Nodes bundle to '/root/ComfyUI/custom_nodes'" >&2
+        exit 1
+    fi
+else
+    echo "[INFO] Using existing Custom Nodes in user storage..."
+fi
+
 # Run user's pre-start script
 cd /root
 if [ ! -f "/root/user-scripts/pre-start.sh" ] ; then
@@ -48,4 +65,4 @@ export PIP_ROOT_USER_ACTION=ignore
 cd /root
 
 # Note the specified python command
-python3.13 ./ComfyUI/main.py --listen --port 8188 ${CLI_ARGS}
+python3.13 ./ComfyUI/main.py --listen --port 8188 --enable-manager --enable-manager-legacy-ui ${CLI_ARGS}
