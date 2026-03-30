@@ -24,11 +24,12 @@ mkdir -p \
   storage-user/user-profile \
   storage-user/user-scripts
 
-podman run -it --rm \
+# Add sudo if needed
+docker run -it --rm \
   --name comfyui-cu130 \
-  --pull=newer \
-  --device nvidia.com/gpu=all \
-  --security-opt label=disable \
+  --pull=always \
+  --runtime=nvidia \
+  --gpus all \
   -p 8188:8188 \
   -v "$(pwd)"/storage-cache/dot-cache:/root/.cache \
   -v "$(pwd)"/storage-cache/dot-config:/root/.config \
@@ -41,8 +42,8 @@ podman run -it --rm \
   -v "$(pwd)"/storage-user/output:/root/ComfyUI/output \
   -v "$(pwd)"/storage-user/user-profile:/root/ComfyUI/user \
   -v "$(pwd)"/storage-user/user-scripts:/root/user-scripts \
-  -e CLI_ARGS="--fast" \
-  docker.io/yanwk/comfyui-boot:cu130-slim-v2
+  -e CLI_ARGS="" \
+  yanwk/comfyui-boot:cu130-slim-v2
 ```
 
 
