@@ -1,0 +1,81 @@
+#!/bin/bash
+
+set -euo pipefail
+
+gcs() {
+    git clone --depth=1 --no-tags --recurse-submodules --shallow-submodules "$@"
+}
+
+echo "########################################"
+echo "[INFO] Downloading Custom Nodes (part 1)..."
+echo "########################################"
+
+cd /default-comfyui-bundle/ComfyUI/custom_nodes
+
+# Performance
+gcs https://github.com/city96/ComfyUI-GGUF.git
+gcs https://github.com/nunchaku-ai/ComfyUI-nunchaku.git
+gcs https://github.com/woct0rdho/ComfyUI-RadialAttn.git
+
+# Workspace
+gcs https://github.com/alexopus/ComfyUI-Image-Saver.git
+gcs https://github.com/chrisgoringe/cg-use-everywhere.git
+gcs https://github.com/crystian/ComfyUI-Crystools.git
+gcs https://github.com/pydn/ComfyUI-to-Python-Extension.git
+gcs https://github.com/SLAPaper/ComfyUI-Image-Selector.git
+gcs https://github.com/willmiao/ComfyUI-Lora-Manager.git
+gcs https://github.com/Amorano/Jovi_Colorizer.git
+gcs https://github.com/Amorano/Jovi_Help.git
+gcs https://github.com/Amorano/Jovi_Measure.git
+gcs https://github.com/Amorano/Jovi_Preset.git
+
+# General
+gcs https://github.com/ltdrdata/was-node-suite-comfyui.git
+gcs https://github.com/bash-j/mikey_nodes.git
+gcs https://github.com/jags111/efficiency-nodes-comfyui.git
+gcs https://github.com/kijai/ComfyUI-KJNodes.git
+gcs https://github.com/mirabarukaso/ComfyUI_Mira.git
+gcs https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git
+gcs https://github.com/rgthree/rgthree-comfy.git
+gcs https://github.com/shiimizu/ComfyUI_smZNodes.git
+gcs https://github.com/yolain/ComfyUI-Easy-Use.git
+
+# Control
+gcs https://github.com/ltdrdata/ComfyUI-Impact-Pack.git
+gcs https://github.com/ltdrdata/ComfyUI-Impact-Subpack.git
+gcs https://github.com/ltdrdata/ComfyUI-Inspire-Pack.git
+gcs https://github.com/chflame163/ComfyUI_LayerStyle.git
+gcs https://github.com/Fannovel16/comfyui_controlnet_aux.git
+gcs https://github.com/florestefano1975/comfyui-portrait-master.git
+gcs https://github.com/huchenlei/ComfyUI-IC-Light-Native.git
+gcs https://github.com/huchenlei/ComfyUI-layerdiffuse.git
+gcs https://github.com/Jonseed/ComfyUI-Detail-Daemon.git
+gcs https://github.com/KohakuBlueleaf/z-tipo-extension.git
+gcs https://github.com/Kosinkadink/ComfyUI-Advanced-ControlNet.git
+gcs https://github.com/mcmonkeyprojects/sd-dynamic-thresholding.git
+gcs https://github.com/pamparamm/ComfyUI-ppm.git
+gcs https://github.com/twri/sdxl_prompt_styler.git
+
+# Video
+gcs https://github.com/aigc-apps/VideoX-Fun.git
+gcs https://github.com/Fannovel16/ComfyUI-Frame-Interpolation.git
+gcs https://github.com/FizzleDorf/ComfyUI_FizzNodes.git
+gcs https://github.com/Kosinkadink/ComfyUI-AnimateDiff-Evolved.git
+gcs https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git
+gcs https://github.com/Lightricks/ComfyUI-LTXVideo.git
+gcs https://github.com/melMass/comfy_mtb.git
+gcs https://github.com/numz/ComfyUI-SeedVR2_VideoUpscaler.git
+
+# More
+gcs https://github.com/1038lab/ComfyUI-JoyCaption.git
+gcs https://github.com/1038lab/ComfyUI-QwenTTS.git
+gcs https://github.com/1038lab/ComfyUI-QwenVL.git
+gcs https://github.com/1038lab/ComfyUI-RMBG.git
+gcs https://github.com/1038lab/ComfyUI-WildPromptor.git
+gcs https://github.com/akatz-ai/ComfyUI-DepthCrafter-Nodes.git
+gcs https://github.com/digitaljohn/comfyui-propost.git
+gcs https://github.com/kijai/ComfyUI-DepthAnythingV2.git
+gcs https://github.com/kijai/ComfyUI-Florence2.git
+gcs https://github.com/lihaoyun6/ComfyUI-llama-cpp_vlm.git
+gcs https://github.com/pythongosssss/ComfyUI-WD14-Tagger.git
+gcs https://github.com/ssitu/ComfyUI_UltimateSDUpscale.git
