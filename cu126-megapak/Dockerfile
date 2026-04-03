@@ -1,11 +1,13 @@
 ################################################################################
 # Dockerfile that builds 'yanwk/comfyui-boot:cu126-megapak'
 # A runtime environment for https://github.com/Comfy-Org/ComfyUI
-# Using CUDA 12.6, Python 3.12, PyTorch 2.9.1
-# The container will be running in root (easy for rootless deploy).
+# Using PyTorch 2.9.1
+# Using CUDA 12.6, GCC 13, Python 3.12
+# Using glibc 2.38 (from openSUSE Leap 15.6)
+# Using 'root' user inside the container (easy for rootless deploy).
 ################################################################################
 
-FROM docker.io/opensuse/tumbleweed:latest
+FROM docker.io/opensuse/leap:15.6
 
 LABEL maintainer="YAN Wenkun <code@yanwk.fun>"
 
@@ -15,6 +17,9 @@ ARG USING_GITHUB_ACTIONS=false
 # NVIDIA CUDA devel
 # Ref: https://gitlab.com/nvidia/container-images/cuda/
 # Break down the steps, so we have more but smaller image layers.
+
+RUN --mount=type=cache,target=/var/cache/zypp \
+    zypper update --no-confirm
 
 RUN --mount=type=cache,target=/var/cache/zypp \
     printf "\
@@ -92,11 +97,85 @@ RUN --mount=type=cache,target=/var/cache/zypp \
     && zypper --gpg-auto-import-keys \
         install --no-confirm --auto-agree-with-licenses \
 python312-devel \
-python312-dbm \
+python312-pip \
+python312-wheel \
+python312-setuptools \
+python312-packaging \
+python312-Cython \
+python312-py-build-cmake \
+python312-matplotlib \
+python312-mpmath \
+python312-numba-devel \
+# python312-numpy \ # Numba conflicts with latest NumPy
+python312-onnx \
+python312-pandas \
+python312-scikit-build \
+python312-scikit-build-core-pyproject \
+python312-scikit-image \
+python312-scikit-learn \
+python312-scipy
+
+RUN --mount=type=cache,target=/var/cache/zypp \
+    zypper --gpg-auto-import-keys \
+        install --no-confirm --auto-agree-with-licenses \
+python312-opencv \
+opencv \
+opencv-devel \
 Mesa-libGL1 \
 Mesa-libEGL-devel \
 libgthread-2_0-0 \
 libQt5OpenGL-devel
+
+RUN --mount=type=cache,target=/var/cache/zypp \
+    zypper --gpg-auto-import-keys \
+        install --no-confirm --auto-agree-with-licenses \
+python312-addict \
+python312-aenum \
+python312-aiohttp \
+python312-alembic \
+python312-black \
+python312-cachetools \
+python312-chardet \
+python312-dbm \
+python312-deepdiff \
+python312-dill \
+python312-ffmpeg-python \
+python312-filelock \
+python312-ftfy \
+python312-GitPython \
+python312-httpx \
+python312-imageio \
+python312-importlib-metadata \
+python312-joblib \
+python312-lark \
+python312-loguru \
+python312-mss \
+python312-numexpr \
+python312-piexif \
+python312-protobuf \
+python312-py-cpuinfo \
+python312-pydantic \
+python312-pydantic-settings \
+python312-pydub \
+python312-pygit2 \
+python312-PyGithub \
+python312-PyYAML \
+python312-regex \
+python312-qrcode \
+python312-rich \
+python312-safetensors \
+python312-simpleeval \
+python312-SoundFile \
+python312-SQLAlchemy \
+python312-svglib \
+python312-tokenizers \
+python312-toml \
+python312-tqdm \
+python312-typer \
+python312-uv \
+python312-webcolors \
+python312-yapf \
+python312-yarl
 
 RUN --mount=type=cache,target=/var/cache/zypp \
     zypper --gpg-auto-import-keys \
@@ -107,20 +186,30 @@ bison \
 gawk \
 ninja \
 git \
+git-lfs \
 aria2 \
 findutils \
-fish \
 fd \
 vim \
 which \
+tar \
+gzip \
+xz \
+wget \
+update-alternatives \
 ffmpeg \
 x264 \
 x265 \
-update-alternatives \
-google-noto-sans-fonts \
 google-noto-sans-cjk-fonts \
-google-noto-coloremoji-fonts \
-    && rm -v /usr/lib64/python3.12/EXTERNALLY-MANAGED \
+noto-coloremoji-fonts
+
+RUN --mount=type=cache,target=/var/cache/zypp \
+    zypper --non-interactive \
+        install --force-resolution \
+fish
+
+# Remove the need for 'pip install --break-system-packages'
+RUN rm -vf /usr/lib64/python3.12/EXTERNALLY-MANAGED \
     # Ensure default Python version
     && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 100
 
@@ -157,11 +246,9 @@ cpp13 \
 # PyTorch, xFormers
 # Break down the steps, so we have more but smaller image layers.
 RUN --mount=type=cache,target=/root/.cache/pip \
-    python3 -m ensurepip --upgrade \
-    && update-alternatives --install /usr/bin/pip pip /usr/local/bin/pip3.12 100 \
-    && pip install --upgrade \
-        pip wheel setuptools packaging \
-    && pip list \
+    pip list \
+    && pip install \
+        --upgrade pip wheel setuptools packaging \
     && pip install \
         --dry-run xformers==0.0.33.post2 torch==2.9.1 torchvision==0.24.1 torchaudio==2.9.1 \
         --index-url https://download.pytorch.org/whl/cu126
