@@ -149,9 +149,9 @@ RUN rm -vf /usr/lib64/python3.12/EXTERNALLY-MANAGED \
 RUN --mount=type=cache,target=/tmp/ffmpeg_download \
     cd /tmp/ffmpeg_download \
     && wget -N https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n8.1-latest-linux64-gpl-shared-8.1.tar.xz \
-    && tar -xf ffmpeg-n8.0-latest-linux64-gpl-shared-8.0.tar.xz \
-    && rm -vf ffmpeg-n8.0-latest-linux64-gpl-shared-8.0/*.txt \
-    && cp -r ffmpeg-n8.0-latest-linux64-gpl-shared-8.0/* /usr/local/
+    && tar -xf ffmpeg-n8.1-latest-linux64-gpl-shared-8.1.tar.xz \
+    && rm -vf ffmpeg-n8.1-latest-linux64-gpl-shared-8.1/*.txt \
+    && cp -r ffmpeg-n8.1-latest-linux64-gpl-shared-8.1/* /usr/local/
 
 # Temp fix for OpenCV on openSUSE
 ENV LD_PRELOAD=/usr/lib64/libjpeg.so.8
