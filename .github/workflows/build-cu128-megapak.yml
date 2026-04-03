@@ -2,8 +2,6 @@ name: Publish 'cu128-megapak' to Docker Hub
 
 on: 
   workflow_dispatch: # Can be manually triggered
-  schedule: # Runs on every Monday, 07:00 UTC
-    - cron: '0 7 * * 1'
   push: 
     branches: [ main ]
     paths-ignore:
@@ -12,6 +10,8 @@ on:
       - '!cu128-megapak/builder-scripts/**'
       - '!cu128-megapak/runner-scripts/**'
       - '!.github/workflows/build-cu128-megapak.yml'
+      # Runs when new ComfyUI version released
+      - '!.github/current_comfyui_release.txt'
 
 jobs:
 
