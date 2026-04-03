@@ -1,11 +1,13 @@
 ################################################################################
 # Dockerfile that builds 'yanwk/comfyui-boot:cu128-megapak'
 # A runtime environment for https://github.com/Comfy-Org/ComfyUI
-# Using CUDA 12.8, Python 3.12, PyTorch 2.11.0
-# The container will be running in root (easy for rootless deploy).
+# Using PyTorch 2.11.0
+# Using CUDA 12.8, GCC 14, Python 3.12
+# Using glibc 2.38 (from openSUSE Leap 15.6)
+# Using 'root' user inside the container (easy for rootless deploy).
 ################################################################################
 
-FROM docker.io/opensuse/tumbleweed:latest
+FROM docker.io/opensuse/leap:15.6
 
 LABEL maintainer="YAN Wenkun <code@yanwk.fun>"
 
@@ -15,6 +17,9 @@ ARG USING_GITHUB_ACTIONS=false
 # NVIDIA CUDA devel
 # Ref: https://gitlab.com/nvidia/container-images/cuda/
 # Break down the steps, so we have more but smaller image layers.
+
+RUN --mount=type=cache,target=/var/cache/zypp \
+    zypper update --no-confirm
 
 RUN --mount=type=cache,target=/var/cache/zypp \
     printf "\
@@ -88,10 +93,20 @@ ENV PATH="${PATH}:/usr/local/cuda-12.8/bin" \
 # Since this image is so big, we use openSUSE-verified PIP packages for compatibility.
 
 RUN --mount=type=cache,target=/var/cache/zypp \
-    zypper --gpg-auto-import-keys \
+    zypper addrepo --check --refresh --priority 90 \
+        'https://ftp.gwdg.de/pub/linux/misc/packman/suse/openSUSE_Leap_15.6/Essentials/' packman-essentials \
+    && zypper --gpg-auto-import-keys \
         install --no-confirm --auto-agree-with-licenses \
 python312-devel \
-python312-dbm \
+python312-pip \
+python312-wheel \
+python312-setuptools \
+python312-packaging \
+python312-dbm
+
+RUN --mount=type=cache,target=/var/cache/zypp \
+    zypper --gpg-auto-import-keys \
+        install --no-confirm --auto-agree-with-licenses \
 Mesa-libGL1 \
 Mesa-libEGL-devel \
 libgthread-2_0-0 \
@@ -115,12 +130,20 @@ fd \
 vim \
 which \
 tar \
+gzip \
 xz \
 wget \
 google-noto-sans-fonts \
 google-noto-sans-cjk-fonts \
-google-noto-coloremoji-fonts \
-    && rm -v /usr/lib64/python3.12/EXTERNALLY-MANAGED \
+google-noto-coloremoji-fonts
+
+RUN --mount=type=cache,target=/var/cache/zypp \
+    zypper --non-interactive \
+        install --force-resolution \
+fish
+
+# Remove the need for 'pip install --break-system-packages'
+RUN rm -vf /usr/lib64/python3.12/EXTERNALLY-MANAGED \
     # Ensure default Python version
     && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 100
 
@@ -166,11 +189,9 @@ cpp14 \
 # PyTorch, xFormers
 # Break down the steps, so we have more but smaller image layers.
 RUN --mount=type=cache,target=/root/.cache/pip \
-    python3 -m ensurepip --upgrade \
-    && update-alternatives --install /usr/bin/pip pip /usr/local/bin/pip3.12 100 \
-    && pip install --upgrade \
-        pip wheel setuptools packaging \
-    && pip list \
+    pip list \
+    && pip install \
+        --upgrade pip wheel setuptools packaging \
     && pip install \
         --dry-run xformers==0.0.35 torch==2.11.0 torchvision==0.26.0 torchaudio==2.11.0 \
         --index-url https://download.pytorch.org/whl/cu128
@@ -255,15 +276,17 @@ https://github.com/nunchaku-ai/nunchaku/releases/download/v1.2.1/nunchaku-1.2.1+
     # FlashAttention (version pair with xFormers, binary pair with PyTorch & CUDA)
     && pip install \
 https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.9.4/flash_attn-2.8.3+cu128torch2.11-cp312-cp312-linux_x86_64.whl \
-    # FlashAttention 3
-    && pip install \
-https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.9.4/flash_attn_3-3.0.0+cu128torch2.11gite2743ab-cp39-abi3-linux_x86_64.whl \
     # SageAttention
     && pip install \
 https://github.com/YanWenKun/ComfyUI-Containerfiles/releases/download/sageattn-py312-cu128-pt29/sageattention-2.2.0-cp312-cp312-linux_x86_64.whl \
     # SpargeAttention (Sparse-SageAttention)
     && pip install \
 https://github.com/YanWenKun/ComfyUI-Containerfiles/releases/download/sageattn-py312-cu128-pt29/spas_sage_attn-0.1.0-cp312-cp312-linux_x86_64.whl
+
+# llama-cpp-python
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+https://github.com/JamePeng/llama-cpp-python/releases/download/v0.3.34-cu128-Basic-linux-20260331/llama_cpp_python-0.3.34+cu128.basic-cp312-cp312-linux_x86_64.whl
 
 ################################################################################
 # Bundle ComfyUI in the image
