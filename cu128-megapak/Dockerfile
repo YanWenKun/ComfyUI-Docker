@@ -150,7 +150,7 @@ RUN rm -vf /usr/lib64/python3.12/EXTERNALLY-MANAGED \
 # FFmpeg from BtbN
 RUN --mount=type=cache,target=/tmp/ffmpeg_download \
     cd /tmp/ffmpeg_download \
-    && wget -N https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n8.0-latest-linux64-gpl-shared-8.0.tar.xz \
+    && wget -N https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-n8.1-latest-linux64-gpl-shared-8.1.tar.xz \
     && tar -xf ffmpeg-n8.0-latest-linux64-gpl-shared-8.0.tar.xz \
     && rm -vf ffmpeg-n8.0-latest-linux64-gpl-shared-8.0/*.txt \
     && cp -r ffmpeg-n8.0-latest-linux64-gpl-shared-8.0/* /usr/local/
@@ -193,7 +193,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     && pip install \
         --upgrade pip wheel setuptools packaging \
     && pip install \
-        --dry-run xformers==0.0.35 torch==2.11.0 torchvision==0.26.0 torchaudio==2.11.0 \
+        --dry-run xformers==0.0.35 torch==2.11.0 torchvision==0.26.0 torchaudio==2.11.0 torchcodec==0.11.0 \
         --index-url https://download.pytorch.org/whl/cu128
 
 # Here's some hack. To reduce image size & single layer size, we:
@@ -204,14 +204,14 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # Note: xFormers is not always released with latest PyTorch, so using `pip install --no-deps` is not a good idea.
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        xformers==0.0.35 torch==2.11.0 torchvision==0.26.0 torchaudio==2.11.0 \
+        xformers==0.0.35 torch==2.11.0 torchvision==0.26.0 torchaudio==2.11.0 torchcodec==0.11.0 \
         --index-url https://download.pytorch.org/whl/cu128 \
 && pip uninstall --yes torch \
 && find /usr/local/lib/python3.12/site-packages/nvidia/ -mindepth 1 -maxdepth 1 ! -name 'nccl' ! -name 'nvshmem' -exec rm -rfv {} +
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        xformers==0.0.35 torch==2.11.0 torchvision==0.26.0 torchaudio==2.11.0 \
+        xformers==0.0.35 torch==2.11.0 torchvision==0.26.0 torchaudio==2.11.0 torchcodec==0.11.0 \
         --index-url https://download.pytorch.org/whl/cu128
 
 ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\
