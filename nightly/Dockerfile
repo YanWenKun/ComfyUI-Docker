@@ -67,7 +67,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     pip list \
     && pip install \
         --dry-run torch torchvision torchaudio \
-        --index-url https://download.pytorch.org/whl/nightly/cu130 \
+        --index-url https://download.pytorch.org/whl/nightly/cu132 \
             2>&1 | tee /tmp/pip-dryrun.txt \
     && grep -oP '(?<=Would install ).*' /tmp/pip-dryrun.txt > /tmp/packages.txt \
     && grep -oP 'nvidia-\S+-\S+' /tmp/packages.txt \
@@ -80,43 +80,43 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --no-deps \
         "$(grep '^nvidia-cublas' /tmp/packages-nvidia.txt)" \
-        --index-url https://download.pytorch.org/whl/nightly/cu130
+        --index-url https://download.pytorch.org/whl/nightly/cu132
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --no-deps \
         "$(grep '^nvidia-cudnn' /tmp/packages-nvidia.txt)" \
-        --index-url https://download.pytorch.org/whl/nightly/cu130
+        --index-url https://download.pytorch.org/whl/nightly/cu132
 
 # Install all 'nvidia-' packages, 5 at a time
 RUN --mount=type=cache,target=/root/.cache/pip \
     head -n 5 /tmp/packages-nvidia.txt | while read -r pkg; do \
         pip install --no-deps "$pkg" \
-            --index-url https://download.pytorch.org/whl/nightly/cu130; \
+            --index-url https://download.pytorch.org/whl/nightly/cu132; \
     done
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     sed -n '6,10p' /tmp/packages-nvidia.txt | while read -r pkg; do \
         pip install --no-deps "$pkg" \
-            --index-url https://download.pytorch.org/whl/nightly/cu130; \
+            --index-url https://download.pytorch.org/whl/nightly/cu132; \
     done
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     tail -n +11 /tmp/packages-nvidia.txt | while read -r pkg; do \
         pip install --no-deps "$pkg" \
-            --index-url https://download.pytorch.org/whl/nightly/cu130; \
+            --index-url https://download.pytorch.org/whl/nightly/cu132; \
     done
 
 # Install PyTorch alone
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --no-deps \
         "$(grep -oP 'torch-\S+' /tmp/packages.txt | sed 's/\(.*\)-\([^-]*\)$/\1==\2/')" \
-        --index-url https://download.pytorch.org/whl/nightly/cu130
+        --index-url https://download.pytorch.org/whl/nightly/cu132
 
 # Install everything else, also works as a fail-safe
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         torch torchvision torchaudio \
-        --index-url https://download.pytorch.org/whl/nightly/cu130 \
+        --index-url https://download.pytorch.org/whl/nightly/cu132 \
     && rm -v /tmp/pip-dryrun.txt /tmp/packages.txt /tmp/packages-nvidia.txt
 
 # Bind libs (.so files)

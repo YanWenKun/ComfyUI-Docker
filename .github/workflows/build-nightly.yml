@@ -2,7 +2,7 @@ name: Publish 'nightly' to Docker Hub
 
 on: 
   workflow_dispatch: # Can be manually triggered
-  schedule: # Runs on every Friday, at 00:00 UTC
+  schedule: # Run on every Friday, at 00:00 UTC
     - cron: '0 0 * * 5'
   push: 
     branches: [ main ]
@@ -10,6 +10,8 @@ on:
       - '**'
       - '!nightly/Dockerfile'
       - '!.github/workflows/build-nightly.yml'
+      # Trigger when new ComfyUI version released
+      - '!.github/current_comfyui_release.txt'
 
 jobs:
 
