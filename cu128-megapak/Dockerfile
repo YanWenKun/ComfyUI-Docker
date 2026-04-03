@@ -125,7 +125,6 @@ git \
 git-lfs \
 aria2 \
 findutils \
-fish \
 fd \
 vim \
 which \
@@ -133,9 +132,8 @@ tar \
 gzip \
 xz \
 wget \
-google-noto-sans-fonts \
 google-noto-sans-cjk-fonts \
-google-noto-coloremoji-fonts
+noto-coloremoji-fonts
 
 RUN --mount=type=cache,target=/var/cache/zypp \
     zypper --non-interactive \
