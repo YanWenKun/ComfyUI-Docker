@@ -25,7 +25,7 @@ image.
 https://download.pytorch.org/whl/rocm7.2[PyTorch], and can be updated immediately when a new version of PyTorch is released.
 
 * `rocm7` :
-** ROCm 7.2
+** ROCm 7.2.1
 ** Based on the official
 https://hub.docker.com/r/rocm/pytorch[rocm/pytorch]
 image provided by AMD, which offers more comprehensive functionality but is updated less frequently.
