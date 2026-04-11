@@ -115,9 +115,7 @@ cpp13 \
 ################################################################################
 # Python Packages
 RUN --mount=type=cache,target=/root/.cache/pip \
-    python3 -m ensurepip --upgrade \
-    && update-alternatives --install /usr/bin/pip pip /usr/local/bin/pip3.12 100 \
-    && pip install --upgrade \
+    pip install --upgrade \
         pip wheel setuptools packaging \
     && pip list
 
