@@ -10,7 +10,7 @@ on:
       - '!rocm/builder-scripts/**'
       - '!rocm/runner-scripts/**'
       - '!.github/workflows/build-rocm.yml'
-      # Runs when new ComfyUI version released
+      # Trigger when new ComfyUI version released
       - '!.github/current_comfyui_release.txt'
 
 jobs:

@@ -2,8 +2,8 @@ name: Publish 'xpu-cn' to Docker Hub
 
 on: 
   workflow_dispatch: # 可以手动触发
-  schedule: # 每周一 07:00 UTC 自动运行
-    - cron: '0 7 * * 1'
+  # schedule: # 每周一 07:00 UTC 自动运行
+  #   - cron: '0 7 * * 1'
   push: 
     branches: [ main ]
     paths-ignore:
@@ -12,6 +12,8 @@ on:
       - '!xpu-cn/builder-scripts/**'
       - '!xpu-cn/runner-scripts/**'
       - '!.github/workflows/build-xpu-cn.yml'
+      # 当新版 ComfyUI 发布时触发
+      - '!.github/current_comfyui_release.txt'
 
 jobs:
 
