@@ -133,7 +133,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
 https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.4/torch-2.6.0%2Brocm6.4.4.git2feede28-cp312-cp312-linux_x86_64.whl \
-https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.4/pytorch_triton_rocm-3.0.0%2Brocm6.4.4.git09ef79d2-cp312-cp312-linux_x86_64.whl
+https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.4/pytorch_triton_rocm-3.2.0%2Brocm6.4.4.git20943800-cp312-cp312-linux_x86_64.whl
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
