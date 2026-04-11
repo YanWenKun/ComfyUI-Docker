@@ -76,7 +76,8 @@ aria2 \
 fd-find \
 vim \
 micro \
-which
+which \
+rsync
 
 RUN --mount=type=cache,target=/var/cache/dnf \
     dnf install -y \
