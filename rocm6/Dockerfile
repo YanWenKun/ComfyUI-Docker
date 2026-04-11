@@ -206,7 +206,8 @@ RUN df -h \
 COPY runner-scripts/.  /runner-scripts/
 
 # For ROCm
-RUN groupadd --system video
+# Redundant as openSUSE Leap 15.6 already has 'video' group, but just in case.
+RUN groupadd --system --force video
 
 USER root
 VOLUME /root
