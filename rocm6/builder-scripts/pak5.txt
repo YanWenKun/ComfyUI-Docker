@@ -13,6 +13,7 @@ einops
 filelock
 fvcore
 GitPython
+gguf
 glfw
 imageio-ffmpeg
 importlib-metadata

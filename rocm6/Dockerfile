@@ -1,10 +1,16 @@
 ################################################################################
 # Dockerfile that builds 'yanwk/comfyui-boot:rocm6'
 # A runtime environment for https://github.com/Comfy-Org/ComfyUI
-# With ROCm 6 for AMD GPU.
+# Versions fixed:
+# - PyTorch 2.6.0
+# - Python 3.12
+# - ROCm 6.4.4
+# - GCC 13
+# - glibc 2.38 (from openSUSE Leap 15.6)
+# Ref: https://rocm.docs.amd.com/projects/radeon-ryzen/en/docs-6.4.4/docs/compatibility/compatibilityrad/native_linux/native_linux_compatibility.html#pytorch-rocm-support-matrix
 ################################################################################
 
-FROM opensuse/tumbleweed:latest
+FROM opensuse/leap:15.6
 
 LABEL maintainer="code@yanwk.fun"
 
@@ -13,17 +19,34 @@ ARG USING_GITHUB_ACTIONS=false
 ################################################################################
 # Python and tools
 
-# Note: CMake may use different version of Python. Using 'update-alternatives' to ensure default version.
 RUN --mount=type=cache,target=/var/cache/zypp \
     zypper addrepo --check --refresh --priority 90 \
-        'https://ftp.gwdg.de/pub/linux/misc/packman/suse/openSUSE_Tumbleweed/Essentials/' packman-essentials \
+        'https://ftp.gwdg.de/pub/linux/misc/packman/suse/openSUSE_Leap_15.6/Essentials/' packman-essentials \
     && zypper --gpg-auto-import-keys \
         install --no-confirm --auto-agree-with-licenses \
 python312-devel \
-python312-dbm \
+python312-pip \
+python312-wheel \
+python312-setuptools \
+python312-packaging \
+python312-dbm
+
+RUN --mount=type=cache,target=/var/cache/zypp \
+    zypper --gpg-auto-import-keys \
+        install --no-confirm --auto-agree-with-licenses \
 Mesa-libGL1 \
 Mesa-libEGL-devel \
-libgthread-2_0-0
+libgthread-2_0-0 \
+libQt5OpenGL-devel
+
+RUN --mount=type=cache,target=/var/cache/zypp \
+    zypper --gpg-auto-import-keys \
+        install --no-confirm --auto-agree-with-licenses \
+ffmpeg \
+x264 \
+x265 \
+git \
+git-lfs
 
 # Note: 'half' for ORT on ROCm.
 RUN --mount=type=cache,target=/var/cache/zypp \
@@ -35,32 +58,40 @@ cmake \
 bison \
 gawk \
 findutils \
-ninja \
-shadow \
-git \
-aria2 \
-fish \
 fd \
+ninja \
+rustup \
+shadow \
+aria2 \
+wget \
 vim \
+micro-editor \
 which \
-opencv \
-opencv-devel \
-ffmpeg \
-x264 \
-x265 \
+tar \
+gzip \
+xz \
 update-alternatives \
-google-noto-sans-fonts \
 google-noto-sans-cjk-fonts \
-google-noto-coloremoji-fonts \
-    && rm /usr/lib64/python3.12/EXTERNALLY-MANAGED \
+noto-coloremoji-fonts
+
+RUN --mount=type=cache,target=/var/cache/zypp \
+    zypper --non-interactive \
+        install --force-resolution \
+fish
+
+# Remove the need for 'pip install --break-system-packages'
+RUN rm -vf /usr/lib64/python3.12/EXTERNALLY-MANAGED \
+    # Ensure default Python version
     && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 100
+
+# Temp fix for OpenCV on openSUSE
+ENV LD_PRELOAD=/usr/lib64/libjpeg.so.8
 
 # Temp fix for SentencePiece on CMAKE 4+
 ENV CMAKE_POLICY_VERSION_MINIMUM=3.5
 
 ################################################################################
 # GCC 13
-# GCC 12 was dropped in 2025 OpenSUSE Tumbleweed updates.
 # Keep in mind that (GCC >= 13) does not implicitly include <cstdint>. Some repos will need fix before compiling.
 
 RUN --mount=type=cache,target=/var/cache/zypp \
@@ -91,6 +122,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     && pip list
 
 # PyTorch ROCm
+# Ref: https://rocm.docs.amd.com/projects/radeon-ryzen/en/docs-6.4.4/docs/compatibility/compatibilityrad/native_linux/native_linux_compatibility.html#pytorch-rocm-support-matrix
 # Ref: https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/native_linux/install-pytorch.html
 # Ref: https://rocm.docs.amd.com/projects/radeon/en/latest/docs/install/native_linux/install-onnx.html
 # Ref: https://rocm.docs.amd.com/projects/install-on-linux/en/latest/install/3rd-party/pytorch-install.html
@@ -98,18 +130,18 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # Break down the steps for smaller image layers.
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
---no-deps https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.4/torch-2.7.1%2Brocm6.4.4.git1781ec08-cp312-cp312-linux_x86_64.whl
+--no-deps https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.4/torch-2.6.0%2Brocm6.4.4.git2feede28-cp312-cp312-linux_x86_64.whl
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.4/torch-2.7.1%2Brocm6.4.4.git1781ec08-cp312-cp312-linux_x86_64.whl \
-https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.4/pytorch_triton_rocm-3.3.1%2Brocm6.4.4.git9c7bc0a3-cp312-cp312-linux_x86_64.whl
+https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.4/torch-2.6.0%2Brocm6.4.4.git2feede28-cp312-cp312-linux_x86_64.whl \
+https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.4/pytorch_triton_rocm-3.0.0%2Brocm6.4.4.git09ef79d2-cp312-cp312-linux_x86_64.whl
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.4/torchvision-0.22.1%2Brocm6.4.4.git59a3e1f9-cp312-cp312-linux_x86_64.whl \
-https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.4/torchaudio-2.7.1%2Brocm6.4.4.git95c61b41-cp312-cp312-linux_x86_64.whl \
-https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.4/apex-1.7.0a0%2Brocm6.4.4.git20a62dc5-cp312-cp312-linux_x86_64.whl \
+https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.4/torchvision-0.21.0%2Brocm6.4.4.git4040d51f-cp312-cp312-linux_x86_64.whl \
+https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.4/torchaudio-2.6.0%2Brocm6.4.4.gitd8831425-cp312-cp312-linux_x86_64.whl \
+https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.4/apex-1.6.0%2Brocm6.4.4.git6596002f-cp312-cp312-linux_x86_64.whl \
 https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.4/jax-0.4.35-py3-none-any.whl \
 https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.4/jaxlib-0.4.35-cp312-cp312-manylinux_2_28_x86_64.whl \
 https://repo.radeon.com/rocm/manylinux/rocm-rel-6.4.4/jax_rocm60_plugin-0.4.35-cp312-cp312-manylinux_2_28_x86_64.whl \
