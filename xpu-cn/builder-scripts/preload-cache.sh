@@ -27,8 +27,17 @@ cd /default-comfyui-bundle/ComfyUI
 git reset --hard "$(git tag | grep -e '^v' | sort -V | tail -1)"
 
 echo "########################################"
-echo "[INFO] 配置 ComfyUI-Manager..."
+echo "[INFO] 配置 ComfyUI 与 Manager..."
 echo "########################################"
+
+mkdir -p /default-comfyui-bundle/ComfyUI/user/default
+
+# 默认启用 TAESD 预览
+cat <<EOF > /default-comfyui-bundle/ComfyUI/user/default/comfy.settings.json
+{
+    "Comfy.Execution.PreviewMethod": "taesd"
+}
+EOF
 
 # 使用镜像站点替换 ComfyUI-Manager 默认仓库地址，避免卡 UI
 # 治标但不治本，使用 Manager 全部功能仍需挂代理或魔改
@@ -36,19 +45,21 @@ mkdir -p /default-comfyui-bundle/ComfyUI/user/__manager
 
 cat <<EOF > /default-comfyui-bundle/ComfyUI/user/__manager/config.ini
 [default]
-channel_url = https://gh-proxy.org/https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main
+channel_url = https://gh-proxy.org/https://github.com/Comfy-Org/ComfyUI-Manager/raw/refs/heads/main
 use_uv = False
 security_level = weak
 downgrade_blacklist = torch, torchvision, torchaudio
+db_mode = local
+network_mode = personal_cloud
 EOF
 
 cat <<EOF > /default-comfyui-bundle/ComfyUI/user/__manager/channels.list
-default::https://gh-proxy.org/https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main
-recent::https://gh-proxy.org/https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/node_db/new
-legacy::https://gh-proxy.org/https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/node_db/legacy
-forked::https://gh-proxy.org/https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/node_db/forked
-dev::https://gh-proxy.org/https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/node_db/dev
-tutorial::https://gh-proxy.org/https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/node_db/tutorial
+default::https://gh-proxy.org/https://github.com/Comfy-Org/ComfyUI-Manager/raw/refs/heads/main
+recent::https://gh-proxy.org/https://github.com/Comfy-Org/ComfyUI-Manager/raw/refs/heads/main/node_db/new
+legacy::https://gh-proxy.org/https://github.com/Comfy-Org/ComfyUI-Manager/raw/refs/heads/main/node_db/legacy
+forked::https://gh-proxy.org/https://github.com/Comfy-Org/ComfyUI-Manager/raw/refs/heads/main/node_db/forked
+dev::https://gh-proxy.org/https://github.com/Comfy-Org/ComfyUI-Manager/raw/refs/heads/main/node_db/dev
+tutorial::https://gh-proxy.org/https://github.com/Comfy-Org/ComfyUI-Manager/raw/refs/heads/main/node_db/tutorial
 EOF
 
 echo "########################################"
@@ -56,12 +67,6 @@ echo "[INFO] 下载扩展组件（自定义节点）……"
 echo "########################################"
 
 cd /default-comfyui-bundle/ComfyUI/custom_nodes
-
-gcs https://github.com/Comfy-Org/ComfyUI-Manager.git
-
-# 阻止 Manager 每次启动时都进行缓存更新（"FETCH ComfyRegistry Data"）
-grep -n "run(default_cache_update())" ./ComfyUI-Manager/glob/manager_server.py && 
-sed -i.bak '/run(default_cache_update())/d' ./ComfyUI-Manager/glob/manager_server.py
 
 # 性能
 gcs https://github.com/openvino-dev-samples/comfyui_openvino.git
@@ -112,7 +117,6 @@ gcs https://github.com/1038lab/ComfyUI-QwenVL.git
 
 # 已停更，待删除
 gcs https://github.com/cubiq/ComfyUI_essentials.git
-gcs https://github.com/Gourieff/ComfyUI-ReActor.git ComfyUI-ReActor.disabled
 
 
 echo "########################################"
@@ -140,3 +144,5 @@ for D in *; do
         set_repo "${D}"
     fi
 done
+
+echo "########################################"

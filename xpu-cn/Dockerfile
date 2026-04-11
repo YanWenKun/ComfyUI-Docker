@@ -75,6 +75,7 @@ fish \
 aria2 \
 fd-find \
 vim \
+micro \
 which
 
 RUN --mount=type=cache,target=/var/cache/dnf \
@@ -185,7 +186,7 @@ RUN if [ "${USING_GITHUB_ACTIONS}" = "false" ]; then \
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         -r '/default-comfyui-bundle/ComfyUI/requirements.txt' \
-        -r '/default-comfyui-bundle/ComfyUI/custom_nodes/ComfyUI-Manager/requirements.txt' \
+        -r '/default-comfyui-bundle/ComfyUI/manager_requirements.txt' \
         -c /builder-scripts/constraints.txt
 
 # 确保依赖项匹配
@@ -196,6 +197,13 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         --index-url ${PT_INDEX_URL} \
     && rm -vf /tmp/pt_env \
     && pip list
+
+# 阻止 Manager 每次启动时都进行缓存更新（"FETCH ComfyRegistry Data"）
+RUN cd /usr/local/lib/python3.14/site-packages/comfyui_manager/legacy/ \
+    && echo "编辑文件: $(pwd)/manager_server.py" \
+    && echo "删除代码行:" \
+    && grep -n "run(default_cache_update())" ./manager_server.py \
+    && sed -i '/run(default_cache_update())/d' ./manager_server.py
 
 ################################################################################
 # 绑定环境变量 (依赖库 .so 文件)
