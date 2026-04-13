@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 jobs:
   check-comfyui-release:
@@ -73,3 +74,41 @@ jobs:
             echo "changed=true" >> $GITHUB_OUTPUT
             echo "Updated .github/current_comfyui_release.txt -> $latest"
           fi
+
+      # Ugly workaround: Bots' pushes don't trigger workflows,
+      # so we have to trigger them manually.
+      - name: Trigger dependent workflows
+        if: ${{ steps.compare.outputs.changed == 'true' }}
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const workflows = [
+              'build-rocm.yml',
+              'build-rocm7.yml',
+              'build-nightly.yml',
+              'build-xpu-cn.yml',
+              'build-cu126-megapak.yml',
+              'build-cu128-megapak.yml',
+              'build-cu130-slim-v2.yml',
+              'build-cu130-megapak-pt211.yml'
+            ];
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const ref = 'main';
+            const latest = '${{ steps.get_latest.outputs.latest }}';
+            for (const wf of workflows) {
+              try {
+                console.log(`Triggering workflow ${wf} ...`);
+                await github.rest.actions.createWorkflowDispatch({
+                  owner,
+                  repo,
+                  workflow_id: wf,
+                  ref,
+                  inputs: { reason: 'comfyui_release_update', latest }
+                });
+                console.log(`Triggered ${wf}`);
+              } catch (err) {
+                core.warning(`Failed to trigger ${wf}: ${err.message}`);
+              }
+            }
