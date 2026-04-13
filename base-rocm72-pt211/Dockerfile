@@ -5,13 +5,13 @@
 # - PyTorch 2.11 + ROCm 7.2 
 ################################################################################
 
-ARG USING_GITHUB_ACTIONS=false
-
 ARG REGISTRY=docker.io
 
 FROM ${REGISTRY}/opensuse/tumbleweed:latest
 
 LABEL maintainer="code@yanwk.fun"
+
+ARG USING_GITHUB_ACTIONS=false
 
 ################################################################################
 # System Packages
@@ -41,7 +41,7 @@ python313-matplotlib \
 python313-mpmath \
 python313-numba-devel \
 # python313-numpy \ # Numba conflicts with latest NumPy
-python313-onnx \
+# python313-onnx \
 python313-opencv \
 python313-pandas \
 python313-qrcode \

@@ -29,7 +29,7 @@ python313-matplotlib \
 python313-mpmath \
 python313-numba-devel \
 # python313-numpy \ # Numba conflicts with latest NumPy
-python313-onnx \
+# python313-onnx \
 python313-pandas \
 python313-scikit-build \
 python313-scikit-build-core-pyproject \
