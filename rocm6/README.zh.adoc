@@ -1,4 +1,4 @@
-# 基于 AMD GPU + ROCm 运行 ComfyUI
+# 基于 AMD GPU + ROCm 6 运行 ComfyUI
 
 中文 | ℹ️ *link:README.adoc[English]*
 
