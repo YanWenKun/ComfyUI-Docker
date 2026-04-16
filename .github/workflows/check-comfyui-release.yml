@@ -104,8 +104,7 @@ jobs:
                   owner,
                   repo,
                   workflow_id: wf,
-                  ref,
-                  inputs: { reason: 'comfyui_release_update', latest }
+                  ref
                 });
                 console.log(`Triggered ${wf}`);
               } catch (err) {
