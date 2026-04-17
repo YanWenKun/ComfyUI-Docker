@@ -94,6 +94,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - 
+        name: Show available disk space
+        run: df -h
+      - 
         name: Wait for image to be ready
         run: sleep 30s
       - 
