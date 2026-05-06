@@ -24,7 +24,7 @@ jobs:
 
       - name: Get latest ComfyUI release
         id: get_latest
-        uses: actions/github-script@v6
+        uses: actions/github-script@v9
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
@@ -79,7 +79,7 @@ jobs:
       # so we have to trigger them manually.
       - name: Trigger dependent workflows
         if: ${{ steps.compare.outputs.changed == 'true' }}
-        uses: actions/github-script@v6
+        uses: actions/github-script@v9
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
