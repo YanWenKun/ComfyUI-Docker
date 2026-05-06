@@ -87,7 +87,7 @@ gcs https://github.com/bash-j/mikey_nodes.git
 gcs https://github.com/jags111/efficiency-nodes-comfyui.git
 gcs https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git
 gcs https://github.com/rgthree/rgthree-comfy.git
-gcs https://github.com/shiimizu/ComfyUI_smZNodes.git
+gcs https://github.com/shiimizu/ComfyUI_smZNodes.git ComfyUI_smZNodes.disabled
 gcs https://github.com/yolain/ComfyUI-Easy-Use.git
 
 # 控制

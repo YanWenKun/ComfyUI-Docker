@@ -78,7 +78,7 @@ gcs https://gh-proxy.org/https://github.com/bash-j/mikey_nodes.git
 gcs https://gh-proxy.org/https://github.com/jags111/efficiency-nodes-comfyui.git
 gcs https://gh-proxy.org/https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git
 gcs https://gh-proxy.org/https://github.com/rgthree/rgthree-comfy.git
-gcs https://gh-proxy.org/https://github.com/shiimizu/ComfyUI_smZNodes.git
+gcs https://gh-proxy.org/https://github.com/shiimizu/ComfyUI_smZNodes.git ComfyUI_smZNodes.disabled
 
 # 控制
 gcs https://gh-proxy.org/https://github.com/ltdrdata/ComfyUI-Impact-Pack.git
