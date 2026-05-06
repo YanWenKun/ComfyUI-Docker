@@ -12,7 +12,6 @@ on:
       - '!xpu-cn/builder-scripts/**'
       - '!xpu-cn/runner-scripts/**'
       - '!.github/workflows/build-xpu-cn.yml'
-      # 当新版 ComfyUI 发布时触发
       - '!.github/current_comfyui_release.txt'
 
 jobs:

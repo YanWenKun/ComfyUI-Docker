@@ -10,7 +10,6 @@ on:
       - '**'
       - '!nightly/Dockerfile'
       - '!.github/workflows/build-nightly.yml'
-      # Trigger when new ComfyUI version released
       - '!.github/current_comfyui_release.txt'
 
 jobs:

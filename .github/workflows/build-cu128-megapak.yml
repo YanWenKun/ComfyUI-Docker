@@ -10,7 +10,6 @@ on:
       - '!cu128-megapak/builder-scripts/**'
       - '!cu128-megapak/runner-scripts/**'
       - '!.github/workflows/build-cu128-megapak.yml'
-      # Runs when new ComfyUI version released
       - '!.github/current_comfyui_release.txt'
 
 jobs:
