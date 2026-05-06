@@ -21,7 +21,8 @@ ARG USING_GITHUB_ACTIONS=false
 RUN if [ "${USING_GITHUB_ACTIONS}" = "false" ]; then \
         mkdir -p /root/.config/pip \
         && echo '[global]' > /root/.config/pip/pip.conf \
-        && echo 'index-url=https://mirrors.cernet.edu.cn/pypi/web/simple' >> /root/.config/pip/pip.conf ; \
+        && echo 'index-url=https://mirrors.cernet.edu.cn/pypi/web/simple' >> /root/.config/pip/pip.conf \
+        && echo 'extra-index-url=https://mirrors.cernet.edu.cn/pypi/web/simple' >> /root/.config/pip/pip.conf ; \
     fi
 
 RUN --mount=type=cache,target=/var/cache/dnf \
@@ -142,15 +143,15 @@ RUN pip list --format=freeze \
     && echo "Pinned PyTorch version:" \
     && cat /builder-scripts/constraints.txt
 
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install \
-        -r /builder-scripts/pak3.txt \
-        -c /builder-scripts/constraints.txt
+ENV PIP_CONSTRAINT="/builder-scripts/constraints.txt"
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        -r /builder-scripts/pak5.txt \
-        -c /builder-scripts/constraints.txt
+        -r /builder-scripts/pak3.txt
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        -r /builder-scripts/pak5.txt
 
 # Temp fix for SentencePiece on CMAKE 4+
 # 临时修复：解决 CMAKE 4+ 编译 SentencePiece 报错，强制最低版本 3.5
@@ -158,20 +159,18 @@ ENV CMAKE_POLICY_VERSION_MINIMUM=3.5
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     if [ "${USING_GITHUB_ACTIONS}" = "false" ]; then \
-        pip install -r /builder-scripts/pak7-cn.txt -c /builder-scripts/constraints.txt ; \
+        pip install -r /builder-scripts/pak7-cn.txt ; \
     else \
-        pip install -r /builder-scripts/pak7.txt -c /builder-scripts/constraints.txt ; \
+        pip install -r /builder-scripts/pak7.txt ; \
     fi
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        -r /builder-scripts/pak9.txt \
-        -c /builder-scripts/constraints.txt
+        -r /builder-scripts/pak9.txt
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        -r /builder-scripts/pakA.txt \
-        -c /builder-scripts/constraints.txt
+        -r /builder-scripts/pakA.txt
 
 ################################################################################
 # 预载 ComfyUI 及扩展，并根据预载的 ComfyUI 版本安装依赖项（确保前后端版本匹配）
@@ -187,8 +186,7 @@ RUN if [ "${USING_GITHUB_ACTIONS}" = "false" ]; then \
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         -r '/default-comfyui-bundle/ComfyUI/requirements.txt' \
-        -r '/default-comfyui-bundle/ComfyUI/manager_requirements.txt' \
-        -c /builder-scripts/constraints.txt
+        -r '/default-comfyui-bundle/ComfyUI/manager_requirements.txt'
 
 # 确保依赖项匹配
 RUN --mount=type=cache,target=/root/.cache/pip \
