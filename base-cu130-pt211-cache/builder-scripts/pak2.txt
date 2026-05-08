@@ -1,0 +1,8 @@
+# HuggingFace packages (version-sensitive)
+accelerate
+datasets
+diffusers
+huggingface-hub
+safetensors
+tokenizers
+transformers

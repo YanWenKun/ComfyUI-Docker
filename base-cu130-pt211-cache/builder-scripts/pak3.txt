@@ -1,10 +1,6 @@
 # Essentials
-accelerate
-diffusers
 ftfy
-huggingface-hub
-imageio[ffmpeg]
-imageio[pyav]
+imageio[ffmpeg,pyav]
 joblib
 kornia
 matplotlib
@@ -27,7 +23,6 @@ scikit-learn
 scipy
 timm
 torchmetrics
-transformers
 
 # Hand-picks
 # For smZNodes

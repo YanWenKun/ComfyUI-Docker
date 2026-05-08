@@ -18,7 +18,6 @@ colour-science
 comfy-aimdo
 comfy-kitchen
 compressed-tensors
-datasets
 decord
 deepdiff
 dill
@@ -73,7 +72,6 @@ requirements-parser
 rich
 rich-argparse
 rotary-embedding-torch
-safetensors
 segment-anything
 sentencepiece
 shapely
@@ -84,7 +82,6 @@ SQLAlchemy
 tensorboard
 tiktoken
 tipo-kgen
-tokenizers
 tomesd
 toml
 tomli

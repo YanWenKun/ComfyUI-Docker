@@ -45,6 +45,11 @@ RUN pip list --format=freeze \
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         -c /builder-scripts/constraints.txt \
+        -r /builder-scripts/pak2.txt
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        -c /builder-scripts/constraints.txt \
         -r /builder-scripts/pak3.txt
 
 RUN --mount=type=cache,target=/root/.cache/pip \
