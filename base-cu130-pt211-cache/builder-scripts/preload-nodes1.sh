@@ -37,7 +37,6 @@ gcs https://github.com/kijai/ComfyUI-KJNodes.git
 gcs https://github.com/mirabarukaso/ComfyUI_Mira.git
 gcs https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git
 gcs https://github.com/rgthree/rgthree-comfy.git
-gcs https://github.com/shiimizu/ComfyUI_smZNodes.git
 gcs https://github.com/yolain/ComfyUI-Easy-Use.git
 
 # Control

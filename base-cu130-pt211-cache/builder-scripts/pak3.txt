@@ -25,9 +25,6 @@ timm
 torchmetrics
 
 # Hand-picks
-# For smZNodes
-compel
-lark
 # For Frame Interpolation
 cupy-cuda13x
 # For APISR

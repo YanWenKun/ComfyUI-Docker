@@ -1,5 +1,4 @@
 addict
-aenum
 aiohttp
 aiosqlite
 albumentations
@@ -36,6 +35,7 @@ imageio-ffmpeg
 importlib-metadata
 iopath
 jinja2
+lark
 librosa
 loguru
 markdownify
