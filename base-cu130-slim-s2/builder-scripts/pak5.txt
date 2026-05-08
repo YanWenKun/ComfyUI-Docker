@@ -1,5 +1,4 @@
 addict
-aenum
 aiohttp
 albumentations
 alembic
@@ -26,6 +25,7 @@ hydra-core
 imageio-ffmpeg
 importlib-metadata
 iopath
+lark
 loguru
 matrix-nio
 mss
