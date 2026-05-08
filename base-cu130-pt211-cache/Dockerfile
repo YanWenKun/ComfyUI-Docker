@@ -121,7 +121,7 @@ https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0
 # llama-cpp-python
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-https://github.com/JamePeng/llama-cpp-python/releases/download/v0.3.33-cu130-Basic-linux-20260315/llama_cpp_python-0.3.33+cu130.basic-cp313-cp313-linux_x86_64.whl
+https://github.com/JamePeng/llama-cpp-python/releases/download/v0.3.38-cu130-Basic-linux-20260504/llama_cpp_python-0.3.38+cu130.basic-cp313-cp313-linux_x86_64.whl
 
 # FastVideo
 RUN --mount=type=cache,target=/root/.cache/pip \
