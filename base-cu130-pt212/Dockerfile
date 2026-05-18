@@ -41,8 +41,8 @@ cudnn9-cuda-13-2-9.20.0.48
 # strings /usr/local/lib/python3.13/site-packages/nvidia/nccl/lib/libnccl.so.2 | grep "NCCL version"
 RUN --mount=type=cache,target=/var/cache/dnf \
     dnf install -y \
-libnccl-2.29.7-1+cuda13.0 \
-libnccl-devel-2.29.7-1+cuda13.0
+libnccl-2.29.7-1+cuda13.2 \
+libnccl-devel-2.29.7-1+cuda13.2
 
 # NVSHMEM
 # Find the version used by PyTorch:
