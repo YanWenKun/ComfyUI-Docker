@@ -8,7 +8,7 @@ ARG USING_GITHUB_ACTIONS=false
 
 ARG REGISTRY=docker.io
 
-FROM ${REGISTRY}/yanwk/comfyui-boot:base-rocm72-pt211
+FROM ${REGISTRY}/yanwk/comfyui-boot:base-rocm72-pt212
 
 LABEL maintainer="code@yanwk.fun"
 

@@ -17,6 +17,7 @@ GitPython
 glfw
 imageio-ffmpeg
 importlib-metadata
+lark
 matrix-nio
 numba
 omegaconf
