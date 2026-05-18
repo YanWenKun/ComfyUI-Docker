@@ -9,7 +9,7 @@ https://hub.docker.com/r/yanwk/comfyui-boot/tags?name=xpu[View on <Docker Hub>]
 [cols="1,3"]
 |===
 | Arc Battlemage
-| B580, B570, B60, B50
+| B580, B570, B70, B60, B50
 
 | Arc Alchemist
 | A770, A750, A580, A770M, A730M, A550M, Flex 170
@@ -45,8 +45,6 @@ lsmod | grep -i xe
 
 For most desktop distros, `xe` is usually already included and don't need manual installation.
 
-TIP: The latest kernel 6.18 may have issues with Intel Arc GPUs. Consider using kernel 6.17 if you encounter problems.
-
 
 ## Run
 
@@ -61,7 +59,8 @@ mkdir -p \
   storage-models/torch-hub \
   storage-user/input \
   storage-user/output \
-  storage-user/workflows
+  storage-user/user-profile \
+  storage-user/user-scripts
 
 docker run -it --rm \
   --name comfyui-xpu \
@@ -75,12 +74,13 @@ docker run -it --rm \
   -v "$(pwd)"/storage-models/torch-hub:/root/.cache/torch/hub \
   -v "$(pwd)"/storage-user/input:/root/ComfyUI/input \
   -v "$(pwd)"/storage-user/output:/root/ComfyUI/output \
-  -v "$(pwd)"/storage-user/workflows:/root/ComfyUI/user/default/workflows \
+  -v "$(pwd)"/storage-user/user-profile:/root/ComfyUI/user \
+  -v "$(pwd)"/storage-user/user-scripts:/root/user-scripts \
   -e CLI_ARGS="" \
   yanwk/comfyui-boot:xpu
 ----
 
-### Using Podman
+### Using Podman (rootless)
 
 [source,sh]
 ----
@@ -91,7 +91,8 @@ mkdir -p \
   storage-models/torch-hub \
   storage-user/input \
   storage-user/output \
-  storage-user/workflows
+  storage-user/user-profile \
+  storage-user/user-scripts
 
 podman run -it --rm \
   --name comfyui-xpu \
@@ -105,7 +106,8 @@ podman run -it --rm \
   -v "$(pwd)"/storage-models/torch-hub:/root/.cache/torch/hub \
   -v "$(pwd)"/storage-user/input:/root/ComfyUI/input \
   -v "$(pwd)"/storage-user/output:/root/ComfyUI/output \
-  -v "$(pwd)"/storage-user/workflows:/root/ComfyUI/user/default/workflows \
+  -v "$(pwd)"/storage-user/user-profile:/root/ComfyUI/user \
+  -v "$(pwd)"/storage-user/user-scripts:/root/user-scripts \
   -e CLI_ARGS="" \
   docker.io/yanwk/comfyui-boot:xpu
 ----

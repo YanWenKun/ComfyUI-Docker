@@ -52,7 +52,7 @@ TIP: 如果在 ComfyUI 启动、尚无负载时 PyTorch 报错
 ## 运行
 
 TIP: 如连接 Docker Hub 困难，可以尝试先从
-https://www.coderjia.cn/archives/dba3f94c-a021-468a-8ac6-e840f85867ea[镜像站点]
+https://status.daocloud.io/status/docker[镜像站点]
 拉取镜像，再启动容器。
 
 ### 使用 Docker
