@@ -22,6 +22,7 @@ glfw
 imageio-ffmpeg
 importlib-metadata
 jinja2
+lark
 llama-cpp-python
 matrix-nio
 mss

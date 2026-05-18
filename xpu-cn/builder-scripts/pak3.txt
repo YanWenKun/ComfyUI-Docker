@@ -1,5 +1,4 @@
 accelerate
-compel
 Cython
 diffusers
 fairscale
@@ -9,7 +8,6 @@ huggingface-hub
 imageio
 joblib
 kornia
-lark
 matplotlib
 omegaconf
 onnx

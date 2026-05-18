@@ -2,12 +2,12 @@
 # 用于构建镜像 'yanwk/comfyui-boot:xpu-cn' 的 Dockerfile
 # 用于以 Intel GPU 运行 ComfyUI
 # 使用 PyTorch 官方仓库的 XPU 二进制包
-# 使用 Python 3.14, GCC 15
+# 使用 Python 3.14, GCC 16
 # 容器内将以 root 用户运行
 ################################################################################
 
 # 该基础镜像声明不含仓库前缀，因而会优先查找本地镜像
-FROM fedora:43
+FROM fedora:44
 
 LABEL maintainer="code@yanwk.fun"
 
@@ -34,7 +34,7 @@ RUN --mount=type=cache,target=/var/cache/dnf \
             /etc/yum.repos.d/fedora-updates.repo \
         && dnf config-manager setopt fedora-cisco-openh264.enabled=0 \
         && dnf install -y --nogpgcheck \
-            'https://mirrors.cernet.edu.cn/rpmfusion/free/fedora/rpmfusion-free-release-43.noarch.rpm' \
+            'https://mirrors.cernet.edu.cn/rpmfusion/free/fedora/rpmfusion-free-release-44.noarch.rpm' \
         && sed -e 's!^metalink=!#metalink=!g' \
             -e 's!^mirrorlist=!#mirrorlist=!g' \
             -e 's!^#baseurl=!baseurl=!g' \
@@ -42,7 +42,7 @@ RUN --mount=type=cache,target=/var/cache/dnf \
             -i.bak /etc/yum.repos.d/rpmfusion*.repo ; \
     else \
         dnf install -y --nogpgcheck \
-            'https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-43.noarch.rpm' ; \
+            'https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-44.noarch.rpm' ; \
     fi
 
 ################################################################################
@@ -93,7 +93,7 @@ intel-igc \
 clinfo \
 openssl
 
-# Fedora 43 默认使用 GCC 15
+# Fedora 44 默认使用 GCC 16
 RUN --mount=type=cache,target=/var/cache/dnf \
     dnf install -y \
 gcc \
@@ -138,7 +138,7 @@ COPY builder-scripts/.  /builder-scripts/
 
 # 生成版本号约束文件，强制后续安装不得变更 PyTorch 版本
 RUN pip list --format=freeze \
-        | awk -F== 'BEGIN{want["torch"]=1;want["torchvision"]=1;want["torchaudio"]=1} $1 in want{print $1 "==" $2}' \
+        | awk -F== 'BEGIN{want["torch"]=1;want["torchvision"]=1} $1 in want{print $1 "==" $2}' \
         > /builder-scripts/constraints.txt \
     && echo "Pinned PyTorch version:" \
     && cat /builder-scripts/constraints.txt
