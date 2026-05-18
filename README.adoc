@@ -61,10 +61,10 @@ The supported CUDA versions for each GPU architecture are shown in the table bel
 GTX 1660 
 | TITAN V | GTX 1080 | GTX 980
 
-| cu130 ⭐
+| cu132
 | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌
 
-| cu128
+| cu130 ⭐
 | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌
 
 | cu126
@@ -87,7 +87,7 @@ NOTE: __These CUDA compatibility limitations are due to the
 https://github.com/pytorch/pytorch/releases/tag/v2.8.0[PyTorch] toolchain,
 not the NVIDIA CUDA Toolkit.
 For more information, refer to the 
-https://github.com/pytorch/pytorch/blob/main/.ci/manywheel/build_cuda.sh[PyTorch build script].__
+https://github.com/pytorch/pytorch/blob/v2.12.0/.ci/manywheel/build_cuda.sh[PyTorch build script].__
 
 
 ## CUDA Image Tags
@@ -99,9 +99,6 @@ The `slim` images start with only ComfyUI and ComfyUI-Manager, yet include many 
 * link:cu130-slim-v2/README.adoc[`cu130-slim-v2`] ⭐
 ** CUDA 13.0, Python 3.13 (with GIL), No xFormers
 
-* link:cu128-slim/README.adoc[`cu128-slim`]
-** CUDA 12.8, Python 3.12
-
 * link:cu126-slim/README.adoc[`cu126-slim`]
 ** CUDA 12.6, Python 3.12
 
@@ -111,15 +108,6 @@ The `megapak` images are all-in-one bundles, including development kits and doze
 
 * link:cu130-megapak-pt211/README.adoc[`cu130-megapak-pt211`] ⭐
 ** CUDA 13.0, Python 3.13 (with GIL), GCC 14, PyTorch 2.11.0
-
-* link:cu128-megapak/README.adoc[`cu128-megapak`]
-** CUDA 12.8, Python 3.12, GCC 14, PyTorch 2.11.0
-
-* link:cu128-megapak-pt29/README.adoc[`cu128-megapak-pt29`]
-** CUDA 12.8, Python 3.12, GCC 11, PyTorch 2.9.1
-
-* link:cu128-megapak-pt28/README.adoc[`cu128-megapak-pt28`]
-** CUDA 12.8, Python 3.12, GCC 11, PyTorch 2.8.0
 
 * link:cu126-megapak/README.adoc[`cu126-megapak`]
 ** CUDA 12.6, Python 3.12, GCC 13, PyTorch 2.9.1

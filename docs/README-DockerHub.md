@@ -58,9 +58,6 @@ Recommended for beginners.
 - `cu130-slim-v2` [\[doc\]](https://github.com/YanWenKun/ComfyUI-Docker/tree/main/cu130-slim-v2) ⭐
   - Using CUDA 13.0, Python 3.13 (with GIL). No xFormers by default
 
-- `cu128-slim` [\[doc\]](https://github.com/YanWenKun/ComfyUI-Docker/tree/main/cu128-slim)
-  - Using CUDA 12.8, Python 3.12
-
 - `cu126-slim` [\[doc\]](https://github.com/YanWenKun/ComfyUI-Docker/tree/main/cu126-slim)
   - Using CUDA 12.6, Python 3.12
 
@@ -71,9 +68,6 @@ All-in-one bundles, including dev kits and many Custom Nodes for ComfyUI.
 
 - `cu130-megapak-pt211` [\[doc\]](https://github.com/YanWenKun/ComfyUI-Docker/tree/main/cu130-megapak-pt211)
   - Using CUDA 13.0, Python 3.13 (with GIL), GCC 14, PyTorch 2.11.0
-
-- `cu128-megapak` [\[doc\]](https://github.com/YanWenKun/ComfyUI-Docker/tree/main/cu128-megapak)
-  - Using CUDA 12.8, Python 3.12, GCC 14, PyTorch 2.11.0
 
 - `cu126-megapak` [\[doc\]](https://github.com/YanWenKun/ComfyUI-Docker/tree/main/cu126-megapak)
   - Using CUDA 12.6, Python 3.12, GCC 13, PyTorch 2.9.1

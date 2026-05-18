@@ -60,10 +60,10 @@ docker run -it --rm \
 GTX 1660 
 | TITAN V | GTX 1080 | GTX 980
 
-| cu130 ⭐
+| cu132
 | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌
 
-| cu128
+| cu130 ⭐
 | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ❌ | ❌ | ❌
 
 | cu126
@@ -84,7 +84,7 @@ https://arnon.dk/matching-sm-architectures-arch-and-gencode-for-various-nvidia-c
 NOTE: __这些兼容性限制与 NVIDIA CUDA Toolkit 无直接关联，而是 PyTorch 官方为了避免二进制包过大而做出的取舍。可以参考其
 https://github.com/pytorch/pytorch/releases/tag/v2.8.0[发布说明]
 与
-https://github.com/pytorch/pytorch/blob/main/.ci/manywheel/build_cuda.sh[编译脚本]
+https://github.com/pytorch/pytorch/blob/v2.12.0/.ci/manywheel/build_cuda.sh[编译脚本]
 。__
 
 
@@ -97,9 +97,6 @@ https://github.com/pytorch/pytorch/blob/main/.ci/manywheel/build_cuda.sh[编译�
 * link:cu130-slim-v2/README.adoc[`cu130-slim-v2`] ⭐
 ** CUDA 13.0, Python 3.13 (GIL 版本), 无 xFormers
 
-* link:cu128-slim/README.adoc[`cu128-slim`]
-** CUDA 12.8, Python 3.12
-
 * link:cu126-slim/README.adoc[`cu126-slim`]
 ** CUDA 12.6, Python 3.12
 
@@ -109,15 +106,6 @@ https://github.com/pytorch/pytorch/blob/main/.ci/manywheel/build_cuda.sh[编译�
 
 * link:cu130-megapak-pt211/README.adoc[`cu130-megapak-pt211`] ⭐
 ** CUDA 13.0, Python 3.13 (GIL 版本), GCC 14, PyTorch 2.11.0
-
-* link:cu128-megapak/README.adoc[`cu128-megapak`]
-** CUDA 12.8, Python 3.12, GCC 14, PyTorch 2.11.0
-
-* link:cu128-megapak-pt29/README.adoc[`cu128-megapak-pt29`]
-** CUDA 12.8, Python 3.12, GCC 11, PyTorch 2.9.1
-
-* link:cu128-megapak-pt28/README.adoc[`cu128-megapak-pt28`]
-** CUDA 12.8, Python 3.12, GCC 11, PyTorch 2.8.0
 
 * link:cu126-megapak/README.adoc[`cu126-megapak`]
 ** CUDA 12.6, Python 3.12, GCC 13, PyTorch 2.9.1
