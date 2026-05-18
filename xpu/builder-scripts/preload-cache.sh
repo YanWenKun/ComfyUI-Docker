@@ -53,7 +53,6 @@ gcs https://github.com/bash-j/mikey_nodes.git
 gcs https://github.com/jags111/efficiency-nodes-comfyui.git
 gcs https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git
 gcs https://github.com/rgthree/rgthree-comfy.git
-gcs https://github.com/shiimizu/ComfyUI_smZNodes.git
 gcs https://github.com/yolain/ComfyUI-Easy-Use.git
 
 # Control
@@ -83,7 +82,6 @@ gcs https://github.com/1038lab/ComfyUI-QwenVL.git
 
 # To be removed in future
 gcs https://github.com/cubiq/ComfyUI_essentials.git
-gcs https://github.com/Gourieff/ComfyUI-ReActor.git ComfyUI-ReActor.disabled
 
 
 echo "########################################"

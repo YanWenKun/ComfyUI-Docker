@@ -2,11 +2,11 @@
 # Dockerfile that builds 'yanwk/comfyui-boot:xpu'
 # A runtime environment for https://github.com/Comfy-Org/ComfyUI
 # Running on XPU (Intel GPU).
-# Using Python 3.14, GCC 15.
+# Using Python 3.14, GCC 16.
 # Using 'root' user inside container.
 ################################################################################
 
-FROM fedora:43
+FROM fedora:44
 
 LABEL maintainer="code@yanwk.fun"
 
@@ -15,7 +15,7 @@ LABEL maintainer="code@yanwk.fun"
 
 RUN --mount=type=cache,target=/var/cache/dnf \
     dnf install -y --nogpgcheck \
-        'https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-43.noarch.rpm' \
+        'https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-44.noarch.rpm' \
     && dnf upgrade -y \
     && dnf install -y \
 python3.14-devel \
@@ -43,7 +43,9 @@ fish \
 aria2 \
 fd-find \
 vim \
-which
+micro \
+which \
+rsync
 
 RUN --mount=type=cache,target=/var/cache/dnf \
     dnf install -y \
@@ -58,7 +60,7 @@ intel-igc \
 clinfo \
 openssl
 
-# Fedora 43 defaults to GCC 15
+# Fedora 44 defaults to GCC 16
 RUN --mount=type=cache,target=/var/cache/dnf \
     dnf install -y \
 gcc \
@@ -93,7 +95,7 @@ COPY builder-scripts/.  /builder-scripts/
 
 # Generate a version constraints file to pin PyTorch (prevent later installs from changing its version)
 RUN pip list --format=freeze \
-        | awk -F== 'BEGIN{want["torch"]=1;want["torchvision"]=1;want["torchaudio"]=1} $1 in want{print $1 "==" $2}' \
+        | awk -F== 'BEGIN{want["torch"]=1;want["torchvision"]=1} $1 in want{print $1 "==" $2}' \
         > /builder-scripts/constraints.txt \
     && echo "Pinned PyTorch version:" \
     && cat /builder-scripts/constraints.txt
