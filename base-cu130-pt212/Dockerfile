@@ -75,7 +75,6 @@ which \
 alternatives \
 fd-find \
 findutils \
-micro \
 rsync \
 git \
 git-lfs \
