@@ -122,7 +122,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         torch==2.12.0 torchvision torchaudio \
-        torchcodec==0.12.0 xformers \
+        torchcodec xformers \
         --index-url https://download.pytorch.org/whl/cu130 \
 && pip uninstall --yes torch \
 && find /usr/local/lib/python3.13/site-packages/nvidia/ -mindepth 1 -maxdepth 1 ! -name 'cusparselt' -exec rm -rfv {} +
@@ -131,7 +131,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
         torch==2.12.0 torchvision torchaudio \
-        torchcodec==0.12.0 xformers \
+        torchcodec xformers \
         --index-url https://download.pytorch.org/whl/cu130
 
 ENV LD_LIBRARY_PATH="${LD_LIBRARY_PATH}\
