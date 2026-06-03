@@ -1,11 +1,7 @@
-# 'torchdiffeq' for DepthFM
-# 'fairscale' for APISR
-fairscale
 ftfy
 imageio
 joblib
 kornia
-lark
 matplotlib
 onnx
 opencv-contrib-python-headless
