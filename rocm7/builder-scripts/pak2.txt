@@ -1,5 +1,5 @@
 # HuggingFace packages (version-sensitive)
-accelerate
+#accelerate
 datasets
 diffusers
 huggingface-hub
