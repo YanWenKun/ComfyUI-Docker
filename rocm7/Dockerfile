@@ -103,6 +103,9 @@ RUN pip list --format=freeze \
     && echo "Pinned PyTorch version:" \
     && cat /builder-scripts/constraints.txt
 
+# Flash Attention is not really needed for PyTorch 2.5+.
+# The code below will be removed in the future.
+
 # Compile-Install Flash Attention for ROCm
 # https://github.com/Dao-AILab/flash-attention#amd-rocm-support
 # https://rocm.docs.amd.com/en/latest/how-to/rocm-for-ai/inference-optimization/model-acceleration-libraries.html#installing-flash-attention-2
@@ -110,14 +113,14 @@ RUN pip list --format=freeze \
 # Composable Kernel (CK) backend (needs a GPU for compiling)
 #ENV FLASH_ATTENTION_SKIP_CK_BUILD=FALSE
 # Triton backend
-ENV FLASH_ATTENTION_TRITON_AMD_ENABLE=TRUE
+# ENV FLASH_ATTENTION_TRITON_AMD_ENABLE=TRUE
 
-RUN --mount=type=cache,target=/root/.cache/pip \
-    cd /builder-scripts \
-    && git clone https://github.com/Dao-AILab/flash-attention \
-    && cd flash-attention \
-    && python3 setup.py install \
-    && cd /
+# RUN --mount=type=cache,target=/root/.cache/pip \
+#     cd /builder-scripts \
+#     && git clone https://github.com/Dao-AILab/flash-attention \
+#     && cd flash-attention \
+#     && pip install -e . --no-build-isolation \
+#     && cd /
 
 # Deps for ComfyUI & custom nodes
 RUN --mount=type=cache,target=/root/.cache/pip \
