@@ -32,7 +32,9 @@ sed -i 's/_/-/g' pak5.txt
 # Don't "sort foo.txt >foo.txt". See: https://stackoverflow.com/a/29244408
 sort -ufo pak5.txt pak5.txt
 
-# Remove duplicate items, compare to pak3.txt
+# Remove duplicate items
+grep -Fixv -f pak2.txt pak5.txt > temp.txt && mv temp.txt pak5.txt
 grep -Fixv -f pak3.txt pak5.txt > temp.txt && mv temp.txt pak5.txt
+grep -Fixv -f pak7.txt pak5.txt > temp.txt && mv temp.txt pak5.txt
 
 echo "<pak5.txt> generated. Check before use."

@@ -1,7 +1,5 @@
-# 'compel lark' for smZNodes
 # 'torchdiffeq' for DepthFM
 # 'fairscale' for APISR
-compel
 fairscale
 ftfy
 imageio
