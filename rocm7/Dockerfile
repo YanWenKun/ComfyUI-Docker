@@ -96,6 +96,13 @@ https://repo.radeon.com/rocm/manylinux/rocm-rel-7.2.4/transformer_engine_rocm-2.
 # The /builder-scripts is also used as a compile-install workspace for some Python packages
 COPY builder-scripts/.  /builder-scripts/
 
+# Generate a version constraints file to pin PyTorch (prevent later installs from changing its version)
+RUN pip list --format=freeze \
+        | awk -F== 'BEGIN{want["torch"]=1;want["torchvision"]=1;want["torchaudio"]=1} $1 in want{print $1 "==" $2}' \
+        > /builder-scripts/constraints.txt \
+    && echo "Pinned PyTorch version:" \
+    && cat /builder-scripts/constraints.txt
+
 # Compile-Install Flash Attention for ROCm
 # https://github.com/Dao-AILab/flash-attention#amd-rocm-support
 # https://rocm.docs.amd.com/en/latest/how-to/rocm-for-ai/inference-optimization/model-acceleration-libraries.html#installing-flash-attention-2
@@ -115,18 +122,22 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # Deps for ComfyUI & custom nodes
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
+        -c /builder-scripts/constraints.txt \
         -r /builder-scripts/pak2.txt
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
+        -c /builder-scripts/constraints.txt \
         -r /builder-scripts/pak3.txt
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
+        -c /builder-scripts/constraints.txt \
         -r /builder-scripts/pak5.txt
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
+        -c /builder-scripts/constraints.txt \
         -r /builder-scripts/pak7.txt
 
 # Prevent SAM-2 from installing CUDA packages
@@ -150,6 +161,7 @@ RUN bash /builder-scripts/preload-cache.sh
 # Install deps (comfyui-frontend-package, etc) pair to the preloaded ComfyUI version
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
+        -c /builder-scripts/constraints.txt \
         -r '/default-comfyui-bundle/ComfyUI/requirements.txt' \
         -r '/default-comfyui-bundle/ComfyUI/custom_nodes/ComfyUI-Manager/requirements.txt' \
     && pip list
