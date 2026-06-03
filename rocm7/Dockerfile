@@ -115,6 +115,10 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # Deps for ComfyUI & custom nodes
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
+        -r /builder-scripts/pak2.txt
+
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
         -r /builder-scripts/pak3.txt
 
 RUN --mount=type=cache,target=/root/.cache/pip \

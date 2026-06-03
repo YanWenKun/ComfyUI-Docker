@@ -1,12 +1,9 @@
 # 'compel lark' for smZNodes
 # 'torchdiffeq' for DepthFM
 # 'fairscale' for APISR
-accelerate
 compel
-diffusers
 fairscale
 ftfy
-huggingface-hub
 imageio
 joblib
 kornia
@@ -27,4 +24,3 @@ scipy
 timm
 torchdiffeq
 torchmetrics
-transformers

@@ -32,13 +32,11 @@ pyyaml
 rembg
 requests
 rich
-safetensors
 segment-anything
 sentencepiece
 simpleeval
 spandrel
 SQLAlchemy
-tokenizers
 toml
 torchsde
 tqdm
