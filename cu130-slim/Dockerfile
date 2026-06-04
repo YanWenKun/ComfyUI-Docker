@@ -70,7 +70,7 @@ gawk \
 ninja \
 aria2 \
 findutils \
-fish \
+# fish \
 fd \
 fuse \
 vim \

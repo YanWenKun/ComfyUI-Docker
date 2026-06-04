@@ -99,7 +99,7 @@ make \
 ninja \
 git \
 aria2 \
-fish \
+# fish \
 fd \
 vim \
 which \
