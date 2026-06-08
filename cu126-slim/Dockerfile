@@ -5,7 +5,7 @@
 # The container will be running in root (easy for rootless deploy).
 ################################################################################
 
-FROM docker.io/opensuse/tumbleweed:latest
+FROM docker.io/opensuse/leap:15.6
 
 LABEL maintainer="YAN Wenkun <code@yanwk.fun>"
 
@@ -13,8 +13,11 @@ LABEL maintainer="YAN Wenkun <code@yanwk.fun>"
 # Python and tools
 
 RUN --mount=type=cache,target=/var/cache/zypp \
+    zypper update --no-confirm
+
+RUN --mount=type=cache,target=/var/cache/zypp \
     zypper addrepo --check --refresh --priority 90 \
-        'https://ftp.gwdg.de/pub/linux/misc/packman/suse/openSUSE_Tumbleweed/Essentials/' packman-essentials \
+        'https://ftp.gwdg.de/pub/linux/misc/packman/suse/openSUSE_Leap_15.6/Essentials/' packman-essentials \
     && zypper --gpg-auto-import-keys \
         install --no-confirm --auto-agree-with-licenses \
 python312-devel \
@@ -30,7 +33,8 @@ RUN --mount=type=cache,target=/var/cache/zypp \
 ffmpeg \
 x264 \
 x265 \
-git
+git \
+git-lfs
 
 RUN --mount=type=cache,target=/var/cache/zypp \
     zypper --gpg-auto-import-keys \
@@ -42,14 +46,24 @@ gawk \
 ninja \
 aria2 \
 findutils \
-# fish \
 fd \
-fuse \
 vim \
 which \
+tar \
+gzip \
+xz \
+wget \
 update-alternatives \
-google-noto-sans-fonts \
-    && rm -v /usr/lib64/python3.12/EXTERNALLY-MANAGED \
+google-noto-sans-cjk-fonts
+
+
+RUN --mount=type=cache,target=/var/cache/zypp \
+    zypper --non-interactive \
+        install --force-resolution \
+fish
+
+# Remove the need for 'pip install --break-system-packages'
+RUN rm -vf /usr/lib64/python3.12/EXTERNALLY-MANAGED \
     # Ensure default Python version
     && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 100
 
@@ -100,10 +114,10 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 #    Example: nvidia-cuda-runtime-cu12-12.6.77 -> nvidia-cuda-runtime-cu12==12.6.77
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        --dry-run xformers torchvision torchaudio \
+        --dry-run xformers torch torchvision torchaudio \
         --index-url https://download.pytorch.org/whl/cu126 \
     && pip install \
-        --dry-run xformers torchvision torchaudio \
+        --dry-run xformers torch torchvision torchaudio \
         --index-url https://download.pytorch.org/whl/cu126 \
             | grep -oP '(?<=Would install ).*' > /tmp/packages.txt \
     && grep -oP 'nvidia-\S+-\S+' /tmp/packages.txt \
@@ -157,7 +171,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # Install everything else, also works as a fail-safe
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install \
-        xformers torchvision torchaudio \
+        xformers torch torchvision torchaudio \
         --index-url https://download.pytorch.org/whl/cu126
 
 # Bind libs (.so files)
