@@ -21,8 +21,8 @@ cd /root
 if [ ! -f "/root/ComfyUI/main.py" ] ; then
     mkdir -p /root/ComfyUI
     # 'cp --archive': all file timestamps and permissions will be preserved
-    # 'cp --update=none': do not overwrite
-    if cp --archive --update=none "/default-comfyui-bundle/ComfyUI/." "/root/ComfyUI/" ; then
+    # 'cp --no-clobber': do not overwrite
+    if cp --archive --no-clobber "/default-comfyui-bundle/ComfyUI/." "/root/ComfyUI/" ; then
         echo "[INFO] Setting up ComfyUI..."
         echo "[INFO] Using image-bundled ComfyUI (copied to workdir)."
     else
