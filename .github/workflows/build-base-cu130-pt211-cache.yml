@@ -38,7 +38,7 @@ jobs:
       # which has plenty of space after last step.
       -
         name: Git checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       -
         name: Move Docker data-root to WORKDIR
         run: |
