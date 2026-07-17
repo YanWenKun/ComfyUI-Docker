@@ -25,6 +25,11 @@ ARG PIP_NO_BUILD_ISOLATION=1
 RUN --mount=type=cache,target=/var/cache/dnf \
     dnf upgrade -y
 
+# Install SoX
+RUN --mount=type=cache,target=/var/cache/dnf \
+    dnf install -y epel-release \
+    && dnf install -y sox-devel
+
 ################################################################################
 # Dependencies for ComfyUI & custom nodes
 

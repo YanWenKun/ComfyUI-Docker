@@ -26,6 +26,11 @@ RUN --mount=type=cache,target=/var/cache/dnf \
     dnf upgrade -y \
     && dnf in -y rsync
 
+# Install SoX
+RUN --mount=type=cache,target=/var/cache/dnf \
+    dnf install -y epel-release \
+    && dnf install -y sox-devel
+
 # Fix for projects using CMAKE missing package configuration file
 ENV CMAKE_PREFIX_PATH="/usr/local/lib64/python3.13/site-packages/torch/share/cmake" \
     CUDACXX="/usr/local/cuda-13.0/bin/nvcc"
