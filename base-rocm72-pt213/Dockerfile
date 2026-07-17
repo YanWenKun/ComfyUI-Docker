@@ -39,21 +39,22 @@ python313-joblib \
 python313-lark \
 python313-matplotlib \
 python313-mpmath \
-python313-numba-devel \
-# python313-numpy \ # Numba conflicts with latest NumPy
+## Numba has dependency conflicts
+# python313-numba-devel \
+# python313-numpy \ 
 # python313-onnx \
 python313-opencv \
 python313-pandas \
 python313-qrcode \
 python313-rich \
 python313-scikit-build \
-python313-scikit-build-core-pyproject \
+python313-scikit-build-core-wheels \
 python313-scikit-image \
 python313-scikit-learn \
 python313-scipy \
 python313-svglib \
 python313-tqdm \
-    && rm /usr/lib64/python3.13/EXTERNALLY-MANAGED \
+    && rm -vf /usr/lib64/python3.13/EXTERNALLY-MANAGED \
     && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.13 100
 
 # Note: 'half' for ONNX Runtime on ROCm.
