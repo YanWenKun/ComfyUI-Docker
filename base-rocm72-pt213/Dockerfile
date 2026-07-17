@@ -70,18 +70,22 @@ ninja \
 shadow \
 git \
 aria2 \
-fish \
 fd \
 vim \
 which \
 opencv \
 opencv-devel \
-ffmpeg \
+ffmpeg-8 \
 x264 \
 x265 \
 google-noto-sans-fonts \
 google-noto-sans-cjk-fonts \
 google-noto-coloremoji-fonts
+
+RUN --mount=type=cache,target=/var/cache/zypp \
+    zypper --non-interactive \
+        install --force-resolution \
+fish
 
 ################################################################################
 # GCC 14
