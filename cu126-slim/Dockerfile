@@ -30,7 +30,7 @@ libQt5OpenGL5
 RUN --mount=type=cache,target=/var/cache/zypp \
     zypper --gpg-auto-import-keys \
         install --no-confirm --auto-agree-with-licenses \
-ffmpeg \
+ffmpeg-8 \
 x264 \
 x265 \
 git \

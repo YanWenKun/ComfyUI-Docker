@@ -105,7 +105,7 @@ vim \
 which \
 opencv \
 opencv-devel \
-ffmpeg \
+ffmpeg-8 \
 x264 \
 x265 \
 google-noto-sans-fonts \

@@ -54,7 +54,7 @@ RUN --mount=type=cache,target=/var/cache/zypp \
 python313-ffmpeg-python \
 python313-imageio \
 python313-svglib \
-ffmpeg \
+ffmpeg-8 \
 x264 \
 x265 \
 python313-GitPython \

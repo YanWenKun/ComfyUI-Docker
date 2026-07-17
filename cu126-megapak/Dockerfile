@@ -131,7 +131,7 @@ gzip \
 xz \
 wget \
 update-alternatives \
-ffmpeg \
+ffmpeg-8 \
 x264 \
 x265 \
 google-noto-sans-cjk-fonts \
