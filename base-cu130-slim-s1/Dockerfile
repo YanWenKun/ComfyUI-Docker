@@ -57,11 +57,8 @@ ffmpeg \
 x264 \
 x265 \
 mesa-libGL \
-mesa-libEGL
-
-# RHEL 10 defaults to GCC 14
-RUN --mount=type=cache,target=/var/cache/dnf \
-    dnf install -y \
+mesa-libEGL \
+# RHEL 10 defaults to GCC 14 \
 gcc \
 gcc-c++
 
